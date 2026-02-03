@@ -7,6 +7,8 @@ import '../pages/placeholder_page.dart';
 import '../pages/setup_placeholder_page.dart';
 import '../shell/app_shell.dart';
 import '../../core/ui/pages/components_gallery_page.dart';
+import '../../features/audit/presentation/audit_log_page.dart';
+import '../../features/ledger/presentation/ledger_page.dart';
 
 const setupLocation = '/setup';
 const setupRouteName = 'setup';
@@ -58,6 +60,10 @@ const disputesTitle = 'Disputes';
 const settingsLocation = '/settings';
 const settingsRouteName = 'settings';
 const settingsTitle = 'Settings';
+
+const auditLocation = '/audit';
+const auditRouteName = 'audit';
+const auditTitle = 'Audit log';
 
 /// Temporary in-memory app configuration.
 ///
@@ -151,9 +157,12 @@ final appRouterProvider = Provider<GoRouter>((ref) {
           GoRoute(
             path: ledgerLocation,
             name: ledgerRouteName,
-            builder: (context, state) => const PlaceholderPage(
-              title: ledgerTitle,
-            ),
+            builder: (context, state) => const LedgerPage(),
+          ),
+          GoRoute(
+            path: auditLocation,
+            name: auditRouteName,
+            builder: (context, state) => const AuditLogPage(),
           ),
           GoRoute(
             path: rulesLocation,

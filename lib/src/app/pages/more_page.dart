@@ -30,6 +30,12 @@ class MorePage extends StatelessWidget {
           onTap: () => context.push(ledgerLocation),
         ),
         _MoreTile(
+          tileKey: const Key('more_audit'),
+          title: auditTitle,
+          subtitle: 'View audit events and approvals',
+          onTap: () => context.push(auditLocation),
+        ),
+        _MoreTile(
           tileKey: const Key('more_rules'),
           title: rulesTitle,
           subtitle: 'View current rules and versions',
