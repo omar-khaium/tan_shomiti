@@ -11,6 +11,7 @@ import '../../features/ledger/presentation/ledger_page.dart';
 import '../../features/members/presentation/governance/governance_page.dart';
 import '../../features/members/presentation/governance/member_signoff_page.dart';
 import '../../features/members/presentation/governance/roles_assignment_page.dart';
+import '../../features/rules/presentation/rules_page.dart';
 import '../../features/shomiti_setup/presentation/setup_wizard_page.dart';
 import '../../features/shomiti_setup/presentation/providers/shomiti_setup_providers.dart';
 
@@ -177,8 +178,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
           GoRoute(
             path: rulesLocation,
             name: rulesRouteName,
-            builder: (context, state) =>
-                const PlaceholderPage(title: rulesTitle),
+            builder: (context, state) => const RulesPage(),
           ),
           GoRoute(
             path: disputesLocation,
