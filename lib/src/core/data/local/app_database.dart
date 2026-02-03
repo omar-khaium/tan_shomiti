@@ -7,6 +7,9 @@ import 'package:path_provider/path_provider.dart';
 
 import 'tables/audit_events.dart';
 import 'tables/ledger_entries.dart';
+import 'tables/member_consents.dart';
+import 'tables/members.dart';
+import 'tables/role_assignments.dart';
 import 'tables/rule_set_versions.dart';
 import 'tables/shomitis.dart';
 
@@ -16,6 +19,9 @@ part 'app_database.g.dart';
   tables: [
     AuditEvents,
     LedgerEntries,
+    Members,
+    RoleAssignments,
+    MemberConsents,
     RuleSetVersions,
     Shomitis,
   ],
@@ -28,7 +34,7 @@ class AppDatabase extends _$AppDatabase {
   factory AppDatabase.memory() => AppDatabase(NativeDatabase.memory());
 
   @override
-  int get schemaVersion => 2;
+  int get schemaVersion => 3;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -38,6 +44,11 @@ class AppDatabase extends _$AppDatabase {
         onUpgrade: (m, from, to) async {
           if (from < 2) {
             await m.createTable(shomitis);
+          }
+          if (from < 3) {
+            await m.createTable(members);
+            await m.createTable(roleAssignments);
+            await m.createTable(memberConsents);
           }
         },
       );

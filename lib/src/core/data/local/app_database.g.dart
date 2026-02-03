@@ -830,268 +830,6 @@ class LedgerEntriesCompanion extends UpdateCompanion<LedgerEntryRow> {
   }
 }
 
-class $RuleSetVersionsTable extends RuleSetVersions
-    with TableInfo<$RuleSetVersionsTable, RuleSetVersionRow> {
-  @override
-  final GeneratedDatabase attachedDatabase;
-  final String? _alias;
-  $RuleSetVersionsTable(this.attachedDatabase, [this._alias]);
-  static const VerificationMeta _idMeta = const VerificationMeta('id');
-  @override
-  late final GeneratedColumn<String> id = GeneratedColumn<String>(
-    'id',
-    aliasedName,
-    false,
-    type: DriftSqlType.string,
-    requiredDuringInsert: true,
-  );
-  static const VerificationMeta _createdAtMeta = const VerificationMeta(
-    'createdAt',
-  );
-  @override
-  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
-    'created_at',
-    aliasedName,
-    false,
-    type: DriftSqlType.dateTime,
-    requiredDuringInsert: true,
-  );
-  static const VerificationMeta _jsonMeta = const VerificationMeta('json');
-  @override
-  late final GeneratedColumn<String> json = GeneratedColumn<String>(
-    'json',
-    aliasedName,
-    false,
-    type: DriftSqlType.string,
-    requiredDuringInsert: true,
-  );
-  @override
-  List<GeneratedColumn> get $columns => [id, createdAt, json];
-  @override
-  String get aliasedName => _alias ?? actualTableName;
-  @override
-  String get actualTableName => $name;
-  static const String $name = 'rule_set_versions';
-  @override
-  VerificationContext validateIntegrity(
-    Insertable<RuleSetVersionRow> instance, {
-    bool isInserting = false,
-  }) {
-    final context = VerificationContext();
-    final data = instance.toColumns(true);
-    if (data.containsKey('id')) {
-      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
-    } else if (isInserting) {
-      context.missing(_idMeta);
-    }
-    if (data.containsKey('created_at')) {
-      context.handle(
-        _createdAtMeta,
-        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
-      );
-    } else if (isInserting) {
-      context.missing(_createdAtMeta);
-    }
-    if (data.containsKey('json')) {
-      context.handle(
-        _jsonMeta,
-        json.isAcceptableOrUnknown(data['json']!, _jsonMeta),
-      );
-    } else if (isInserting) {
-      context.missing(_jsonMeta);
-    }
-    return context;
-  }
-
-  @override
-  Set<GeneratedColumn> get $primaryKey => {id};
-  @override
-  RuleSetVersionRow map(Map<String, dynamic> data, {String? tablePrefix}) {
-    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return RuleSetVersionRow(
-      id: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}id'],
-      )!,
-      createdAt: attachedDatabase.typeMapping.read(
-        DriftSqlType.dateTime,
-        data['${effectivePrefix}created_at'],
-      )!,
-      json: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}json'],
-      )!,
-    );
-  }
-
-  @override
-  $RuleSetVersionsTable createAlias(String alias) {
-    return $RuleSetVersionsTable(attachedDatabase, alias);
-  }
-}
-
-class RuleSetVersionRow extends DataClass
-    implements Insertable<RuleSetVersionRow> {
-  final String id;
-  final DateTime createdAt;
-
-  /// JSON snapshot of rules/policies (placeholder until TS-101+).
-  final String json;
-  const RuleSetVersionRow({
-    required this.id,
-    required this.createdAt,
-    required this.json,
-  });
-  @override
-  Map<String, Expression> toColumns(bool nullToAbsent) {
-    final map = <String, Expression>{};
-    map['id'] = Variable<String>(id);
-    map['created_at'] = Variable<DateTime>(createdAt);
-    map['json'] = Variable<String>(json);
-    return map;
-  }
-
-  RuleSetVersionsCompanion toCompanion(bool nullToAbsent) {
-    return RuleSetVersionsCompanion(
-      id: Value(id),
-      createdAt: Value(createdAt),
-      json: Value(json),
-    );
-  }
-
-  factory RuleSetVersionRow.fromJson(
-    Map<String, dynamic> json, {
-    ValueSerializer? serializer,
-  }) {
-    serializer ??= driftRuntimeOptions.defaultSerializer;
-    return RuleSetVersionRow(
-      id: serializer.fromJson<String>(json['id']),
-      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
-      json: serializer.fromJson<String>(json['json']),
-    );
-  }
-  @override
-  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
-    serializer ??= driftRuntimeOptions.defaultSerializer;
-    return <String, dynamic>{
-      'id': serializer.toJson<String>(id),
-      'createdAt': serializer.toJson<DateTime>(createdAt),
-      'json': serializer.toJson<String>(json),
-    };
-  }
-
-  RuleSetVersionRow copyWith({String? id, DateTime? createdAt, String? json}) =>
-      RuleSetVersionRow(
-        id: id ?? this.id,
-        createdAt: createdAt ?? this.createdAt,
-        json: json ?? this.json,
-      );
-  RuleSetVersionRow copyWithCompanion(RuleSetVersionsCompanion data) {
-    return RuleSetVersionRow(
-      id: data.id.present ? data.id.value : this.id,
-      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
-      json: data.json.present ? data.json.value : this.json,
-    );
-  }
-
-  @override
-  String toString() {
-    return (StringBuffer('RuleSetVersionRow(')
-          ..write('id: $id, ')
-          ..write('createdAt: $createdAt, ')
-          ..write('json: $json')
-          ..write(')'))
-        .toString();
-  }
-
-  @override
-  int get hashCode => Object.hash(id, createdAt, json);
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      (other is RuleSetVersionRow &&
-          other.id == this.id &&
-          other.createdAt == this.createdAt &&
-          other.json == this.json);
-}
-
-class RuleSetVersionsCompanion extends UpdateCompanion<RuleSetVersionRow> {
-  final Value<String> id;
-  final Value<DateTime> createdAt;
-  final Value<String> json;
-  final Value<int> rowid;
-  const RuleSetVersionsCompanion({
-    this.id = const Value.absent(),
-    this.createdAt = const Value.absent(),
-    this.json = const Value.absent(),
-    this.rowid = const Value.absent(),
-  });
-  RuleSetVersionsCompanion.insert({
-    required String id,
-    required DateTime createdAt,
-    required String json,
-    this.rowid = const Value.absent(),
-  }) : id = Value(id),
-       createdAt = Value(createdAt),
-       json = Value(json);
-  static Insertable<RuleSetVersionRow> custom({
-    Expression<String>? id,
-    Expression<DateTime>? createdAt,
-    Expression<String>? json,
-    Expression<int>? rowid,
-  }) {
-    return RawValuesInsertable({
-      if (id != null) 'id': id,
-      if (createdAt != null) 'created_at': createdAt,
-      if (json != null) 'json': json,
-      if (rowid != null) 'rowid': rowid,
-    });
-  }
-
-  RuleSetVersionsCompanion copyWith({
-    Value<String>? id,
-    Value<DateTime>? createdAt,
-    Value<String>? json,
-    Value<int>? rowid,
-  }) {
-    return RuleSetVersionsCompanion(
-      id: id ?? this.id,
-      createdAt: createdAt ?? this.createdAt,
-      json: json ?? this.json,
-      rowid: rowid ?? this.rowid,
-    );
-  }
-
-  @override
-  Map<String, Expression> toColumns(bool nullToAbsent) {
-    final map = <String, Expression>{};
-    if (id.present) {
-      map['id'] = Variable<String>(id.value);
-    }
-    if (createdAt.present) {
-      map['created_at'] = Variable<DateTime>(createdAt.value);
-    }
-    if (json.present) {
-      map['json'] = Variable<String>(json.value);
-    }
-    if (rowid.present) {
-      map['rowid'] = Variable<int>(rowid.value);
-    }
-    return map;
-  }
-
-  @override
-  String toString() {
-    return (StringBuffer('RuleSetVersionsCompanion(')
-          ..write('id: $id, ')
-          ..write('createdAt: $createdAt, ')
-          ..write('json: $json, ')
-          ..write('rowid: $rowid')
-          ..write(')'))
-        .toString();
-  }
-}
-
 class $ShomitisTable extends Shomitis
     with TableInfo<$ShomitisTable, ShomitiRow> {
   @override
@@ -1469,15 +1207,1423 @@ class ShomitisCompanion extends UpdateCompanion<ShomitiRow> {
   }
 }
 
+class $MembersTable extends Members with TableInfo<$MembersTable, MemberRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $MembersTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _shomitiIdMeta = const VerificationMeta(
+    'shomitiId',
+  );
+  @override
+  late final GeneratedColumn<String> shomitiId = GeneratedColumn<String>(
+    'shomiti_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES shomitis (id)',
+    ),
+  );
+  static const VerificationMeta _positionMeta = const VerificationMeta(
+    'position',
+  );
+  @override
+  late final GeneratedColumn<int> position = GeneratedColumn<int>(
+    'position',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _displayNameMeta = const VerificationMeta(
+    'displayName',
+  );
+  @override
+  late final GeneratedColumn<String> displayName = GeneratedColumn<String>(
+    'display_name',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    shomitiId,
+    position,
+    displayName,
+    createdAt,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'members';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<MemberRow> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('shomiti_id')) {
+      context.handle(
+        _shomitiIdMeta,
+        shomitiId.isAcceptableOrUnknown(data['shomiti_id']!, _shomitiIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_shomitiIdMeta);
+    }
+    if (data.containsKey('position')) {
+      context.handle(
+        _positionMeta,
+        position.isAcceptableOrUnknown(data['position']!, _positionMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_positionMeta);
+    }
+    if (data.containsKey('display_name')) {
+      context.handle(
+        _displayNameMeta,
+        displayName.isAcceptableOrUnknown(
+          data['display_name']!,
+          _displayNameMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_displayNameMeta);
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  MemberRow map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return MemberRow(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      shomitiId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}shomiti_id'],
+      )!,
+      position: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}position'],
+      )!,
+      displayName: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}display_name'],
+      )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+    );
+  }
+
+  @override
+  $MembersTable createAlias(String alias) {
+    return $MembersTable(attachedDatabase, alias);
+  }
+}
+
+class MemberRow extends DataClass implements Insertable<MemberRow> {
+  final String id;
+  final String shomitiId;
+
+  /// 1-based ordering for predictable UI lists.
+  final int position;
+  final String displayName;
+  final DateTime createdAt;
+  const MemberRow({
+    required this.id,
+    required this.shomitiId,
+    required this.position,
+    required this.displayName,
+    required this.createdAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['shomiti_id'] = Variable<String>(shomitiId);
+    map['position'] = Variable<int>(position);
+    map['display_name'] = Variable<String>(displayName);
+    map['created_at'] = Variable<DateTime>(createdAt);
+    return map;
+  }
+
+  MembersCompanion toCompanion(bool nullToAbsent) {
+    return MembersCompanion(
+      id: Value(id),
+      shomitiId: Value(shomitiId),
+      position: Value(position),
+      displayName: Value(displayName),
+      createdAt: Value(createdAt),
+    );
+  }
+
+  factory MemberRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return MemberRow(
+      id: serializer.fromJson<String>(json['id']),
+      shomitiId: serializer.fromJson<String>(json['shomitiId']),
+      position: serializer.fromJson<int>(json['position']),
+      displayName: serializer.fromJson<String>(json['displayName']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'shomitiId': serializer.toJson<String>(shomitiId),
+      'position': serializer.toJson<int>(position),
+      'displayName': serializer.toJson<String>(displayName),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+    };
+  }
+
+  MemberRow copyWith({
+    String? id,
+    String? shomitiId,
+    int? position,
+    String? displayName,
+    DateTime? createdAt,
+  }) => MemberRow(
+    id: id ?? this.id,
+    shomitiId: shomitiId ?? this.shomitiId,
+    position: position ?? this.position,
+    displayName: displayName ?? this.displayName,
+    createdAt: createdAt ?? this.createdAt,
+  );
+  MemberRow copyWithCompanion(MembersCompanion data) {
+    return MemberRow(
+      id: data.id.present ? data.id.value : this.id,
+      shomitiId: data.shomitiId.present ? data.shomitiId.value : this.shomitiId,
+      position: data.position.present ? data.position.value : this.position,
+      displayName: data.displayName.present
+          ? data.displayName.value
+          : this.displayName,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('MemberRow(')
+          ..write('id: $id, ')
+          ..write('shomitiId: $shomitiId, ')
+          ..write('position: $position, ')
+          ..write('displayName: $displayName, ')
+          ..write('createdAt: $createdAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(id, shomitiId, position, displayName, createdAt);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is MemberRow &&
+          other.id == this.id &&
+          other.shomitiId == this.shomitiId &&
+          other.position == this.position &&
+          other.displayName == this.displayName &&
+          other.createdAt == this.createdAt);
+}
+
+class MembersCompanion extends UpdateCompanion<MemberRow> {
+  final Value<String> id;
+  final Value<String> shomitiId;
+  final Value<int> position;
+  final Value<String> displayName;
+  final Value<DateTime> createdAt;
+  final Value<int> rowid;
+  const MembersCompanion({
+    this.id = const Value.absent(),
+    this.shomitiId = const Value.absent(),
+    this.position = const Value.absent(),
+    this.displayName = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  MembersCompanion.insert({
+    required String id,
+    required String shomitiId,
+    required int position,
+    required String displayName,
+    required DateTime createdAt,
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       shomitiId = Value(shomitiId),
+       position = Value(position),
+       displayName = Value(displayName),
+       createdAt = Value(createdAt);
+  static Insertable<MemberRow> custom({
+    Expression<String>? id,
+    Expression<String>? shomitiId,
+    Expression<int>? position,
+    Expression<String>? displayName,
+    Expression<DateTime>? createdAt,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (shomitiId != null) 'shomiti_id': shomitiId,
+      if (position != null) 'position': position,
+      if (displayName != null) 'display_name': displayName,
+      if (createdAt != null) 'created_at': createdAt,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  MembersCompanion copyWith({
+    Value<String>? id,
+    Value<String>? shomitiId,
+    Value<int>? position,
+    Value<String>? displayName,
+    Value<DateTime>? createdAt,
+    Value<int>? rowid,
+  }) {
+    return MembersCompanion(
+      id: id ?? this.id,
+      shomitiId: shomitiId ?? this.shomitiId,
+      position: position ?? this.position,
+      displayName: displayName ?? this.displayName,
+      createdAt: createdAt ?? this.createdAt,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (shomitiId.present) {
+      map['shomiti_id'] = Variable<String>(shomitiId.value);
+    }
+    if (position.present) {
+      map['position'] = Variable<int>(position.value);
+    }
+    if (displayName.present) {
+      map['display_name'] = Variable<String>(displayName.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('MembersCompanion(')
+          ..write('id: $id, ')
+          ..write('shomitiId: $shomitiId, ')
+          ..write('position: $position, ')
+          ..write('displayName: $displayName, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $RoleAssignmentsTable extends RoleAssignments
+    with TableInfo<$RoleAssignmentsTable, RoleAssignmentRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $RoleAssignmentsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _shomitiIdMeta = const VerificationMeta(
+    'shomitiId',
+  );
+  @override
+  late final GeneratedColumn<String> shomitiId = GeneratedColumn<String>(
+    'shomiti_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES shomitis (id)',
+    ),
+  );
+  static const VerificationMeta _roleMeta = const VerificationMeta('role');
+  @override
+  late final GeneratedColumn<String> role = GeneratedColumn<String>(
+    'role',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _memberIdMeta = const VerificationMeta(
+    'memberId',
+  );
+  @override
+  late final GeneratedColumn<String> memberId = GeneratedColumn<String>(
+    'member_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES members (id)',
+    ),
+  );
+  static const VerificationMeta _assignedAtMeta = const VerificationMeta(
+    'assignedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> assignedAt = GeneratedColumn<DateTime>(
+    'assigned_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [shomitiId, role, memberId, assignedAt];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'role_assignments';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<RoleAssignmentRow> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('shomiti_id')) {
+      context.handle(
+        _shomitiIdMeta,
+        shomitiId.isAcceptableOrUnknown(data['shomiti_id']!, _shomitiIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_shomitiIdMeta);
+    }
+    if (data.containsKey('role')) {
+      context.handle(
+        _roleMeta,
+        role.isAcceptableOrUnknown(data['role']!, _roleMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_roleMeta);
+    }
+    if (data.containsKey('member_id')) {
+      context.handle(
+        _memberIdMeta,
+        memberId.isAcceptableOrUnknown(data['member_id']!, _memberIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_memberIdMeta);
+    }
+    if (data.containsKey('assigned_at')) {
+      context.handle(
+        _assignedAtMeta,
+        assignedAt.isAcceptableOrUnknown(data['assigned_at']!, _assignedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_assignedAtMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {shomitiId, role};
+  @override
+  RoleAssignmentRow map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return RoleAssignmentRow(
+      shomitiId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}shomiti_id'],
+      )!,
+      role: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}role'],
+      )!,
+      memberId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}member_id'],
+      )!,
+      assignedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}assigned_at'],
+      )!,
+    );
+  }
+
+  @override
+  $RoleAssignmentsTable createAlias(String alias) {
+    return $RoleAssignmentsTable(attachedDatabase, alias);
+  }
+}
+
+class RoleAssignmentRow extends DataClass
+    implements Insertable<RoleAssignmentRow> {
+  final String shomitiId;
+
+  /// Stored as the enum name for forward compatibility.
+  final String role;
+  final String memberId;
+  final DateTime assignedAt;
+  const RoleAssignmentRow({
+    required this.shomitiId,
+    required this.role,
+    required this.memberId,
+    required this.assignedAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['shomiti_id'] = Variable<String>(shomitiId);
+    map['role'] = Variable<String>(role);
+    map['member_id'] = Variable<String>(memberId);
+    map['assigned_at'] = Variable<DateTime>(assignedAt);
+    return map;
+  }
+
+  RoleAssignmentsCompanion toCompanion(bool nullToAbsent) {
+    return RoleAssignmentsCompanion(
+      shomitiId: Value(shomitiId),
+      role: Value(role),
+      memberId: Value(memberId),
+      assignedAt: Value(assignedAt),
+    );
+  }
+
+  factory RoleAssignmentRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return RoleAssignmentRow(
+      shomitiId: serializer.fromJson<String>(json['shomitiId']),
+      role: serializer.fromJson<String>(json['role']),
+      memberId: serializer.fromJson<String>(json['memberId']),
+      assignedAt: serializer.fromJson<DateTime>(json['assignedAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'shomitiId': serializer.toJson<String>(shomitiId),
+      'role': serializer.toJson<String>(role),
+      'memberId': serializer.toJson<String>(memberId),
+      'assignedAt': serializer.toJson<DateTime>(assignedAt),
+    };
+  }
+
+  RoleAssignmentRow copyWith({
+    String? shomitiId,
+    String? role,
+    String? memberId,
+    DateTime? assignedAt,
+  }) => RoleAssignmentRow(
+    shomitiId: shomitiId ?? this.shomitiId,
+    role: role ?? this.role,
+    memberId: memberId ?? this.memberId,
+    assignedAt: assignedAt ?? this.assignedAt,
+  );
+  RoleAssignmentRow copyWithCompanion(RoleAssignmentsCompanion data) {
+    return RoleAssignmentRow(
+      shomitiId: data.shomitiId.present ? data.shomitiId.value : this.shomitiId,
+      role: data.role.present ? data.role.value : this.role,
+      memberId: data.memberId.present ? data.memberId.value : this.memberId,
+      assignedAt: data.assignedAt.present
+          ? data.assignedAt.value
+          : this.assignedAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('RoleAssignmentRow(')
+          ..write('shomitiId: $shomitiId, ')
+          ..write('role: $role, ')
+          ..write('memberId: $memberId, ')
+          ..write('assignedAt: $assignedAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(shomitiId, role, memberId, assignedAt);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is RoleAssignmentRow &&
+          other.shomitiId == this.shomitiId &&
+          other.role == this.role &&
+          other.memberId == this.memberId &&
+          other.assignedAt == this.assignedAt);
+}
+
+class RoleAssignmentsCompanion extends UpdateCompanion<RoleAssignmentRow> {
+  final Value<String> shomitiId;
+  final Value<String> role;
+  final Value<String> memberId;
+  final Value<DateTime> assignedAt;
+  final Value<int> rowid;
+  const RoleAssignmentsCompanion({
+    this.shomitiId = const Value.absent(),
+    this.role = const Value.absent(),
+    this.memberId = const Value.absent(),
+    this.assignedAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  RoleAssignmentsCompanion.insert({
+    required String shomitiId,
+    required String role,
+    required String memberId,
+    required DateTime assignedAt,
+    this.rowid = const Value.absent(),
+  }) : shomitiId = Value(shomitiId),
+       role = Value(role),
+       memberId = Value(memberId),
+       assignedAt = Value(assignedAt);
+  static Insertable<RoleAssignmentRow> custom({
+    Expression<String>? shomitiId,
+    Expression<String>? role,
+    Expression<String>? memberId,
+    Expression<DateTime>? assignedAt,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (shomitiId != null) 'shomiti_id': shomitiId,
+      if (role != null) 'role': role,
+      if (memberId != null) 'member_id': memberId,
+      if (assignedAt != null) 'assigned_at': assignedAt,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  RoleAssignmentsCompanion copyWith({
+    Value<String>? shomitiId,
+    Value<String>? role,
+    Value<String>? memberId,
+    Value<DateTime>? assignedAt,
+    Value<int>? rowid,
+  }) {
+    return RoleAssignmentsCompanion(
+      shomitiId: shomitiId ?? this.shomitiId,
+      role: role ?? this.role,
+      memberId: memberId ?? this.memberId,
+      assignedAt: assignedAt ?? this.assignedAt,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (shomitiId.present) {
+      map['shomiti_id'] = Variable<String>(shomitiId.value);
+    }
+    if (role.present) {
+      map['role'] = Variable<String>(role.value);
+    }
+    if (memberId.present) {
+      map['member_id'] = Variable<String>(memberId.value);
+    }
+    if (assignedAt.present) {
+      map['assigned_at'] = Variable<DateTime>(assignedAt.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('RoleAssignmentsCompanion(')
+          ..write('shomitiId: $shomitiId, ')
+          ..write('role: $role, ')
+          ..write('memberId: $memberId, ')
+          ..write('assignedAt: $assignedAt, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $RuleSetVersionsTable extends RuleSetVersions
+    with TableInfo<$RuleSetVersionsTable, RuleSetVersionRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $RuleSetVersionsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _jsonMeta = const VerificationMeta('json');
+  @override
+  late final GeneratedColumn<String> json = GeneratedColumn<String>(
+    'json',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [id, createdAt, json];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'rule_set_versions';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<RuleSetVersionRow> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    if (data.containsKey('json')) {
+      context.handle(
+        _jsonMeta,
+        json.isAcceptableOrUnknown(data['json']!, _jsonMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_jsonMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  RuleSetVersionRow map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return RuleSetVersionRow(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+      json: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}json'],
+      )!,
+    );
+  }
+
+  @override
+  $RuleSetVersionsTable createAlias(String alias) {
+    return $RuleSetVersionsTable(attachedDatabase, alias);
+  }
+}
+
+class RuleSetVersionRow extends DataClass
+    implements Insertable<RuleSetVersionRow> {
+  final String id;
+  final DateTime createdAt;
+
+  /// JSON snapshot of rules/policies (placeholder until TS-101+).
+  final String json;
+  const RuleSetVersionRow({
+    required this.id,
+    required this.createdAt,
+    required this.json,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['created_at'] = Variable<DateTime>(createdAt);
+    map['json'] = Variable<String>(json);
+    return map;
+  }
+
+  RuleSetVersionsCompanion toCompanion(bool nullToAbsent) {
+    return RuleSetVersionsCompanion(
+      id: Value(id),
+      createdAt: Value(createdAt),
+      json: Value(json),
+    );
+  }
+
+  factory RuleSetVersionRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return RuleSetVersionRow(
+      id: serializer.fromJson<String>(json['id']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      json: serializer.fromJson<String>(json['json']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'json': serializer.toJson<String>(json),
+    };
+  }
+
+  RuleSetVersionRow copyWith({String? id, DateTime? createdAt, String? json}) =>
+      RuleSetVersionRow(
+        id: id ?? this.id,
+        createdAt: createdAt ?? this.createdAt,
+        json: json ?? this.json,
+      );
+  RuleSetVersionRow copyWithCompanion(RuleSetVersionsCompanion data) {
+    return RuleSetVersionRow(
+      id: data.id.present ? data.id.value : this.id,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      json: data.json.present ? data.json.value : this.json,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('RuleSetVersionRow(')
+          ..write('id: $id, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('json: $json')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, createdAt, json);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is RuleSetVersionRow &&
+          other.id == this.id &&
+          other.createdAt == this.createdAt &&
+          other.json == this.json);
+}
+
+class RuleSetVersionsCompanion extends UpdateCompanion<RuleSetVersionRow> {
+  final Value<String> id;
+  final Value<DateTime> createdAt;
+  final Value<String> json;
+  final Value<int> rowid;
+  const RuleSetVersionsCompanion({
+    this.id = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.json = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  RuleSetVersionsCompanion.insert({
+    required String id,
+    required DateTime createdAt,
+    required String json,
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       createdAt = Value(createdAt),
+       json = Value(json);
+  static Insertable<RuleSetVersionRow> custom({
+    Expression<String>? id,
+    Expression<DateTime>? createdAt,
+    Expression<String>? json,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (createdAt != null) 'created_at': createdAt,
+      if (json != null) 'json': json,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  RuleSetVersionsCompanion copyWith({
+    Value<String>? id,
+    Value<DateTime>? createdAt,
+    Value<String>? json,
+    Value<int>? rowid,
+  }) {
+    return RuleSetVersionsCompanion(
+      id: id ?? this.id,
+      createdAt: createdAt ?? this.createdAt,
+      json: json ?? this.json,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (json.present) {
+      map['json'] = Variable<String>(json.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('RuleSetVersionsCompanion(')
+          ..write('id: $id, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('json: $json, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $MemberConsentsTable extends MemberConsents
+    with TableInfo<$MemberConsentsTable, MemberConsentRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $MemberConsentsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _memberIdMeta = const VerificationMeta(
+    'memberId',
+  );
+  @override
+  late final GeneratedColumn<String> memberId = GeneratedColumn<String>(
+    'member_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES members (id)',
+    ),
+  );
+  static const VerificationMeta _ruleSetVersionIdMeta = const VerificationMeta(
+    'ruleSetVersionId',
+  );
+  @override
+  late final GeneratedColumn<String> ruleSetVersionId = GeneratedColumn<String>(
+    'rule_set_version_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES rule_set_versions (id)',
+    ),
+  );
+  static const VerificationMeta _shomitiIdMeta = const VerificationMeta(
+    'shomitiId',
+  );
+  @override
+  late final GeneratedColumn<String> shomitiId = GeneratedColumn<String>(
+    'shomiti_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES shomitis (id)',
+    ),
+  );
+  static const VerificationMeta _proofTypeMeta = const VerificationMeta(
+    'proofType',
+  );
+  @override
+  late final GeneratedColumn<String> proofType = GeneratedColumn<String>(
+    'proof_type',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _proofReferenceMeta = const VerificationMeta(
+    'proofReference',
+  );
+  @override
+  late final GeneratedColumn<String> proofReference = GeneratedColumn<String>(
+    'proof_reference',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _signedAtMeta = const VerificationMeta(
+    'signedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> signedAt = GeneratedColumn<DateTime>(
+    'signed_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    memberId,
+    ruleSetVersionId,
+    shomitiId,
+    proofType,
+    proofReference,
+    signedAt,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'member_consents';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<MemberConsentRow> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('member_id')) {
+      context.handle(
+        _memberIdMeta,
+        memberId.isAcceptableOrUnknown(data['member_id']!, _memberIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_memberIdMeta);
+    }
+    if (data.containsKey('rule_set_version_id')) {
+      context.handle(
+        _ruleSetVersionIdMeta,
+        ruleSetVersionId.isAcceptableOrUnknown(
+          data['rule_set_version_id']!,
+          _ruleSetVersionIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_ruleSetVersionIdMeta);
+    }
+    if (data.containsKey('shomiti_id')) {
+      context.handle(
+        _shomitiIdMeta,
+        shomitiId.isAcceptableOrUnknown(data['shomiti_id']!, _shomitiIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_shomitiIdMeta);
+    }
+    if (data.containsKey('proof_type')) {
+      context.handle(
+        _proofTypeMeta,
+        proofType.isAcceptableOrUnknown(data['proof_type']!, _proofTypeMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_proofTypeMeta);
+    }
+    if (data.containsKey('proof_reference')) {
+      context.handle(
+        _proofReferenceMeta,
+        proofReference.isAcceptableOrUnknown(
+          data['proof_reference']!,
+          _proofReferenceMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_proofReferenceMeta);
+    }
+    if (data.containsKey('signed_at')) {
+      context.handle(
+        _signedAtMeta,
+        signedAt.isAcceptableOrUnknown(data['signed_at']!, _signedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_signedAtMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {memberId, ruleSetVersionId};
+  @override
+  MemberConsentRow map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return MemberConsentRow(
+      memberId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}member_id'],
+      )!,
+      ruleSetVersionId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}rule_set_version_id'],
+      )!,
+      shomitiId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}shomiti_id'],
+      )!,
+      proofType: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}proof_type'],
+      )!,
+      proofReference: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}proof_reference'],
+      )!,
+      signedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}signed_at'],
+      )!,
+    );
+  }
+
+  @override
+  $MemberConsentsTable createAlias(String alias) {
+    return $MemberConsentsTable(attachedDatabase, alias);
+  }
+}
+
+class MemberConsentRow extends DataClass
+    implements Insertable<MemberConsentRow> {
+  final String memberId;
+  final String ruleSetVersionId;
+  final String shomitiId;
+
+  /// Stored as the enum name for forward compatibility.
+  final String proofType;
+
+  /// Free-text proof reference (avoid storing sensitive content).
+  final String proofReference;
+  final DateTime signedAt;
+  const MemberConsentRow({
+    required this.memberId,
+    required this.ruleSetVersionId,
+    required this.shomitiId,
+    required this.proofType,
+    required this.proofReference,
+    required this.signedAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['member_id'] = Variable<String>(memberId);
+    map['rule_set_version_id'] = Variable<String>(ruleSetVersionId);
+    map['shomiti_id'] = Variable<String>(shomitiId);
+    map['proof_type'] = Variable<String>(proofType);
+    map['proof_reference'] = Variable<String>(proofReference);
+    map['signed_at'] = Variable<DateTime>(signedAt);
+    return map;
+  }
+
+  MemberConsentsCompanion toCompanion(bool nullToAbsent) {
+    return MemberConsentsCompanion(
+      memberId: Value(memberId),
+      ruleSetVersionId: Value(ruleSetVersionId),
+      shomitiId: Value(shomitiId),
+      proofType: Value(proofType),
+      proofReference: Value(proofReference),
+      signedAt: Value(signedAt),
+    );
+  }
+
+  factory MemberConsentRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return MemberConsentRow(
+      memberId: serializer.fromJson<String>(json['memberId']),
+      ruleSetVersionId: serializer.fromJson<String>(json['ruleSetVersionId']),
+      shomitiId: serializer.fromJson<String>(json['shomitiId']),
+      proofType: serializer.fromJson<String>(json['proofType']),
+      proofReference: serializer.fromJson<String>(json['proofReference']),
+      signedAt: serializer.fromJson<DateTime>(json['signedAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'memberId': serializer.toJson<String>(memberId),
+      'ruleSetVersionId': serializer.toJson<String>(ruleSetVersionId),
+      'shomitiId': serializer.toJson<String>(shomitiId),
+      'proofType': serializer.toJson<String>(proofType),
+      'proofReference': serializer.toJson<String>(proofReference),
+      'signedAt': serializer.toJson<DateTime>(signedAt),
+    };
+  }
+
+  MemberConsentRow copyWith({
+    String? memberId,
+    String? ruleSetVersionId,
+    String? shomitiId,
+    String? proofType,
+    String? proofReference,
+    DateTime? signedAt,
+  }) => MemberConsentRow(
+    memberId: memberId ?? this.memberId,
+    ruleSetVersionId: ruleSetVersionId ?? this.ruleSetVersionId,
+    shomitiId: shomitiId ?? this.shomitiId,
+    proofType: proofType ?? this.proofType,
+    proofReference: proofReference ?? this.proofReference,
+    signedAt: signedAt ?? this.signedAt,
+  );
+  MemberConsentRow copyWithCompanion(MemberConsentsCompanion data) {
+    return MemberConsentRow(
+      memberId: data.memberId.present ? data.memberId.value : this.memberId,
+      ruleSetVersionId: data.ruleSetVersionId.present
+          ? data.ruleSetVersionId.value
+          : this.ruleSetVersionId,
+      shomitiId: data.shomitiId.present ? data.shomitiId.value : this.shomitiId,
+      proofType: data.proofType.present ? data.proofType.value : this.proofType,
+      proofReference: data.proofReference.present
+          ? data.proofReference.value
+          : this.proofReference,
+      signedAt: data.signedAt.present ? data.signedAt.value : this.signedAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('MemberConsentRow(')
+          ..write('memberId: $memberId, ')
+          ..write('ruleSetVersionId: $ruleSetVersionId, ')
+          ..write('shomitiId: $shomitiId, ')
+          ..write('proofType: $proofType, ')
+          ..write('proofReference: $proofReference, ')
+          ..write('signedAt: $signedAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    memberId,
+    ruleSetVersionId,
+    shomitiId,
+    proofType,
+    proofReference,
+    signedAt,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is MemberConsentRow &&
+          other.memberId == this.memberId &&
+          other.ruleSetVersionId == this.ruleSetVersionId &&
+          other.shomitiId == this.shomitiId &&
+          other.proofType == this.proofType &&
+          other.proofReference == this.proofReference &&
+          other.signedAt == this.signedAt);
+}
+
+class MemberConsentsCompanion extends UpdateCompanion<MemberConsentRow> {
+  final Value<String> memberId;
+  final Value<String> ruleSetVersionId;
+  final Value<String> shomitiId;
+  final Value<String> proofType;
+  final Value<String> proofReference;
+  final Value<DateTime> signedAt;
+  final Value<int> rowid;
+  const MemberConsentsCompanion({
+    this.memberId = const Value.absent(),
+    this.ruleSetVersionId = const Value.absent(),
+    this.shomitiId = const Value.absent(),
+    this.proofType = const Value.absent(),
+    this.proofReference = const Value.absent(),
+    this.signedAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  MemberConsentsCompanion.insert({
+    required String memberId,
+    required String ruleSetVersionId,
+    required String shomitiId,
+    required String proofType,
+    required String proofReference,
+    required DateTime signedAt,
+    this.rowid = const Value.absent(),
+  }) : memberId = Value(memberId),
+       ruleSetVersionId = Value(ruleSetVersionId),
+       shomitiId = Value(shomitiId),
+       proofType = Value(proofType),
+       proofReference = Value(proofReference),
+       signedAt = Value(signedAt);
+  static Insertable<MemberConsentRow> custom({
+    Expression<String>? memberId,
+    Expression<String>? ruleSetVersionId,
+    Expression<String>? shomitiId,
+    Expression<String>? proofType,
+    Expression<String>? proofReference,
+    Expression<DateTime>? signedAt,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (memberId != null) 'member_id': memberId,
+      if (ruleSetVersionId != null) 'rule_set_version_id': ruleSetVersionId,
+      if (shomitiId != null) 'shomiti_id': shomitiId,
+      if (proofType != null) 'proof_type': proofType,
+      if (proofReference != null) 'proof_reference': proofReference,
+      if (signedAt != null) 'signed_at': signedAt,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  MemberConsentsCompanion copyWith({
+    Value<String>? memberId,
+    Value<String>? ruleSetVersionId,
+    Value<String>? shomitiId,
+    Value<String>? proofType,
+    Value<String>? proofReference,
+    Value<DateTime>? signedAt,
+    Value<int>? rowid,
+  }) {
+    return MemberConsentsCompanion(
+      memberId: memberId ?? this.memberId,
+      ruleSetVersionId: ruleSetVersionId ?? this.ruleSetVersionId,
+      shomitiId: shomitiId ?? this.shomitiId,
+      proofType: proofType ?? this.proofType,
+      proofReference: proofReference ?? this.proofReference,
+      signedAt: signedAt ?? this.signedAt,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (memberId.present) {
+      map['member_id'] = Variable<String>(memberId.value);
+    }
+    if (ruleSetVersionId.present) {
+      map['rule_set_version_id'] = Variable<String>(ruleSetVersionId.value);
+    }
+    if (shomitiId.present) {
+      map['shomiti_id'] = Variable<String>(shomitiId.value);
+    }
+    if (proofType.present) {
+      map['proof_type'] = Variable<String>(proofType.value);
+    }
+    if (proofReference.present) {
+      map['proof_reference'] = Variable<String>(proofReference.value);
+    }
+    if (signedAt.present) {
+      map['signed_at'] = Variable<DateTime>(signedAt.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('MemberConsentsCompanion(')
+          ..write('memberId: $memberId, ')
+          ..write('ruleSetVersionId: $ruleSetVersionId, ')
+          ..write('shomitiId: $shomitiId, ')
+          ..write('proofType: $proofType, ')
+          ..write('proofReference: $proofReference, ')
+          ..write('signedAt: $signedAt, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
   late final $AuditEventsTable auditEvents = $AuditEventsTable(this);
   late final $LedgerEntriesTable ledgerEntries = $LedgerEntriesTable(this);
+  late final $ShomitisTable shomitis = $ShomitisTable(this);
+  late final $MembersTable members = $MembersTable(this);
+  late final $RoleAssignmentsTable roleAssignments = $RoleAssignmentsTable(
+    this,
+  );
   late final $RuleSetVersionsTable ruleSetVersions = $RuleSetVersionsTable(
     this,
   );
-  late final $ShomitisTable shomitis = $ShomitisTable(this);
+  late final $MemberConsentsTable memberConsents = $MemberConsentsTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -1485,8 +2631,11 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   List<DatabaseSchemaEntity> get allSchemaEntities => [
     auditEvents,
     ledgerEntries,
-    ruleSetVersions,
     shomitis,
+    members,
+    roleAssignments,
+    ruleSetVersions,
+    memberConsents,
   ];
 }
 
@@ -1924,174 +3073,6 @@ typedef $$LedgerEntriesTableProcessedTableManager =
       LedgerEntryRow,
       PrefetchHooks Function()
     >;
-typedef $$RuleSetVersionsTableCreateCompanionBuilder =
-    RuleSetVersionsCompanion Function({
-      required String id,
-      required DateTime createdAt,
-      required String json,
-      Value<int> rowid,
-    });
-typedef $$RuleSetVersionsTableUpdateCompanionBuilder =
-    RuleSetVersionsCompanion Function({
-      Value<String> id,
-      Value<DateTime> createdAt,
-      Value<String> json,
-      Value<int> rowid,
-    });
-
-class $$RuleSetVersionsTableFilterComposer
-    extends Composer<_$AppDatabase, $RuleSetVersionsTable> {
-  $$RuleSetVersionsTableFilterComposer({
-    required super.$db,
-    required super.$table,
-    super.joinBuilder,
-    super.$addJoinBuilderToRootComposer,
-    super.$removeJoinBuilderFromRootComposer,
-  });
-  ColumnFilters<String> get id => $composableBuilder(
-    column: $table.id,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<DateTime> get createdAt => $composableBuilder(
-    column: $table.createdAt,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<String> get json => $composableBuilder(
-    column: $table.json,
-    builder: (column) => ColumnFilters(column),
-  );
-}
-
-class $$RuleSetVersionsTableOrderingComposer
-    extends Composer<_$AppDatabase, $RuleSetVersionsTable> {
-  $$RuleSetVersionsTableOrderingComposer({
-    required super.$db,
-    required super.$table,
-    super.joinBuilder,
-    super.$addJoinBuilderToRootComposer,
-    super.$removeJoinBuilderFromRootComposer,
-  });
-  ColumnOrderings<String> get id => $composableBuilder(
-    column: $table.id,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
-    column: $table.createdAt,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<String> get json => $composableBuilder(
-    column: $table.json,
-    builder: (column) => ColumnOrderings(column),
-  );
-}
-
-class $$RuleSetVersionsTableAnnotationComposer
-    extends Composer<_$AppDatabase, $RuleSetVersionsTable> {
-  $$RuleSetVersionsTableAnnotationComposer({
-    required super.$db,
-    required super.$table,
-    super.joinBuilder,
-    super.$addJoinBuilderToRootComposer,
-    super.$removeJoinBuilderFromRootComposer,
-  });
-  GeneratedColumn<String> get id =>
-      $composableBuilder(column: $table.id, builder: (column) => column);
-
-  GeneratedColumn<DateTime> get createdAt =>
-      $composableBuilder(column: $table.createdAt, builder: (column) => column);
-
-  GeneratedColumn<String> get json =>
-      $composableBuilder(column: $table.json, builder: (column) => column);
-}
-
-class $$RuleSetVersionsTableTableManager
-    extends
-        RootTableManager<
-          _$AppDatabase,
-          $RuleSetVersionsTable,
-          RuleSetVersionRow,
-          $$RuleSetVersionsTableFilterComposer,
-          $$RuleSetVersionsTableOrderingComposer,
-          $$RuleSetVersionsTableAnnotationComposer,
-          $$RuleSetVersionsTableCreateCompanionBuilder,
-          $$RuleSetVersionsTableUpdateCompanionBuilder,
-          (
-            RuleSetVersionRow,
-            BaseReferences<
-              _$AppDatabase,
-              $RuleSetVersionsTable,
-              RuleSetVersionRow
-            >,
-          ),
-          RuleSetVersionRow,
-          PrefetchHooks Function()
-        > {
-  $$RuleSetVersionsTableTableManager(
-    _$AppDatabase db,
-    $RuleSetVersionsTable table,
-  ) : super(
-        TableManagerState(
-          db: db,
-          table: table,
-          createFilteringComposer: () =>
-              $$RuleSetVersionsTableFilterComposer($db: db, $table: table),
-          createOrderingComposer: () =>
-              $$RuleSetVersionsTableOrderingComposer($db: db, $table: table),
-          createComputedFieldComposer: () =>
-              $$RuleSetVersionsTableAnnotationComposer($db: db, $table: table),
-          updateCompanionCallback:
-              ({
-                Value<String> id = const Value.absent(),
-                Value<DateTime> createdAt = const Value.absent(),
-                Value<String> json = const Value.absent(),
-                Value<int> rowid = const Value.absent(),
-              }) => RuleSetVersionsCompanion(
-                id: id,
-                createdAt: createdAt,
-                json: json,
-                rowid: rowid,
-              ),
-          createCompanionCallback:
-              ({
-                required String id,
-                required DateTime createdAt,
-                required String json,
-                Value<int> rowid = const Value.absent(),
-              }) => RuleSetVersionsCompanion.insert(
-                id: id,
-                createdAt: createdAt,
-                json: json,
-                rowid: rowid,
-              ),
-          withReferenceMapper: (p0) => p0
-              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
-              .toList(),
-          prefetchHooksCallback: null,
-        ),
-      );
-}
-
-typedef $$RuleSetVersionsTableProcessedTableManager =
-    ProcessedTableManager<
-      _$AppDatabase,
-      $RuleSetVersionsTable,
-      RuleSetVersionRow,
-      $$RuleSetVersionsTableFilterComposer,
-      $$RuleSetVersionsTableOrderingComposer,
-      $$RuleSetVersionsTableAnnotationComposer,
-      $$RuleSetVersionsTableCreateCompanionBuilder,
-      $$RuleSetVersionsTableUpdateCompanionBuilder,
-      (
-        RuleSetVersionRow,
-        BaseReferences<_$AppDatabase, $RuleSetVersionsTable, RuleSetVersionRow>,
-      ),
-      RuleSetVersionRow,
-      PrefetchHooks Function()
-    >;
 typedef $$ShomitisTableCreateCompanionBuilder =
     ShomitisCompanion Function({
       required String id,
@@ -2110,6 +3091,74 @@ typedef $$ShomitisTableUpdateCompanionBuilder =
       Value<String> activeRuleSetVersionId,
       Value<int> rowid,
     });
+
+final class $$ShomitisTableReferences
+    extends BaseReferences<_$AppDatabase, $ShomitisTable, ShomitiRow> {
+  $$ShomitisTableReferences(super.$_db, super.$_table, super.$_typedResult);
+
+  static MultiTypedResultKey<$MembersTable, List<MemberRow>> _membersRefsTable(
+    _$AppDatabase db,
+  ) => MultiTypedResultKey.fromTable(
+    db.members,
+    aliasName: $_aliasNameGenerator(db.shomitis.id, db.members.shomitiId),
+  );
+
+  $$MembersTableProcessedTableManager get membersRefs {
+    final manager = $$MembersTableTableManager(
+      $_db,
+      $_db.members,
+    ).filter((f) => f.shomitiId.id.sqlEquals($_itemColumn<String>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(_membersRefsTable($_db));
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+
+  static MultiTypedResultKey<$RoleAssignmentsTable, List<RoleAssignmentRow>>
+  _roleAssignmentsRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
+    db.roleAssignments,
+    aliasName: $_aliasNameGenerator(
+      db.shomitis.id,
+      db.roleAssignments.shomitiId,
+    ),
+  );
+
+  $$RoleAssignmentsTableProcessedTableManager get roleAssignmentsRefs {
+    final manager = $$RoleAssignmentsTableTableManager(
+      $_db,
+      $_db.roleAssignments,
+    ).filter((f) => f.shomitiId.id.sqlEquals($_itemColumn<String>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(
+      _roleAssignmentsRefsTable($_db),
+    );
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+
+  static MultiTypedResultKey<$MemberConsentsTable, List<MemberConsentRow>>
+  _memberConsentsRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
+    db.memberConsents,
+    aliasName: $_aliasNameGenerator(
+      db.shomitis.id,
+      db.memberConsents.shomitiId,
+    ),
+  );
+
+  $$MemberConsentsTableProcessedTableManager get memberConsentsRefs {
+    final manager = $$MemberConsentsTableTableManager(
+      $_db,
+      $_db.memberConsents,
+    ).filter((f) => f.shomitiId.id.sqlEquals($_itemColumn<String>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(_memberConsentsRefsTable($_db));
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+}
 
 class $$ShomitisTableFilterComposer
     extends Composer<_$AppDatabase, $ShomitisTable> {
@@ -2144,6 +3193,81 @@ class $$ShomitisTableFilterComposer
     column: $table.activeRuleSetVersionId,
     builder: (column) => ColumnFilters(column),
   );
+
+  Expression<bool> membersRefs(
+    Expression<bool> Function($$MembersTableFilterComposer f) f,
+  ) {
+    final $$MembersTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.members,
+      getReferencedColumn: (t) => t.shomitiId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$MembersTableFilterComposer(
+            $db: $db,
+            $table: $db.members,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<bool> roleAssignmentsRefs(
+    Expression<bool> Function($$RoleAssignmentsTableFilterComposer f) f,
+  ) {
+    final $$RoleAssignmentsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.roleAssignments,
+      getReferencedColumn: (t) => t.shomitiId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$RoleAssignmentsTableFilterComposer(
+            $db: $db,
+            $table: $db.roleAssignments,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<bool> memberConsentsRefs(
+    Expression<bool> Function($$MemberConsentsTableFilterComposer f) f,
+  ) {
+    final $$MemberConsentsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.memberConsents,
+      getReferencedColumn: (t) => t.shomitiId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$MemberConsentsTableFilterComposer(
+            $db: $db,
+            $table: $db.memberConsents,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
 }
 
 class $$ShomitisTableOrderingComposer
@@ -2206,6 +3330,81 @@ class $$ShomitisTableAnnotationComposer
     column: $table.activeRuleSetVersionId,
     builder: (column) => column,
   );
+
+  Expression<T> membersRefs<T extends Object>(
+    Expression<T> Function($$MembersTableAnnotationComposer a) f,
+  ) {
+    final $$MembersTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.members,
+      getReferencedColumn: (t) => t.shomitiId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$MembersTableAnnotationComposer(
+            $db: $db,
+            $table: $db.members,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<T> roleAssignmentsRefs<T extends Object>(
+    Expression<T> Function($$RoleAssignmentsTableAnnotationComposer a) f,
+  ) {
+    final $$RoleAssignmentsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.roleAssignments,
+      getReferencedColumn: (t) => t.shomitiId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$RoleAssignmentsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.roleAssignments,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<T> memberConsentsRefs<T extends Object>(
+    Expression<T> Function($$MemberConsentsTableAnnotationComposer a) f,
+  ) {
+    final $$MemberConsentsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.memberConsents,
+      getReferencedColumn: (t) => t.shomitiId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$MemberConsentsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.memberConsents,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
 }
 
 class $$ShomitisTableTableManager
@@ -2219,12 +3418,13 @@ class $$ShomitisTableTableManager
           $$ShomitisTableAnnotationComposer,
           $$ShomitisTableCreateCompanionBuilder,
           $$ShomitisTableUpdateCompanionBuilder,
-          (
-            ShomitiRow,
-            BaseReferences<_$AppDatabase, $ShomitisTable, ShomitiRow>,
-          ),
+          (ShomitiRow, $$ShomitisTableReferences),
           ShomitiRow,
-          PrefetchHooks Function()
+          PrefetchHooks Function({
+            bool membersRefs,
+            bool roleAssignmentsRefs,
+            bool memberConsentsRefs,
+          })
         > {
   $$ShomitisTableTableManager(_$AppDatabase db, $ShomitisTable table)
     : super(
@@ -2270,9 +3470,96 @@ class $$ShomitisTableTableManager
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0
-              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .map(
+                (e) => (
+                  e.readTable(table),
+                  $$ShomitisTableReferences(db, table, e),
+                ),
+              )
               .toList(),
-          prefetchHooksCallback: null,
+          prefetchHooksCallback:
+              ({
+                membersRefs = false,
+                roleAssignmentsRefs = false,
+                memberConsentsRefs = false,
+              }) {
+                return PrefetchHooks(
+                  db: db,
+                  explicitlyWatchedTables: [
+                    if (membersRefs) db.members,
+                    if (roleAssignmentsRefs) db.roleAssignments,
+                    if (memberConsentsRefs) db.memberConsents,
+                  ],
+                  addJoins: null,
+                  getPrefetchedDataCallback: (items) async {
+                    return [
+                      if (membersRefs)
+                        await $_getPrefetchedData<
+                          ShomitiRow,
+                          $ShomitisTable,
+                          MemberRow
+                        >(
+                          currentTable: table,
+                          referencedTable: $$ShomitisTableReferences
+                              ._membersRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$ShomitisTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).membersRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.shomitiId == item.id,
+                              ),
+                          typedResults: items,
+                        ),
+                      if (roleAssignmentsRefs)
+                        await $_getPrefetchedData<
+                          ShomitiRow,
+                          $ShomitisTable,
+                          RoleAssignmentRow
+                        >(
+                          currentTable: table,
+                          referencedTable: $$ShomitisTableReferences
+                              ._roleAssignmentsRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$ShomitisTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).roleAssignmentsRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.shomitiId == item.id,
+                              ),
+                          typedResults: items,
+                        ),
+                      if (memberConsentsRefs)
+                        await $_getPrefetchedData<
+                          ShomitiRow,
+                          $ShomitisTable,
+                          MemberConsentRow
+                        >(
+                          currentTable: table,
+                          referencedTable: $$ShomitisTableReferences
+                              ._memberConsentsRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$ShomitisTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).memberConsentsRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.shomitiId == item.id,
+                              ),
+                          typedResults: items,
+                        ),
+                    ];
+                  },
+                );
+              },
         ),
       );
 }
@@ -2287,9 +3574,1760 @@ typedef $$ShomitisTableProcessedTableManager =
       $$ShomitisTableAnnotationComposer,
       $$ShomitisTableCreateCompanionBuilder,
       $$ShomitisTableUpdateCompanionBuilder,
-      (ShomitiRow, BaseReferences<_$AppDatabase, $ShomitisTable, ShomitiRow>),
+      (ShomitiRow, $$ShomitisTableReferences),
       ShomitiRow,
-      PrefetchHooks Function()
+      PrefetchHooks Function({
+        bool membersRefs,
+        bool roleAssignmentsRefs,
+        bool memberConsentsRefs,
+      })
+    >;
+typedef $$MembersTableCreateCompanionBuilder =
+    MembersCompanion Function({
+      required String id,
+      required String shomitiId,
+      required int position,
+      required String displayName,
+      required DateTime createdAt,
+      Value<int> rowid,
+    });
+typedef $$MembersTableUpdateCompanionBuilder =
+    MembersCompanion Function({
+      Value<String> id,
+      Value<String> shomitiId,
+      Value<int> position,
+      Value<String> displayName,
+      Value<DateTime> createdAt,
+      Value<int> rowid,
+    });
+
+final class $$MembersTableReferences
+    extends BaseReferences<_$AppDatabase, $MembersTable, MemberRow> {
+  $$MembersTableReferences(super.$_db, super.$_table, super.$_typedResult);
+
+  static $ShomitisTable _shomitiIdTable(_$AppDatabase db) => db.shomitis
+      .createAlias($_aliasNameGenerator(db.members.shomitiId, db.shomitis.id));
+
+  $$ShomitisTableProcessedTableManager get shomitiId {
+    final $_column = $_itemColumn<String>('shomiti_id')!;
+
+    final manager = $$ShomitisTableTableManager(
+      $_db,
+      $_db.shomitis,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_shomitiIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+
+  static MultiTypedResultKey<$RoleAssignmentsTable, List<RoleAssignmentRow>>
+  _roleAssignmentsRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
+    db.roleAssignments,
+    aliasName: $_aliasNameGenerator(db.members.id, db.roleAssignments.memberId),
+  );
+
+  $$RoleAssignmentsTableProcessedTableManager get roleAssignmentsRefs {
+    final manager = $$RoleAssignmentsTableTableManager(
+      $_db,
+      $_db.roleAssignments,
+    ).filter((f) => f.memberId.id.sqlEquals($_itemColumn<String>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(
+      _roleAssignmentsRefsTable($_db),
+    );
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+
+  static MultiTypedResultKey<$MemberConsentsTable, List<MemberConsentRow>>
+  _memberConsentsRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
+    db.memberConsents,
+    aliasName: $_aliasNameGenerator(db.members.id, db.memberConsents.memberId),
+  );
+
+  $$MemberConsentsTableProcessedTableManager get memberConsentsRefs {
+    final manager = $$MemberConsentsTableTableManager(
+      $_db,
+      $_db.memberConsents,
+    ).filter((f) => f.memberId.id.sqlEquals($_itemColumn<String>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(_memberConsentsRefsTable($_db));
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+}
+
+class $$MembersTableFilterComposer
+    extends Composer<_$AppDatabase, $MembersTable> {
+  $$MembersTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get position => $composableBuilder(
+    column: $table.position,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get displayName => $composableBuilder(
+    column: $table.displayName,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  $$ShomitisTableFilterComposer get shomitiId {
+    final $$ShomitisTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.shomitiId,
+      referencedTable: $db.shomitis,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ShomitisTableFilterComposer(
+            $db: $db,
+            $table: $db.shomitis,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  Expression<bool> roleAssignmentsRefs(
+    Expression<bool> Function($$RoleAssignmentsTableFilterComposer f) f,
+  ) {
+    final $$RoleAssignmentsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.roleAssignments,
+      getReferencedColumn: (t) => t.memberId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$RoleAssignmentsTableFilterComposer(
+            $db: $db,
+            $table: $db.roleAssignments,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<bool> memberConsentsRefs(
+    Expression<bool> Function($$MemberConsentsTableFilterComposer f) f,
+  ) {
+    final $$MemberConsentsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.memberConsents,
+      getReferencedColumn: (t) => t.memberId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$MemberConsentsTableFilterComposer(
+            $db: $db,
+            $table: $db.memberConsents,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+}
+
+class $$MembersTableOrderingComposer
+    extends Composer<_$AppDatabase, $MembersTable> {
+  $$MembersTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get position => $composableBuilder(
+    column: $table.position,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get displayName => $composableBuilder(
+    column: $table.displayName,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  $$ShomitisTableOrderingComposer get shomitiId {
+    final $$ShomitisTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.shomitiId,
+      referencedTable: $db.shomitis,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ShomitisTableOrderingComposer(
+            $db: $db,
+            $table: $db.shomitis,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$MembersTableAnnotationComposer
+    extends Composer<_$AppDatabase, $MembersTable> {
+  $$MembersTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<int> get position =>
+      $composableBuilder(column: $table.position, builder: (column) => column);
+
+  GeneratedColumn<String> get displayName => $composableBuilder(
+    column: $table.displayName,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  $$ShomitisTableAnnotationComposer get shomitiId {
+    final $$ShomitisTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.shomitiId,
+      referencedTable: $db.shomitis,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ShomitisTableAnnotationComposer(
+            $db: $db,
+            $table: $db.shomitis,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  Expression<T> roleAssignmentsRefs<T extends Object>(
+    Expression<T> Function($$RoleAssignmentsTableAnnotationComposer a) f,
+  ) {
+    final $$RoleAssignmentsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.roleAssignments,
+      getReferencedColumn: (t) => t.memberId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$RoleAssignmentsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.roleAssignments,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<T> memberConsentsRefs<T extends Object>(
+    Expression<T> Function($$MemberConsentsTableAnnotationComposer a) f,
+  ) {
+    final $$MemberConsentsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.memberConsents,
+      getReferencedColumn: (t) => t.memberId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$MemberConsentsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.memberConsents,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+}
+
+class $$MembersTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $MembersTable,
+          MemberRow,
+          $$MembersTableFilterComposer,
+          $$MembersTableOrderingComposer,
+          $$MembersTableAnnotationComposer,
+          $$MembersTableCreateCompanionBuilder,
+          $$MembersTableUpdateCompanionBuilder,
+          (MemberRow, $$MembersTableReferences),
+          MemberRow,
+          PrefetchHooks Function({
+            bool shomitiId,
+            bool roleAssignmentsRefs,
+            bool memberConsentsRefs,
+          })
+        > {
+  $$MembersTableTableManager(_$AppDatabase db, $MembersTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$MembersTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$MembersTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$MembersTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> shomitiId = const Value.absent(),
+                Value<int> position = const Value.absent(),
+                Value<String> displayName = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => MembersCompanion(
+                id: id,
+                shomitiId: shomitiId,
+                position: position,
+                displayName: displayName,
+                createdAt: createdAt,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required String shomitiId,
+                required int position,
+                required String displayName,
+                required DateTime createdAt,
+                Value<int> rowid = const Value.absent(),
+              }) => MembersCompanion.insert(
+                id: id,
+                shomitiId: shomitiId,
+                position: position,
+                displayName: displayName,
+                createdAt: createdAt,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable(table),
+                  $$MembersTableReferences(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback:
+              ({
+                shomitiId = false,
+                roleAssignmentsRefs = false,
+                memberConsentsRefs = false,
+              }) {
+                return PrefetchHooks(
+                  db: db,
+                  explicitlyWatchedTables: [
+                    if (roleAssignmentsRefs) db.roleAssignments,
+                    if (memberConsentsRefs) db.memberConsents,
+                  ],
+                  addJoins:
+                      <
+                        T extends TableManagerState<
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic
+                        >
+                      >(state) {
+                        if (shomitiId) {
+                          state =
+                              state.withJoin(
+                                    currentTable: table,
+                                    currentColumn: table.shomitiId,
+                                    referencedTable: $$MembersTableReferences
+                                        ._shomitiIdTable(db),
+                                    referencedColumn: $$MembersTableReferences
+                                        ._shomitiIdTable(db)
+                                        .id,
+                                  )
+                                  as T;
+                        }
+
+                        return state;
+                      },
+                  getPrefetchedDataCallback: (items) async {
+                    return [
+                      if (roleAssignmentsRefs)
+                        await $_getPrefetchedData<
+                          MemberRow,
+                          $MembersTable,
+                          RoleAssignmentRow
+                        >(
+                          currentTable: table,
+                          referencedTable: $$MembersTableReferences
+                              ._roleAssignmentsRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$MembersTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).roleAssignmentsRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.memberId == item.id,
+                              ),
+                          typedResults: items,
+                        ),
+                      if (memberConsentsRefs)
+                        await $_getPrefetchedData<
+                          MemberRow,
+                          $MembersTable,
+                          MemberConsentRow
+                        >(
+                          currentTable: table,
+                          referencedTable: $$MembersTableReferences
+                              ._memberConsentsRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$MembersTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).memberConsentsRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.memberId == item.id,
+                              ),
+                          typedResults: items,
+                        ),
+                    ];
+                  },
+                );
+              },
+        ),
+      );
+}
+
+typedef $$MembersTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $MembersTable,
+      MemberRow,
+      $$MembersTableFilterComposer,
+      $$MembersTableOrderingComposer,
+      $$MembersTableAnnotationComposer,
+      $$MembersTableCreateCompanionBuilder,
+      $$MembersTableUpdateCompanionBuilder,
+      (MemberRow, $$MembersTableReferences),
+      MemberRow,
+      PrefetchHooks Function({
+        bool shomitiId,
+        bool roleAssignmentsRefs,
+        bool memberConsentsRefs,
+      })
+    >;
+typedef $$RoleAssignmentsTableCreateCompanionBuilder =
+    RoleAssignmentsCompanion Function({
+      required String shomitiId,
+      required String role,
+      required String memberId,
+      required DateTime assignedAt,
+      Value<int> rowid,
+    });
+typedef $$RoleAssignmentsTableUpdateCompanionBuilder =
+    RoleAssignmentsCompanion Function({
+      Value<String> shomitiId,
+      Value<String> role,
+      Value<String> memberId,
+      Value<DateTime> assignedAt,
+      Value<int> rowid,
+    });
+
+final class $$RoleAssignmentsTableReferences
+    extends
+        BaseReferences<
+          _$AppDatabase,
+          $RoleAssignmentsTable,
+          RoleAssignmentRow
+        > {
+  $$RoleAssignmentsTableReferences(
+    super.$_db,
+    super.$_table,
+    super.$_typedResult,
+  );
+
+  static $ShomitisTable _shomitiIdTable(_$AppDatabase db) =>
+      db.shomitis.createAlias(
+        $_aliasNameGenerator(db.roleAssignments.shomitiId, db.shomitis.id),
+      );
+
+  $$ShomitisTableProcessedTableManager get shomitiId {
+    final $_column = $_itemColumn<String>('shomiti_id')!;
+
+    final manager = $$ShomitisTableTableManager(
+      $_db,
+      $_db.shomitis,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_shomitiIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+
+  static $MembersTable _memberIdTable(_$AppDatabase db) =>
+      db.members.createAlias(
+        $_aliasNameGenerator(db.roleAssignments.memberId, db.members.id),
+      );
+
+  $$MembersTableProcessedTableManager get memberId {
+    final $_column = $_itemColumn<String>('member_id')!;
+
+    final manager = $$MembersTableTableManager(
+      $_db,
+      $_db.members,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_memberIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+}
+
+class $$RoleAssignmentsTableFilterComposer
+    extends Composer<_$AppDatabase, $RoleAssignmentsTable> {
+  $$RoleAssignmentsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get role => $composableBuilder(
+    column: $table.role,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get assignedAt => $composableBuilder(
+    column: $table.assignedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  $$ShomitisTableFilterComposer get shomitiId {
+    final $$ShomitisTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.shomitiId,
+      referencedTable: $db.shomitis,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ShomitisTableFilterComposer(
+            $db: $db,
+            $table: $db.shomitis,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$MembersTableFilterComposer get memberId {
+    final $$MembersTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.memberId,
+      referencedTable: $db.members,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$MembersTableFilterComposer(
+            $db: $db,
+            $table: $db.members,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$RoleAssignmentsTableOrderingComposer
+    extends Composer<_$AppDatabase, $RoleAssignmentsTable> {
+  $$RoleAssignmentsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get role => $composableBuilder(
+    column: $table.role,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get assignedAt => $composableBuilder(
+    column: $table.assignedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  $$ShomitisTableOrderingComposer get shomitiId {
+    final $$ShomitisTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.shomitiId,
+      referencedTable: $db.shomitis,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ShomitisTableOrderingComposer(
+            $db: $db,
+            $table: $db.shomitis,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$MembersTableOrderingComposer get memberId {
+    final $$MembersTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.memberId,
+      referencedTable: $db.members,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$MembersTableOrderingComposer(
+            $db: $db,
+            $table: $db.members,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$RoleAssignmentsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $RoleAssignmentsTable> {
+  $$RoleAssignmentsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get role =>
+      $composableBuilder(column: $table.role, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get assignedAt => $composableBuilder(
+    column: $table.assignedAt,
+    builder: (column) => column,
+  );
+
+  $$ShomitisTableAnnotationComposer get shomitiId {
+    final $$ShomitisTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.shomitiId,
+      referencedTable: $db.shomitis,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ShomitisTableAnnotationComposer(
+            $db: $db,
+            $table: $db.shomitis,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$MembersTableAnnotationComposer get memberId {
+    final $$MembersTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.memberId,
+      referencedTable: $db.members,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$MembersTableAnnotationComposer(
+            $db: $db,
+            $table: $db.members,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$RoleAssignmentsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $RoleAssignmentsTable,
+          RoleAssignmentRow,
+          $$RoleAssignmentsTableFilterComposer,
+          $$RoleAssignmentsTableOrderingComposer,
+          $$RoleAssignmentsTableAnnotationComposer,
+          $$RoleAssignmentsTableCreateCompanionBuilder,
+          $$RoleAssignmentsTableUpdateCompanionBuilder,
+          (RoleAssignmentRow, $$RoleAssignmentsTableReferences),
+          RoleAssignmentRow,
+          PrefetchHooks Function({bool shomitiId, bool memberId})
+        > {
+  $$RoleAssignmentsTableTableManager(
+    _$AppDatabase db,
+    $RoleAssignmentsTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$RoleAssignmentsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$RoleAssignmentsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$RoleAssignmentsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> shomitiId = const Value.absent(),
+                Value<String> role = const Value.absent(),
+                Value<String> memberId = const Value.absent(),
+                Value<DateTime> assignedAt = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => RoleAssignmentsCompanion(
+                shomitiId: shomitiId,
+                role: role,
+                memberId: memberId,
+                assignedAt: assignedAt,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String shomitiId,
+                required String role,
+                required String memberId,
+                required DateTime assignedAt,
+                Value<int> rowid = const Value.absent(),
+              }) => RoleAssignmentsCompanion.insert(
+                shomitiId: shomitiId,
+                role: role,
+                memberId: memberId,
+                assignedAt: assignedAt,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable(table),
+                  $$RoleAssignmentsTableReferences(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: ({shomitiId = false, memberId = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [],
+              addJoins:
+                  <
+                    T extends TableManagerState<
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic
+                    >
+                  >(state) {
+                    if (shomitiId) {
+                      state =
+                          state.withJoin(
+                                currentTable: table,
+                                currentColumn: table.shomitiId,
+                                referencedTable:
+                                    $$RoleAssignmentsTableReferences
+                                        ._shomitiIdTable(db),
+                                referencedColumn:
+                                    $$RoleAssignmentsTableReferences
+                                        ._shomitiIdTable(db)
+                                        .id,
+                              )
+                              as T;
+                    }
+                    if (memberId) {
+                      state =
+                          state.withJoin(
+                                currentTable: table,
+                                currentColumn: table.memberId,
+                                referencedTable:
+                                    $$RoleAssignmentsTableReferences
+                                        ._memberIdTable(db),
+                                referencedColumn:
+                                    $$RoleAssignmentsTableReferences
+                                        ._memberIdTable(db)
+                                        .id,
+                              )
+                              as T;
+                    }
+
+                    return state;
+                  },
+              getPrefetchedDataCallback: (items) async {
+                return [];
+              },
+            );
+          },
+        ),
+      );
+}
+
+typedef $$RoleAssignmentsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $RoleAssignmentsTable,
+      RoleAssignmentRow,
+      $$RoleAssignmentsTableFilterComposer,
+      $$RoleAssignmentsTableOrderingComposer,
+      $$RoleAssignmentsTableAnnotationComposer,
+      $$RoleAssignmentsTableCreateCompanionBuilder,
+      $$RoleAssignmentsTableUpdateCompanionBuilder,
+      (RoleAssignmentRow, $$RoleAssignmentsTableReferences),
+      RoleAssignmentRow,
+      PrefetchHooks Function({bool shomitiId, bool memberId})
+    >;
+typedef $$RuleSetVersionsTableCreateCompanionBuilder =
+    RuleSetVersionsCompanion Function({
+      required String id,
+      required DateTime createdAt,
+      required String json,
+      Value<int> rowid,
+    });
+typedef $$RuleSetVersionsTableUpdateCompanionBuilder =
+    RuleSetVersionsCompanion Function({
+      Value<String> id,
+      Value<DateTime> createdAt,
+      Value<String> json,
+      Value<int> rowid,
+    });
+
+final class $$RuleSetVersionsTableReferences
+    extends
+        BaseReferences<
+          _$AppDatabase,
+          $RuleSetVersionsTable,
+          RuleSetVersionRow
+        > {
+  $$RuleSetVersionsTableReferences(
+    super.$_db,
+    super.$_table,
+    super.$_typedResult,
+  );
+
+  static MultiTypedResultKey<$MemberConsentsTable, List<MemberConsentRow>>
+  _memberConsentsRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
+    db.memberConsents,
+    aliasName: $_aliasNameGenerator(
+      db.ruleSetVersions.id,
+      db.memberConsents.ruleSetVersionId,
+    ),
+  );
+
+  $$MemberConsentsTableProcessedTableManager get memberConsentsRefs {
+    final manager = $$MemberConsentsTableTableManager($_db, $_db.memberConsents)
+        .filter(
+          (f) => f.ruleSetVersionId.id.sqlEquals($_itemColumn<String>('id')!),
+        );
+
+    final cache = $_typedResult.readTableOrNull(_memberConsentsRefsTable($_db));
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+}
+
+class $$RuleSetVersionsTableFilterComposer
+    extends Composer<_$AppDatabase, $RuleSetVersionsTable> {
+  $$RuleSetVersionsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get json => $composableBuilder(
+    column: $table.json,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  Expression<bool> memberConsentsRefs(
+    Expression<bool> Function($$MemberConsentsTableFilterComposer f) f,
+  ) {
+    final $$MemberConsentsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.memberConsents,
+      getReferencedColumn: (t) => t.ruleSetVersionId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$MemberConsentsTableFilterComposer(
+            $db: $db,
+            $table: $db.memberConsents,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+}
+
+class $$RuleSetVersionsTableOrderingComposer
+    extends Composer<_$AppDatabase, $RuleSetVersionsTable> {
+  $$RuleSetVersionsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get json => $composableBuilder(
+    column: $table.json,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$RuleSetVersionsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $RuleSetVersionsTable> {
+  $$RuleSetVersionsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<String> get json =>
+      $composableBuilder(column: $table.json, builder: (column) => column);
+
+  Expression<T> memberConsentsRefs<T extends Object>(
+    Expression<T> Function($$MemberConsentsTableAnnotationComposer a) f,
+  ) {
+    final $$MemberConsentsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.memberConsents,
+      getReferencedColumn: (t) => t.ruleSetVersionId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$MemberConsentsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.memberConsents,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+}
+
+class $$RuleSetVersionsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $RuleSetVersionsTable,
+          RuleSetVersionRow,
+          $$RuleSetVersionsTableFilterComposer,
+          $$RuleSetVersionsTableOrderingComposer,
+          $$RuleSetVersionsTableAnnotationComposer,
+          $$RuleSetVersionsTableCreateCompanionBuilder,
+          $$RuleSetVersionsTableUpdateCompanionBuilder,
+          (RuleSetVersionRow, $$RuleSetVersionsTableReferences),
+          RuleSetVersionRow,
+          PrefetchHooks Function({bool memberConsentsRefs})
+        > {
+  $$RuleSetVersionsTableTableManager(
+    _$AppDatabase db,
+    $RuleSetVersionsTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$RuleSetVersionsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$RuleSetVersionsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$RuleSetVersionsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<String> json = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => RuleSetVersionsCompanion(
+                id: id,
+                createdAt: createdAt,
+                json: json,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required DateTime createdAt,
+                required String json,
+                Value<int> rowid = const Value.absent(),
+              }) => RuleSetVersionsCompanion.insert(
+                id: id,
+                createdAt: createdAt,
+                json: json,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable(table),
+                  $$RuleSetVersionsTableReferences(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: ({memberConsentsRefs = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [
+                if (memberConsentsRefs) db.memberConsents,
+              ],
+              addJoins: null,
+              getPrefetchedDataCallback: (items) async {
+                return [
+                  if (memberConsentsRefs)
+                    await $_getPrefetchedData<
+                      RuleSetVersionRow,
+                      $RuleSetVersionsTable,
+                      MemberConsentRow
+                    >(
+                      currentTable: table,
+                      referencedTable: $$RuleSetVersionsTableReferences
+                          ._memberConsentsRefsTable(db),
+                      managerFromTypedResult: (p0) =>
+                          $$RuleSetVersionsTableReferences(
+                            db,
+                            table,
+                            p0,
+                          ).memberConsentsRefs,
+                      referencedItemsForCurrentItem: (item, referencedItems) =>
+                          referencedItems.where(
+                            (e) => e.ruleSetVersionId == item.id,
+                          ),
+                      typedResults: items,
+                    ),
+                ];
+              },
+            );
+          },
+        ),
+      );
+}
+
+typedef $$RuleSetVersionsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $RuleSetVersionsTable,
+      RuleSetVersionRow,
+      $$RuleSetVersionsTableFilterComposer,
+      $$RuleSetVersionsTableOrderingComposer,
+      $$RuleSetVersionsTableAnnotationComposer,
+      $$RuleSetVersionsTableCreateCompanionBuilder,
+      $$RuleSetVersionsTableUpdateCompanionBuilder,
+      (RuleSetVersionRow, $$RuleSetVersionsTableReferences),
+      RuleSetVersionRow,
+      PrefetchHooks Function({bool memberConsentsRefs})
+    >;
+typedef $$MemberConsentsTableCreateCompanionBuilder =
+    MemberConsentsCompanion Function({
+      required String memberId,
+      required String ruleSetVersionId,
+      required String shomitiId,
+      required String proofType,
+      required String proofReference,
+      required DateTime signedAt,
+      Value<int> rowid,
+    });
+typedef $$MemberConsentsTableUpdateCompanionBuilder =
+    MemberConsentsCompanion Function({
+      Value<String> memberId,
+      Value<String> ruleSetVersionId,
+      Value<String> shomitiId,
+      Value<String> proofType,
+      Value<String> proofReference,
+      Value<DateTime> signedAt,
+      Value<int> rowid,
+    });
+
+final class $$MemberConsentsTableReferences
+    extends
+        BaseReferences<_$AppDatabase, $MemberConsentsTable, MemberConsentRow> {
+  $$MemberConsentsTableReferences(
+    super.$_db,
+    super.$_table,
+    super.$_typedResult,
+  );
+
+  static $MembersTable _memberIdTable(_$AppDatabase db) =>
+      db.members.createAlias(
+        $_aliasNameGenerator(db.memberConsents.memberId, db.members.id),
+      );
+
+  $$MembersTableProcessedTableManager get memberId {
+    final $_column = $_itemColumn<String>('member_id')!;
+
+    final manager = $$MembersTableTableManager(
+      $_db,
+      $_db.members,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_memberIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+
+  static $RuleSetVersionsTable _ruleSetVersionIdTable(_$AppDatabase db) =>
+      db.ruleSetVersions.createAlias(
+        $_aliasNameGenerator(
+          db.memberConsents.ruleSetVersionId,
+          db.ruleSetVersions.id,
+        ),
+      );
+
+  $$RuleSetVersionsTableProcessedTableManager get ruleSetVersionId {
+    final $_column = $_itemColumn<String>('rule_set_version_id')!;
+
+    final manager = $$RuleSetVersionsTableTableManager(
+      $_db,
+      $_db.ruleSetVersions,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_ruleSetVersionIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+
+  static $ShomitisTable _shomitiIdTable(_$AppDatabase db) =>
+      db.shomitis.createAlias(
+        $_aliasNameGenerator(db.memberConsents.shomitiId, db.shomitis.id),
+      );
+
+  $$ShomitisTableProcessedTableManager get shomitiId {
+    final $_column = $_itemColumn<String>('shomiti_id')!;
+
+    final manager = $$ShomitisTableTableManager(
+      $_db,
+      $_db.shomitis,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_shomitiIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+}
+
+class $$MemberConsentsTableFilterComposer
+    extends Composer<_$AppDatabase, $MemberConsentsTable> {
+  $$MemberConsentsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get proofType => $composableBuilder(
+    column: $table.proofType,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get proofReference => $composableBuilder(
+    column: $table.proofReference,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get signedAt => $composableBuilder(
+    column: $table.signedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  $$MembersTableFilterComposer get memberId {
+    final $$MembersTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.memberId,
+      referencedTable: $db.members,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$MembersTableFilterComposer(
+            $db: $db,
+            $table: $db.members,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$RuleSetVersionsTableFilterComposer get ruleSetVersionId {
+    final $$RuleSetVersionsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.ruleSetVersionId,
+      referencedTable: $db.ruleSetVersions,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$RuleSetVersionsTableFilterComposer(
+            $db: $db,
+            $table: $db.ruleSetVersions,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$ShomitisTableFilterComposer get shomitiId {
+    final $$ShomitisTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.shomitiId,
+      referencedTable: $db.shomitis,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ShomitisTableFilterComposer(
+            $db: $db,
+            $table: $db.shomitis,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$MemberConsentsTableOrderingComposer
+    extends Composer<_$AppDatabase, $MemberConsentsTable> {
+  $$MemberConsentsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get proofType => $composableBuilder(
+    column: $table.proofType,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get proofReference => $composableBuilder(
+    column: $table.proofReference,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get signedAt => $composableBuilder(
+    column: $table.signedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  $$MembersTableOrderingComposer get memberId {
+    final $$MembersTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.memberId,
+      referencedTable: $db.members,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$MembersTableOrderingComposer(
+            $db: $db,
+            $table: $db.members,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$RuleSetVersionsTableOrderingComposer get ruleSetVersionId {
+    final $$RuleSetVersionsTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.ruleSetVersionId,
+      referencedTable: $db.ruleSetVersions,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$RuleSetVersionsTableOrderingComposer(
+            $db: $db,
+            $table: $db.ruleSetVersions,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$ShomitisTableOrderingComposer get shomitiId {
+    final $$ShomitisTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.shomitiId,
+      referencedTable: $db.shomitis,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ShomitisTableOrderingComposer(
+            $db: $db,
+            $table: $db.shomitis,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$MemberConsentsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $MemberConsentsTable> {
+  $$MemberConsentsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get proofType =>
+      $composableBuilder(column: $table.proofType, builder: (column) => column);
+
+  GeneratedColumn<String> get proofReference => $composableBuilder(
+    column: $table.proofReference,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get signedAt =>
+      $composableBuilder(column: $table.signedAt, builder: (column) => column);
+
+  $$MembersTableAnnotationComposer get memberId {
+    final $$MembersTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.memberId,
+      referencedTable: $db.members,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$MembersTableAnnotationComposer(
+            $db: $db,
+            $table: $db.members,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$RuleSetVersionsTableAnnotationComposer get ruleSetVersionId {
+    final $$RuleSetVersionsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.ruleSetVersionId,
+      referencedTable: $db.ruleSetVersions,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$RuleSetVersionsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.ruleSetVersions,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$ShomitisTableAnnotationComposer get shomitiId {
+    final $$ShomitisTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.shomitiId,
+      referencedTable: $db.shomitis,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ShomitisTableAnnotationComposer(
+            $db: $db,
+            $table: $db.shomitis,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$MemberConsentsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $MemberConsentsTable,
+          MemberConsentRow,
+          $$MemberConsentsTableFilterComposer,
+          $$MemberConsentsTableOrderingComposer,
+          $$MemberConsentsTableAnnotationComposer,
+          $$MemberConsentsTableCreateCompanionBuilder,
+          $$MemberConsentsTableUpdateCompanionBuilder,
+          (MemberConsentRow, $$MemberConsentsTableReferences),
+          MemberConsentRow,
+          PrefetchHooks Function({
+            bool memberId,
+            bool ruleSetVersionId,
+            bool shomitiId,
+          })
+        > {
+  $$MemberConsentsTableTableManager(
+    _$AppDatabase db,
+    $MemberConsentsTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$MemberConsentsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$MemberConsentsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$MemberConsentsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> memberId = const Value.absent(),
+                Value<String> ruleSetVersionId = const Value.absent(),
+                Value<String> shomitiId = const Value.absent(),
+                Value<String> proofType = const Value.absent(),
+                Value<String> proofReference = const Value.absent(),
+                Value<DateTime> signedAt = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => MemberConsentsCompanion(
+                memberId: memberId,
+                ruleSetVersionId: ruleSetVersionId,
+                shomitiId: shomitiId,
+                proofType: proofType,
+                proofReference: proofReference,
+                signedAt: signedAt,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String memberId,
+                required String ruleSetVersionId,
+                required String shomitiId,
+                required String proofType,
+                required String proofReference,
+                required DateTime signedAt,
+                Value<int> rowid = const Value.absent(),
+              }) => MemberConsentsCompanion.insert(
+                memberId: memberId,
+                ruleSetVersionId: ruleSetVersionId,
+                shomitiId: shomitiId,
+                proofType: proofType,
+                proofReference: proofReference,
+                signedAt: signedAt,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable(table),
+                  $$MemberConsentsTableReferences(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback:
+              ({
+                memberId = false,
+                ruleSetVersionId = false,
+                shomitiId = false,
+              }) {
+                return PrefetchHooks(
+                  db: db,
+                  explicitlyWatchedTables: [],
+                  addJoins:
+                      <
+                        T extends TableManagerState<
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic
+                        >
+                      >(state) {
+                        if (memberId) {
+                          state =
+                              state.withJoin(
+                                    currentTable: table,
+                                    currentColumn: table.memberId,
+                                    referencedTable:
+                                        $$MemberConsentsTableReferences
+                                            ._memberIdTable(db),
+                                    referencedColumn:
+                                        $$MemberConsentsTableReferences
+                                            ._memberIdTable(db)
+                                            .id,
+                                  )
+                                  as T;
+                        }
+                        if (ruleSetVersionId) {
+                          state =
+                              state.withJoin(
+                                    currentTable: table,
+                                    currentColumn: table.ruleSetVersionId,
+                                    referencedTable:
+                                        $$MemberConsentsTableReferences
+                                            ._ruleSetVersionIdTable(db),
+                                    referencedColumn:
+                                        $$MemberConsentsTableReferences
+                                            ._ruleSetVersionIdTable(db)
+                                            .id,
+                                  )
+                                  as T;
+                        }
+                        if (shomitiId) {
+                          state =
+                              state.withJoin(
+                                    currentTable: table,
+                                    currentColumn: table.shomitiId,
+                                    referencedTable:
+                                        $$MemberConsentsTableReferences
+                                            ._shomitiIdTable(db),
+                                    referencedColumn:
+                                        $$MemberConsentsTableReferences
+                                            ._shomitiIdTable(db)
+                                            .id,
+                                  )
+                                  as T;
+                        }
+
+                        return state;
+                      },
+                  getPrefetchedDataCallback: (items) async {
+                    return [];
+                  },
+                );
+              },
+        ),
+      );
+}
+
+typedef $$MemberConsentsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $MemberConsentsTable,
+      MemberConsentRow,
+      $$MemberConsentsTableFilterComposer,
+      $$MemberConsentsTableOrderingComposer,
+      $$MemberConsentsTableAnnotationComposer,
+      $$MemberConsentsTableCreateCompanionBuilder,
+      $$MemberConsentsTableUpdateCompanionBuilder,
+      (MemberConsentRow, $$MemberConsentsTableReferences),
+      MemberConsentRow,
+      PrefetchHooks Function({
+        bool memberId,
+        bool ruleSetVersionId,
+        bool shomitiId,
+      })
     >;
 
 class $AppDatabaseManager {
@@ -2299,8 +5337,14 @@ class $AppDatabaseManager {
       $$AuditEventsTableTableManager(_db, _db.auditEvents);
   $$LedgerEntriesTableTableManager get ledgerEntries =>
       $$LedgerEntriesTableTableManager(_db, _db.ledgerEntries);
-  $$RuleSetVersionsTableTableManager get ruleSetVersions =>
-      $$RuleSetVersionsTableTableManager(_db, _db.ruleSetVersions);
   $$ShomitisTableTableManager get shomitis =>
       $$ShomitisTableTableManager(_db, _db.shomitis);
+  $$MembersTableTableManager get members =>
+      $$MembersTableTableManager(_db, _db.members);
+  $$RoleAssignmentsTableTableManager get roleAssignments =>
+      $$RoleAssignmentsTableTableManager(_db, _db.roleAssignments);
+  $$RuleSetVersionsTableTableManager get ruleSetVersions =>
+      $$RuleSetVersionsTableTableManager(_db, _db.ruleSetVersions);
+  $$MemberConsentsTableTableManager get memberConsents =>
+      $$MemberConsentsTableTableManager(_db, _db.memberConsents);
 }

@@ -131,6 +131,9 @@ void main() {
     expect(find.byKey(const Key('governance_roles_tile')), findsOneWidget);
     expect(find.byKey(const Key('governance_signoff_tile')), findsOneWidget);
     expect(find.textContaining('0/2 signed'), findsOneWidget);
+
+    await tester.pumpWidget(const SizedBox.shrink());
+    await tester.pump(const Duration(milliseconds: 1));
   });
 }
 
@@ -163,4 +166,3 @@ class _FakeRulesRepository implements RulesRepository {
   @override
   Future<void> upsert(RuleSetVersion version) async {}
 }
-

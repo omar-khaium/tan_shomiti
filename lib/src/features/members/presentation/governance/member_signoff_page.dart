@@ -10,14 +10,15 @@ import '../../../../core/ui/components/app_loading_state.dart';
 import '../../../../core/ui/components/app_status_chip.dart';
 import '../../../../core/ui/components/app_text_field.dart';
 import '../../../../core/ui/tokens/app_spacing.dart';
-import 'providers/governance_demo_providers.dart';
+import '../../domain/entities/member_consent.dart';
+import 'providers/governance_providers.dart';
 
 class MemberSignoffPage extends ConsumerWidget {
   const MemberSignoffPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final governance = ref.watch(governanceDemoControllerProvider);
+    final governance = ref.watch(governanceUiStateProvider);
 
     return Scaffold(
       appBar: AppBar(title: const Text(governanceSignoffTitle)),
@@ -70,8 +71,9 @@ class MemberSignoffPage extends ConsumerWidget {
 
               final memberIndex = index - 1;
               final member = data.members[memberIndex];
+              final consent = data.consentsByMemberId[member.id];
 
-              final statusChip = member.consent.isSigned
+              final statusChip = consent != null
                   ? const AppStatusChip(
                       label: 'Signed',
                       kind: AppStatusKind.success,
@@ -81,35 +83,42 @@ class MemberSignoffPage extends ConsumerWidget {
                       kind: AppStatusKind.warning,
                     );
 
-              final subtitle = member.consent.isSigned
-                  ? _signedSubtitle(context, member.consent)
+              final subtitle = consent != null
+                  ? _signedSubtitle(context, consent)
                   : 'Tap to record consent';
 
               return ListTile(
                 key: Key('signoff_member_$memberIndex'),
-                title: Text(member.name),
+                title: Text(member.displayName),
                 subtitle: Text(subtitle),
                 trailing: statusChip,
                 onTap: () async {
-                  if (member.consent.isSigned) {
+                  if (consent != null) {
                     await _showConsentDetailsDialog(
                       context: context,
-                      memberName: member.name,
-                      consent: member.consent,
+                      memberName: member.displayName,
+                      consent: consent,
                     );
                     return;
                   }
 
                   final recorded = await _showRecordConsentDialog(
                     context: context,
-                    memberName: member.name,
+                    memberName: member.displayName,
                     memberIndex: memberIndex,
+                    shomitiId: data.shomitiId,
+                    memberId: member.id,
+                    ruleSetVersionId: data.ruleSetVersionId,
                     ref: ref,
                   );
 
                   if (!recorded || !context.mounted) return;
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Recorded sign-off for ${member.name}.')),
+                    SnackBar(
+                      content: Text(
+                        'Recorded sign-off for ${member.displayName}.',
+                      ),
+                    ),
                   );
                 },
               );
@@ -120,23 +129,16 @@ class MemberSignoffPage extends ConsumerWidget {
     );
   }
 
-  String _signedSubtitle(BuildContext context, GovernanceMemberConsent consent) {
-    final signedAt = consent.signedAt;
-    final date = signedAt == null
-        ? null
-        : MaterialLocalizations.of(context).formatShortDate(signedAt);
-    final datePart = date == null ? null : 'Signed $date';
-    final proof =
-        consent.proofType == null ? null : _proofTypeLabel(consent.proofType!);
-    final reference = consent.proofReference;
+  String _signedSubtitle(BuildContext context, MemberConsent consent) {
+    final date = MaterialLocalizations.of(context).formatShortDate(
+      consent.signedAt,
+    );
+    final datePart = 'Signed $date';
+    final proof = _proofTypeLabel(consent.proofType);
     final referencePart =
-        (reference == null || reference.isEmpty) ? null : reference;
+        consent.proofReference.isEmpty ? null : consent.proofReference;
 
-    return [
-      ?datePart,
-      ?proof,
-      ?referencePart,
-    ].join(' · ');
+    return [datePart, proof, ?referencePart].join(' · ');
   }
 
   String _proofTypeLabel(ConsentProofType type) => switch (type) {
@@ -148,9 +150,9 @@ class MemberSignoffPage extends ConsumerWidget {
   Future<void> _showConsentDetailsDialog({
     required BuildContext context,
     required String memberName,
-    required GovernanceMemberConsent consent,
+    required MemberConsent consent,
   }) async {
-    final proof = consent.proofType == null ? null : _proofTypeLabel(consent.proofType!);
+    final proof = _proofTypeLabel(consent.proofType);
 
     await showDialog<void>(
       context: context,
@@ -160,13 +162,11 @@ class MemberSignoffPage extends ConsumerWidget {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            if (consent.signedAt != null)
-              Text(
-                'Signed: ${MaterialLocalizations.of(context).formatShortDate(consent.signedAt!)}',
-              ),
-            if (proof != null) Text('Proof: $proof'),
-            if (consent.proofReference != null)
-              Text('Reference: ${consent.proofReference}'),
+            Text(
+              'Signed: ${MaterialLocalizations.of(context).formatShortDate(consent.signedAt)}',
+            ),
+            Text('Proof: $proof'),
+            Text('Reference: ${consent.proofReference}'),
           ],
         ),
         actions: [
@@ -184,6 +184,9 @@ class MemberSignoffPage extends ConsumerWidget {
     required BuildContext context,
     required String memberName,
     required int memberIndex,
+    required String shomitiId,
+    required String memberId,
+    required String ruleSetVersionId,
     required WidgetRef ref,
   }) async {
     final formKey = GlobalKey<FormState>();
@@ -236,15 +239,18 @@ class MemberSignoffPage extends ConsumerWidget {
           AppButton.primary(
             key: Key('signoff_confirm_$memberIndex'),
             label: 'Record',
-            onPressed: () {
+            onPressed: () async {
               if (!(formKey.currentState?.validate() ?? false)) return;
 
-              ref.read(governanceDemoControllerProvider.notifier).recordConsent(
-                    memberIndex: memberIndex,
+              await ref.read(recordMemberConsentProvider)(
+                    shomitiId: shomitiId,
+                    memberId: memberId,
+                    ruleSetVersionId: ruleSetVersionId,
                     proofType: proofType,
                     proofReference: proofReferenceController.text.trim(),
                   );
 
+              if (!context.mounted) return;
               context.pop(true);
             },
           ),

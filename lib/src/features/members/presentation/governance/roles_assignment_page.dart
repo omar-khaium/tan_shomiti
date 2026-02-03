@@ -8,14 +8,16 @@ import '../../../../core/ui/components/app_empty_state.dart';
 import '../../../../core/ui/components/app_error_state.dart';
 import '../../../../core/ui/components/app_loading_state.dart';
 import '../../../../core/ui/tokens/app_spacing.dart';
-import 'providers/governance_demo_providers.dart';
+import '../../domain/entities/governance_role.dart';
+import '../../domain/entities/member.dart';
+import 'providers/governance_providers.dart';
 
 class RolesAssignmentPage extends ConsumerWidget {
   const RolesAssignmentPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final governance = ref.watch(governanceDemoControllerProvider);
+    final governance = ref.watch(governanceUiStateProvider);
 
     return Scaffold(
       appBar: AppBar(title: const Text(governanceRolesTitle)),
@@ -55,11 +57,10 @@ class RolesAssignmentPage extends ConsumerWidget {
                   label: 'Coordinator (optional)',
                   members: data.members,
                   value: data.roleAssignments[GovernanceRole.coordinator],
-                  onChanged: (memberIndex) => ref
-                      .read(governanceDemoControllerProvider.notifier)
-                      .assignRole(
+                  onChanged: (memberId) async => ref.read(assignRoleProvider)(
+                        shomitiId: data.shomitiId,
                         role: GovernanceRole.coordinator,
-                        memberIndex: memberIndex,
+                        memberId: memberId,
                       ),
                 ),
                 const SizedBox(height: AppSpacing.s12),
@@ -68,11 +69,10 @@ class RolesAssignmentPage extends ConsumerWidget {
                   label: 'Treasurer (required)',
                   members: data.members,
                   value: data.roleAssignments[GovernanceRole.treasurer],
-                  onChanged: (memberIndex) => ref
-                      .read(governanceDemoControllerProvider.notifier)
-                      .assignRole(
+                  onChanged: (memberId) async => ref.read(assignRoleProvider)(
+                        shomitiId: data.shomitiId,
                         role: GovernanceRole.treasurer,
-                        memberIndex: memberIndex,
+                        memberId: memberId,
                       ),
                 ),
                 const SizedBox(height: AppSpacing.s12),
@@ -81,11 +81,10 @@ class RolesAssignmentPage extends ConsumerWidget {
                   label: 'Auditor (required)',
                   members: data.members,
                   value: data.roleAssignments[GovernanceRole.auditor],
-                  onChanged: (memberIndex) => ref
-                      .read(governanceDemoControllerProvider.notifier)
-                      .assignRole(
+                  onChanged: (memberId) async => ref.read(assignRoleProvider)(
+                        shomitiId: data.shomitiId,
                         role: GovernanceRole.auditor,
-                        memberIndex: memberIndex,
+                        memberId: memberId,
                       ),
                 ),
                 const Spacer(),
@@ -114,24 +113,24 @@ class _RoleDropdown extends StatelessWidget {
 
   final Key fieldKey;
   final String label;
-  final List<GovernanceDemoMember> members;
-  final int? value;
-  final ValueChanged<int?> onChanged;
+  final List<Member> members;
+  final String? value;
+  final ValueChanged<String?> onChanged;
 
   @override
   Widget build(BuildContext context) {
-    return DropdownButtonFormField<int?>(
+    return DropdownButtonFormField<String?>(
       key: fieldKey,
       initialValue: value,
       items: [
-        const DropdownMenuItem<int?>(
+        const DropdownMenuItem<String?>(
           value: null,
           child: Text('Unassigned'),
         ),
-        ...members.indexed.map(
-          (entry) => DropdownMenuItem<int?>(
-            value: entry.$1,
-            child: Text(entry.$2.name),
+        ...members.map(
+          (member) => DropdownMenuItem<String?>(
+            value: member.id,
+            child: Text(member.displayName),
           ),
         ),
       ],

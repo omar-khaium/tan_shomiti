@@ -10,14 +10,16 @@ import '../../../../core/ui/components/app_list_row.dart';
 import '../../../../core/ui/components/app_loading_state.dart';
 import '../../../../core/ui/components/app_status_chip.dart';
 import '../../../../core/ui/tokens/app_spacing.dart';
-import 'providers/governance_demo_providers.dart';
+import '../../domain/entities/governance_role.dart';
+import 'models/governance_ui_state.dart';
+import 'providers/governance_providers.dart';
 
 class GovernancePage extends ConsumerWidget {
   const GovernancePage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final governance = ref.watch(governanceDemoControllerProvider);
+    final governance = ref.watch(governanceUiStateProvider);
 
     return Scaffold(
       appBar: AppBar(title: const Text(governanceTitle)),
@@ -103,17 +105,21 @@ class GovernancePage extends ConsumerWidget {
     );
   }
 
-  String _rolesSummary(GovernanceDemoState state) {
-    final treasurerIndex = state.roleAssignments[GovernanceRole.treasurer];
-    final auditorIndex = state.roleAssignments[GovernanceRole.auditor];
+  String _rolesSummary(GovernanceUiState state) {
+    final treasurerId = state.roleAssignments[GovernanceRole.treasurer];
+    final auditorId = state.roleAssignments[GovernanceRole.auditor];
 
-    final treasurer = treasurerIndex == null
-        ? 'Unassigned'
-        : state.members[treasurerIndex].name;
-    final auditor =
-        auditorIndex == null ? 'Unassigned' : state.members[auditorIndex].name;
+    final treasurer = _memberName(state, treasurerId);
+    final auditor = _memberName(state, auditorId);
 
     return 'Treasurer: $treasurer · Auditor: $auditor';
   }
-}
 
+  String _memberName(GovernanceUiState state, String? memberId) {
+    if (memberId == null) return 'Unassigned';
+    for (final member in state.members) {
+      if (member.id == memberId) return member.displayName;
+    }
+    return 'Unknown';
+  }
+}
