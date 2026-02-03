@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import '../../../core/data/local/app_database.dart';
+import '../domain/entities/rule_set_snapshot.dart';
 import '../domain/entities/rule_set_version.dart';
 import '../domain/repositories/rules_repository.dart';
 
@@ -13,7 +16,7 @@ class DriftRulesRepository implements RulesRepository {
           RuleSetVersionsCompanion.insert(
             id: version.id,
             createdAt: version.createdAt,
-            json: version.json,
+            json: jsonEncode(version.snapshot.toJson()),
           ),
         );
   }
@@ -26,10 +29,14 @@ class DriftRulesRepository implements RulesRepository {
 
     if (row == null) return null;
 
+    final snapshot = RuleSetSnapshot.fromJson(
+      jsonDecode(row.json) as Map<String, Object?>,
+    );
+
     return RuleSetVersion(
       id: row.id,
       createdAt: row.createdAt,
-      json: row.json,
+      snapshot: snapshot,
     );
   }
 }

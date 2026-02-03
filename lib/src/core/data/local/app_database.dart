@@ -8,6 +8,7 @@ import 'package:path_provider/path_provider.dart';
 import 'tables/audit_events.dart';
 import 'tables/ledger_entries.dart';
 import 'tables/rule_set_versions.dart';
+import 'tables/shomitis.dart';
 
 part 'app_database.g.dart';
 
@@ -16,6 +17,7 @@ part 'app_database.g.dart';
     AuditEvents,
     LedgerEntries,
     RuleSetVersions,
+    Shomitis,
   ],
 )
 class AppDatabase extends _$AppDatabase {
@@ -26,7 +28,19 @@ class AppDatabase extends _$AppDatabase {
   factory AppDatabase.memory() => AppDatabase(NativeDatabase.memory());
 
   @override
-  int get schemaVersion => 1;
+  int get schemaVersion => 2;
+
+  @override
+  MigrationStrategy get migration => MigrationStrategy(
+        onCreate: (m) async {
+          await m.createAll();
+        },
+        onUpgrade: (m, from, to) async {
+          if (from < 2) {
+            await m.createTable(shomitis);
+          }
+        },
+      );
 }
 
 LazyDatabase _openConnection() {
@@ -36,4 +50,3 @@ LazyDatabase _openConnection() {
     return NativeDatabase(file);
   });
 }
-

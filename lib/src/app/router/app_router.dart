@@ -9,6 +9,7 @@ import '../../core/ui/pages/components_gallery_page.dart';
 import '../../features/audit/presentation/audit_log_page.dart';
 import '../../features/ledger/presentation/ledger_page.dart';
 import '../../features/shomiti_setup/presentation/setup_wizard_page.dart';
+import '../../features/shomiti_setup/presentation/providers/shomiti_setup_providers.dart';
 
 const setupLocation = '/setup';
 const setupRouteName = 'setup';
@@ -65,10 +66,14 @@ const auditLocation = '/audit';
 const auditRouteName = 'audit';
 const auditTitle = 'Audit log';
 
-/// Temporary in-memory app configuration.
-///
-/// This will be replaced by persisted shomiti creation in later tasks (TS-101+).
-final shomitiConfiguredProvider = StateProvider<bool>((ref) => false);
+/// Whether a Shomiti is configured in local persistence.
+final shomitiConfiguredProvider = Provider<bool>((ref) {
+  final active = ref.watch(activeShomitiProvider);
+  return active.maybeWhen(
+    data: (shomiti) => shomiti != null,
+    orElse: () => false,
+  );
+});
 
 String? appRedirect({required bool isConfigured, required String location}) {
   final isSetup = location == setupLocation;

@@ -1092,6 +1092,383 @@ class RuleSetVersionsCompanion extends UpdateCompanion<RuleSetVersionRow> {
   }
 }
 
+class $ShomitisTable extends Shomitis
+    with TableInfo<$ShomitisTable, ShomitiRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $ShomitisTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+    'name',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _startDateMeta = const VerificationMeta(
+    'startDate',
+  );
+  @override
+  late final GeneratedColumn<DateTime> startDate = GeneratedColumn<DateTime>(
+    'start_date',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _activeRuleSetVersionIdMeta =
+      const VerificationMeta('activeRuleSetVersionId');
+  @override
+  late final GeneratedColumn<String> activeRuleSetVersionId =
+      GeneratedColumn<String>(
+        'active_rule_set_version_id',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+      );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    name,
+    startDate,
+    createdAt,
+    activeRuleSetVersionId,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'shomitis';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<ShomitiRow> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+        _nameMeta,
+        name.isAcceptableOrUnknown(data['name']!, _nameMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    if (data.containsKey('start_date')) {
+      context.handle(
+        _startDateMeta,
+        startDate.isAcceptableOrUnknown(data['start_date']!, _startDateMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_startDateMeta);
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    if (data.containsKey('active_rule_set_version_id')) {
+      context.handle(
+        _activeRuleSetVersionIdMeta,
+        activeRuleSetVersionId.isAcceptableOrUnknown(
+          data['active_rule_set_version_id']!,
+          _activeRuleSetVersionIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_activeRuleSetVersionIdMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  ShomitiRow map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return ShomitiRow(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      name: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}name'],
+      )!,
+      startDate: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}start_date'],
+      )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+      activeRuleSetVersionId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}active_rule_set_version_id'],
+      )!,
+    );
+  }
+
+  @override
+  $ShomitisTable createAlias(String alias) {
+    return $ShomitisTable(attachedDatabase, alias);
+  }
+}
+
+class ShomitiRow extends DataClass implements Insertable<ShomitiRow> {
+  final String id;
+  final String name;
+  final DateTime startDate;
+  final DateTime createdAt;
+  final String activeRuleSetVersionId;
+  const ShomitiRow({
+    required this.id,
+    required this.name,
+    required this.startDate,
+    required this.createdAt,
+    required this.activeRuleSetVersionId,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['name'] = Variable<String>(name);
+    map['start_date'] = Variable<DateTime>(startDate);
+    map['created_at'] = Variable<DateTime>(createdAt);
+    map['active_rule_set_version_id'] = Variable<String>(
+      activeRuleSetVersionId,
+    );
+    return map;
+  }
+
+  ShomitisCompanion toCompanion(bool nullToAbsent) {
+    return ShomitisCompanion(
+      id: Value(id),
+      name: Value(name),
+      startDate: Value(startDate),
+      createdAt: Value(createdAt),
+      activeRuleSetVersionId: Value(activeRuleSetVersionId),
+    );
+  }
+
+  factory ShomitiRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return ShomitiRow(
+      id: serializer.fromJson<String>(json['id']),
+      name: serializer.fromJson<String>(json['name']),
+      startDate: serializer.fromJson<DateTime>(json['startDate']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      activeRuleSetVersionId: serializer.fromJson<String>(
+        json['activeRuleSetVersionId'],
+      ),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'name': serializer.toJson<String>(name),
+      'startDate': serializer.toJson<DateTime>(startDate),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'activeRuleSetVersionId': serializer.toJson<String>(
+        activeRuleSetVersionId,
+      ),
+    };
+  }
+
+  ShomitiRow copyWith({
+    String? id,
+    String? name,
+    DateTime? startDate,
+    DateTime? createdAt,
+    String? activeRuleSetVersionId,
+  }) => ShomitiRow(
+    id: id ?? this.id,
+    name: name ?? this.name,
+    startDate: startDate ?? this.startDate,
+    createdAt: createdAt ?? this.createdAt,
+    activeRuleSetVersionId:
+        activeRuleSetVersionId ?? this.activeRuleSetVersionId,
+  );
+  ShomitiRow copyWithCompanion(ShomitisCompanion data) {
+    return ShomitiRow(
+      id: data.id.present ? data.id.value : this.id,
+      name: data.name.present ? data.name.value : this.name,
+      startDate: data.startDate.present ? data.startDate.value : this.startDate,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      activeRuleSetVersionId: data.activeRuleSetVersionId.present
+          ? data.activeRuleSetVersionId.value
+          : this.activeRuleSetVersionId,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ShomitiRow(')
+          ..write('id: $id, ')
+          ..write('name: $name, ')
+          ..write('startDate: $startDate, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('activeRuleSetVersionId: $activeRuleSetVersionId')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(id, name, startDate, createdAt, activeRuleSetVersionId);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is ShomitiRow &&
+          other.id == this.id &&
+          other.name == this.name &&
+          other.startDate == this.startDate &&
+          other.createdAt == this.createdAt &&
+          other.activeRuleSetVersionId == this.activeRuleSetVersionId);
+}
+
+class ShomitisCompanion extends UpdateCompanion<ShomitiRow> {
+  final Value<String> id;
+  final Value<String> name;
+  final Value<DateTime> startDate;
+  final Value<DateTime> createdAt;
+  final Value<String> activeRuleSetVersionId;
+  final Value<int> rowid;
+  const ShomitisCompanion({
+    this.id = const Value.absent(),
+    this.name = const Value.absent(),
+    this.startDate = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.activeRuleSetVersionId = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  ShomitisCompanion.insert({
+    required String id,
+    required String name,
+    required DateTime startDate,
+    required DateTime createdAt,
+    required String activeRuleSetVersionId,
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       name = Value(name),
+       startDate = Value(startDate),
+       createdAt = Value(createdAt),
+       activeRuleSetVersionId = Value(activeRuleSetVersionId);
+  static Insertable<ShomitiRow> custom({
+    Expression<String>? id,
+    Expression<String>? name,
+    Expression<DateTime>? startDate,
+    Expression<DateTime>? createdAt,
+    Expression<String>? activeRuleSetVersionId,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (name != null) 'name': name,
+      if (startDate != null) 'start_date': startDate,
+      if (createdAt != null) 'created_at': createdAt,
+      if (activeRuleSetVersionId != null)
+        'active_rule_set_version_id': activeRuleSetVersionId,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  ShomitisCompanion copyWith({
+    Value<String>? id,
+    Value<String>? name,
+    Value<DateTime>? startDate,
+    Value<DateTime>? createdAt,
+    Value<String>? activeRuleSetVersionId,
+    Value<int>? rowid,
+  }) {
+    return ShomitisCompanion(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      startDate: startDate ?? this.startDate,
+      createdAt: createdAt ?? this.createdAt,
+      activeRuleSetVersionId:
+          activeRuleSetVersionId ?? this.activeRuleSetVersionId,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (startDate.present) {
+      map['start_date'] = Variable<DateTime>(startDate.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (activeRuleSetVersionId.present) {
+      map['active_rule_set_version_id'] = Variable<String>(
+        activeRuleSetVersionId.value,
+      );
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ShomitisCompanion(')
+          ..write('id: $id, ')
+          ..write('name: $name, ')
+          ..write('startDate: $startDate, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('activeRuleSetVersionId: $activeRuleSetVersionId, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
@@ -1100,6 +1477,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $RuleSetVersionsTable ruleSetVersions = $RuleSetVersionsTable(
     this,
   );
+  late final $ShomitisTable shomitis = $ShomitisTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -1108,6 +1486,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     auditEvents,
     ledgerEntries,
     ruleSetVersions,
+    shomitis,
   ];
 }
 
@@ -1713,6 +2092,205 @@ typedef $$RuleSetVersionsTableProcessedTableManager =
       RuleSetVersionRow,
       PrefetchHooks Function()
     >;
+typedef $$ShomitisTableCreateCompanionBuilder =
+    ShomitisCompanion Function({
+      required String id,
+      required String name,
+      required DateTime startDate,
+      required DateTime createdAt,
+      required String activeRuleSetVersionId,
+      Value<int> rowid,
+    });
+typedef $$ShomitisTableUpdateCompanionBuilder =
+    ShomitisCompanion Function({
+      Value<String> id,
+      Value<String> name,
+      Value<DateTime> startDate,
+      Value<DateTime> createdAt,
+      Value<String> activeRuleSetVersionId,
+      Value<int> rowid,
+    });
+
+class $$ShomitisTableFilterComposer
+    extends Composer<_$AppDatabase, $ShomitisTable> {
+  $$ShomitisTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get startDate => $composableBuilder(
+    column: $table.startDate,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get activeRuleSetVersionId => $composableBuilder(
+    column: $table.activeRuleSetVersionId,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$ShomitisTableOrderingComposer
+    extends Composer<_$AppDatabase, $ShomitisTable> {
+  $$ShomitisTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get startDate => $composableBuilder(
+    column: $table.startDate,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get activeRuleSetVersionId => $composableBuilder(
+    column: $table.activeRuleSetVersionId,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$ShomitisTableAnnotationComposer
+    extends Composer<_$AppDatabase, $ShomitisTable> {
+  $$ShomitisTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get name =>
+      $composableBuilder(column: $table.name, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get startDate =>
+      $composableBuilder(column: $table.startDate, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<String> get activeRuleSetVersionId => $composableBuilder(
+    column: $table.activeRuleSetVersionId,
+    builder: (column) => column,
+  );
+}
+
+class $$ShomitisTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $ShomitisTable,
+          ShomitiRow,
+          $$ShomitisTableFilterComposer,
+          $$ShomitisTableOrderingComposer,
+          $$ShomitisTableAnnotationComposer,
+          $$ShomitisTableCreateCompanionBuilder,
+          $$ShomitisTableUpdateCompanionBuilder,
+          (
+            ShomitiRow,
+            BaseReferences<_$AppDatabase, $ShomitisTable, ShomitiRow>,
+          ),
+          ShomitiRow,
+          PrefetchHooks Function()
+        > {
+  $$ShomitisTableTableManager(_$AppDatabase db, $ShomitisTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$ShomitisTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$ShomitisTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$ShomitisTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> name = const Value.absent(),
+                Value<DateTime> startDate = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<String> activeRuleSetVersionId = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => ShomitisCompanion(
+                id: id,
+                name: name,
+                startDate: startDate,
+                createdAt: createdAt,
+                activeRuleSetVersionId: activeRuleSetVersionId,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required String name,
+                required DateTime startDate,
+                required DateTime createdAt,
+                required String activeRuleSetVersionId,
+                Value<int> rowid = const Value.absent(),
+              }) => ShomitisCompanion.insert(
+                id: id,
+                name: name,
+                startDate: startDate,
+                createdAt: createdAt,
+                activeRuleSetVersionId: activeRuleSetVersionId,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$ShomitisTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $ShomitisTable,
+      ShomitiRow,
+      $$ShomitisTableFilterComposer,
+      $$ShomitisTableOrderingComposer,
+      $$ShomitisTableAnnotationComposer,
+      $$ShomitisTableCreateCompanionBuilder,
+      $$ShomitisTableUpdateCompanionBuilder,
+      (ShomitiRow, BaseReferences<_$AppDatabase, $ShomitisTable, ShomitiRow>),
+      ShomitiRow,
+      PrefetchHooks Function()
+    >;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;
@@ -1723,4 +2301,6 @@ class $AppDatabaseManager {
       $$LedgerEntriesTableTableManager(_db, _db.ledgerEntries);
   $$RuleSetVersionsTableTableManager get ruleSetVersions =>
       $$RuleSetVersionsTableTableManager(_db, _db.ruleSetVersions);
+  $$ShomitisTableTableManager get shomitis =>
+      $$ShomitisTableTableManager(_db, _db.shomitis);
 }

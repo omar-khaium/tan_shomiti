@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -7,6 +10,9 @@ import '../../../core/ui/components/app_button.dart';
 import '../../../core/ui/components/app_card.dart';
 import '../../../core/ui/components/app_text_field.dart';
 import '../../../core/ui/tokens/app_spacing.dart';
+import '../../rules/domain/entities/rule_set_snapshot.dart';
+import '../domain/usecases/create_shomiti.dart';
+import 'providers/shomiti_setup_providers.dart';
 
 class SetupWizardPage extends ConsumerStatefulWidget {
   const SetupWizardPage({super.key});
@@ -29,9 +35,10 @@ class _SetupWizardPageState extends ConsumerState<SetupWizardPage> {
   final _feeAmountController = TextEditingController();
 
   int _stepIndex = 0;
+  bool _isSubmitting = false;
 
   DateTime _startDate = DateTime.now();
-  GroupType _groupType = GroupType.closed;
+  GroupTypePolicy _groupType = GroupTypePolicy.closed;
   bool _allowShareTransfers = false;
   MissedPaymentPolicy _missedPaymentPolicy = MissedPaymentPolicy.postponePayout;
   PayoutMethod _payoutMethod = PayoutMethod.mobileWallet;
@@ -70,14 +77,13 @@ class _SetupWizardPageState extends ConsumerState<SetupWizardPage> {
       appBar: AppBar(
         title: const Text('Setup'),
         actions: [
-          AppButton.tertiary(
-            key: const Key('setup_continue_demo'),
-            label: 'Continue in demo mode',
-            onPressed: () {
-              ref.read(shomitiConfiguredProvider.notifier).state = true;
-              context.go(dashboardLocation);
-            },
-          ),
+          if (kDebugMode)
+            AppButton.tertiary(
+              key: const Key('setup_continue_demo'),
+              label: 'Continue in demo mode',
+              isLoading: _isSubmitting,
+              onPressed: _isSubmitting ? null : _createDemo,
+            ),
         ],
       ),
       body: Padding(
@@ -143,23 +149,26 @@ class _SetupWizardPageState extends ConsumerState<SetupWizardPage> {
             const SizedBox(height: AppSpacing.s16),
             Row(
               children: [
-                Expanded(
-                  child: AppButton.secondary(
-                    key: const Key('setup_back'),
-                    label: 'Back',
-                    onPressed: _stepIndex == 0 ? null : _back,
-                  ),
+              Expanded(
+                child: AppButton.secondary(
+                  key: const Key('setup_back'),
+                  label: 'Back',
+                  onPressed: _isSubmitting || _stepIndex == 0 ? null : _back,
                 ),
-                const SizedBox(width: AppSpacing.s12),
-                Expanded(
-                  child: AppButton.primary(
-                    key: const Key('setup_next'),
-                    label: _stepIndex == totalSteps - 1 ? 'Finish' : 'Next',
-                    onPressed: _stepIndex == totalSteps - 1 ? _finish : _next,
-                  ),
+              ),
+              const SizedBox(width: AppSpacing.s12),
+              Expanded(
+                child: AppButton.primary(
+                  key: const Key('setup_next'),
+                  label: _stepIndex == totalSteps - 1 ? 'Finish' : 'Next',
+                  isLoading: _isSubmitting && _stepIndex == totalSteps - 1,
+                  onPressed: _isSubmitting
+                      ? null
+                      : (_stepIndex == totalSteps - 1 ? _finish : _next),
                 ),
-              ],
-            ),
+              ),
+            ],
+          ),
           ],
         ),
       ),
@@ -192,9 +201,128 @@ class _SetupWizardPageState extends ConsumerState<SetupWizardPage> {
 
   void _finish() {
     if (!_validateCurrentStep()) return;
+    unawaited(_submit(isDemo: false));
+  }
 
-    ref.read(shomitiConfiguredProvider.notifier).state = true;
-    context.go(dashboardLocation);
+  void _createDemo() => unawaited(_submit(isDemo: true));
+
+  Future<void> _submit({required bool isDemo}) async {
+    if (_isSubmitting) return;
+
+    setState(() => _isSubmitting = true);
+
+    try {
+      final snapshot = isDemo ? _buildDemoSnapshot() : _buildSnapshotFromInputs();
+
+      await ref.read(createShomitiProvider)(snapshot);
+
+      if (!mounted) return;
+      context.go(dashboardLocation);
+    } on CreateShomitiValidationException catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(e.message)),
+      );
+    } catch (_) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Something went wrong. Please try again.')),
+      );
+    } finally {
+      if (mounted) {
+        setState(() => _isSubmitting = false);
+      }
+    }
+  }
+
+  RuleSetSnapshot _buildSnapshotFromInputs() {
+    final name = _nameController.text.trim();
+    final memberCount = _parsePositiveInt(
+      value: _memberCountController.text,
+      field: 'Member count',
+    );
+    final shareValueBdt = _parsePositiveInt(
+      value: _shareValueController.text,
+      field: 'Share value',
+    );
+    final maxSharesPerPerson = _parsePositiveInt(
+      value: _maxSharesController.text,
+      field: 'Max shares per person',
+    );
+    final cycleLengthMonths = _parsePositiveInt(
+      value: _cycleLengthController.text,
+      field: 'Cycle length',
+    );
+
+    final meetingSchedule = _meetingScheduleController.text.trim();
+    final paymentDeadline = _paymentDeadlineController.text.trim();
+    final groupChannel = _groupChannelController.text.trim().isEmpty
+        ? null
+        : _groupChannelController.text.trim();
+
+    final gracePeriodDays = _parseOptionalNonNegativeInt(
+      value: _gracePeriodDaysController.text,
+      field: 'Grace period',
+    );
+    final lateFeeBdtPerDay = _parseOptionalPositiveInt(
+      value: _lateFeeController.text,
+      field: 'Late fee',
+    );
+
+    final feeAmountBdt = _feesEnabled
+        ? _parsePositiveInt(
+            value: _feeAmountController.text,
+            field: 'Fee amount',
+          )
+        : null;
+
+    return RuleSetSnapshot(
+      schemaVersion: 1,
+      shomitiName: name,
+      startDate: _startDate,
+      groupType: _groupType,
+      memberCount: memberCount,
+      shareValueBdt: shareValueBdt,
+      maxSharesPerPerson: maxSharesPerPerson,
+      allowShareTransfers: _allowShareTransfers,
+      cycleLengthMonths: cycleLengthMonths,
+      meetingSchedule: meetingSchedule,
+      paymentDeadline: paymentDeadline,
+      payoutMethod: _payoutMethod,
+      groupChannel: groupChannel,
+      missedPaymentPolicy: _missedPaymentPolicy,
+      gracePeriodDays: gracePeriodDays,
+      lateFeeBdtPerDay: lateFeeBdtPerDay,
+      feesEnabled: _feesEnabled,
+      feeAmountBdt: feeAmountBdt,
+      feePayerModel: _feePayerModel,
+      ruleChangeAfterStartRequiresUnanimous: true,
+    );
+  }
+
+  RuleSetSnapshot _buildDemoSnapshot() {
+    return RuleSetSnapshot(
+      schemaVersion: 1,
+      shomitiName: 'Demo Shomiti',
+      startDate: DateTime.now(),
+      groupType: GroupTypePolicy.closed,
+      memberCount: 10,
+      shareValueBdt: 1000,
+      maxSharesPerPerson: 1,
+      allowShareTransfers: false,
+      cycleLengthMonths: 10,
+      meetingSchedule: 'Every month, Friday 8pm',
+      paymentDeadline: '5th day of the month',
+      payoutMethod: PayoutMethod.mobileWallet,
+      groupChannel: null,
+      missedPaymentPolicy: MissedPaymentPolicy.postponePayout,
+      gracePeriodDays: null,
+      lateFeeBdtPerDay: null,
+      feesEnabled: false,
+      feeAmountBdt: null,
+      feePayerModel: FeePayerModel.everyoneEqually,
+      ruleChangeAfterStartRequiresUnanimous: true,
+    );
   }
 
   bool _validateCurrentStep() {
@@ -253,6 +381,43 @@ class _SetupWizardPageState extends ConsumerState<SetupWizardPage> {
 
     return null;
   }
+
+  int _parsePositiveInt({required String value, required String field}) {
+    final trimmed = value.trim();
+    final parsed = int.tryParse(trimmed);
+    if (parsed == null || parsed <= 0) {
+      throw CreateShomitiValidationException('$field must be > 0.');
+    }
+    return parsed;
+  }
+
+  int? _parseOptionalNonNegativeInt({required String value, required String field}) {
+    final trimmed = value.trim();
+    if (trimmed.isEmpty) return null;
+
+    final parsed = int.tryParse(trimmed);
+    if (parsed == null) {
+      throw CreateShomitiValidationException('$field must be a number.');
+    }
+    if (parsed < 0) {
+      throw CreateShomitiValidationException('$field cannot be negative.');
+    }
+    return parsed;
+  }
+
+  int? _parseOptionalPositiveInt({required String value, required String field}) {
+    final trimmed = value.trim();
+    if (trimmed.isEmpty) return null;
+
+    final parsed = int.tryParse(trimmed);
+    if (parsed == null) {
+      throw CreateShomitiValidationException('$field must be a number.');
+    }
+    if (parsed <= 0) {
+      throw CreateShomitiValidationException('$field must be > 0.');
+    }
+    return parsed;
+  }
 }
 
 enum _SetupStep {
@@ -268,39 +433,35 @@ enum _SetupStep {
   final String title;
 }
 
-enum GroupType {
-  closed('Closed (recommended)'),
-  open('Open');
-
-  const GroupType(this.label);
-  final String label;
+extension GroupTypePolicyLabels on GroupTypePolicy {
+  String get label => switch (this) {
+        GroupTypePolicy.closed => 'Closed (recommended)',
+        GroupTypePolicy.open => 'Open',
+      };
 }
 
-enum MissedPaymentPolicy {
-  postponePayout('Postpone payout (recommended)'),
-  coverFromReserve('Cover from reserve'),
-  coverByGuarantor('Cover by guarantor');
-
-  const MissedPaymentPolicy(this.label);
-  final String label;
+extension MissedPaymentPolicyLabels on MissedPaymentPolicy {
+  String get label => switch (this) {
+        MissedPaymentPolicy.postponePayout => 'Postpone payout (recommended)',
+        MissedPaymentPolicy.coverFromReserve => 'Cover from reserve',
+        MissedPaymentPolicy.coverByGuarantor => 'Cover by guarantor',
+      };
 }
 
-enum PayoutMethod {
-  cash('Cash'),
-  bank('Bank transfer'),
-  mobileWallet('Mobile wallet'),
-  mixed('Mixed');
-
-  const PayoutMethod(this.label);
-  final String label;
+extension PayoutMethodLabels on PayoutMethod {
+  String get label => switch (this) {
+        PayoutMethod.cash => 'Cash',
+        PayoutMethod.bank => 'Bank transfer',
+        PayoutMethod.mobileWallet => 'Mobile wallet',
+        PayoutMethod.mixed => 'Mixed',
+      };
 }
 
-enum FeePayerModel {
-  everyoneEqually('Everyone equally'),
-  winnerPays('Winner pays');
-
-  const FeePayerModel(this.label);
-  final String label;
+extension FeePayerModelLabels on FeePayerModel {
+  String get label => switch (this) {
+        FeePayerModel.everyoneEqually => 'Everyone equally',
+        FeePayerModel.winnerPays => 'Winner pays',
+      };
 }
 
 class _StepBody extends StatelessWidget {
@@ -342,8 +503,8 @@ class _StepBody extends StatelessWidget {
   final _SetupStep step;
   final DateTime startDate;
   final VoidCallback onPickStartDate;
-  final GroupType groupType;
-  final ValueChanged<GroupType> onGroupTypeChanged;
+  final GroupTypePolicy groupType;
+  final ValueChanged<GroupTypePolicy> onGroupTypeChanged;
   final PayoutMethod payoutMethod;
   final ValueChanged<PayoutMethod> onPayoutMethodChanged;
   final bool allowShareTransfers;
@@ -524,8 +685,8 @@ class _MembersAndSharesStep extends StatelessWidget {
     required this.shareValueError,
   });
 
-  final GroupType groupType;
-  final ValueChanged<GroupType> onGroupTypeChanged;
+  final GroupTypePolicy groupType;
+  final ValueChanged<GroupTypePolicy> onGroupTypeChanged;
   final bool allowShareTransfers;
   final ValueChanged<bool> onAllowShareTransfersChanged;
 
@@ -543,7 +704,7 @@ class _MembersAndSharesStep extends StatelessWidget {
       children: [
         const Text('Group type'),
         const SizedBox(height: AppSpacing.s8),
-        RadioGroup<GroupType>(
+        RadioGroup<GroupTypePolicy>(
           groupValue: groupType,
           onChanged: (value) {
             if (value == null) return;
@@ -551,8 +712,8 @@ class _MembersAndSharesStep extends StatelessWidget {
           },
           child: Column(
             children: [
-              for (final type in GroupType.values)
-                RadioListTile<GroupType>(
+              for (final type in GroupTypePolicy.values)
+                RadioListTile<GroupTypePolicy>(
                   key: Key('setup_group_type_${type.name}'),
                   contentPadding: EdgeInsets.zero,
                   title: Text(type.label),
@@ -793,7 +954,7 @@ class _ReviewStep extends StatelessWidget {
   });
 
   final DateTime startDate;
-  final GroupType groupType;
+  final GroupTypePolicy groupType;
   final PayoutMethod payoutMethod;
   final bool allowShareTransfers;
   final MissedPaymentPolicy missedPaymentPolicy;
