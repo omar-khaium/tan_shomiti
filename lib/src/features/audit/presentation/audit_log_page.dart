@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/ui/components/app_empty_state.dart';
@@ -6,6 +7,7 @@ import '../../../core/ui/components/app_error_state.dart';
 import '../../../core/ui/components/app_list_row.dart';
 import '../../../core/ui/components/app_loading_state.dart';
 import '../../../core/ui/tokens/app_spacing.dart';
+import '../domain/entities/audit_event.dart';
 import 'providers/audit_providers.dart';
 
 class AuditLogPage extends ConsumerWidget {
@@ -17,6 +19,21 @@ class AuditLogPage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(title: const Text('Audit log')),
+      floatingActionButton: kDebugMode
+          ? FloatingActionButton(
+              key: const Key('audit_add_demo_event'),
+              onPressed: () async {
+                await ref.read(appendAuditEventProvider)(
+                      NewAuditEvent(
+                        action: 'demo_event',
+                        occurredAt: DateTime.now().toUtc(),
+                        message: 'Demo audit event (debug only).',
+                      ),
+                    );
+              },
+              child: const Icon(Icons.add),
+            )
+          : null,
       body: events.when(
         loading: () => const Padding(
           padding: EdgeInsets.all(AppSpacing.s16),
