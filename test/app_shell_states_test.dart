@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:tan_shomiti/src/app/router/app_router.dart';
 import 'package:tan_shomiti/src/app/shell/app_shell.dart';
@@ -19,7 +20,13 @@ void main() {
     await tester.tap(find.text('More'));
     await tester.pumpAndSettle();
 
-    await tester.tap(find.text('App states'));
+    await tester.scrollUntilVisible(
+      find.byKey(const Key('more_app_states')),
+      300,
+    );
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byKey(const Key('more_app_states')));
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 500));
 

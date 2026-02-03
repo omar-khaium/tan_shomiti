@@ -43,6 +43,12 @@ class MorePage extends StatelessWidget {
         ),
         const Divider(),
         _MoreTile(
+          tileKey: const Key('more_components'),
+          title: componentsTitle,
+          subtitle: 'Preview design system components',
+          onTap: () => context.push(componentsLocation),
+        ),
+        _MoreTile(
           tileKey: const Key('more_app_states'),
           title: 'App states',
           subtitle: 'Preview loading/empty/error UI',

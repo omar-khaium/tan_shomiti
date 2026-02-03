@@ -6,6 +6,7 @@ import '../pages/more_page.dart';
 import '../pages/placeholder_page.dart';
 import '../pages/setup_placeholder_page.dart';
 import '../shell/app_shell.dart';
+import '../../core/ui/pages/components_gallery_page.dart';
 
 const setupLocation = '/setup';
 const setupRouteName = 'setup';
@@ -29,6 +30,10 @@ const moreTitle = 'More';
 const appStatesLocation = '/app-states';
 const appStatesRouteName = 'appStates';
 const appStatesTitle = 'App states';
+
+const componentsLocation = '/components';
+const componentsRouteName = 'components';
+const componentsTitle = 'Components';
 
 const drawLocation = '/draw';
 const drawRouteName = 'draw';
@@ -123,6 +128,11 @@ final appRouterProvider = Provider<GoRouter>((ref) {
             path: appStatesLocation,
             name: appStatesRouteName,
             builder: (context, state) => const AppStatesPage(),
+          ),
+          GoRoute(
+            path: componentsLocation,
+            name: componentsRouteName,
+            builder: (context, state) => const ComponentsGalleryPage(),
           ),
           GoRoute(
             path: drawLocation,
