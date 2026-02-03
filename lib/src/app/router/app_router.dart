@@ -4,11 +4,11 @@ import 'package:go_router/go_router.dart';
 import '../pages/app_states_page.dart';
 import '../pages/more_page.dart';
 import '../pages/placeholder_page.dart';
-import '../pages/setup_placeholder_page.dart';
 import '../shell/app_shell.dart';
 import '../../core/ui/pages/components_gallery_page.dart';
 import '../../features/audit/presentation/audit_log_page.dart';
 import '../../features/ledger/presentation/ledger_page.dart';
+import '../../features/shomiti_setup/presentation/setup_wizard_page.dart';
 
 const setupLocation = '/setup';
 const setupRouteName = 'setup';
@@ -70,10 +70,7 @@ const auditTitle = 'Audit log';
 /// This will be replaced by persisted shomiti creation in later tasks (TS-101+).
 final shomitiConfiguredProvider = StateProvider<bool>((ref) => false);
 
-String? appRedirect({
-  required bool isConfigured,
-  required String location,
-}) {
+String? appRedirect({required bool isConfigured, required String location}) {
   final isSetup = location == setupLocation;
 
   if (!isConfigured && !isSetup) {
@@ -96,34 +93,29 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: setupLocation,
         name: setupRouteName,
-        builder: (context, state) => const SetupPlaceholderPage(),
+        builder: (context, state) => const SetupWizardPage(),
       ),
       ShellRoute(
-        builder: (context, state, child) => AppShell(
-          location: state.matchedLocation,
-          child: child,
-        ),
+        builder: (context, state, child) =>
+            AppShell(location: state.matchedLocation, child: child),
         routes: [
           GoRoute(
             path: dashboardLocation,
             name: dashboardRouteName,
-            builder: (context, state) => const PlaceholderPage(
-              title: dashboardTitle,
-            ),
+            builder: (context, state) =>
+                const PlaceholderPage(title: dashboardTitle),
           ),
           GoRoute(
             path: membersLocation,
             name: membersRouteName,
-            builder: (context, state) => const PlaceholderPage(
-              title: membersTitle,
-            ),
+            builder: (context, state) =>
+                const PlaceholderPage(title: membersTitle),
           ),
           GoRoute(
             path: contributionsLocation,
             name: contributionsRouteName,
-            builder: (context, state) => const PlaceholderPage(
-              title: contributionsTitle,
-            ),
+            builder: (context, state) =>
+                const PlaceholderPage(title: contributionsTitle),
           ),
           GoRoute(
             path: moreLocation,
@@ -143,16 +135,14 @@ final appRouterProvider = Provider<GoRouter>((ref) {
           GoRoute(
             path: drawLocation,
             name: drawRouteName,
-            builder: (context, state) => const PlaceholderPage(
-              title: drawTitle,
-            ),
+            builder: (context, state) =>
+                const PlaceholderPage(title: drawTitle),
           ),
           GoRoute(
             path: payoutLocation,
             name: payoutRouteName,
-            builder: (context, state) => const PlaceholderPage(
-              title: payoutTitle,
-            ),
+            builder: (context, state) =>
+                const PlaceholderPage(title: payoutTitle),
           ),
           GoRoute(
             path: ledgerLocation,
@@ -167,23 +157,20 @@ final appRouterProvider = Provider<GoRouter>((ref) {
           GoRoute(
             path: rulesLocation,
             name: rulesRouteName,
-            builder: (context, state) => const PlaceholderPage(
-              title: rulesTitle,
-            ),
+            builder: (context, state) =>
+                const PlaceholderPage(title: rulesTitle),
           ),
           GoRoute(
             path: disputesLocation,
             name: disputesRouteName,
-            builder: (context, state) => const PlaceholderPage(
-              title: disputesTitle,
-            ),
+            builder: (context, state) =>
+                const PlaceholderPage(title: disputesTitle),
           ),
           GoRoute(
             path: settingsLocation,
             name: settingsRouteName,
-            builder: (context, state) => const PlaceholderPage(
-              title: settingsTitle,
-            ),
+            builder: (context, state) =>
+                const PlaceholderPage(title: settingsTitle),
           ),
         ],
       ),
