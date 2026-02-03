@@ -1,3 +1,4 @@
+import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:patrol/patrol.dart';
@@ -8,8 +9,9 @@ void main() {
     'ts002: open components gallery',
     ($) async {
       await $.pumpWidgetAndSettle(
-        const ProviderScope(
-          child: TanShomitiApp(),
+        ProviderScope(
+          key: UniqueKey(),
+          child: const TanShomitiApp(),
         ),
       );
 
@@ -31,4 +33,3 @@ void main() {
     },
   );
 }
-

@@ -1,13 +1,17 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../core/data/local/reset_app_data_provider.dart';
+import '../../core/ui/components/app_confirm_dialog.dart';
 import '../router/app_router.dart';
 
-class MorePage extends StatelessWidget {
+class MorePage extends ConsumerWidget {
   const MorePage({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return ListView(
       children: [
         const SizedBox(height: 8),
@@ -48,6 +52,30 @@ class MorePage extends StatelessWidget {
           onTap: () => context.push(disputesLocation),
         ),
         const Divider(),
+        if (kDebugMode)
+          _MoreTile(
+            tileKey: const Key('more_reset_app_data'),
+            title: 'Reset app data',
+            subtitle: 'Debug only: clears the local database.',
+            onTap: () async {
+              final confirmed = await showAppConfirmDialog(
+                context: context,
+                title: 'Reset app data?',
+                message:
+                    'This will permanently delete local data on this device.',
+                confirmLabel: 'Reset',
+                cancelKey: const Key('reset_app_data_cancel'),
+                confirmKey: const Key('reset_app_data_confirm'),
+              );
+
+              if (confirmed != true) return;
+
+              await ref.read(resetAppDataProvider)();
+
+              if (!context.mounted) return;
+              context.go(setupLocation);
+            },
+          ),
         _MoreTile(
           tileKey: const Key('more_components'),
           title: componentsTitle,

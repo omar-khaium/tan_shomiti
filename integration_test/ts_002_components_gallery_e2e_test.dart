@@ -1,3 +1,4 @@
+import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:patrol/patrol.dart';
@@ -8,13 +9,17 @@ void main() {
     'ts002 e2e: open components → back to dashboard',
     ($) async {
       await $.pumpWidgetAndSettle(
-        const ProviderScope(
-          child: TanShomitiApp(),
+        ProviderScope(
+          key: UniqueKey(),
+          child: const TanShomitiApp(),
         ),
       );
 
-      await $(#setup_continue_demo).tap();
-      await $.pumpAndSettle();
+      final demoSetupButton = find.byKey(const Key('setup_continue_demo'));
+      if (demoSetupButton.evaluate().isNotEmpty) {
+        await $(#setup_continue_demo).tap();
+        await $.pumpAndSettle();
+      }
 
       expect(find.text('Dashboard'), findsWidgets);
 

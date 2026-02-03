@@ -5,8 +5,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'app_database.dart';
 
 final appDatabaseProvider = Provider<AppDatabase>((ref) {
-  final isFlutterTest = Platform.environment.containsKey('FLUTTER_TEST');
-  final db = isFlutterTest ? AppDatabase.memory() : AppDatabase.open();
+  final env = Platform.environment;
+  final isTestRun = env.containsKey('FLUTTER_TEST') ||
+      env.containsKey('XCTestConfigurationFilePath');
+  final db = isTestRun ? AppDatabase.memory() : AppDatabase.open();
   ref.onDispose(db.close);
   return db;
 });

@@ -8,6 +8,8 @@ Future<bool?> showAppConfirmDialog({
   required String message,
   required String confirmLabel,
   String cancelLabel = 'Cancel',
+  Key? cancelKey,
+  Key? confirmKey,
 }) {
   return showDialog<bool>(
     context: context,
@@ -16,10 +18,12 @@ Future<bool?> showAppConfirmDialog({
       content: Text(message),
       actions: [
         AppButton.tertiary(
+          key: cancelKey,
           label: cancelLabel,
           onPressed: () => Navigator.of(context).pop(false),
         ),
         AppButton.primary(
+          key: confirmKey,
           label: confirmLabel,
           onPressed: () => Navigator.of(context).pop(true),
         ),
@@ -27,4 +31,3 @@ Future<bool?> showAppConfirmDialog({
     ),
   );
 }
-
