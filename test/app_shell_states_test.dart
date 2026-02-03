@@ -1,9 +1,19 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:tan_shomiti/main.dart';
+import 'package:tan_shomiti/src/app/router/app_router.dart';
+import 'package:tan_shomiti/src/app/shell/app_shell.dart';
+import 'package:tan_shomiti/src/app/tan_shomiti_app.dart';
 
 void main() {
   testWidgets('App states page shows loading/empty/error', (tester) async {
-    await tester.pumpWidget(const TanShomitiApp());
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          shomitiConfiguredProvider.overrideWith((ref) => true),
+        ],
+        child: const TanShomitiApp(),
+      ),
+    );
 
     expect(find.byType(AppShell), findsOneWidget);
 
