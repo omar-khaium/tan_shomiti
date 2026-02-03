@@ -8,6 +8,9 @@ import '../shell/app_shell.dart';
 import '../../core/ui/pages/components_gallery_page.dart';
 import '../../features/audit/presentation/audit_log_page.dart';
 import '../../features/ledger/presentation/ledger_page.dart';
+import '../../features/members/presentation/governance/governance_page.dart';
+import '../../features/members/presentation/governance/member_signoff_page.dart';
+import '../../features/members/presentation/governance/roles_assignment_page.dart';
 import '../../features/shomiti_setup/presentation/setup_wizard_page.dart';
 import '../../features/shomiti_setup/presentation/providers/shomiti_setup_providers.dart';
 
@@ -65,6 +68,18 @@ const settingsTitle = 'Settings';
 const auditLocation = '/audit';
 const auditRouteName = 'audit';
 const auditTitle = 'Audit log';
+
+const governanceLocation = '/governance';
+const governanceRouteName = 'governance';
+const governanceTitle = 'Governance';
+
+const governanceRolesLocation = '/governance/roles';
+const governanceRolesRouteName = 'governanceRoles';
+const governanceRolesTitle = 'Roles';
+
+const governanceSignoffLocation = '/governance/signoff';
+const governanceSignoffRouteName = 'governanceSignoff';
+const governanceSignoffTitle = 'Sign-off';
 
 /// Whether a Shomiti is configured in local persistence.
 final shomitiConfiguredProvider = Provider<bool>((ref) {
@@ -176,6 +191,23 @@ final appRouterProvider = Provider<GoRouter>((ref) {
             name: settingsRouteName,
             builder: (context, state) =>
                 const PlaceholderPage(title: settingsTitle),
+          ),
+          GoRoute(
+            path: governanceLocation,
+            name: governanceRouteName,
+            builder: (context, state) => const GovernancePage(),
+            routes: [
+              GoRoute(
+                path: 'roles',
+                name: governanceRolesRouteName,
+                builder: (context, state) => const RolesAssignmentPage(),
+              ),
+              GoRoute(
+                path: 'signoff',
+                name: governanceSignoffRouteName,
+                builder: (context, state) => const MemberSignoffPage(),
+              ),
+            ],
           ),
         ],
       ),

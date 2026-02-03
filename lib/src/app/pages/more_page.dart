@@ -40,6 +40,12 @@ class MorePage extends ConsumerWidget {
           onTap: () => context.push(auditLocation),
         ),
         _MoreTile(
+          tileKey: const Key('more_governance'),
+          title: governanceTitle,
+          subtitle: 'Assign roles and record member sign-off',
+          onTap: () => context.push(governanceLocation),
+        ),
+        _MoreTile(
           tileKey: const Key('more_rules'),
           title: rulesTitle,
           subtitle: 'View current rules and versions',

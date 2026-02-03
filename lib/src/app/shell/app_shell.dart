@@ -16,10 +16,28 @@ class AppShell extends StatelessWidget {
   int get _selectedIndex {
     if (location.startsWith(membersLocation)) return 1;
     if (location.startsWith(contributionsLocation)) return 2;
+    if (_isMoreRoute(location)) return 3;
     return switch (location) {
-      moreLocation => 3,
       _ => 0,
     };
+  }
+
+  bool _isMoreRoute(String location) {
+    const moreRoutes = [
+      moreLocation,
+      drawLocation,
+      payoutLocation,
+      ledgerLocation,
+      auditLocation,
+      rulesLocation,
+      disputesLocation,
+      settingsLocation,
+      componentsLocation,
+      appStatesLocation,
+      governanceLocation,
+    ];
+
+    return moreRoutes.any(location.startsWith);
   }
 
   @override
