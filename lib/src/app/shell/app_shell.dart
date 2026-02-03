@@ -48,21 +48,25 @@ class AppShell extends StatelessWidget {
         },
         destinations: const [
           NavigationDestination(
+            key: Key('nav_dashboard'),
             icon: Icon(Icons.dashboard_outlined),
             selectedIcon: Icon(Icons.dashboard),
             label: 'Dashboard',
           ),
           NavigationDestination(
+            key: Key('nav_members'),
             icon: Icon(Icons.group_outlined),
             selectedIcon: Icon(Icons.group),
             label: 'Members',
           ),
           NavigationDestination(
+            key: Key('nav_dues'),
             icon: Icon(Icons.payments_outlined),
             selectedIcon: Icon(Icons.payments),
             label: 'Dues',
           ),
           NavigationDestination(
+            key: Key('nav_more'),
             icon: Icon(Icons.more_horiz),
             selectedIcon: Icon(Icons.more),
             label: 'More',

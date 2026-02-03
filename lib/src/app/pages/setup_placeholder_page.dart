@@ -26,6 +26,7 @@ class SetupPlaceholderPage extends ConsumerWidget {
             ),
             const SizedBox(height: 16),
             FilledButton(
+              key: const Key('setup_continue_demo'),
               onPressed: () {
                 ref.read(shomitiConfiguredProvider.notifier).state = true;
                 context.go(dashboardLocation);
