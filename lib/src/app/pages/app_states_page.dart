@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
 
+import '../../core/ui/components/app_card.dart';
+import '../../core/ui/components/app_empty_state.dart';
+import '../../core/ui/components/app_error_state.dart';
+import '../../core/ui/components/app_loading_state.dart';
+import '../../core/ui/tokens/app_spacing.dart';
+
 class AppStatesPage extends StatelessWidget {
   const AppStatesPage({super.key});
 
@@ -8,21 +14,27 @@ class AppStatesPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: const Text('App states')),
       body: ListView(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppSpacing.s16),
         children: const [
-          _StateCard(
+          _StateSection(
             title: 'Loading',
-            child: _LoadingState(),
+            child: AppLoadingState(),
           ),
-          SizedBox(height: 16),
-          _StateCard(
+          SizedBox(height: AppSpacing.s16),
+          _StateSection(
             title: 'Empty',
-            child: _EmptyState(),
+            child: AppEmptyState(
+              title: 'Nothing to show yet.',
+              message: 'Create a Shomiti to get started.',
+            ),
           ),
-          SizedBox(height: 16),
-          _StateCard(
+          SizedBox(height: AppSpacing.s16),
+          _StateSection(
             title: 'Error',
-            child: _ErrorState(),
+            child: AppErrorState(
+              message: 'Something went wrong. Please try again.',
+              onRetry: _noop,
+            ),
           ),
         ],
       ),
@@ -30,8 +42,10 @@ class AppStatesPage extends StatelessWidget {
   }
 }
 
-class _StateCard extends StatelessWidget {
-  const _StateCard({
+void _noop() {}
+
+class _StateSection extends StatelessWidget {
+  const _StateSection({
     required this.title,
     required this.child,
   });
@@ -41,68 +55,15 @@ class _StateCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(title, style: Theme.of(context).textTheme.titleMedium),
-            const SizedBox(height: 12),
-            child,
-          ],
-        ),
+    return AppCard(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(title, style: Theme.of(context).textTheme.titleMedium),
+          const SizedBox(height: AppSpacing.s12),
+          child,
+        ],
       ),
     );
   }
 }
-
-class _LoadingState extends StatelessWidget {
-  const _LoadingState();
-
-  @override
-  Widget build(BuildContext context) {
-    return const Row(
-      children: [
-        SizedBox(
-          height: 20,
-          width: 20,
-          child: CircularProgressIndicator(strokeWidth: 2),
-        ),
-        SizedBox(width: 12),
-        Text('Loading…'),
-      ],
-    );
-  }
-}
-
-class _EmptyState extends StatelessWidget {
-  const _EmptyState();
-
-  @override
-  Widget build(BuildContext context) {
-    return const Text(
-      'Nothing to show yet.\nCreate a Shomiti to get started.',
-    );
-  }
-}
-
-class _ErrorState extends StatelessWidget {
-  const _ErrorState();
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text('Something went wrong. Please try again.'),
-        const SizedBox(height: 12),
-        FilledButton(
-          onPressed: () {},
-          child: const Text('Retry'),
-        ),
-      ],
-    );
-  }
-}
-

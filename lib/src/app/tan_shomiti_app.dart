@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'router/app_router.dart';
+import '../core/ui/theme/app_theme.dart';
 
 class TanShomitiApp extends ConsumerWidget {
   const TanShomitiApp({super.key});
@@ -12,8 +13,8 @@ class TanShomitiApp extends ConsumerWidget {
 
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
+      theme: AppTheme.light(),
       routerConfig: router,
     );
   }
 }
-
