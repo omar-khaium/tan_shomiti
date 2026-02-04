@@ -15,6 +15,7 @@ import '../../features/members/presentation/member_detail_page.dart';
 import '../../features/members/presentation/member_form_page.dart';
 import '../../features/members/presentation/members_page.dart';
 import '../../features/rules/presentation/rules_page.dart';
+import '../../features/shares/presentation/shares_page.dart';
 import '../../features/shomiti_setup/presentation/setup_wizard_page.dart';
 import '../../features/shomiti_setup/presentation/providers/shomiti_setup_providers.dart';
 
@@ -68,6 +69,10 @@ const ledgerTitle = 'Ledger';
 const rulesLocation = '/rules';
 const rulesRouteName = 'rules';
 const rulesTitle = 'Rules';
+
+const sharesLocation = '/shares';
+const sharesRouteName = 'shares';
+const sharesTitle = 'Shares';
 
 const disputesLocation = '/disputes';
 const disputesRouteName = 'disputes';
@@ -209,6 +214,11 @@ final appRouterProvider = Provider<GoRouter>((ref) {
             path: rulesLocation,
             name: rulesRouteName,
             builder: (context, state) => const RulesPage(),
+          ),
+          GoRoute(
+            path: sharesLocation,
+            name: sharesRouteName,
+            builder: (context, state) => const SharesPage(),
           ),
           GoRoute(
             path: disputesLocation,
