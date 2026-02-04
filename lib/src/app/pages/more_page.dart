@@ -52,6 +52,12 @@ class MorePage extends ConsumerWidget {
           onTap: () => context.push(sharesLocation),
         ),
         _MoreTile(
+          tileKey: const Key('more_risk_controls'),
+          title: riskControlsTitle,
+          subtitle: 'Record guarantors and security deposits',
+          onTap: () => context.push(riskControlsLocation),
+        ),
+        _MoreTile(
           tileKey: const Key('more_rules'),
           title: rulesTitle,
           subtitle: 'View current rules and versions',
