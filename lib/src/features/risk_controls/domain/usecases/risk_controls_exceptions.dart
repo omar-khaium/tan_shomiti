@@ -10,3 +10,12 @@ sealed class RiskControlException implements Exception {
 class RiskControlValidationException extends RiskControlException {
   const RiskControlValidationException(super.message);
 }
+
+class RiskControlMissingException extends RiskControlException {
+  const RiskControlMissingException({
+    required this.missingMemberIds,
+    String message = 'Risk control is missing for one or more member(s).',
+  }) : super(message);
+
+  final List<String> missingMemberIds;
+}
