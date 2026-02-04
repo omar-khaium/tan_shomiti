@@ -14,18 +14,23 @@ class RiskControlsController
   Future<RiskControlsUiState?> build() => _load();
 
   Future<RiskControlsUiState?> _load() async {
-    final membersState = await ref.watch(membersUiStateProvider.future);
-    if (membersState == null) return null;
+    final context = await ref.watch(membersContextProvider.future);
+    if (context == null) return null;
 
-    _shomitiId = membersState.shomitiId;
-    _members = membersState.members;
+    await ref.watch(seedMembersProvider)(
+      shomitiId: context.shomitiId,
+      memberCount: context.rules.memberCount,
+    );
+
+    _shomitiId = context.shomitiId;
+    _members = await ref
+        .watch(membersRepositoryProvider)
+        .listMembers(shomitiId: context.shomitiId);
 
     final repo = ref.watch(riskControlsRepositoryProvider);
-    final guarantors = await repo.listGuarantors(
-      shomitiId: membersState.shomitiId,
-    );
+    final guarantors = await repo.listGuarantors(shomitiId: context.shomitiId);
     final deposits = await repo.listSecurityDeposits(
-      shomitiId: membersState.shomitiId,
+      shomitiId: context.shomitiId,
     );
 
     final guarantorByMemberId = {for (final g in guarantors) g.memberId: g};
@@ -72,7 +77,7 @@ class RiskControlsController
   }) async {
     final shomitiId =
         _shomitiId ??
-        (await ref.watch(membersUiStateProvider.future))?.shomitiId;
+        (await ref.watch(membersContextProvider.future))?.shomitiId;
     if (shomitiId == null) return;
 
     await ref.watch(recordGuarantorProvider)(
@@ -96,7 +101,7 @@ class RiskControlsController
   }) async {
     final shomitiId =
         _shomitiId ??
-        (await ref.watch(membersUiStateProvider.future))?.shomitiId;
+        (await ref.watch(membersContextProvider.future))?.shomitiId;
     if (shomitiId == null) return;
 
     await ref.watch(recordSecurityDepositProvider)(
@@ -117,7 +122,7 @@ class RiskControlsController
   }) async {
     final shomitiId =
         _shomitiId ??
-        (await ref.watch(membersUiStateProvider.future))?.shomitiId;
+        (await ref.watch(membersContextProvider.future))?.shomitiId;
     if (shomitiId == null) return;
 
     await ref.watch(markSecurityDepositReturnedProvider)(
