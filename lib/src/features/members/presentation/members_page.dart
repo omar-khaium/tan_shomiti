@@ -9,24 +9,27 @@ import '../../../core/ui/components/app_error_state.dart';
 import '../../../core/ui/components/app_loading_state.dart';
 import '../../../core/ui/components/app_status_chip.dart';
 import '../../../core/ui/tokens/app_spacing.dart';
-import 'providers/members_demo_providers.dart';
+import '../domain/entities/member.dart';
+import 'providers/members_providers.dart';
 
 class MembersPage extends ConsumerWidget {
   const MembersPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final members = ref.watch(membersDemoControllerProvider);
+    final members = ref.watch(membersUiStateProvider);
 
     return Scaffold(
-      floatingActionButton: members.maybeWhen(
-        data: (state) => FloatingActionButton(
-          key: const Key('members_add'),
-          onPressed: state.isJoiningClosed
-              ? null
-              : () => context.push(memberAddLocation),
-          child: const Icon(Icons.add),
-        ),
+      floatingActionButton: members.maybeWhen<Widget?>(
+        data: (state) => state == null
+            ? null
+            : FloatingActionButton(
+                key: const Key('members_add'),
+                onPressed: state.isJoiningClosed
+                    ? null
+                    : () => context.push(memberAddLocation),
+                child: const Icon(Icons.add),
+              ),
         orElse: () => const SizedBox.shrink(),
       ),
       body: members.when(
@@ -39,6 +42,17 @@ class MembersPage extends ConsumerWidget {
           child: AppErrorState(message: 'Failed to load members.'),
         ),
         data: (state) {
+          if (state == null) {
+            return const Padding(
+              padding: EdgeInsets.all(AppSpacing.s16),
+              child: AppEmptyState(
+                title: 'No Shomiti found',
+                message: 'Create a Shomiti first, then add members.',
+                icon: Icons.group_outlined,
+              ),
+            );
+          }
+
           return ListView(
             padding: const EdgeInsets.all(AppSpacing.s16),
             children: [
@@ -83,7 +97,7 @@ class MembersPage extends ConsumerWidget {
 class _MemberList extends StatelessWidget {
   const _MemberList({required this.members, required this.onTapMember});
 
-  final List<MembersDemoMember> members;
+  final List<Member> members;
   final ValueChanged<String> onTapMember;
 
   @override
@@ -113,7 +127,8 @@ class _MemberList extends StatelessWidget {
     );
   }
 
-  String _maskPhone(String phone) {
+  String _maskPhone(String? phone) {
+    if (phone == null || phone.trim().isEmpty) return 'Phone not set';
     final digits = phone.replaceAll(RegExp(r'[^0-9]'), '');
     if (digits.length <= 4) return phone;
     final visible = digits.substring(digits.length - 3);

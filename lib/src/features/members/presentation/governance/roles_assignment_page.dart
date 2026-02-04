@@ -58,10 +58,10 @@ class RolesAssignmentPage extends ConsumerWidget {
                   members: data.members,
                   value: data.roleAssignments[GovernanceRole.coordinator],
                   onChanged: (memberId) async => ref.read(assignRoleProvider)(
-                        shomitiId: data.shomitiId,
-                        role: GovernanceRole.coordinator,
-                        memberId: memberId,
-                      ),
+                    shomitiId: data.shomitiId,
+                    role: GovernanceRole.coordinator,
+                    memberId: memberId,
+                  ),
                 ),
                 const SizedBox(height: AppSpacing.s12),
                 _RoleDropdown(
@@ -70,10 +70,10 @@ class RolesAssignmentPage extends ConsumerWidget {
                   members: data.members,
                   value: data.roleAssignments[GovernanceRole.treasurer],
                   onChanged: (memberId) async => ref.read(assignRoleProvider)(
-                        shomitiId: data.shomitiId,
-                        role: GovernanceRole.treasurer,
-                        memberId: memberId,
-                      ),
+                    shomitiId: data.shomitiId,
+                    role: GovernanceRole.treasurer,
+                    memberId: memberId,
+                  ),
                 ),
                 const SizedBox(height: AppSpacing.s12),
                 _RoleDropdown(
@@ -82,10 +82,10 @@ class RolesAssignmentPage extends ConsumerWidget {
                   members: data.members,
                   value: data.roleAssignments[GovernanceRole.auditor],
                   onChanged: (memberId) async => ref.read(assignRoleProvider)(
-                        shomitiId: data.shomitiId,
-                        role: GovernanceRole.auditor,
-                        memberId: memberId,
-                      ),
+                    shomitiId: data.shomitiId,
+                    role: GovernanceRole.auditor,
+                    memberId: memberId,
+                  ),
                 ),
                 const Spacer(),
                 AppButton.primary(
@@ -123,14 +123,11 @@ class _RoleDropdown extends StatelessWidget {
       key: fieldKey,
       initialValue: value,
       items: [
-        const DropdownMenuItem<String?>(
-          value: null,
-          child: Text('Unassigned'),
-        ),
+        const DropdownMenuItem<String?>(value: null, child: Text('Unassigned')),
         ...members.map(
           (member) => DropdownMenuItem<String?>(
             value: member.id,
-            child: Text(member.displayName),
+            child: Text(member.fullName),
           ),
         ),
       ],

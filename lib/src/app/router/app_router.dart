@@ -138,14 +138,14 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         name: memberEditRouteName,
         builder: (context, state) => MemberFormPage(
           mode: MemberFormMode.edit,
-          memberId: state.pathParameters['memberId'],
+          memberId: state.pathParameters['memberId']!,
         ),
       ),
       GoRoute(
         path: '/members/:memberId',
         name: memberDetailsRouteName,
         builder: (context, state) =>
-            MemberDetailPage(memberId: state.pathParameters['memberId'] ?? ''),
+            MemberDetailPage(memberId: state.pathParameters['memberId']!),
       ),
       ShellRoute(
         builder: (context, state, child) =>

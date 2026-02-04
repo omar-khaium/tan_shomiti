@@ -1257,6 +1257,83 @@ class $MembersTable extends Members with TableInfo<$MembersTable, MemberRow> {
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
+  static const VerificationMeta _phoneMeta = const VerificationMeta('phone');
+  @override
+  late final GeneratedColumn<String> phone = GeneratedColumn<String>(
+    'phone',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _addressOrWorkplaceMeta =
+      const VerificationMeta('addressOrWorkplace');
+  @override
+  late final GeneratedColumn<String> addressOrWorkplace =
+      GeneratedColumn<String>(
+        'address_or_workplace',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _nidOrPassportMeta = const VerificationMeta(
+    'nidOrPassport',
+  );
+  @override
+  late final GeneratedColumn<String> nidOrPassport = GeneratedColumn<String>(
+    'nid_or_passport',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _emergencyContactNameMeta =
+      const VerificationMeta('emergencyContactName');
+  @override
+  late final GeneratedColumn<String> emergencyContactName =
+      GeneratedColumn<String>(
+        'emergency_contact_name',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _emergencyContactPhoneMeta =
+      const VerificationMeta('emergencyContactPhone');
+  @override
+  late final GeneratedColumn<String> emergencyContactPhone =
+      GeneratedColumn<String>(
+        'emergency_contact_phone',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _notesMeta = const VerificationMeta('notes');
+  @override
+  late final GeneratedColumn<String> notes = GeneratedColumn<String>(
+    'notes',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _isActiveMeta = const VerificationMeta(
+    'isActive',
+  );
+  @override
+  late final GeneratedColumn<bool> isActive = GeneratedColumn<bool>(
+    'is_active',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("is_active" IN (0, 1))',
+    ),
+    defaultValue: const Constant(true),
+  );
   static const VerificationMeta _createdAtMeta = const VerificationMeta(
     'createdAt',
   );
@@ -1268,13 +1345,32 @@ class $MembersTable extends Members with TableInfo<$MembersTable, MemberRow> {
     type: DriftSqlType.dateTime,
     requiredDuringInsert: true,
   );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
   @override
   List<GeneratedColumn> get $columns => [
     id,
     shomitiId,
     position,
     displayName,
+    phone,
+    addressOrWorkplace,
+    nidOrPassport,
+    emergencyContactName,
+    emergencyContactPhone,
+    notes,
+    isActive,
     createdAt,
+    updatedAt,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -1320,6 +1416,60 @@ class $MembersTable extends Members with TableInfo<$MembersTable, MemberRow> {
     } else if (isInserting) {
       context.missing(_displayNameMeta);
     }
+    if (data.containsKey('phone')) {
+      context.handle(
+        _phoneMeta,
+        phone.isAcceptableOrUnknown(data['phone']!, _phoneMeta),
+      );
+    }
+    if (data.containsKey('address_or_workplace')) {
+      context.handle(
+        _addressOrWorkplaceMeta,
+        addressOrWorkplace.isAcceptableOrUnknown(
+          data['address_or_workplace']!,
+          _addressOrWorkplaceMeta,
+        ),
+      );
+    }
+    if (data.containsKey('nid_or_passport')) {
+      context.handle(
+        _nidOrPassportMeta,
+        nidOrPassport.isAcceptableOrUnknown(
+          data['nid_or_passport']!,
+          _nidOrPassportMeta,
+        ),
+      );
+    }
+    if (data.containsKey('emergency_contact_name')) {
+      context.handle(
+        _emergencyContactNameMeta,
+        emergencyContactName.isAcceptableOrUnknown(
+          data['emergency_contact_name']!,
+          _emergencyContactNameMeta,
+        ),
+      );
+    }
+    if (data.containsKey('emergency_contact_phone')) {
+      context.handle(
+        _emergencyContactPhoneMeta,
+        emergencyContactPhone.isAcceptableOrUnknown(
+          data['emergency_contact_phone']!,
+          _emergencyContactPhoneMeta,
+        ),
+      );
+    }
+    if (data.containsKey('notes')) {
+      context.handle(
+        _notesMeta,
+        notes.isAcceptableOrUnknown(data['notes']!, _notesMeta),
+      );
+    }
+    if (data.containsKey('is_active')) {
+      context.handle(
+        _isActiveMeta,
+        isActive.isAcceptableOrUnknown(data['is_active']!, _isActiveMeta),
+      );
+    }
     if (data.containsKey('created_at')) {
       context.handle(
         _createdAtMeta,
@@ -1327,6 +1477,12 @@ class $MembersTable extends Members with TableInfo<$MembersTable, MemberRow> {
       );
     } else if (isInserting) {
       context.missing(_createdAtMeta);
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
     }
     return context;
   }
@@ -1353,10 +1509,42 @@ class $MembersTable extends Members with TableInfo<$MembersTable, MemberRow> {
         DriftSqlType.string,
         data['${effectivePrefix}display_name'],
       )!,
+      phone: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}phone'],
+      ),
+      addressOrWorkplace: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}address_or_workplace'],
+      ),
+      nidOrPassport: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}nid_or_passport'],
+      ),
+      emergencyContactName: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}emergency_contact_name'],
+      ),
+      emergencyContactPhone: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}emergency_contact_phone'],
+      ),
+      notes: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}notes'],
+      ),
+      isActive: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}is_active'],
+      )!,
       createdAt: attachedDatabase.typeMapping.read(
         DriftSqlType.dateTime,
         data['${effectivePrefix}created_at'],
       )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      ),
     );
   }
 
@@ -1373,13 +1561,35 @@ class MemberRow extends DataClass implements Insertable<MemberRow> {
   /// 1-based ordering for predictable UI lists.
   final int position;
   final String displayName;
+
+  /// `rules.md` Section 3 identity/contact fields.
+  final String? phone;
+  final String? addressOrWorkplace;
+  final String? nidOrPassport;
+  final String? emergencyContactName;
+  final String? emergencyContactPhone;
+
+  /// Optional notes. Avoid storing highly sensitive content.
+  final String? notes;
+
+  /// Soft-delete/deactivation (keep history + audit).
+  final bool isActive;
   final DateTime createdAt;
+  final DateTime? updatedAt;
   const MemberRow({
     required this.id,
     required this.shomitiId,
     required this.position,
     required this.displayName,
+    this.phone,
+    this.addressOrWorkplace,
+    this.nidOrPassport,
+    this.emergencyContactName,
+    this.emergencyContactPhone,
+    this.notes,
+    required this.isActive,
     required this.createdAt,
+    this.updatedAt,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -1388,7 +1598,29 @@ class MemberRow extends DataClass implements Insertable<MemberRow> {
     map['shomiti_id'] = Variable<String>(shomitiId);
     map['position'] = Variable<int>(position);
     map['display_name'] = Variable<String>(displayName);
+    if (!nullToAbsent || phone != null) {
+      map['phone'] = Variable<String>(phone);
+    }
+    if (!nullToAbsent || addressOrWorkplace != null) {
+      map['address_or_workplace'] = Variable<String>(addressOrWorkplace);
+    }
+    if (!nullToAbsent || nidOrPassport != null) {
+      map['nid_or_passport'] = Variable<String>(nidOrPassport);
+    }
+    if (!nullToAbsent || emergencyContactName != null) {
+      map['emergency_contact_name'] = Variable<String>(emergencyContactName);
+    }
+    if (!nullToAbsent || emergencyContactPhone != null) {
+      map['emergency_contact_phone'] = Variable<String>(emergencyContactPhone);
+    }
+    if (!nullToAbsent || notes != null) {
+      map['notes'] = Variable<String>(notes);
+    }
+    map['is_active'] = Variable<bool>(isActive);
     map['created_at'] = Variable<DateTime>(createdAt);
+    if (!nullToAbsent || updatedAt != null) {
+      map['updated_at'] = Variable<DateTime>(updatedAt);
+    }
     return map;
   }
 
@@ -1398,7 +1630,29 @@ class MemberRow extends DataClass implements Insertable<MemberRow> {
       shomitiId: Value(shomitiId),
       position: Value(position),
       displayName: Value(displayName),
+      phone: phone == null && nullToAbsent
+          ? const Value.absent()
+          : Value(phone),
+      addressOrWorkplace: addressOrWorkplace == null && nullToAbsent
+          ? const Value.absent()
+          : Value(addressOrWorkplace),
+      nidOrPassport: nidOrPassport == null && nullToAbsent
+          ? const Value.absent()
+          : Value(nidOrPassport),
+      emergencyContactName: emergencyContactName == null && nullToAbsent
+          ? const Value.absent()
+          : Value(emergencyContactName),
+      emergencyContactPhone: emergencyContactPhone == null && nullToAbsent
+          ? const Value.absent()
+          : Value(emergencyContactPhone),
+      notes: notes == null && nullToAbsent
+          ? const Value.absent()
+          : Value(notes),
+      isActive: Value(isActive),
       createdAt: Value(createdAt),
+      updatedAt: updatedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(updatedAt),
     );
   }
 
@@ -1412,7 +1666,21 @@ class MemberRow extends DataClass implements Insertable<MemberRow> {
       shomitiId: serializer.fromJson<String>(json['shomitiId']),
       position: serializer.fromJson<int>(json['position']),
       displayName: serializer.fromJson<String>(json['displayName']),
+      phone: serializer.fromJson<String?>(json['phone']),
+      addressOrWorkplace: serializer.fromJson<String?>(
+        json['addressOrWorkplace'],
+      ),
+      nidOrPassport: serializer.fromJson<String?>(json['nidOrPassport']),
+      emergencyContactName: serializer.fromJson<String?>(
+        json['emergencyContactName'],
+      ),
+      emergencyContactPhone: serializer.fromJson<String?>(
+        json['emergencyContactPhone'],
+      ),
+      notes: serializer.fromJson<String?>(json['notes']),
+      isActive: serializer.fromJson<bool>(json['isActive']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      updatedAt: serializer.fromJson<DateTime?>(json['updatedAt']),
     );
   }
   @override
@@ -1423,7 +1691,17 @@ class MemberRow extends DataClass implements Insertable<MemberRow> {
       'shomitiId': serializer.toJson<String>(shomitiId),
       'position': serializer.toJson<int>(position),
       'displayName': serializer.toJson<String>(displayName),
+      'phone': serializer.toJson<String?>(phone),
+      'addressOrWorkplace': serializer.toJson<String?>(addressOrWorkplace),
+      'nidOrPassport': serializer.toJson<String?>(nidOrPassport),
+      'emergencyContactName': serializer.toJson<String?>(emergencyContactName),
+      'emergencyContactPhone': serializer.toJson<String?>(
+        emergencyContactPhone,
+      ),
+      'notes': serializer.toJson<String?>(notes),
+      'isActive': serializer.toJson<bool>(isActive),
       'createdAt': serializer.toJson<DateTime>(createdAt),
+      'updatedAt': serializer.toJson<DateTime?>(updatedAt),
     };
   }
 
@@ -1432,13 +1710,37 @@ class MemberRow extends DataClass implements Insertable<MemberRow> {
     String? shomitiId,
     int? position,
     String? displayName,
+    Value<String?> phone = const Value.absent(),
+    Value<String?> addressOrWorkplace = const Value.absent(),
+    Value<String?> nidOrPassport = const Value.absent(),
+    Value<String?> emergencyContactName = const Value.absent(),
+    Value<String?> emergencyContactPhone = const Value.absent(),
+    Value<String?> notes = const Value.absent(),
+    bool? isActive,
     DateTime? createdAt,
+    Value<DateTime?> updatedAt = const Value.absent(),
   }) => MemberRow(
     id: id ?? this.id,
     shomitiId: shomitiId ?? this.shomitiId,
     position: position ?? this.position,
     displayName: displayName ?? this.displayName,
+    phone: phone.present ? phone.value : this.phone,
+    addressOrWorkplace: addressOrWorkplace.present
+        ? addressOrWorkplace.value
+        : this.addressOrWorkplace,
+    nidOrPassport: nidOrPassport.present
+        ? nidOrPassport.value
+        : this.nidOrPassport,
+    emergencyContactName: emergencyContactName.present
+        ? emergencyContactName.value
+        : this.emergencyContactName,
+    emergencyContactPhone: emergencyContactPhone.present
+        ? emergencyContactPhone.value
+        : this.emergencyContactPhone,
+    notes: notes.present ? notes.value : this.notes,
+    isActive: isActive ?? this.isActive,
     createdAt: createdAt ?? this.createdAt,
+    updatedAt: updatedAt.present ? updatedAt.value : this.updatedAt,
   );
   MemberRow copyWithCompanion(MembersCompanion data) {
     return MemberRow(
@@ -1448,7 +1750,23 @@ class MemberRow extends DataClass implements Insertable<MemberRow> {
       displayName: data.displayName.present
           ? data.displayName.value
           : this.displayName,
+      phone: data.phone.present ? data.phone.value : this.phone,
+      addressOrWorkplace: data.addressOrWorkplace.present
+          ? data.addressOrWorkplace.value
+          : this.addressOrWorkplace,
+      nidOrPassport: data.nidOrPassport.present
+          ? data.nidOrPassport.value
+          : this.nidOrPassport,
+      emergencyContactName: data.emergencyContactName.present
+          ? data.emergencyContactName.value
+          : this.emergencyContactName,
+      emergencyContactPhone: data.emergencyContactPhone.present
+          ? data.emergencyContactPhone.value
+          : this.emergencyContactPhone,
+      notes: data.notes.present ? data.notes.value : this.notes,
+      isActive: data.isActive.present ? data.isActive.value : this.isActive,
       createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
     );
   }
 
@@ -1459,14 +1777,35 @@ class MemberRow extends DataClass implements Insertable<MemberRow> {
           ..write('shomitiId: $shomitiId, ')
           ..write('position: $position, ')
           ..write('displayName: $displayName, ')
-          ..write('createdAt: $createdAt')
+          ..write('phone: $phone, ')
+          ..write('addressOrWorkplace: $addressOrWorkplace, ')
+          ..write('nidOrPassport: $nidOrPassport, ')
+          ..write('emergencyContactName: $emergencyContactName, ')
+          ..write('emergencyContactPhone: $emergencyContactPhone, ')
+          ..write('notes: $notes, ')
+          ..write('isActive: $isActive, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode =>
-      Object.hash(id, shomitiId, position, displayName, createdAt);
+  int get hashCode => Object.hash(
+    id,
+    shomitiId,
+    position,
+    displayName,
+    phone,
+    addressOrWorkplace,
+    nidOrPassport,
+    emergencyContactName,
+    emergencyContactPhone,
+    notes,
+    isActive,
+    createdAt,
+    updatedAt,
+  );
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -1475,7 +1814,15 @@ class MemberRow extends DataClass implements Insertable<MemberRow> {
           other.shomitiId == this.shomitiId &&
           other.position == this.position &&
           other.displayName == this.displayName &&
-          other.createdAt == this.createdAt);
+          other.phone == this.phone &&
+          other.addressOrWorkplace == this.addressOrWorkplace &&
+          other.nidOrPassport == this.nidOrPassport &&
+          other.emergencyContactName == this.emergencyContactName &&
+          other.emergencyContactPhone == this.emergencyContactPhone &&
+          other.notes == this.notes &&
+          other.isActive == this.isActive &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt);
 }
 
 class MembersCompanion extends UpdateCompanion<MemberRow> {
@@ -1483,14 +1830,30 @@ class MembersCompanion extends UpdateCompanion<MemberRow> {
   final Value<String> shomitiId;
   final Value<int> position;
   final Value<String> displayName;
+  final Value<String?> phone;
+  final Value<String?> addressOrWorkplace;
+  final Value<String?> nidOrPassport;
+  final Value<String?> emergencyContactName;
+  final Value<String?> emergencyContactPhone;
+  final Value<String?> notes;
+  final Value<bool> isActive;
   final Value<DateTime> createdAt;
+  final Value<DateTime?> updatedAt;
   final Value<int> rowid;
   const MembersCompanion({
     this.id = const Value.absent(),
     this.shomitiId = const Value.absent(),
     this.position = const Value.absent(),
     this.displayName = const Value.absent(),
+    this.phone = const Value.absent(),
+    this.addressOrWorkplace = const Value.absent(),
+    this.nidOrPassport = const Value.absent(),
+    this.emergencyContactName = const Value.absent(),
+    this.emergencyContactPhone = const Value.absent(),
+    this.notes = const Value.absent(),
+    this.isActive = const Value.absent(),
     this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   MembersCompanion.insert({
@@ -1498,7 +1861,15 @@ class MembersCompanion extends UpdateCompanion<MemberRow> {
     required String shomitiId,
     required int position,
     required String displayName,
+    this.phone = const Value.absent(),
+    this.addressOrWorkplace = const Value.absent(),
+    this.nidOrPassport = const Value.absent(),
+    this.emergencyContactName = const Value.absent(),
+    this.emergencyContactPhone = const Value.absent(),
+    this.notes = const Value.absent(),
+    this.isActive = const Value.absent(),
     required DateTime createdAt,
+    this.updatedAt = const Value.absent(),
     this.rowid = const Value.absent(),
   }) : id = Value(id),
        shomitiId = Value(shomitiId),
@@ -1510,7 +1881,15 @@ class MembersCompanion extends UpdateCompanion<MemberRow> {
     Expression<String>? shomitiId,
     Expression<int>? position,
     Expression<String>? displayName,
+    Expression<String>? phone,
+    Expression<String>? addressOrWorkplace,
+    Expression<String>? nidOrPassport,
+    Expression<String>? emergencyContactName,
+    Expression<String>? emergencyContactPhone,
+    Expression<String>? notes,
+    Expression<bool>? isActive,
     Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
@@ -1518,7 +1897,18 @@ class MembersCompanion extends UpdateCompanion<MemberRow> {
       if (shomitiId != null) 'shomiti_id': shomitiId,
       if (position != null) 'position': position,
       if (displayName != null) 'display_name': displayName,
+      if (phone != null) 'phone': phone,
+      if (addressOrWorkplace != null)
+        'address_or_workplace': addressOrWorkplace,
+      if (nidOrPassport != null) 'nid_or_passport': nidOrPassport,
+      if (emergencyContactName != null)
+        'emergency_contact_name': emergencyContactName,
+      if (emergencyContactPhone != null)
+        'emergency_contact_phone': emergencyContactPhone,
+      if (notes != null) 'notes': notes,
+      if (isActive != null) 'is_active': isActive,
       if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
       if (rowid != null) 'rowid': rowid,
     });
   }
@@ -1528,7 +1918,15 @@ class MembersCompanion extends UpdateCompanion<MemberRow> {
     Value<String>? shomitiId,
     Value<int>? position,
     Value<String>? displayName,
+    Value<String?>? phone,
+    Value<String?>? addressOrWorkplace,
+    Value<String?>? nidOrPassport,
+    Value<String?>? emergencyContactName,
+    Value<String?>? emergencyContactPhone,
+    Value<String?>? notes,
+    Value<bool>? isActive,
     Value<DateTime>? createdAt,
+    Value<DateTime?>? updatedAt,
     Value<int>? rowid,
   }) {
     return MembersCompanion(
@@ -1536,7 +1934,16 @@ class MembersCompanion extends UpdateCompanion<MemberRow> {
       shomitiId: shomitiId ?? this.shomitiId,
       position: position ?? this.position,
       displayName: displayName ?? this.displayName,
+      phone: phone ?? this.phone,
+      addressOrWorkplace: addressOrWorkplace ?? this.addressOrWorkplace,
+      nidOrPassport: nidOrPassport ?? this.nidOrPassport,
+      emergencyContactName: emergencyContactName ?? this.emergencyContactName,
+      emergencyContactPhone:
+          emergencyContactPhone ?? this.emergencyContactPhone,
+      notes: notes ?? this.notes,
+      isActive: isActive ?? this.isActive,
       createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -1556,8 +1963,36 @@ class MembersCompanion extends UpdateCompanion<MemberRow> {
     if (displayName.present) {
       map['display_name'] = Variable<String>(displayName.value);
     }
+    if (phone.present) {
+      map['phone'] = Variable<String>(phone.value);
+    }
+    if (addressOrWorkplace.present) {
+      map['address_or_workplace'] = Variable<String>(addressOrWorkplace.value);
+    }
+    if (nidOrPassport.present) {
+      map['nid_or_passport'] = Variable<String>(nidOrPassport.value);
+    }
+    if (emergencyContactName.present) {
+      map['emergency_contact_name'] = Variable<String>(
+        emergencyContactName.value,
+      );
+    }
+    if (emergencyContactPhone.present) {
+      map['emergency_contact_phone'] = Variable<String>(
+        emergencyContactPhone.value,
+      );
+    }
+    if (notes.present) {
+      map['notes'] = Variable<String>(notes.value);
+    }
+    if (isActive.present) {
+      map['is_active'] = Variable<bool>(isActive.value);
+    }
     if (createdAt.present) {
       map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
     }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
@@ -1572,7 +2007,15 @@ class MembersCompanion extends UpdateCompanion<MemberRow> {
           ..write('shomitiId: $shomitiId, ')
           ..write('position: $position, ')
           ..write('displayName: $displayName, ')
+          ..write('phone: $phone, ')
+          ..write('addressOrWorkplace: $addressOrWorkplace, ')
+          ..write('nidOrPassport: $nidOrPassport, ')
+          ..write('emergencyContactName: $emergencyContactName, ')
+          ..write('emergencyContactPhone: $emergencyContactPhone, ')
+          ..write('notes: $notes, ')
+          ..write('isActive: $isActive, ')
           ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -3588,7 +4031,15 @@ typedef $$MembersTableCreateCompanionBuilder =
       required String shomitiId,
       required int position,
       required String displayName,
+      Value<String?> phone,
+      Value<String?> addressOrWorkplace,
+      Value<String?> nidOrPassport,
+      Value<String?> emergencyContactName,
+      Value<String?> emergencyContactPhone,
+      Value<String?> notes,
+      Value<bool> isActive,
       required DateTime createdAt,
+      Value<DateTime?> updatedAt,
       Value<int> rowid,
     });
 typedef $$MembersTableUpdateCompanionBuilder =
@@ -3597,7 +4048,15 @@ typedef $$MembersTableUpdateCompanionBuilder =
       Value<String> shomitiId,
       Value<int> position,
       Value<String> displayName,
+      Value<String?> phone,
+      Value<String?> addressOrWorkplace,
+      Value<String?> nidOrPassport,
+      Value<String?> emergencyContactName,
+      Value<String?> emergencyContactPhone,
+      Value<String?> notes,
+      Value<bool> isActive,
       Value<DateTime> createdAt,
+      Value<DateTime?> updatedAt,
       Value<int> rowid,
     });
 
@@ -3685,8 +4144,48 @@ class $$MembersTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
+  ColumnFilters<String> get phone => $composableBuilder(
+    column: $table.phone,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get addressOrWorkplace => $composableBuilder(
+    column: $table.addressOrWorkplace,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get nidOrPassport => $composableBuilder(
+    column: $table.nidOrPassport,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get emergencyContactName => $composableBuilder(
+    column: $table.emergencyContactName,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get emergencyContactPhone => $composableBuilder(
+    column: $table.emergencyContactPhone,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get notes => $composableBuilder(
+    column: $table.notes,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get isActive => $composableBuilder(
+    column: $table.isActive,
+    builder: (column) => ColumnFilters(column),
+  );
+
   ColumnFilters<DateTime> get createdAt => $composableBuilder(
     column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -3788,8 +4287,48 @@ class $$MembersTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<String> get phone => $composableBuilder(
+    column: $table.phone,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get addressOrWorkplace => $composableBuilder(
+    column: $table.addressOrWorkplace,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get nidOrPassport => $composableBuilder(
+    column: $table.nidOrPassport,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get emergencyContactName => $composableBuilder(
+    column: $table.emergencyContactName,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get emergencyContactPhone => $composableBuilder(
+    column: $table.emergencyContactPhone,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get notes => $composableBuilder(
+    column: $table.notes,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get isActive => $composableBuilder(
+    column: $table.isActive,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<DateTime> get createdAt => $composableBuilder(
     column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
     builder: (column) => ColumnOrderings(column),
   );
 
@@ -3837,8 +4376,40 @@ class $$MembersTableAnnotationComposer
     builder: (column) => column,
   );
 
+  GeneratedColumn<String> get phone =>
+      $composableBuilder(column: $table.phone, builder: (column) => column);
+
+  GeneratedColumn<String> get addressOrWorkplace => $composableBuilder(
+    column: $table.addressOrWorkplace,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get nidOrPassport => $composableBuilder(
+    column: $table.nidOrPassport,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get emergencyContactName => $composableBuilder(
+    column: $table.emergencyContactName,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get emergencyContactPhone => $composableBuilder(
+    column: $table.emergencyContactPhone,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get notes =>
+      $composableBuilder(column: $table.notes, builder: (column) => column);
+
+  GeneratedColumn<bool> get isActive =>
+      $composableBuilder(column: $table.isActive, builder: (column) => column);
+
   GeneratedColumn<DateTime> get createdAt =>
       $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
 
   $$ShomitisTableAnnotationComposer get shomitiId {
     final $$ShomitisTableAnnotationComposer composer = $composerBuilder(
@@ -3950,14 +4521,30 @@ class $$MembersTableTableManager
                 Value<String> shomitiId = const Value.absent(),
                 Value<int> position = const Value.absent(),
                 Value<String> displayName = const Value.absent(),
+                Value<String?> phone = const Value.absent(),
+                Value<String?> addressOrWorkplace = const Value.absent(),
+                Value<String?> nidOrPassport = const Value.absent(),
+                Value<String?> emergencyContactName = const Value.absent(),
+                Value<String?> emergencyContactPhone = const Value.absent(),
+                Value<String?> notes = const Value.absent(),
+                Value<bool> isActive = const Value.absent(),
                 Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime?> updatedAt = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => MembersCompanion(
                 id: id,
                 shomitiId: shomitiId,
                 position: position,
                 displayName: displayName,
+                phone: phone,
+                addressOrWorkplace: addressOrWorkplace,
+                nidOrPassport: nidOrPassport,
+                emergencyContactName: emergencyContactName,
+                emergencyContactPhone: emergencyContactPhone,
+                notes: notes,
+                isActive: isActive,
                 createdAt: createdAt,
+                updatedAt: updatedAt,
                 rowid: rowid,
               ),
           createCompanionCallback:
@@ -3966,14 +4553,30 @@ class $$MembersTableTableManager
                 required String shomitiId,
                 required int position,
                 required String displayName,
+                Value<String?> phone = const Value.absent(),
+                Value<String?> addressOrWorkplace = const Value.absent(),
+                Value<String?> nidOrPassport = const Value.absent(),
+                Value<String?> emergencyContactName = const Value.absent(),
+                Value<String?> emergencyContactPhone = const Value.absent(),
+                Value<String?> notes = const Value.absent(),
+                Value<bool> isActive = const Value.absent(),
                 required DateTime createdAt,
+                Value<DateTime?> updatedAt = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => MembersCompanion.insert(
                 id: id,
                 shomitiId: shomitiId,
                 position: position,
                 displayName: displayName,
+                phone: phone,
+                addressOrWorkplace: addressOrWorkplace,
+                nidOrPassport: nidOrPassport,
+                emergencyContactName: emergencyContactName,
+                emergencyContactPhone: emergencyContactPhone,
+                notes: notes,
+                isActive: isActive,
                 createdAt: createdAt,
+                updatedAt: updatedAt,
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0

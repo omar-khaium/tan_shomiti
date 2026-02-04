@@ -34,24 +34,34 @@ class AppDatabase extends _$AppDatabase {
   factory AppDatabase.memory() => AppDatabase(NativeDatabase.memory());
 
   @override
-  int get schemaVersion => 3;
+  int get schemaVersion => 4;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
-        onCreate: (m) async {
-          await m.createAll();
-        },
-        onUpgrade: (m, from, to) async {
-          if (from < 2) {
-            await m.createTable(shomitis);
-          }
-          if (from < 3) {
-            await m.createTable(members);
-            await m.createTable(roleAssignments);
-            await m.createTable(memberConsents);
-          }
-        },
-      );
+    onCreate: (m) async {
+      await m.createAll();
+    },
+    onUpgrade: (m, from, to) async {
+      if (from < 2) {
+        await m.createTable(shomitis);
+      }
+      if (from < 3) {
+        await m.createTable(members);
+        await m.createTable(roleAssignments);
+        await m.createTable(memberConsents);
+      }
+      if (from < 4) {
+        await m.addColumn(members, members.phone);
+        await m.addColumn(members, members.addressOrWorkplace);
+        await m.addColumn(members, members.nidOrPassport);
+        await m.addColumn(members, members.emergencyContactName);
+        await m.addColumn(members, members.emergencyContactPhone);
+        await m.addColumn(members, members.notes);
+        await m.addColumn(members, members.isActive);
+        await m.addColumn(members, members.updatedAt);
+      }
+    },
+  );
 }
 
 LazyDatabase _openConnection() {

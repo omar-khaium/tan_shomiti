@@ -5,12 +5,14 @@ import 'package:go_router/go_router.dart';
 import '../../../app/router/app_router.dart';
 import '../../../core/ui/components/app_button.dart';
 import '../../../core/ui/components/app_card.dart';
+import '../../../core/ui/components/app_confirm_dialog.dart';
 import '../../../core/ui/components/app_empty_state.dart';
 import '../../../core/ui/components/app_error_state.dart';
 import '../../../core/ui/components/app_loading_state.dart';
 import '../../../core/ui/components/app_status_chip.dart';
 import '../../../core/ui/tokens/app_spacing.dart';
-import 'providers/members_demo_providers.dart';
+import '../domain/entities/member.dart';
+import 'providers/members_providers.dart';
 
 class MemberDetailPage extends ConsumerStatefulWidget {
   const MemberDetailPage({required this.memberId, super.key});
@@ -26,7 +28,7 @@ class _MemberDetailPageState extends ConsumerState<MemberDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    final members = ref.watch(membersDemoControllerProvider);
+    final members = ref.watch(membersUiStateProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -49,7 +51,18 @@ class _MemberDetailPageState extends ConsumerState<MemberDetailPage> {
           child: AppErrorState(message: 'Failed to load member.'),
         ),
         data: (state) {
-          MembersDemoMember? member;
+          if (state == null) {
+            return const Padding(
+              padding: EdgeInsets.all(AppSpacing.s16),
+              child: AppEmptyState(
+                title: 'No Shomiti found',
+                message: 'Create a Shomiti first, then add members.',
+                icon: Icons.group_outlined,
+              ),
+            );
+          }
+
+          Member? member;
           for (final candidate in state.members) {
             if (candidate.id == widget.memberId) {
               member = candidate;
@@ -108,7 +121,9 @@ class _MemberDetailPageState extends ConsumerState<MemberDetailPage> {
               _Field(label: 'Phone', value: _maskPhone(resolved.phone)),
               _Field(
                 label: 'Address/workplace',
-                value: resolved.addressOrWorkplace,
+                value: resolved.addressOrWorkplace?.trim().isNotEmpty == true
+                    ? resolved.addressOrWorkplace!.trim()
+                    : 'Not set',
               ),
               _Field(
                 label: 'NID/Passport',
@@ -117,7 +132,9 @@ class _MemberDetailPageState extends ConsumerState<MemberDetailPage> {
               const Divider(),
               _Field(
                 label: 'Emergency contact',
-                value: resolved.emergencyContactName,
+                value: resolved.emergencyContactName?.trim().isNotEmpty == true
+                    ? resolved.emergencyContactName!.trim()
+                    : 'Not set',
               ),
               _Field(
                 label: 'Emergency phone',
@@ -135,9 +152,21 @@ class _MemberDetailPageState extends ConsumerState<MemberDetailPage> {
                     : 'Member inactive',
                 onPressed: resolved.isActive
                     ? () async {
-                        await ref
-                            .read(membersDemoControllerProvider.notifier)
-                            .deactivateMember(resolved.id);
+                        final confirmed = await showAppConfirmDialog(
+                          context: context,
+                          title: 'Deactivate member?',
+                          message:
+                              'This will mark the member as inactive but keep their records for auditing.',
+                          confirmLabel: 'Deactivate',
+                          confirmKey: const Key('member_deactivate_confirm'),
+                          cancelKey: const Key('member_deactivate_cancel'),
+                        );
+                        if (confirmed != true) return;
+
+                        await ref.read(deactivateMemberProvider)(
+                          shomitiId: state.shomitiId,
+                          memberId: resolved.id,
+                        );
 
                         if (!context.mounted) return;
                         context.pop();
@@ -151,10 +180,11 @@ class _MemberDetailPageState extends ConsumerState<MemberDetailPage> {
     );
   }
 
-  String _maskPhone(String phone) {
-    if (_showSensitive) return phone;
+  String _maskPhone(String? phone) {
+    if (phone == null || phone.trim().isEmpty) return 'Not set';
+    if (_showSensitive) return phone.trim();
     final digits = phone.replaceAll(RegExp(r'[^0-9]'), '');
-    if (digits.length <= 4) return phone;
+    if (digits.length <= 4) return phone.trim();
     final visible = digits.substring(digits.length - 3);
     return '${digits.substring(0, 2)}******$visible';
   }

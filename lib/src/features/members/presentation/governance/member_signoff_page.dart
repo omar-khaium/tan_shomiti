@@ -46,8 +46,9 @@ class MemberSignoffPage extends ConsumerWidget {
           return ListView.separated(
             padding: const EdgeInsets.all(AppSpacing.s16),
             itemCount: data.members.length + 1,
-            separatorBuilder: (context, index) =>
-                index == 0 ? const SizedBox(height: AppSpacing.s12) : const Divider(height: 1),
+            separatorBuilder: (context, index) => index == 0
+                ? const SizedBox(height: AppSpacing.s12)
+                : const Divider(height: 1),
             itemBuilder: (context, index) {
               if (index == 0) {
                 return Row(
@@ -89,14 +90,14 @@ class MemberSignoffPage extends ConsumerWidget {
 
               return ListTile(
                 key: Key('signoff_member_$memberIndex'),
-                title: Text(member.displayName),
+                title: Text(member.fullName),
                 subtitle: Text(subtitle),
                 trailing: statusChip,
                 onTap: () async {
                   if (consent != null) {
                     await _showConsentDetailsDialog(
                       context: context,
-                      memberName: member.displayName,
+                      memberName: member.fullName,
                       consent: consent,
                     );
                     return;
@@ -104,7 +105,7 @@ class MemberSignoffPage extends ConsumerWidget {
 
                   final recorded = await _showRecordConsentDialog(
                     context: context,
-                    memberName: member.displayName,
+                    memberName: member.fullName,
                     memberIndex: memberIndex,
                     shomitiId: data.shomitiId,
                     memberId: member.id,
@@ -116,7 +117,7 @@ class MemberSignoffPage extends ConsumerWidget {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text(
-                        'Recorded sign-off for ${member.displayName}.',
+                        'Recorded sign-off for ${member.fullName}.',
                       ),
                     ),
                   );
@@ -130,22 +131,23 @@ class MemberSignoffPage extends ConsumerWidget {
   }
 
   String _signedSubtitle(BuildContext context, MemberConsent consent) {
-    final date = MaterialLocalizations.of(context).formatShortDate(
-      consent.signedAt,
-    );
+    final date = MaterialLocalizations.of(
+      context,
+    ).formatShortDate(consent.signedAt);
     final datePart = 'Signed $date';
     final proof = _proofTypeLabel(consent.proofType);
-    final referencePart =
-        consent.proofReference.isEmpty ? null : consent.proofReference;
+    final referencePart = consent.proofReference.isEmpty
+        ? null
+        : consent.proofReference;
 
     return [datePart, proof, ?referencePart].join(' · ');
   }
 
   String _proofTypeLabel(ConsentProofType type) => switch (type) {
-        ConsentProofType.signature => 'Signature',
-        ConsentProofType.otp => 'OTP',
-        ConsentProofType.chatReference => 'Chat reference',
-      };
+    ConsentProofType.signature => 'Signature',
+    ConsentProofType.otp => 'OTP',
+    ConsentProofType.chatReference => 'Chat reference',
+  };
 
   Future<void> _showConsentDetailsDialog({
     required BuildContext context,
@@ -243,12 +245,12 @@ class MemberSignoffPage extends ConsumerWidget {
               if (!(formKey.currentState?.validate() ?? false)) return;
 
               await ref.read(recordMemberConsentProvider)(
-                    shomitiId: shomitiId,
-                    memberId: memberId,
-                    ruleSetVersionId: ruleSetVersionId,
-                    proofType: proofType,
-                    proofReference: proofReferenceController.text.trim(),
-                  );
+                shomitiId: shomitiId,
+                memberId: memberId,
+                ruleSetVersionId: ruleSetVersionId,
+                proofType: proofType,
+                proofReference: proofReferenceController.text.trim(),
+              );
 
               if (!context.mounted) return;
               context.pop(true);

@@ -118,7 +118,7 @@ class GovernancePage extends ConsumerWidget {
   String _memberName(GovernanceUiState state, String? memberId) {
     if (memberId == null) return 'Unassigned';
     for (final member in state.members) {
-      if (member.id == memberId) return member.displayName;
+      if (member.id == memberId) return member.fullName;
     }
     return 'Unknown';
   }

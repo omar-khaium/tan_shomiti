@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:tan_shomiti/src/core/ui/theme/app_theme.dart';
+import 'package:tan_shomiti/src/features/members/domain/entities/member.dart';
+import 'package:tan_shomiti/src/features/members/presentation/models/members_ui_state.dart';
 import 'package:tan_shomiti/src/features/members/presentation/members_page.dart';
-import 'package:tan_shomiti/src/features/members/presentation/providers/members_demo_providers.dart';
+import 'package:tan_shomiti/src/features/members/presentation/providers/members_providers.dart';
 
 void main() {
   Future<void> pumpPage(
@@ -22,12 +24,13 @@ void main() {
   }
 
   testWidgets('Members page shows loading state', (tester) async {
+    final controller = StreamController<MembersUiState?>();
+    addTearDown(controller.close);
+
     await pumpPage(
       tester,
       overrides: [
-        membersDemoControllerProvider.overrideWith(
-          _LoadingMembersDemoController.new,
-        ),
+        membersUiStateProvider.overrideWith((ref) => controller.stream),
       ],
     );
 
@@ -38,8 +41,8 @@ void main() {
     await pumpPage(
       tester,
       overrides: [
-        membersDemoControllerProvider.overrideWith(
-          _ThrowingMembersDemoController.new,
+        membersUiStateProvider.overrideWith(
+          (ref) => Stream<MembersUiState?>.error(Exception('boom')),
         ),
       ],
     );
@@ -52,12 +55,13 @@ void main() {
     await pumpPage(
       tester,
       overrides: [
-        membersDemoControllerProvider.overrideWith(
-          () => _DataMembersDemoController(
-            const MembersDemoState(
-              members: [],
+        membersUiStateProvider.overrideWith(
+          (ref) => Stream.value(
+            const MembersUiState(
+              shomitiId: 'active',
               isJoiningClosed: false,
               closedJoiningReason: null,
+              members: [],
             ),
           ),
         ),
@@ -75,12 +79,13 @@ void main() {
     await pumpPage(
       tester,
       overrides: [
-        membersDemoControllerProvider.overrideWith(
-          () => _DataMembersDemoController(
-            const MembersDemoState(
-              members: [],
+        membersUiStateProvider.overrideWith(
+          (ref) => Stream.value(
+            const MembersUiState(
+              shomitiId: 'active',
               isJoiningClosed: true,
               closedJoiningReason: 'Joining is closed.',
+              members: [],
             ),
           ),
         ),
@@ -96,8 +101,10 @@ void main() {
   });
 
   testWidgets('Members page shows member rows', (tester) async {
-    final member = MembersDemoMember(
+    final member = Member(
       id: 'm1',
+      shomitiId: 'active',
+      position: 1,
       fullName: 'Alice',
       phone: '01700000000',
       addressOrWorkplace: 'Dhaka',
@@ -107,17 +114,19 @@ void main() {
       notes: null,
       isActive: true,
       createdAt: DateTime(2026, 1, 1),
+      updatedAt: null,
     );
 
     await pumpPage(
       tester,
       overrides: [
-        membersDemoControllerProvider.overrideWith(
-          () => _DataMembersDemoController(
-            MembersDemoState(
-              members: [member],
+        membersUiStateProvider.overrideWith(
+          (ref) => Stream.value(
+            MembersUiState(
+              shomitiId: 'active',
               isJoiningClosed: false,
               closedJoiningReason: null,
+              members: [member],
             ),
           ),
         ),
@@ -128,27 +137,4 @@ void main() {
     expect(find.byKey(const Key('member_row_m1')), findsOneWidget);
     expect(find.text('Alice'), findsOneWidget);
   });
-}
-
-class _LoadingMembersDemoController extends MembersDemoController {
-  final _completer = Completer<MembersDemoState>();
-
-  @override
-  Future<MembersDemoState> build() => _completer.future;
-}
-
-class _ThrowingMembersDemoController extends MembersDemoController {
-  @override
-  Future<MembersDemoState> build() async {
-    throw Exception('boom');
-  }
-}
-
-class _DataMembersDemoController extends MembersDemoController {
-  _DataMembersDemoController(this._state);
-
-  final MembersDemoState _state;
-
-  @override
-  MembersDemoState build() => _state;
 }
