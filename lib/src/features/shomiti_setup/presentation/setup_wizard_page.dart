@@ -149,26 +149,26 @@ class _SetupWizardPageState extends ConsumerState<SetupWizardPage> {
             const SizedBox(height: AppSpacing.s16),
             Row(
               children: [
-              Expanded(
-                child: AppButton.secondary(
-                  key: const Key('setup_back'),
-                  label: 'Back',
-                  onPressed: _isSubmitting || _stepIndex == 0 ? null : _back,
+                Expanded(
+                  child: AppButton.secondary(
+                    key: const Key('setup_back'),
+                    label: 'Back',
+                    onPressed: _isSubmitting || _stepIndex == 0 ? null : _back,
+                  ),
                 ),
-              ),
-              const SizedBox(width: AppSpacing.s12),
-              Expanded(
-                child: AppButton.primary(
-                  key: const Key('setup_next'),
-                  label: _stepIndex == totalSteps - 1 ? 'Finish' : 'Next',
-                  isLoading: _isSubmitting && _stepIndex == totalSteps - 1,
-                  onPressed: _isSubmitting
-                      ? null
-                      : (_stepIndex == totalSteps - 1 ? _finish : _next),
+                const SizedBox(width: AppSpacing.s12),
+                Expanded(
+                  child: AppButton.primary(
+                    key: const Key('setup_next'),
+                    label: _stepIndex == totalSteps - 1 ? 'Finish' : 'Next',
+                    isLoading: _isSubmitting && _stepIndex == totalSteps - 1,
+                    onPressed: _isSubmitting
+                        ? null
+                        : (_stepIndex == totalSteps - 1 ? _finish : _next),
+                  ),
                 ),
-              ),
-            ],
-          ),
+              ],
+            ),
           ],
         ),
       ),
@@ -212,7 +212,9 @@ class _SetupWizardPageState extends ConsumerState<SetupWizardPage> {
     setState(() => _isSubmitting = true);
 
     try {
-      final snapshot = isDemo ? _buildDemoSnapshot() : _buildSnapshotFromInputs();
+      final snapshot = isDemo
+          ? _buildDemoSnapshot()
+          : _buildSnapshotFromInputs();
 
       await ref.read(createShomitiProvider)(snapshot);
 
@@ -220,13 +222,15 @@ class _SetupWizardPageState extends ConsumerState<SetupWizardPage> {
       context.go(dashboardLocation);
     } on CreateShomitiValidationException catch (e) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(e.message)),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(e.message)));
     } catch (_) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Something went wrong. Please try again.')),
+        const SnackBar(
+          content: Text('Something went wrong. Please try again.'),
+        ),
       );
     } finally {
       if (mounted) {
@@ -304,7 +308,7 @@ class _SetupWizardPageState extends ConsumerState<SetupWizardPage> {
     return RuleSetSnapshot(
       schemaVersion: 1,
       shomitiName: 'Demo Shomiti',
-      startDate: DateTime.now(),
+      startDate: DateTime.now().add(const Duration(days: 7)),
       groupType: GroupTypePolicy.closed,
       memberCount: 10,
       shareValueBdt: 1000,
@@ -391,7 +395,10 @@ class _SetupWizardPageState extends ConsumerState<SetupWizardPage> {
     return parsed;
   }
 
-  int? _parseOptionalNonNegativeInt({required String value, required String field}) {
+  int? _parseOptionalNonNegativeInt({
+    required String value,
+    required String field,
+  }) {
     final trimmed = value.trim();
     if (trimmed.isEmpty) return null;
 
@@ -405,7 +412,10 @@ class _SetupWizardPageState extends ConsumerState<SetupWizardPage> {
     return parsed;
   }
 
-  int? _parseOptionalPositiveInt({required String value, required String field}) {
+  int? _parseOptionalPositiveInt({
+    required String value,
+    required String field,
+  }) {
     final trimmed = value.trim();
     if (trimmed.isEmpty) return null;
 
@@ -435,33 +445,33 @@ enum _SetupStep {
 
 extension GroupTypePolicyLabels on GroupTypePolicy {
   String get label => switch (this) {
-        GroupTypePolicy.closed => 'Closed (recommended)',
-        GroupTypePolicy.open => 'Open',
-      };
+    GroupTypePolicy.closed => 'Closed (recommended)',
+    GroupTypePolicy.open => 'Open',
+  };
 }
 
 extension MissedPaymentPolicyLabels on MissedPaymentPolicy {
   String get label => switch (this) {
-        MissedPaymentPolicy.postponePayout => 'Postpone payout (recommended)',
-        MissedPaymentPolicy.coverFromReserve => 'Cover from reserve',
-        MissedPaymentPolicy.coverByGuarantor => 'Cover by guarantor',
-      };
+    MissedPaymentPolicy.postponePayout => 'Postpone payout (recommended)',
+    MissedPaymentPolicy.coverFromReserve => 'Cover from reserve',
+    MissedPaymentPolicy.coverByGuarantor => 'Cover by guarantor',
+  };
 }
 
 extension PayoutMethodLabels on PayoutMethod {
   String get label => switch (this) {
-        PayoutMethod.cash => 'Cash',
-        PayoutMethod.bank => 'Bank transfer',
-        PayoutMethod.mobileWallet => 'Mobile wallet',
-        PayoutMethod.mixed => 'Mixed',
-      };
+    PayoutMethod.cash => 'Cash',
+    PayoutMethod.bank => 'Bank transfer',
+    PayoutMethod.mobileWallet => 'Mobile wallet',
+    PayoutMethod.mixed => 'Mixed',
+  };
 }
 
 extension FeePayerModelLabels on FeePayerModel {
   String get label => switch (this) {
-        FeePayerModel.everyoneEqually => 'Everyone equally',
-        FeePayerModel.winnerPays => 'Winner pays',
-      };
+    FeePayerModel.everyoneEqually => 'Everyone equally',
+    FeePayerModel.winnerPays => 'Winner pays',
+  };
 }
 
 class _StepBody extends StatelessWidget {
