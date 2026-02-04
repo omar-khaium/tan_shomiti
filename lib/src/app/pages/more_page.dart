@@ -46,6 +46,12 @@ class MorePage extends ConsumerWidget {
           onTap: () => context.push(governanceLocation),
         ),
         _MoreTile(
+          tileKey: const Key('more_shares'),
+          title: sharesTitle,
+          subtitle: 'Assign shares and review pot totals',
+          onTap: () => context.push(sharesLocation),
+        ),
+        _MoreTile(
           tileKey: const Key('more_rules'),
           title: rulesTitle,
           subtitle: 'View current rules and versions',
