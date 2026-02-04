@@ -58,6 +58,12 @@ class MorePage extends ConsumerWidget {
           onTap: () => context.push(riskControlsLocation),
         ),
         _MoreTile(
+          tileKey: const Key('more_membership_changes'),
+          title: membershipChangesTitle,
+          subtitle: 'Exit, replacement, and removal workflows',
+          onTap: () => context.push(membershipChangesLocation),
+        ),
+        _MoreTile(
           tileKey: const Key('more_rules'),
           title: rulesTitle,
           subtitle: 'View current rules and versions',
