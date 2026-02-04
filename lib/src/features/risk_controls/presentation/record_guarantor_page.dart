@@ -4,7 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/ui/components/app_button.dart';
 import '../../../core/ui/components/app_text_field.dart';
 import '../../../core/ui/tokens/app_spacing.dart';
-import 'providers/risk_controls_demo_store.dart';
+import '../domain/usecases/risk_controls_exceptions.dart';
+import 'providers/risk_controls_providers.dart';
 
 class RecordGuarantorPage extends ConsumerStatefulWidget {
   const RecordGuarantorPage({
@@ -66,22 +67,30 @@ class _RecordGuarantorPageState extends ConsumerState<RecordGuarantorPage> {
     }
 
     ref
-        .read(demoRiskControlsStoreProvider.notifier)
+        .read(riskControlsControllerProvider.notifier)
         .recordGuarantor(
           memberId: widget.memberId,
-          guarantor: DemoGuarantor(
-            name: name,
-            phone: phone,
-            relationship: relationship.isEmpty ? null : relationship,
-            proofRef: proof.isEmpty ? null : proof,
-            recordedAt: DateTime.now(),
-          ),
-        );
-
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(const SnackBar(content: Text('Guarantor recorded (demo).')));
-    Navigator.of(context).pop();
+          name: name,
+          phone: phone,
+          relationship: relationship.isEmpty ? null : relationship,
+          proofRef: proof.isEmpty ? null : proof,
+        )
+        .then((_) {
+          if (!mounted) return;
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(const SnackBar(content: Text('Guarantor recorded.')));
+          Navigator.of(context).pop();
+        })
+        .catchError((Object error) {
+          if (!mounted) return;
+          final message = error is RiskControlException
+              ? error.message
+              : 'Failed to record guarantor.';
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(message)));
+        });
   }
 
   @override

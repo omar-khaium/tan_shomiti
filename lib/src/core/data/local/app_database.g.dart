@@ -2391,6 +2391,1052 @@ class MemberSharesCompanion extends UpdateCompanion<MemberShare> {
   }
 }
 
+class $GuarantorsTable extends Guarantors
+    with TableInfo<$GuarantorsTable, GuarantorRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $GuarantorsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _shomitiIdMeta = const VerificationMeta(
+    'shomitiId',
+  );
+  @override
+  late final GeneratedColumn<String> shomitiId = GeneratedColumn<String>(
+    'shomiti_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _memberIdMeta = const VerificationMeta(
+    'memberId',
+  );
+  @override
+  late final GeneratedColumn<String> memberId = GeneratedColumn<String>(
+    'member_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+    'name',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _phoneMeta = const VerificationMeta('phone');
+  @override
+  late final GeneratedColumn<String> phone = GeneratedColumn<String>(
+    'phone',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _relationshipMeta = const VerificationMeta(
+    'relationship',
+  );
+  @override
+  late final GeneratedColumn<String> relationship = GeneratedColumn<String>(
+    'relationship',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _proofRefMeta = const VerificationMeta(
+    'proofRef',
+  );
+  @override
+  late final GeneratedColumn<String> proofRef = GeneratedColumn<String>(
+    'proof_ref',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _recordedAtMeta = const VerificationMeta(
+    'recordedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> recordedAt = GeneratedColumn<DateTime>(
+    'recorded_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    shomitiId,
+    memberId,
+    name,
+    phone,
+    relationship,
+    proofRef,
+    recordedAt,
+    updatedAt,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'guarantors';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<GuarantorRow> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('shomiti_id')) {
+      context.handle(
+        _shomitiIdMeta,
+        shomitiId.isAcceptableOrUnknown(data['shomiti_id']!, _shomitiIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_shomitiIdMeta);
+    }
+    if (data.containsKey('member_id')) {
+      context.handle(
+        _memberIdMeta,
+        memberId.isAcceptableOrUnknown(data['member_id']!, _memberIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_memberIdMeta);
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+        _nameMeta,
+        name.isAcceptableOrUnknown(data['name']!, _nameMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    if (data.containsKey('phone')) {
+      context.handle(
+        _phoneMeta,
+        phone.isAcceptableOrUnknown(data['phone']!, _phoneMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_phoneMeta);
+    }
+    if (data.containsKey('relationship')) {
+      context.handle(
+        _relationshipMeta,
+        relationship.isAcceptableOrUnknown(
+          data['relationship']!,
+          _relationshipMeta,
+        ),
+      );
+    }
+    if (data.containsKey('proof_ref')) {
+      context.handle(
+        _proofRefMeta,
+        proofRef.isAcceptableOrUnknown(data['proof_ref']!, _proofRefMeta),
+      );
+    }
+    if (data.containsKey('recorded_at')) {
+      context.handle(
+        _recordedAtMeta,
+        recordedAt.isAcceptableOrUnknown(data['recorded_at']!, _recordedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_recordedAtMeta);
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {shomitiId, memberId};
+  @override
+  GuarantorRow map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return GuarantorRow(
+      shomitiId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}shomiti_id'],
+      )!,
+      memberId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}member_id'],
+      )!,
+      name: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}name'],
+      )!,
+      phone: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}phone'],
+      )!,
+      relationship: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}relationship'],
+      ),
+      proofRef: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}proof_ref'],
+      ),
+      recordedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}recorded_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      ),
+    );
+  }
+
+  @override
+  $GuarantorsTable createAlias(String alias) {
+    return $GuarantorsTable(attachedDatabase, alias);
+  }
+}
+
+class GuarantorRow extends DataClass implements Insertable<GuarantorRow> {
+  final String shomitiId;
+  final String memberId;
+  final String name;
+  final String phone;
+  final String? relationship;
+  final String? proofRef;
+  final DateTime recordedAt;
+  final DateTime? updatedAt;
+  const GuarantorRow({
+    required this.shomitiId,
+    required this.memberId,
+    required this.name,
+    required this.phone,
+    this.relationship,
+    this.proofRef,
+    required this.recordedAt,
+    this.updatedAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['shomiti_id'] = Variable<String>(shomitiId);
+    map['member_id'] = Variable<String>(memberId);
+    map['name'] = Variable<String>(name);
+    map['phone'] = Variable<String>(phone);
+    if (!nullToAbsent || relationship != null) {
+      map['relationship'] = Variable<String>(relationship);
+    }
+    if (!nullToAbsent || proofRef != null) {
+      map['proof_ref'] = Variable<String>(proofRef);
+    }
+    map['recorded_at'] = Variable<DateTime>(recordedAt);
+    if (!nullToAbsent || updatedAt != null) {
+      map['updated_at'] = Variable<DateTime>(updatedAt);
+    }
+    return map;
+  }
+
+  GuarantorsCompanion toCompanion(bool nullToAbsent) {
+    return GuarantorsCompanion(
+      shomitiId: Value(shomitiId),
+      memberId: Value(memberId),
+      name: Value(name),
+      phone: Value(phone),
+      relationship: relationship == null && nullToAbsent
+          ? const Value.absent()
+          : Value(relationship),
+      proofRef: proofRef == null && nullToAbsent
+          ? const Value.absent()
+          : Value(proofRef),
+      recordedAt: Value(recordedAt),
+      updatedAt: updatedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(updatedAt),
+    );
+  }
+
+  factory GuarantorRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return GuarantorRow(
+      shomitiId: serializer.fromJson<String>(json['shomitiId']),
+      memberId: serializer.fromJson<String>(json['memberId']),
+      name: serializer.fromJson<String>(json['name']),
+      phone: serializer.fromJson<String>(json['phone']),
+      relationship: serializer.fromJson<String?>(json['relationship']),
+      proofRef: serializer.fromJson<String?>(json['proofRef']),
+      recordedAt: serializer.fromJson<DateTime>(json['recordedAt']),
+      updatedAt: serializer.fromJson<DateTime?>(json['updatedAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'shomitiId': serializer.toJson<String>(shomitiId),
+      'memberId': serializer.toJson<String>(memberId),
+      'name': serializer.toJson<String>(name),
+      'phone': serializer.toJson<String>(phone),
+      'relationship': serializer.toJson<String?>(relationship),
+      'proofRef': serializer.toJson<String?>(proofRef),
+      'recordedAt': serializer.toJson<DateTime>(recordedAt),
+      'updatedAt': serializer.toJson<DateTime?>(updatedAt),
+    };
+  }
+
+  GuarantorRow copyWith({
+    String? shomitiId,
+    String? memberId,
+    String? name,
+    String? phone,
+    Value<String?> relationship = const Value.absent(),
+    Value<String?> proofRef = const Value.absent(),
+    DateTime? recordedAt,
+    Value<DateTime?> updatedAt = const Value.absent(),
+  }) => GuarantorRow(
+    shomitiId: shomitiId ?? this.shomitiId,
+    memberId: memberId ?? this.memberId,
+    name: name ?? this.name,
+    phone: phone ?? this.phone,
+    relationship: relationship.present ? relationship.value : this.relationship,
+    proofRef: proofRef.present ? proofRef.value : this.proofRef,
+    recordedAt: recordedAt ?? this.recordedAt,
+    updatedAt: updatedAt.present ? updatedAt.value : this.updatedAt,
+  );
+  GuarantorRow copyWithCompanion(GuarantorsCompanion data) {
+    return GuarantorRow(
+      shomitiId: data.shomitiId.present ? data.shomitiId.value : this.shomitiId,
+      memberId: data.memberId.present ? data.memberId.value : this.memberId,
+      name: data.name.present ? data.name.value : this.name,
+      phone: data.phone.present ? data.phone.value : this.phone,
+      relationship: data.relationship.present
+          ? data.relationship.value
+          : this.relationship,
+      proofRef: data.proofRef.present ? data.proofRef.value : this.proofRef,
+      recordedAt: data.recordedAt.present
+          ? data.recordedAt.value
+          : this.recordedAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('GuarantorRow(')
+          ..write('shomitiId: $shomitiId, ')
+          ..write('memberId: $memberId, ')
+          ..write('name: $name, ')
+          ..write('phone: $phone, ')
+          ..write('relationship: $relationship, ')
+          ..write('proofRef: $proofRef, ')
+          ..write('recordedAt: $recordedAt, ')
+          ..write('updatedAt: $updatedAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    shomitiId,
+    memberId,
+    name,
+    phone,
+    relationship,
+    proofRef,
+    recordedAt,
+    updatedAt,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is GuarantorRow &&
+          other.shomitiId == this.shomitiId &&
+          other.memberId == this.memberId &&
+          other.name == this.name &&
+          other.phone == this.phone &&
+          other.relationship == this.relationship &&
+          other.proofRef == this.proofRef &&
+          other.recordedAt == this.recordedAt &&
+          other.updatedAt == this.updatedAt);
+}
+
+class GuarantorsCompanion extends UpdateCompanion<GuarantorRow> {
+  final Value<String> shomitiId;
+  final Value<String> memberId;
+  final Value<String> name;
+  final Value<String> phone;
+  final Value<String?> relationship;
+  final Value<String?> proofRef;
+  final Value<DateTime> recordedAt;
+  final Value<DateTime?> updatedAt;
+  final Value<int> rowid;
+  const GuarantorsCompanion({
+    this.shomitiId = const Value.absent(),
+    this.memberId = const Value.absent(),
+    this.name = const Value.absent(),
+    this.phone = const Value.absent(),
+    this.relationship = const Value.absent(),
+    this.proofRef = const Value.absent(),
+    this.recordedAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  GuarantorsCompanion.insert({
+    required String shomitiId,
+    required String memberId,
+    required String name,
+    required String phone,
+    this.relationship = const Value.absent(),
+    this.proofRef = const Value.absent(),
+    required DateTime recordedAt,
+    this.updatedAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : shomitiId = Value(shomitiId),
+       memberId = Value(memberId),
+       name = Value(name),
+       phone = Value(phone),
+       recordedAt = Value(recordedAt);
+  static Insertable<GuarantorRow> custom({
+    Expression<String>? shomitiId,
+    Expression<String>? memberId,
+    Expression<String>? name,
+    Expression<String>? phone,
+    Expression<String>? relationship,
+    Expression<String>? proofRef,
+    Expression<DateTime>? recordedAt,
+    Expression<DateTime>? updatedAt,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (shomitiId != null) 'shomiti_id': shomitiId,
+      if (memberId != null) 'member_id': memberId,
+      if (name != null) 'name': name,
+      if (phone != null) 'phone': phone,
+      if (relationship != null) 'relationship': relationship,
+      if (proofRef != null) 'proof_ref': proofRef,
+      if (recordedAt != null) 'recorded_at': recordedAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  GuarantorsCompanion copyWith({
+    Value<String>? shomitiId,
+    Value<String>? memberId,
+    Value<String>? name,
+    Value<String>? phone,
+    Value<String?>? relationship,
+    Value<String?>? proofRef,
+    Value<DateTime>? recordedAt,
+    Value<DateTime?>? updatedAt,
+    Value<int>? rowid,
+  }) {
+    return GuarantorsCompanion(
+      shomitiId: shomitiId ?? this.shomitiId,
+      memberId: memberId ?? this.memberId,
+      name: name ?? this.name,
+      phone: phone ?? this.phone,
+      relationship: relationship ?? this.relationship,
+      proofRef: proofRef ?? this.proofRef,
+      recordedAt: recordedAt ?? this.recordedAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (shomitiId.present) {
+      map['shomiti_id'] = Variable<String>(shomitiId.value);
+    }
+    if (memberId.present) {
+      map['member_id'] = Variable<String>(memberId.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (phone.present) {
+      map['phone'] = Variable<String>(phone.value);
+    }
+    if (relationship.present) {
+      map['relationship'] = Variable<String>(relationship.value);
+    }
+    if (proofRef.present) {
+      map['proof_ref'] = Variable<String>(proofRef.value);
+    }
+    if (recordedAt.present) {
+      map['recorded_at'] = Variable<DateTime>(recordedAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('GuarantorsCompanion(')
+          ..write('shomitiId: $shomitiId, ')
+          ..write('memberId: $memberId, ')
+          ..write('name: $name, ')
+          ..write('phone: $phone, ')
+          ..write('relationship: $relationship, ')
+          ..write('proofRef: $proofRef, ')
+          ..write('recordedAt: $recordedAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $SecurityDepositsTable extends SecurityDeposits
+    with TableInfo<$SecurityDepositsTable, SecurityDepositRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $SecurityDepositsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _shomitiIdMeta = const VerificationMeta(
+    'shomitiId',
+  );
+  @override
+  late final GeneratedColumn<String> shomitiId = GeneratedColumn<String>(
+    'shomiti_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _memberIdMeta = const VerificationMeta(
+    'memberId',
+  );
+  @override
+  late final GeneratedColumn<String> memberId = GeneratedColumn<String>(
+    'member_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _amountBdtMeta = const VerificationMeta(
+    'amountBdt',
+  );
+  @override
+  late final GeneratedColumn<int> amountBdt = GeneratedColumn<int>(
+    'amount_bdt',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _heldByMeta = const VerificationMeta('heldBy');
+  @override
+  late final GeneratedColumn<String> heldBy = GeneratedColumn<String>(
+    'held_by',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _proofRefMeta = const VerificationMeta(
+    'proofRef',
+  );
+  @override
+  late final GeneratedColumn<String> proofRef = GeneratedColumn<String>(
+    'proof_ref',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _recordedAtMeta = const VerificationMeta(
+    'recordedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> recordedAt = GeneratedColumn<DateTime>(
+    'recorded_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _returnedAtMeta = const VerificationMeta(
+    'returnedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> returnedAt = GeneratedColumn<DateTime>(
+    'returned_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    shomitiId,
+    memberId,
+    amountBdt,
+    heldBy,
+    proofRef,
+    recordedAt,
+    returnedAt,
+    updatedAt,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'security_deposits';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<SecurityDepositRow> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('shomiti_id')) {
+      context.handle(
+        _shomitiIdMeta,
+        shomitiId.isAcceptableOrUnknown(data['shomiti_id']!, _shomitiIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_shomitiIdMeta);
+    }
+    if (data.containsKey('member_id')) {
+      context.handle(
+        _memberIdMeta,
+        memberId.isAcceptableOrUnknown(data['member_id']!, _memberIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_memberIdMeta);
+    }
+    if (data.containsKey('amount_bdt')) {
+      context.handle(
+        _amountBdtMeta,
+        amountBdt.isAcceptableOrUnknown(data['amount_bdt']!, _amountBdtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_amountBdtMeta);
+    }
+    if (data.containsKey('held_by')) {
+      context.handle(
+        _heldByMeta,
+        heldBy.isAcceptableOrUnknown(data['held_by']!, _heldByMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_heldByMeta);
+    }
+    if (data.containsKey('proof_ref')) {
+      context.handle(
+        _proofRefMeta,
+        proofRef.isAcceptableOrUnknown(data['proof_ref']!, _proofRefMeta),
+      );
+    }
+    if (data.containsKey('recorded_at')) {
+      context.handle(
+        _recordedAtMeta,
+        recordedAt.isAcceptableOrUnknown(data['recorded_at']!, _recordedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_recordedAtMeta);
+    }
+    if (data.containsKey('returned_at')) {
+      context.handle(
+        _returnedAtMeta,
+        returnedAt.isAcceptableOrUnknown(data['returned_at']!, _returnedAtMeta),
+      );
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {shomitiId, memberId};
+  @override
+  SecurityDepositRow map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return SecurityDepositRow(
+      shomitiId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}shomiti_id'],
+      )!,
+      memberId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}member_id'],
+      )!,
+      amountBdt: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}amount_bdt'],
+      )!,
+      heldBy: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}held_by'],
+      )!,
+      proofRef: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}proof_ref'],
+      ),
+      recordedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}recorded_at'],
+      )!,
+      returnedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}returned_at'],
+      ),
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      ),
+    );
+  }
+
+  @override
+  $SecurityDepositsTable createAlias(String alias) {
+    return $SecurityDepositsTable(attachedDatabase, alias);
+  }
+}
+
+class SecurityDepositRow extends DataClass
+    implements Insertable<SecurityDepositRow> {
+  final String shomitiId;
+  final String memberId;
+  final int amountBdt;
+  final String heldBy;
+  final String? proofRef;
+  final DateTime recordedAt;
+  final DateTime? returnedAt;
+  final DateTime? updatedAt;
+  const SecurityDepositRow({
+    required this.shomitiId,
+    required this.memberId,
+    required this.amountBdt,
+    required this.heldBy,
+    this.proofRef,
+    required this.recordedAt,
+    this.returnedAt,
+    this.updatedAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['shomiti_id'] = Variable<String>(shomitiId);
+    map['member_id'] = Variable<String>(memberId);
+    map['amount_bdt'] = Variable<int>(amountBdt);
+    map['held_by'] = Variable<String>(heldBy);
+    if (!nullToAbsent || proofRef != null) {
+      map['proof_ref'] = Variable<String>(proofRef);
+    }
+    map['recorded_at'] = Variable<DateTime>(recordedAt);
+    if (!nullToAbsent || returnedAt != null) {
+      map['returned_at'] = Variable<DateTime>(returnedAt);
+    }
+    if (!nullToAbsent || updatedAt != null) {
+      map['updated_at'] = Variable<DateTime>(updatedAt);
+    }
+    return map;
+  }
+
+  SecurityDepositsCompanion toCompanion(bool nullToAbsent) {
+    return SecurityDepositsCompanion(
+      shomitiId: Value(shomitiId),
+      memberId: Value(memberId),
+      amountBdt: Value(amountBdt),
+      heldBy: Value(heldBy),
+      proofRef: proofRef == null && nullToAbsent
+          ? const Value.absent()
+          : Value(proofRef),
+      recordedAt: Value(recordedAt),
+      returnedAt: returnedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(returnedAt),
+      updatedAt: updatedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(updatedAt),
+    );
+  }
+
+  factory SecurityDepositRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return SecurityDepositRow(
+      shomitiId: serializer.fromJson<String>(json['shomitiId']),
+      memberId: serializer.fromJson<String>(json['memberId']),
+      amountBdt: serializer.fromJson<int>(json['amountBdt']),
+      heldBy: serializer.fromJson<String>(json['heldBy']),
+      proofRef: serializer.fromJson<String?>(json['proofRef']),
+      recordedAt: serializer.fromJson<DateTime>(json['recordedAt']),
+      returnedAt: serializer.fromJson<DateTime?>(json['returnedAt']),
+      updatedAt: serializer.fromJson<DateTime?>(json['updatedAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'shomitiId': serializer.toJson<String>(shomitiId),
+      'memberId': serializer.toJson<String>(memberId),
+      'amountBdt': serializer.toJson<int>(amountBdt),
+      'heldBy': serializer.toJson<String>(heldBy),
+      'proofRef': serializer.toJson<String?>(proofRef),
+      'recordedAt': serializer.toJson<DateTime>(recordedAt),
+      'returnedAt': serializer.toJson<DateTime?>(returnedAt),
+      'updatedAt': serializer.toJson<DateTime?>(updatedAt),
+    };
+  }
+
+  SecurityDepositRow copyWith({
+    String? shomitiId,
+    String? memberId,
+    int? amountBdt,
+    String? heldBy,
+    Value<String?> proofRef = const Value.absent(),
+    DateTime? recordedAt,
+    Value<DateTime?> returnedAt = const Value.absent(),
+    Value<DateTime?> updatedAt = const Value.absent(),
+  }) => SecurityDepositRow(
+    shomitiId: shomitiId ?? this.shomitiId,
+    memberId: memberId ?? this.memberId,
+    amountBdt: amountBdt ?? this.amountBdt,
+    heldBy: heldBy ?? this.heldBy,
+    proofRef: proofRef.present ? proofRef.value : this.proofRef,
+    recordedAt: recordedAt ?? this.recordedAt,
+    returnedAt: returnedAt.present ? returnedAt.value : this.returnedAt,
+    updatedAt: updatedAt.present ? updatedAt.value : this.updatedAt,
+  );
+  SecurityDepositRow copyWithCompanion(SecurityDepositsCompanion data) {
+    return SecurityDepositRow(
+      shomitiId: data.shomitiId.present ? data.shomitiId.value : this.shomitiId,
+      memberId: data.memberId.present ? data.memberId.value : this.memberId,
+      amountBdt: data.amountBdt.present ? data.amountBdt.value : this.amountBdt,
+      heldBy: data.heldBy.present ? data.heldBy.value : this.heldBy,
+      proofRef: data.proofRef.present ? data.proofRef.value : this.proofRef,
+      recordedAt: data.recordedAt.present
+          ? data.recordedAt.value
+          : this.recordedAt,
+      returnedAt: data.returnedAt.present
+          ? data.returnedAt.value
+          : this.returnedAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SecurityDepositRow(')
+          ..write('shomitiId: $shomitiId, ')
+          ..write('memberId: $memberId, ')
+          ..write('amountBdt: $amountBdt, ')
+          ..write('heldBy: $heldBy, ')
+          ..write('proofRef: $proofRef, ')
+          ..write('recordedAt: $recordedAt, ')
+          ..write('returnedAt: $returnedAt, ')
+          ..write('updatedAt: $updatedAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    shomitiId,
+    memberId,
+    amountBdt,
+    heldBy,
+    proofRef,
+    recordedAt,
+    returnedAt,
+    updatedAt,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is SecurityDepositRow &&
+          other.shomitiId == this.shomitiId &&
+          other.memberId == this.memberId &&
+          other.amountBdt == this.amountBdt &&
+          other.heldBy == this.heldBy &&
+          other.proofRef == this.proofRef &&
+          other.recordedAt == this.recordedAt &&
+          other.returnedAt == this.returnedAt &&
+          other.updatedAt == this.updatedAt);
+}
+
+class SecurityDepositsCompanion extends UpdateCompanion<SecurityDepositRow> {
+  final Value<String> shomitiId;
+  final Value<String> memberId;
+  final Value<int> amountBdt;
+  final Value<String> heldBy;
+  final Value<String?> proofRef;
+  final Value<DateTime> recordedAt;
+  final Value<DateTime?> returnedAt;
+  final Value<DateTime?> updatedAt;
+  final Value<int> rowid;
+  const SecurityDepositsCompanion({
+    this.shomitiId = const Value.absent(),
+    this.memberId = const Value.absent(),
+    this.amountBdt = const Value.absent(),
+    this.heldBy = const Value.absent(),
+    this.proofRef = const Value.absent(),
+    this.recordedAt = const Value.absent(),
+    this.returnedAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  SecurityDepositsCompanion.insert({
+    required String shomitiId,
+    required String memberId,
+    required int amountBdt,
+    required String heldBy,
+    this.proofRef = const Value.absent(),
+    required DateTime recordedAt,
+    this.returnedAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : shomitiId = Value(shomitiId),
+       memberId = Value(memberId),
+       amountBdt = Value(amountBdt),
+       heldBy = Value(heldBy),
+       recordedAt = Value(recordedAt);
+  static Insertable<SecurityDepositRow> custom({
+    Expression<String>? shomitiId,
+    Expression<String>? memberId,
+    Expression<int>? amountBdt,
+    Expression<String>? heldBy,
+    Expression<String>? proofRef,
+    Expression<DateTime>? recordedAt,
+    Expression<DateTime>? returnedAt,
+    Expression<DateTime>? updatedAt,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (shomitiId != null) 'shomiti_id': shomitiId,
+      if (memberId != null) 'member_id': memberId,
+      if (amountBdt != null) 'amount_bdt': amountBdt,
+      if (heldBy != null) 'held_by': heldBy,
+      if (proofRef != null) 'proof_ref': proofRef,
+      if (recordedAt != null) 'recorded_at': recordedAt,
+      if (returnedAt != null) 'returned_at': returnedAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  SecurityDepositsCompanion copyWith({
+    Value<String>? shomitiId,
+    Value<String>? memberId,
+    Value<int>? amountBdt,
+    Value<String>? heldBy,
+    Value<String?>? proofRef,
+    Value<DateTime>? recordedAt,
+    Value<DateTime?>? returnedAt,
+    Value<DateTime?>? updatedAt,
+    Value<int>? rowid,
+  }) {
+    return SecurityDepositsCompanion(
+      shomitiId: shomitiId ?? this.shomitiId,
+      memberId: memberId ?? this.memberId,
+      amountBdt: amountBdt ?? this.amountBdt,
+      heldBy: heldBy ?? this.heldBy,
+      proofRef: proofRef ?? this.proofRef,
+      recordedAt: recordedAt ?? this.recordedAt,
+      returnedAt: returnedAt ?? this.returnedAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (shomitiId.present) {
+      map['shomiti_id'] = Variable<String>(shomitiId.value);
+    }
+    if (memberId.present) {
+      map['member_id'] = Variable<String>(memberId.value);
+    }
+    if (amountBdt.present) {
+      map['amount_bdt'] = Variable<int>(amountBdt.value);
+    }
+    if (heldBy.present) {
+      map['held_by'] = Variable<String>(heldBy.value);
+    }
+    if (proofRef.present) {
+      map['proof_ref'] = Variable<String>(proofRef.value);
+    }
+    if (recordedAt.present) {
+      map['recorded_at'] = Variable<DateTime>(recordedAt.value);
+    }
+    if (returnedAt.present) {
+      map['returned_at'] = Variable<DateTime>(returnedAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SecurityDepositsCompanion(')
+          ..write('shomitiId: $shomitiId, ')
+          ..write('memberId: $memberId, ')
+          ..write('amountBdt: $amountBdt, ')
+          ..write('heldBy: $heldBy, ')
+          ..write('proofRef: $proofRef, ')
+          ..write('recordedAt: $recordedAt, ')
+          ..write('returnedAt: $returnedAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 class $RoleAssignmentsTable extends RoleAssignments
     with TableInfo<$RoleAssignmentsTable, RoleAssignmentRow> {
   @override
@@ -3430,6 +4476,10 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $ShomitisTable shomitis = $ShomitisTable(this);
   late final $MembersTable members = $MembersTable(this);
   late final $MemberSharesTable memberShares = $MemberSharesTable(this);
+  late final $GuarantorsTable guarantors = $GuarantorsTable(this);
+  late final $SecurityDepositsTable securityDeposits = $SecurityDepositsTable(
+    this,
+  );
   late final $RoleAssignmentsTable roleAssignments = $RoleAssignmentsTable(
     this,
   );
@@ -3447,6 +4497,8 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     shomitis,
     members,
     memberShares,
+    guarantors,
+    securityDeposits,
     roleAssignments,
     ruleSetVersions,
     memberConsents,
@@ -5272,6 +6324,538 @@ typedef $$MemberSharesTableProcessedTableManager =
       MemberShare,
       PrefetchHooks Function()
     >;
+typedef $$GuarantorsTableCreateCompanionBuilder =
+    GuarantorsCompanion Function({
+      required String shomitiId,
+      required String memberId,
+      required String name,
+      required String phone,
+      Value<String?> relationship,
+      Value<String?> proofRef,
+      required DateTime recordedAt,
+      Value<DateTime?> updatedAt,
+      Value<int> rowid,
+    });
+typedef $$GuarantorsTableUpdateCompanionBuilder =
+    GuarantorsCompanion Function({
+      Value<String> shomitiId,
+      Value<String> memberId,
+      Value<String> name,
+      Value<String> phone,
+      Value<String?> relationship,
+      Value<String?> proofRef,
+      Value<DateTime> recordedAt,
+      Value<DateTime?> updatedAt,
+      Value<int> rowid,
+    });
+
+class $$GuarantorsTableFilterComposer
+    extends Composer<_$AppDatabase, $GuarantorsTable> {
+  $$GuarantorsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get shomitiId => $composableBuilder(
+    column: $table.shomitiId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get memberId => $composableBuilder(
+    column: $table.memberId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get phone => $composableBuilder(
+    column: $table.phone,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get relationship => $composableBuilder(
+    column: $table.relationship,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get proofRef => $composableBuilder(
+    column: $table.proofRef,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get recordedAt => $composableBuilder(
+    column: $table.recordedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$GuarantorsTableOrderingComposer
+    extends Composer<_$AppDatabase, $GuarantorsTable> {
+  $$GuarantorsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get shomitiId => $composableBuilder(
+    column: $table.shomitiId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get memberId => $composableBuilder(
+    column: $table.memberId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get phone => $composableBuilder(
+    column: $table.phone,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get relationship => $composableBuilder(
+    column: $table.relationship,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get proofRef => $composableBuilder(
+    column: $table.proofRef,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get recordedAt => $composableBuilder(
+    column: $table.recordedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$GuarantorsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $GuarantorsTable> {
+  $$GuarantorsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get shomitiId =>
+      $composableBuilder(column: $table.shomitiId, builder: (column) => column);
+
+  GeneratedColumn<String> get memberId =>
+      $composableBuilder(column: $table.memberId, builder: (column) => column);
+
+  GeneratedColumn<String> get name =>
+      $composableBuilder(column: $table.name, builder: (column) => column);
+
+  GeneratedColumn<String> get phone =>
+      $composableBuilder(column: $table.phone, builder: (column) => column);
+
+  GeneratedColumn<String> get relationship => $composableBuilder(
+    column: $table.relationship,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get proofRef =>
+      $composableBuilder(column: $table.proofRef, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get recordedAt => $composableBuilder(
+    column: $table.recordedAt,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+}
+
+class $$GuarantorsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $GuarantorsTable,
+          GuarantorRow,
+          $$GuarantorsTableFilterComposer,
+          $$GuarantorsTableOrderingComposer,
+          $$GuarantorsTableAnnotationComposer,
+          $$GuarantorsTableCreateCompanionBuilder,
+          $$GuarantorsTableUpdateCompanionBuilder,
+          (
+            GuarantorRow,
+            BaseReferences<_$AppDatabase, $GuarantorsTable, GuarantorRow>,
+          ),
+          GuarantorRow,
+          PrefetchHooks Function()
+        > {
+  $$GuarantorsTableTableManager(_$AppDatabase db, $GuarantorsTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$GuarantorsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$GuarantorsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$GuarantorsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> shomitiId = const Value.absent(),
+                Value<String> memberId = const Value.absent(),
+                Value<String> name = const Value.absent(),
+                Value<String> phone = const Value.absent(),
+                Value<String?> relationship = const Value.absent(),
+                Value<String?> proofRef = const Value.absent(),
+                Value<DateTime> recordedAt = const Value.absent(),
+                Value<DateTime?> updatedAt = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => GuarantorsCompanion(
+                shomitiId: shomitiId,
+                memberId: memberId,
+                name: name,
+                phone: phone,
+                relationship: relationship,
+                proofRef: proofRef,
+                recordedAt: recordedAt,
+                updatedAt: updatedAt,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String shomitiId,
+                required String memberId,
+                required String name,
+                required String phone,
+                Value<String?> relationship = const Value.absent(),
+                Value<String?> proofRef = const Value.absent(),
+                required DateTime recordedAt,
+                Value<DateTime?> updatedAt = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => GuarantorsCompanion.insert(
+                shomitiId: shomitiId,
+                memberId: memberId,
+                name: name,
+                phone: phone,
+                relationship: relationship,
+                proofRef: proofRef,
+                recordedAt: recordedAt,
+                updatedAt: updatedAt,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$GuarantorsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $GuarantorsTable,
+      GuarantorRow,
+      $$GuarantorsTableFilterComposer,
+      $$GuarantorsTableOrderingComposer,
+      $$GuarantorsTableAnnotationComposer,
+      $$GuarantorsTableCreateCompanionBuilder,
+      $$GuarantorsTableUpdateCompanionBuilder,
+      (
+        GuarantorRow,
+        BaseReferences<_$AppDatabase, $GuarantorsTable, GuarantorRow>,
+      ),
+      GuarantorRow,
+      PrefetchHooks Function()
+    >;
+typedef $$SecurityDepositsTableCreateCompanionBuilder =
+    SecurityDepositsCompanion Function({
+      required String shomitiId,
+      required String memberId,
+      required int amountBdt,
+      required String heldBy,
+      Value<String?> proofRef,
+      required DateTime recordedAt,
+      Value<DateTime?> returnedAt,
+      Value<DateTime?> updatedAt,
+      Value<int> rowid,
+    });
+typedef $$SecurityDepositsTableUpdateCompanionBuilder =
+    SecurityDepositsCompanion Function({
+      Value<String> shomitiId,
+      Value<String> memberId,
+      Value<int> amountBdt,
+      Value<String> heldBy,
+      Value<String?> proofRef,
+      Value<DateTime> recordedAt,
+      Value<DateTime?> returnedAt,
+      Value<DateTime?> updatedAt,
+      Value<int> rowid,
+    });
+
+class $$SecurityDepositsTableFilterComposer
+    extends Composer<_$AppDatabase, $SecurityDepositsTable> {
+  $$SecurityDepositsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get shomitiId => $composableBuilder(
+    column: $table.shomitiId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get memberId => $composableBuilder(
+    column: $table.memberId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get amountBdt => $composableBuilder(
+    column: $table.amountBdt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get heldBy => $composableBuilder(
+    column: $table.heldBy,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get proofRef => $composableBuilder(
+    column: $table.proofRef,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get recordedAt => $composableBuilder(
+    column: $table.recordedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get returnedAt => $composableBuilder(
+    column: $table.returnedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$SecurityDepositsTableOrderingComposer
+    extends Composer<_$AppDatabase, $SecurityDepositsTable> {
+  $$SecurityDepositsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get shomitiId => $composableBuilder(
+    column: $table.shomitiId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get memberId => $composableBuilder(
+    column: $table.memberId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get amountBdt => $composableBuilder(
+    column: $table.amountBdt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get heldBy => $composableBuilder(
+    column: $table.heldBy,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get proofRef => $composableBuilder(
+    column: $table.proofRef,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get recordedAt => $composableBuilder(
+    column: $table.recordedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get returnedAt => $composableBuilder(
+    column: $table.returnedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$SecurityDepositsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $SecurityDepositsTable> {
+  $$SecurityDepositsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get shomitiId =>
+      $composableBuilder(column: $table.shomitiId, builder: (column) => column);
+
+  GeneratedColumn<String> get memberId =>
+      $composableBuilder(column: $table.memberId, builder: (column) => column);
+
+  GeneratedColumn<int> get amountBdt =>
+      $composableBuilder(column: $table.amountBdt, builder: (column) => column);
+
+  GeneratedColumn<String> get heldBy =>
+      $composableBuilder(column: $table.heldBy, builder: (column) => column);
+
+  GeneratedColumn<String> get proofRef =>
+      $composableBuilder(column: $table.proofRef, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get recordedAt => $composableBuilder(
+    column: $table.recordedAt,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get returnedAt => $composableBuilder(
+    column: $table.returnedAt,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+}
+
+class $$SecurityDepositsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $SecurityDepositsTable,
+          SecurityDepositRow,
+          $$SecurityDepositsTableFilterComposer,
+          $$SecurityDepositsTableOrderingComposer,
+          $$SecurityDepositsTableAnnotationComposer,
+          $$SecurityDepositsTableCreateCompanionBuilder,
+          $$SecurityDepositsTableUpdateCompanionBuilder,
+          (
+            SecurityDepositRow,
+            BaseReferences<
+              _$AppDatabase,
+              $SecurityDepositsTable,
+              SecurityDepositRow
+            >,
+          ),
+          SecurityDepositRow,
+          PrefetchHooks Function()
+        > {
+  $$SecurityDepositsTableTableManager(
+    _$AppDatabase db,
+    $SecurityDepositsTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$SecurityDepositsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$SecurityDepositsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$SecurityDepositsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> shomitiId = const Value.absent(),
+                Value<String> memberId = const Value.absent(),
+                Value<int> amountBdt = const Value.absent(),
+                Value<String> heldBy = const Value.absent(),
+                Value<String?> proofRef = const Value.absent(),
+                Value<DateTime> recordedAt = const Value.absent(),
+                Value<DateTime?> returnedAt = const Value.absent(),
+                Value<DateTime?> updatedAt = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => SecurityDepositsCompanion(
+                shomitiId: shomitiId,
+                memberId: memberId,
+                amountBdt: amountBdt,
+                heldBy: heldBy,
+                proofRef: proofRef,
+                recordedAt: recordedAt,
+                returnedAt: returnedAt,
+                updatedAt: updatedAt,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String shomitiId,
+                required String memberId,
+                required int amountBdt,
+                required String heldBy,
+                Value<String?> proofRef = const Value.absent(),
+                required DateTime recordedAt,
+                Value<DateTime?> returnedAt = const Value.absent(),
+                Value<DateTime?> updatedAt = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => SecurityDepositsCompanion.insert(
+                shomitiId: shomitiId,
+                memberId: memberId,
+                amountBdt: amountBdt,
+                heldBy: heldBy,
+                proofRef: proofRef,
+                recordedAt: recordedAt,
+                returnedAt: returnedAt,
+                updatedAt: updatedAt,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$SecurityDepositsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $SecurityDepositsTable,
+      SecurityDepositRow,
+      $$SecurityDepositsTableFilterComposer,
+      $$SecurityDepositsTableOrderingComposer,
+      $$SecurityDepositsTableAnnotationComposer,
+      $$SecurityDepositsTableCreateCompanionBuilder,
+      $$SecurityDepositsTableUpdateCompanionBuilder,
+      (
+        SecurityDepositRow,
+        BaseReferences<
+          _$AppDatabase,
+          $SecurityDepositsTable,
+          SecurityDepositRow
+        >,
+      ),
+      SecurityDepositRow,
+      PrefetchHooks Function()
+    >;
 typedef $$RoleAssignmentsTableCreateCompanionBuilder =
     RoleAssignmentsCompanion Function({
       required String shomitiId,
@@ -6517,6 +8101,10 @@ class $AppDatabaseManager {
       $$MembersTableTableManager(_db, _db.members);
   $$MemberSharesTableTableManager get memberShares =>
       $$MemberSharesTableTableManager(_db, _db.memberShares);
+  $$GuarantorsTableTableManager get guarantors =>
+      $$GuarantorsTableTableManager(_db, _db.guarantors);
+  $$SecurityDepositsTableTableManager get securityDeposits =>
+      $$SecurityDepositsTableTableManager(_db, _db.securityDeposits);
   $$RoleAssignmentsTableTableManager get roleAssignments =>
       $$RoleAssignmentsTableTableManager(_db, _db.roleAssignments);
   $$RuleSetVersionsTableTableManager get ruleSetVersions =>

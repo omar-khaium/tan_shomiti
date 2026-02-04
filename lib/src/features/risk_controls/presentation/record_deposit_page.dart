@@ -4,7 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/ui/components/app_button.dart';
 import '../../../core/ui/components/app_text_field.dart';
 import '../../../core/ui/tokens/app_spacing.dart';
-import 'providers/risk_controls_demo_store.dart';
+import '../domain/usecases/risk_controls_exceptions.dart';
+import 'providers/risk_controls_providers.dart';
 
 class RecordDepositPage extends ConsumerStatefulWidget {
   const RecordDepositPage({
@@ -62,22 +63,29 @@ class _RecordDepositPageState extends ConsumerState<RecordDepositPage> {
     }
 
     ref
-        .read(demoRiskControlsStoreProvider.notifier)
-        .recordDeposit(
+        .read(riskControlsControllerProvider.notifier)
+        .recordSecurityDeposit(
           memberId: widget.memberId,
-          deposit: DemoSecurityDeposit(
-            amountBdt: amount!,
-            heldBy: heldBy,
-            proofRef: proof.isEmpty ? null : proof,
-            recordedAt: DateTime.now(),
-            returnedAt: null,
-          ),
-        );
-
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(const SnackBar(content: Text('Deposit recorded (demo).')));
-    Navigator.of(context).pop();
+          amountBdt: amount!,
+          heldBy: heldBy,
+          proofRef: proof.isEmpty ? null : proof,
+        )
+        .then((_) {
+          if (!mounted) return;
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(const SnackBar(content: Text('Deposit recorded.')));
+          Navigator.of(context).pop();
+        })
+        .catchError((Object error) {
+          if (!mounted) return;
+          final message = error is RiskControlException
+              ? error.message
+              : 'Failed to record deposit.';
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(message)));
+        });
   }
 
   @override

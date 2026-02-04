@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../core/ui/components/app_confirm_dialog.dart';
 import '../../../core/ui/components/app_card.dart';
 import '../../../core/ui/components/app_empty_state.dart';
 import '../../../core/ui/components/app_error_state.dart';
@@ -83,6 +84,22 @@ class RiskControlsPage extends ConsumerWidget {
                       ),
                     ),
                   ),
+                  onMarkDepositReturned:
+                      row.status == RiskControlStatus.depositRecorded
+                      ? () async {
+                          final confirmed = await showAppConfirmDialog(
+                            context: context,
+                            title: 'Mark deposit returned?',
+                            message:
+                                'This marks the deposit as returned. The member will need a guarantor or a new deposit to be considered complete.',
+                            confirmLabel: 'Mark returned',
+                          );
+                          if (confirmed != true) return;
+                          await ref
+                              .read(riskControlsControllerProvider.notifier)
+                              .markDepositReturned(memberId: row.memberId);
+                        }
+                      : null,
                 ),
             ],
           );
@@ -123,11 +140,13 @@ class _RiskRow extends StatelessWidget {
     required this.row,
     required this.onRecordGuarantor,
     required this.onRecordDeposit,
+    required this.onMarkDepositReturned,
   });
 
   final RiskControlRow row;
   final VoidCallback onRecordGuarantor;
   final VoidCallback onRecordDeposit;
+  final VoidCallback? onMarkDepositReturned;
 
   @override
   Widget build(BuildContext context) {
@@ -152,15 +171,20 @@ class _RiskRow extends StatelessWidget {
           const SizedBox(width: AppSpacing.s8),
           PopupMenuButton<_Action>(
             key: Key('risk_actions_${row.position}'),
-            itemBuilder: (context) => const [
-              PopupMenuItem(
+            itemBuilder: (context) => [
+              const PopupMenuItem(
                 value: _Action.recordGuarantor,
                 child: Text('Record guarantor'),
               ),
-              PopupMenuItem(
+              const PopupMenuItem(
                 value: _Action.recordDeposit,
                 child: Text('Record deposit'),
               ),
+              if (onMarkDepositReturned != null)
+                const PopupMenuItem(
+                  value: _Action.markDepositReturned,
+                  child: Text('Mark deposit returned'),
+                ),
             ],
             onSelected: (value) {
               switch (value) {
@@ -168,6 +192,8 @@ class _RiskRow extends StatelessWidget {
                   onRecordGuarantor();
                 case _Action.recordDeposit:
                   onRecordDeposit();
+                case _Action.markDepositReturned:
+                  onMarkDepositReturned?.call();
               }
             },
             child: const Icon(Icons.more_vert),
@@ -182,9 +208,10 @@ class _RiskRow extends StatelessWidget {
       RiskControlStatus.missing => 'Missing (needs guarantor or deposit)',
       RiskControlStatus.guarantorRecorded => 'Guarantor recorded',
       RiskControlStatus.depositRecorded => 'Deposit recorded (held)',
-      RiskControlStatus.depositReturned => 'Deposit returned',
+      RiskControlStatus.depositReturned =>
+        'Deposit returned (needs guarantor or deposit)',
     };
   }
 }
 
-enum _Action { recordGuarantor, recordDeposit }
+enum _Action { recordGuarantor, recordDeposit, markDepositReturned }

@@ -28,6 +28,8 @@ class RiskControlsUiState {
 
   final List<RiskControlRow> rows;
 
-  int get missingCount =>
-      rows.where((r) => r.status == RiskControlStatus.missing).length;
+  int get missingCount => rows.where((r) {
+    return r.status == RiskControlStatus.missing ||
+        r.status == RiskControlStatus.depositReturned;
+  }).length;
 }
