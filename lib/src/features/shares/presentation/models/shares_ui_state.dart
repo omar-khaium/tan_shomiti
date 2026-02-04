@@ -7,12 +7,14 @@ import '../../../rules/domain/entities/rule_set_snapshot.dart';
 class SharesMemberAllocation {
   const SharesMemberAllocation({
     required this.memberId,
+    required this.position,
     required this.displayName,
     required this.shares,
     required this.monthlyDueBdt,
   });
 
   final String memberId;
+  final int position;
   final String displayName;
   final int shares;
   final int monthlyDueBdt;
@@ -85,6 +87,7 @@ class SharesUiState {
       allocations.add(
         SharesMemberAllocation(
           memberId: member.id,
+          position: member.position,
           displayName: member.fullName,
           shares: shares,
           monthlyDueBdt: shares * shareValueBdt,

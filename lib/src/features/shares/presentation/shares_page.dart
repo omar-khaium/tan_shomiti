@@ -192,16 +192,16 @@ class _MemberRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final memberId = row.memberId;
     final displayName = row.displayName;
     final shares = row.shares;
     final monthlyDueBdt = row.monthlyDueBdt;
+    final position = row.position;
 
     final canDecrement = shares > 1;
     final canIncrement = shares < maxSharesPerPerson && remainingShares > 0;
 
     return AppCard(
-      key: Key('shares_row_$memberId'),
+      key: Key('shares_row_$position'),
       padding: const EdgeInsets.all(AppSpacing.s12),
       child: Row(
         children: [
@@ -223,7 +223,7 @@ class _MemberRow extends StatelessWidget {
           ),
           const SizedBox(width: AppSpacing.s8),
           IconButton(
-            key: Key('shares_decrement_$memberId'),
+            key: Key('shares_decrement_$position'),
             onPressed: canDecrement ? onDecrement : null,
             icon: const Icon(Icons.remove),
             tooltip: 'Decrease shares',
@@ -232,12 +232,12 @@ class _MemberRow extends StatelessWidget {
             width: 44,
             child: Text(
               '$shares',
-              key: Key('shares_count_$memberId'),
+              key: Key('shares_count_$position'),
               textAlign: TextAlign.center,
             ),
           ),
           IconButton(
-            key: Key('shares_increment_$memberId'),
+            key: Key('shares_increment_$position'),
             onPressed: canIncrement ? onIncrement : null,
             icon: const Icon(Icons.add),
             tooltip: 'Increase shares',

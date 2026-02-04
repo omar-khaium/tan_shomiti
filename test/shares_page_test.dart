@@ -161,7 +161,7 @@ void main() {
     );
 
     await tester.pumpAndSettle();
-    expect(find.byKey(const Key('shares_row_m1')), findsOneWidget);
+    expect(find.byKey(const Key('shares_row_1')), findsOneWidget);
     expect(find.text('Alice'), findsOneWidget);
 
     await tester.scrollUntilVisible(
@@ -200,7 +200,7 @@ void main() {
 
     await tester.pumpAndSettle();
     final inc = tester.widget<IconButton>(
-      find.byKey(const Key('shares_increment_m2')),
+      find.byKey(const Key('shares_increment_2')),
     );
     expect(inc.onPressed, isNull);
   });
