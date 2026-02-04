@@ -11,6 +11,9 @@ import '../../features/ledger/presentation/ledger_page.dart';
 import '../../features/members/presentation/governance/governance_page.dart';
 import '../../features/members/presentation/governance/member_signoff_page.dart';
 import '../../features/members/presentation/governance/roles_assignment_page.dart';
+import '../../features/members/presentation/member_detail_page.dart';
+import '../../features/members/presentation/member_form_page.dart';
+import '../../features/members/presentation/members_page.dart';
 import '../../features/rules/presentation/rules_page.dart';
 import '../../features/shomiti_setup/presentation/setup_wizard_page.dart';
 import '../../features/shomiti_setup/presentation/providers/shomiti_setup_providers.dart';
@@ -25,6 +28,14 @@ const dashboardTitle = 'Dashboard';
 const membersLocation = '/members';
 const membersRouteName = 'members';
 const membersTitle = 'Members';
+
+const memberAddRouteName = 'memberAdd';
+const memberDetailsRouteName = 'memberDetails';
+const memberEditRouteName = 'memberEdit';
+
+const memberAddLocation = '/members/add';
+String memberDetailsLocation(String memberId) => '/members/$memberId';
+String memberEditLocation(String memberId) => '/members/$memberId/edit';
 
 const contributionsLocation = '/contributions';
 const contributionsRouteName = 'contributions';
@@ -116,6 +127,26 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         name: setupRouteName,
         builder: (context, state) => const SetupWizardPage(),
       ),
+      GoRoute(
+        path: memberAddLocation,
+        name: memberAddRouteName,
+        builder: (context, state) =>
+            const MemberFormPage(mode: MemberFormMode.add),
+      ),
+      GoRoute(
+        path: '/members/:memberId/edit',
+        name: memberEditRouteName,
+        builder: (context, state) => MemberFormPage(
+          mode: MemberFormMode.edit,
+          memberId: state.pathParameters['memberId'],
+        ),
+      ),
+      GoRoute(
+        path: '/members/:memberId',
+        name: memberDetailsRouteName,
+        builder: (context, state) =>
+            MemberDetailPage(memberId: state.pathParameters['memberId'] ?? ''),
+      ),
       ShellRoute(
         builder: (context, state, child) =>
             AppShell(location: state.matchedLocation, child: child),
@@ -129,8 +160,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
           GoRoute(
             path: membersLocation,
             name: membersRouteName,
-            builder: (context, state) =>
-                const PlaceholderPage(title: membersTitle),
+            builder: (context, state) => const MembersPage(),
           ),
           GoRoute(
             path: contributionsLocation,
