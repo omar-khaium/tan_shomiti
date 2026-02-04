@@ -2022,6 +2022,375 @@ class MembersCompanion extends UpdateCompanion<MemberRow> {
   }
 }
 
+class $MemberSharesTable extends MemberShares
+    with TableInfo<$MemberSharesTable, MemberShare> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $MemberSharesTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _shomitiIdMeta = const VerificationMeta(
+    'shomitiId',
+  );
+  @override
+  late final GeneratedColumn<String> shomitiId = GeneratedColumn<String>(
+    'shomiti_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _memberIdMeta = const VerificationMeta(
+    'memberId',
+  );
+  @override
+  late final GeneratedColumn<String> memberId = GeneratedColumn<String>(
+    'member_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _sharesMeta = const VerificationMeta('shares');
+  @override
+  late final GeneratedColumn<int> shares = GeneratedColumn<int>(
+    'shares',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    shomitiId,
+    memberId,
+    shares,
+    createdAt,
+    updatedAt,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'member_shares';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<MemberShare> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('shomiti_id')) {
+      context.handle(
+        _shomitiIdMeta,
+        shomitiId.isAcceptableOrUnknown(data['shomiti_id']!, _shomitiIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_shomitiIdMeta);
+    }
+    if (data.containsKey('member_id')) {
+      context.handle(
+        _memberIdMeta,
+        memberId.isAcceptableOrUnknown(data['member_id']!, _memberIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_memberIdMeta);
+    }
+    if (data.containsKey('shares')) {
+      context.handle(
+        _sharesMeta,
+        shares.isAcceptableOrUnknown(data['shares']!, _sharesMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_sharesMeta);
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {shomitiId, memberId};
+  @override
+  MemberShare map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return MemberShare(
+      shomitiId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}shomiti_id'],
+      )!,
+      memberId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}member_id'],
+      )!,
+      shares: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}shares'],
+      )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      ),
+    );
+  }
+
+  @override
+  $MemberSharesTable createAlias(String alias) {
+    return $MemberSharesTable(attachedDatabase, alias);
+  }
+}
+
+class MemberShare extends DataClass implements Insertable<MemberShare> {
+  final String shomitiId;
+  final String memberId;
+
+  /// Number of shares held by the member.
+  final int shares;
+  final DateTime createdAt;
+  final DateTime? updatedAt;
+  const MemberShare({
+    required this.shomitiId,
+    required this.memberId,
+    required this.shares,
+    required this.createdAt,
+    this.updatedAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['shomiti_id'] = Variable<String>(shomitiId);
+    map['member_id'] = Variable<String>(memberId);
+    map['shares'] = Variable<int>(shares);
+    map['created_at'] = Variable<DateTime>(createdAt);
+    if (!nullToAbsent || updatedAt != null) {
+      map['updated_at'] = Variable<DateTime>(updatedAt);
+    }
+    return map;
+  }
+
+  MemberSharesCompanion toCompanion(bool nullToAbsent) {
+    return MemberSharesCompanion(
+      shomitiId: Value(shomitiId),
+      memberId: Value(memberId),
+      shares: Value(shares),
+      createdAt: Value(createdAt),
+      updatedAt: updatedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(updatedAt),
+    );
+  }
+
+  factory MemberShare.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return MemberShare(
+      shomitiId: serializer.fromJson<String>(json['shomitiId']),
+      memberId: serializer.fromJson<String>(json['memberId']),
+      shares: serializer.fromJson<int>(json['shares']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      updatedAt: serializer.fromJson<DateTime?>(json['updatedAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'shomitiId': serializer.toJson<String>(shomitiId),
+      'memberId': serializer.toJson<String>(memberId),
+      'shares': serializer.toJson<int>(shares),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'updatedAt': serializer.toJson<DateTime?>(updatedAt),
+    };
+  }
+
+  MemberShare copyWith({
+    String? shomitiId,
+    String? memberId,
+    int? shares,
+    DateTime? createdAt,
+    Value<DateTime?> updatedAt = const Value.absent(),
+  }) => MemberShare(
+    shomitiId: shomitiId ?? this.shomitiId,
+    memberId: memberId ?? this.memberId,
+    shares: shares ?? this.shares,
+    createdAt: createdAt ?? this.createdAt,
+    updatedAt: updatedAt.present ? updatedAt.value : this.updatedAt,
+  );
+  MemberShare copyWithCompanion(MemberSharesCompanion data) {
+    return MemberShare(
+      shomitiId: data.shomitiId.present ? data.shomitiId.value : this.shomitiId,
+      memberId: data.memberId.present ? data.memberId.value : this.memberId,
+      shares: data.shares.present ? data.shares.value : this.shares,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('MemberShare(')
+          ..write('shomitiId: $shomitiId, ')
+          ..write('memberId: $memberId, ')
+          ..write('shares: $shares, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(shomitiId, memberId, shares, createdAt, updatedAt);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is MemberShare &&
+          other.shomitiId == this.shomitiId &&
+          other.memberId == this.memberId &&
+          other.shares == this.shares &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt);
+}
+
+class MemberSharesCompanion extends UpdateCompanion<MemberShare> {
+  final Value<String> shomitiId;
+  final Value<String> memberId;
+  final Value<int> shares;
+  final Value<DateTime> createdAt;
+  final Value<DateTime?> updatedAt;
+  final Value<int> rowid;
+  const MemberSharesCompanion({
+    this.shomitiId = const Value.absent(),
+    this.memberId = const Value.absent(),
+    this.shares = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  MemberSharesCompanion.insert({
+    required String shomitiId,
+    required String memberId,
+    required int shares,
+    required DateTime createdAt,
+    this.updatedAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : shomitiId = Value(shomitiId),
+       memberId = Value(memberId),
+       shares = Value(shares),
+       createdAt = Value(createdAt);
+  static Insertable<MemberShare> custom({
+    Expression<String>? shomitiId,
+    Expression<String>? memberId,
+    Expression<int>? shares,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (shomitiId != null) 'shomiti_id': shomitiId,
+      if (memberId != null) 'member_id': memberId,
+      if (shares != null) 'shares': shares,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  MemberSharesCompanion copyWith({
+    Value<String>? shomitiId,
+    Value<String>? memberId,
+    Value<int>? shares,
+    Value<DateTime>? createdAt,
+    Value<DateTime?>? updatedAt,
+    Value<int>? rowid,
+  }) {
+    return MemberSharesCompanion(
+      shomitiId: shomitiId ?? this.shomitiId,
+      memberId: memberId ?? this.memberId,
+      shares: shares ?? this.shares,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (shomitiId.present) {
+      map['shomiti_id'] = Variable<String>(shomitiId.value);
+    }
+    if (memberId.present) {
+      map['member_id'] = Variable<String>(memberId.value);
+    }
+    if (shares.present) {
+      map['shares'] = Variable<int>(shares.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('MemberSharesCompanion(')
+          ..write('shomitiId: $shomitiId, ')
+          ..write('memberId: $memberId, ')
+          ..write('shares: $shares, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 class $RoleAssignmentsTable extends RoleAssignments
     with TableInfo<$RoleAssignmentsTable, RoleAssignmentRow> {
   @override
@@ -3060,6 +3429,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $LedgerEntriesTable ledgerEntries = $LedgerEntriesTable(this);
   late final $ShomitisTable shomitis = $ShomitisTable(this);
   late final $MembersTable members = $MembersTable(this);
+  late final $MemberSharesTable memberShares = $MemberSharesTable(this);
   late final $RoleAssignmentsTable roleAssignments = $RoleAssignmentsTable(
     this,
   );
@@ -3076,6 +3446,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     ledgerEntries,
     shomitis,
     members,
+    memberShares,
     roleAssignments,
     ruleSetVersions,
     memberConsents,
@@ -4701,6 +5072,206 @@ typedef $$MembersTableProcessedTableManager =
         bool memberConsentsRefs,
       })
     >;
+typedef $$MemberSharesTableCreateCompanionBuilder =
+    MemberSharesCompanion Function({
+      required String shomitiId,
+      required String memberId,
+      required int shares,
+      required DateTime createdAt,
+      Value<DateTime?> updatedAt,
+      Value<int> rowid,
+    });
+typedef $$MemberSharesTableUpdateCompanionBuilder =
+    MemberSharesCompanion Function({
+      Value<String> shomitiId,
+      Value<String> memberId,
+      Value<int> shares,
+      Value<DateTime> createdAt,
+      Value<DateTime?> updatedAt,
+      Value<int> rowid,
+    });
+
+class $$MemberSharesTableFilterComposer
+    extends Composer<_$AppDatabase, $MemberSharesTable> {
+  $$MemberSharesTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get shomitiId => $composableBuilder(
+    column: $table.shomitiId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get memberId => $composableBuilder(
+    column: $table.memberId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get shares => $composableBuilder(
+    column: $table.shares,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$MemberSharesTableOrderingComposer
+    extends Composer<_$AppDatabase, $MemberSharesTable> {
+  $$MemberSharesTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get shomitiId => $composableBuilder(
+    column: $table.shomitiId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get memberId => $composableBuilder(
+    column: $table.memberId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get shares => $composableBuilder(
+    column: $table.shares,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$MemberSharesTableAnnotationComposer
+    extends Composer<_$AppDatabase, $MemberSharesTable> {
+  $$MemberSharesTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get shomitiId =>
+      $composableBuilder(column: $table.shomitiId, builder: (column) => column);
+
+  GeneratedColumn<String> get memberId =>
+      $composableBuilder(column: $table.memberId, builder: (column) => column);
+
+  GeneratedColumn<int> get shares =>
+      $composableBuilder(column: $table.shares, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+}
+
+class $$MemberSharesTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $MemberSharesTable,
+          MemberShare,
+          $$MemberSharesTableFilterComposer,
+          $$MemberSharesTableOrderingComposer,
+          $$MemberSharesTableAnnotationComposer,
+          $$MemberSharesTableCreateCompanionBuilder,
+          $$MemberSharesTableUpdateCompanionBuilder,
+          (
+            MemberShare,
+            BaseReferences<_$AppDatabase, $MemberSharesTable, MemberShare>,
+          ),
+          MemberShare,
+          PrefetchHooks Function()
+        > {
+  $$MemberSharesTableTableManager(_$AppDatabase db, $MemberSharesTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$MemberSharesTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$MemberSharesTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$MemberSharesTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> shomitiId = const Value.absent(),
+                Value<String> memberId = const Value.absent(),
+                Value<int> shares = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime?> updatedAt = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => MemberSharesCompanion(
+                shomitiId: shomitiId,
+                memberId: memberId,
+                shares: shares,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String shomitiId,
+                required String memberId,
+                required int shares,
+                required DateTime createdAt,
+                Value<DateTime?> updatedAt = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => MemberSharesCompanion.insert(
+                shomitiId: shomitiId,
+                memberId: memberId,
+                shares: shares,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$MemberSharesTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $MemberSharesTable,
+      MemberShare,
+      $$MemberSharesTableFilterComposer,
+      $$MemberSharesTableOrderingComposer,
+      $$MemberSharesTableAnnotationComposer,
+      $$MemberSharesTableCreateCompanionBuilder,
+      $$MemberSharesTableUpdateCompanionBuilder,
+      (
+        MemberShare,
+        BaseReferences<_$AppDatabase, $MemberSharesTable, MemberShare>,
+      ),
+      MemberShare,
+      PrefetchHooks Function()
+    >;
 typedef $$RoleAssignmentsTableCreateCompanionBuilder =
     RoleAssignmentsCompanion Function({
       required String shomitiId,
@@ -5944,6 +6515,8 @@ class $AppDatabaseManager {
       $$ShomitisTableTableManager(_db, _db.shomitis);
   $$MembersTableTableManager get members =>
       $$MembersTableTableManager(_db, _db.members);
+  $$MemberSharesTableTableManager get memberShares =>
+      $$MemberSharesTableTableManager(_db, _db.memberShares);
   $$RoleAssignmentsTableTableManager get roleAssignments =>
       $$RoleAssignmentsTableTableManager(_db, _db.roleAssignments);
   $$RuleSetVersionsTableTableManager get ruleSetVersions =>

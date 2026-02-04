@@ -9,6 +9,7 @@ import 'tables/audit_events.dart';
 import 'tables/ledger_entries.dart';
 import 'tables/member_consents.dart';
 import 'tables/members.dart';
+import 'tables/member_shares.dart';
 import 'tables/role_assignments.dart';
 import 'tables/rule_set_versions.dart';
 import 'tables/shomitis.dart';
@@ -20,6 +21,7 @@ part 'app_database.g.dart';
     AuditEvents,
     LedgerEntries,
     Members,
+    MemberShares,
     RoleAssignments,
     MemberConsents,
     RuleSetVersions,
@@ -34,7 +36,7 @@ class AppDatabase extends _$AppDatabase {
   factory AppDatabase.memory() => AppDatabase(NativeDatabase.memory());
 
   @override
-  int get schemaVersion => 4;
+  int get schemaVersion => 5;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -59,6 +61,9 @@ class AppDatabase extends _$AppDatabase {
         await m.addColumn(members, members.notes);
         await m.addColumn(members, members.isActive);
         await m.addColumn(members, members.updatedAt);
+      }
+      if (from < 5) {
+        await m.createTable(memberShares);
       }
     },
   );
