@@ -1,8 +1,10 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../members/domain/entities/member.dart';
+import '../../domain/usecases/shares_exceptions.dart';
 import '../models/shares_ui_state.dart';
 import '../providers/shares_context_providers.dart';
+import '../providers/shares_domain_providers.dart';
 
 class SharesController extends AutoDisposeAsyncNotifier<SharesUiState?> {
   Map<String, int>? _sharesByMemberId;
@@ -20,13 +22,14 @@ class SharesController extends AutoDisposeAsyncNotifier<SharesUiState?> {
         .listMembers(shomitiId: context.shomitiId);
     _members = members;
 
-    _sharesByMemberId ??= _initialShares(
-      members: members,
+    final memberIds = members.map((m) => m.id).toList(growable: false);
+    _sharesByMemberId = await ref.watch(seedShareAllocationsProvider)(
+      shomitiId: context.shomitiId,
+      memberIds: memberIds,
       totalShares: context.rules.cycleLengthMonths,
       maxSharesPerPerson: context.rules.maxSharesPerPerson,
+      now: DateTime.now(),
     );
-
-    _ensureMembersPresent(members);
 
     return _buildState();
   }
@@ -35,53 +38,51 @@ class SharesController extends AutoDisposeAsyncNotifier<SharesUiState?> {
     final current = state.valueOrNull;
     if (current == null || _sharesByMemberId == null) return;
 
-    final existing = _sharesByMemberId![memberId] ?? 1;
-    if (existing >= current.maxSharesPerPerson) return;
-    if (current.remainingShares <= 0) return;
+    final context = _context;
+    if (context == null) return;
 
-    _sharesByMemberId![memberId] = existing + 1;
-    state = AsyncValue.data(_buildState());
+    ref
+        .read(adjustMemberSharesProvider)(
+          shomitiId: context.shomitiId,
+          memberId: memberId,
+          delta: 1,
+          totalShares: context.rules.cycleLengthMonths,
+          maxSharesPerPerson: context.rules.maxSharesPerPerson,
+          now: DateTime.now(),
+        )
+        .then((map) {
+          _sharesByMemberId = map;
+          state = AsyncValue.data(_buildState());
+        })
+        .catchError((Object error) {
+          if (error is SharesAllocationException) return;
+          state = AsyncValue.error(error, StackTrace.current);
+        });
   }
 
   void decrement(String memberId) {
     final current = state.valueOrNull;
     if (current == null || _sharesByMemberId == null) return;
+    final context = _context;
+    if (context == null) return;
 
-    final existing = _sharesByMemberId![memberId] ?? 1;
-    if (existing <= 1) return;
-
-    _sharesByMemberId![memberId] = existing - 1;
-    state = AsyncValue.data(_buildState());
-  }
-
-  Map<String, int> _initialShares({
-    required List<Member> members,
-    required int totalShares,
-    required int maxSharesPerPerson,
-  }) {
-    final result = <String, int>{for (final m in members) m.id: 1};
-    var remaining = totalShares - members.length;
-    if (remaining <= 0) return result;
-
-    // Distribute extras from top to bottom (up to cap) to satisfy total shares.
-    for (final member in members) {
-      if (remaining <= 0) break;
-      final current = result[member.id] ?? 1;
-      final canAdd = maxSharesPerPerson - current;
-      if (canAdd <= 0) continue;
-      final add = remaining < canAdd ? remaining : canAdd;
-      result[member.id] = current + add;
-      remaining -= add;
-    }
-
-    return result;
-  }
-
-  void _ensureMembersPresent(List<Member> members) {
-    final map = _sharesByMemberId!;
-    for (final member in members) {
-      map.putIfAbsent(member.id, () => 1);
-    }
+    ref
+        .read(adjustMemberSharesProvider)(
+          shomitiId: context.shomitiId,
+          memberId: memberId,
+          delta: -1,
+          totalShares: context.rules.cycleLengthMonths,
+          maxSharesPerPerson: context.rules.maxSharesPerPerson,
+          now: DateTime.now(),
+        )
+        .then((map) {
+          _sharesByMemberId = map;
+          state = AsyncValue.data(_buildState());
+        })
+        .catchError((Object error) {
+          if (error is SharesAllocationException) return;
+          state = AsyncValue.error(error, StackTrace.current);
+        });
   }
 
   SharesUiState? _buildState() {
