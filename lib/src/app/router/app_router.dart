@@ -18,6 +18,7 @@ import '../../features/rules/presentation/rules_page.dart';
 import '../../features/shares/presentation/shares_page.dart';
 import '../../features/risk_controls/presentation/risk_controls_page.dart';
 import '../../features/membership_changes/presentation/membership_changes_page.dart';
+import '../../features/contributions/presentation/contributions_page.dart';
 import '../../features/shomiti_setup/presentation/setup_wizard_page.dart';
 import '../../features/shomiti_setup/presentation/providers/shomiti_setup_providers.dart';
 
@@ -181,7 +182,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
             path: contributionsLocation,
             name: contributionsRouteName,
             builder: (context, state) =>
-                const PlaceholderPage(title: contributionsTitle),
+                const ContributionsPage(),
           ),
           GoRoute(
             path: moreLocation,
