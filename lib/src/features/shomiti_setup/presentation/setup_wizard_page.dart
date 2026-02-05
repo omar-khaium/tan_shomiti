@@ -32,6 +32,10 @@ class _SetupWizardPageState extends ConsumerState<SetupWizardPage> {
   final _groupChannelController = TextEditingController();
   final _gracePeriodDaysController = TextEditingController();
   final _lateFeeController = TextEditingController();
+  final _defaultConsecutiveThresholdController = TextEditingController(
+    text: '2',
+  );
+  final _defaultTotalThresholdController = TextEditingController(text: '3');
   final _feeAmountController = TextEditingController();
 
   int _stepIndex = 0;
@@ -64,6 +68,8 @@ class _SetupWizardPageState extends ConsumerState<SetupWizardPage> {
     _groupChannelController.dispose();
     _gracePeriodDaysController.dispose();
     _lateFeeController.dispose();
+    _defaultConsecutiveThresholdController.dispose();
+    _defaultTotalThresholdController.dispose();
     _feeAmountController.dispose();
     super.dispose();
   }
@@ -134,6 +140,10 @@ class _SetupWizardPageState extends ConsumerState<SetupWizardPage> {
                       groupChannelController: _groupChannelController,
                       gracePeriodDaysController: _gracePeriodDaysController,
                       lateFeeController: _lateFeeController,
+                      defaultConsecutiveThresholdController:
+                          _defaultConsecutiveThresholdController,
+                      defaultTotalThresholdController:
+                          _defaultTotalThresholdController,
                       feeAmountController: _feeAmountController,
                       nameError: _nameError,
                       memberCountError: _memberCountError,
@@ -273,6 +283,15 @@ class _SetupWizardPageState extends ConsumerState<SetupWizardPage> {
       field: 'Late fee',
     );
 
+    final defaultConsecutiveMissedThreshold = _parsePositiveInt(
+      value: _defaultConsecutiveThresholdController.text,
+      field: 'Default threshold (consecutive missed)',
+    );
+    final defaultTotalMissedThreshold = _parsePositiveInt(
+      value: _defaultTotalThresholdController.text,
+      field: 'Default threshold (total missed)',
+    );
+
     final feeAmountBdt = _feesEnabled
         ? _parsePositiveInt(
             value: _feeAmountController.text,
@@ -297,6 +316,8 @@ class _SetupWizardPageState extends ConsumerState<SetupWizardPage> {
       missedPaymentPolicy: _missedPaymentPolicy,
       gracePeriodDays: gracePeriodDays,
       lateFeeBdtPerDay: lateFeeBdtPerDay,
+      defaultConsecutiveMissedThreshold: defaultConsecutiveMissedThreshold,
+      defaultTotalMissedThreshold: defaultTotalMissedThreshold,
       feesEnabled: _feesEnabled,
       feeAmountBdt: feeAmountBdt,
       feePayerModel: _feePayerModel,
@@ -322,6 +343,8 @@ class _SetupWizardPageState extends ConsumerState<SetupWizardPage> {
       missedPaymentPolicy: MissedPaymentPolicy.postponePayout,
       gracePeriodDays: 0,
       lateFeeBdtPerDay: 50,
+      defaultConsecutiveMissedThreshold: 2,
+      defaultTotalMissedThreshold: 3,
       feesEnabled: false,
       feeAmountBdt: null,
       feePayerModel: FeePayerModel.everyoneEqually,
@@ -501,6 +524,8 @@ class _StepBody extends StatelessWidget {
     required this.groupChannelController,
     required this.gracePeriodDaysController,
     required this.lateFeeController,
+    required this.defaultConsecutiveThresholdController,
+    required this.defaultTotalThresholdController,
     required this.feeAmountController,
     required this.nameError,
     required this.memberCountError,
@@ -536,6 +561,8 @@ class _StepBody extends StatelessWidget {
   final TextEditingController groupChannelController;
   final TextEditingController gracePeriodDaysController;
   final TextEditingController lateFeeController;
+  final TextEditingController defaultConsecutiveThresholdController;
+  final TextEditingController defaultTotalThresholdController;
   final TextEditingController feeAmountController;
 
   final String? nameError;
@@ -581,6 +608,9 @@ class _StepBody extends StatelessWidget {
         onMissedPaymentPolicyChanged: onMissedPaymentPolicyChanged,
         gracePeriodDaysController: gracePeriodDaysController,
         lateFeeController: lateFeeController,
+        defaultConsecutiveThresholdController:
+            defaultConsecutiveThresholdController,
+        defaultTotalThresholdController: defaultTotalThresholdController,
       ),
       _SetupStep.fees => _FeesStep(
         feesEnabled: feesEnabled,
@@ -832,12 +862,16 @@ class _PoliciesStep extends StatelessWidget {
     required this.onMissedPaymentPolicyChanged,
     required this.gracePeriodDaysController,
     required this.lateFeeController,
+    required this.defaultConsecutiveThresholdController,
+    required this.defaultTotalThresholdController,
   });
 
   final MissedPaymentPolicy missedPaymentPolicy;
   final ValueChanged<MissedPaymentPolicy> onMissedPaymentPolicyChanged;
   final TextEditingController gracePeriodDaysController;
   final TextEditingController lateFeeController;
+  final TextEditingController defaultConsecutiveThresholdController;
+  final TextEditingController defaultTotalThresholdController;
 
   @override
   Widget build(BuildContext context) {
@@ -877,6 +911,24 @@ class _PoliciesStep extends StatelessWidget {
           fieldKey: const Key('setup_late_fee_field'),
           controller: lateFeeController,
           keyboardType: TextInputType.number,
+        ),
+        const SizedBox(height: AppSpacing.s12),
+        const Text('Default policy (Section 9.3)'),
+        const SizedBox(height: AppSpacing.s8),
+        AppTextField(
+          label: 'Default after consecutive missed payments',
+          fieldKey: const Key('setup_default_consecutive_threshold_field'),
+          controller: defaultConsecutiveThresholdController,
+          keyboardType: TextInputType.number,
+          helperText: 'Recommended: 2',
+        ),
+        const SizedBox(height: AppSpacing.s12),
+        AppTextField(
+          label: 'Default after total missed payments',
+          fieldKey: const Key('setup_default_total_threshold_field'),
+          controller: defaultTotalThresholdController,
+          keyboardType: TextInputType.number,
+          helperText: 'Recommended: 3',
         ),
       ],
     );

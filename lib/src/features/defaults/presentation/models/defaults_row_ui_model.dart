@@ -7,6 +7,7 @@ class DefaultsRowUiModel {
     required this.memberName,
     required this.status,
     required this.missedCount,
+    required this.episodeKey,
     required this.nextStep,
   });
 
@@ -14,6 +15,7 @@ class DefaultsRowUiModel {
   final String memberName;
   final DefaultsStatusUi status;
   final int missedCount;
+  final String? episodeKey;
   final DefaultsNextStepUi nextStep;
 }
 
@@ -30,4 +32,3 @@ enum DefaultsNextStepUi {
   guarantorOrDeposit,
   dispute,
 }
-

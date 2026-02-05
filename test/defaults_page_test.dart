@@ -1,10 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:tan_shomiti/src/app/router/app_router.dart';
+import 'package:tan_shomiti/src/features/defaults/presentation/controllers/defaults_controller.dart';
 import 'package:tan_shomiti/src/features/defaults/presentation/models/defaults_row_ui_model.dart';
-import 'package:tan_shomiti/src/features/defaults/presentation/providers/defaults_providers.dart';
+import 'package:tan_shomiti/src/features/defaults/presentation/providers/defaults_controller_providers.dart';
 
 import 'helpers/test_app.dart';
+
+class _FakeDefaultsController extends DefaultsController {
+  _FakeDefaultsController(this._rows);
+
+  final List<DefaultsRowUiModel> _rows;
+
+  @override
+  Future<List<DefaultsRowUiModel>> build() async => _rows;
+}
 
 void main() {
   testWidgets('Defaults page opens from More', (tester) async {
@@ -12,6 +22,18 @@ void main() {
       createTestApp(
         overrides: [
           shomitiConfiguredProvider.overrideWith((ref) => true),
+          defaultsControllerProvider.overrideWith(
+            () => _FakeDefaultsController(const [
+              DefaultsRowUiModel(
+                memberId: 'm1',
+                memberName: 'Member 1',
+                status: DefaultsStatusUi.atRisk,
+                missedCount: 1,
+                episodeKey: '2026-01',
+                nextStep: DefaultsNextStepUi.reminder,
+              ),
+            ]),
+          ),
         ],
       ),
     );
@@ -38,8 +60,8 @@ void main() {
       createTestApp(
         overrides: [
           shomitiConfiguredProvider.overrideWith((ref) => true),
-          defaultsDashboardRowsProvider.overrideWith(
-            (ref) async => const <DefaultsRowUiModel>[],
+          defaultsControllerProvider.overrideWith(
+            () => _FakeDefaultsController(const <DefaultsRowUiModel>[]),
           ),
         ],
       ),

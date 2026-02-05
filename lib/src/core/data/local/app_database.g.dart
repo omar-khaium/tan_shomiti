@@ -7655,6 +7655,590 @@ class CollectionResolutionsCompanion
   }
 }
 
+class $DefaultEnforcementStepsTable extends DefaultEnforcementSteps
+    with TableInfo<$DefaultEnforcementStepsTable, DefaultEnforcementStepRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $DefaultEnforcementStepsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
+  static const VerificationMeta _shomitiIdMeta = const VerificationMeta(
+    'shomitiId',
+  );
+  @override
+  late final GeneratedColumn<String> shomitiId = GeneratedColumn<String>(
+    'shomiti_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES shomitis (id)',
+    ),
+  );
+  static const VerificationMeta _memberIdMeta = const VerificationMeta(
+    'memberId',
+  );
+  @override
+  late final GeneratedColumn<String> memberId = GeneratedColumn<String>(
+    'member_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES members (id)',
+    ),
+  );
+  static const VerificationMeta _episodeKeyMeta = const VerificationMeta(
+    'episodeKey',
+  );
+  @override
+  late final GeneratedColumn<String> episodeKey = GeneratedColumn<String>(
+    'episode_key',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _stepTypeMeta = const VerificationMeta(
+    'stepType',
+  );
+  @override
+  late final GeneratedColumn<String> stepType = GeneratedColumn<String>(
+    'step_type',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _ruleSetVersionIdMeta = const VerificationMeta(
+    'ruleSetVersionId',
+  );
+  @override
+  late final GeneratedColumn<String> ruleSetVersionId = GeneratedColumn<String>(
+    'rule_set_version_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES rule_set_versions (id)',
+    ),
+  );
+  static const VerificationMeta _recordedAtMeta = const VerificationMeta(
+    'recordedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> recordedAt = GeneratedColumn<DateTime>(
+    'recorded_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _noteMeta = const VerificationMeta('note');
+  @override
+  late final GeneratedColumn<String> note = GeneratedColumn<String>(
+    'note',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _amountBdtMeta = const VerificationMeta(
+    'amountBdt',
+  );
+  @override
+  late final GeneratedColumn<int> amountBdt = GeneratedColumn<int>(
+    'amount_bdt',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    shomitiId,
+    memberId,
+    episodeKey,
+    stepType,
+    ruleSetVersionId,
+    recordedAt,
+    note,
+    amountBdt,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'default_enforcement_steps';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<DefaultEnforcementStepRow> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('shomiti_id')) {
+      context.handle(
+        _shomitiIdMeta,
+        shomitiId.isAcceptableOrUnknown(data['shomiti_id']!, _shomitiIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_shomitiIdMeta);
+    }
+    if (data.containsKey('member_id')) {
+      context.handle(
+        _memberIdMeta,
+        memberId.isAcceptableOrUnknown(data['member_id']!, _memberIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_memberIdMeta);
+    }
+    if (data.containsKey('episode_key')) {
+      context.handle(
+        _episodeKeyMeta,
+        episodeKey.isAcceptableOrUnknown(data['episode_key']!, _episodeKeyMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_episodeKeyMeta);
+    }
+    if (data.containsKey('step_type')) {
+      context.handle(
+        _stepTypeMeta,
+        stepType.isAcceptableOrUnknown(data['step_type']!, _stepTypeMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_stepTypeMeta);
+    }
+    if (data.containsKey('rule_set_version_id')) {
+      context.handle(
+        _ruleSetVersionIdMeta,
+        ruleSetVersionId.isAcceptableOrUnknown(
+          data['rule_set_version_id']!,
+          _ruleSetVersionIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_ruleSetVersionIdMeta);
+    }
+    if (data.containsKey('recorded_at')) {
+      context.handle(
+        _recordedAtMeta,
+        recordedAt.isAcceptableOrUnknown(data['recorded_at']!, _recordedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_recordedAtMeta);
+    }
+    if (data.containsKey('note')) {
+      context.handle(
+        _noteMeta,
+        note.isAcceptableOrUnknown(data['note']!, _noteMeta),
+      );
+    }
+    if (data.containsKey('amount_bdt')) {
+      context.handle(
+        _amountBdtMeta,
+        amountBdt.isAcceptableOrUnknown(data['amount_bdt']!, _amountBdtMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  List<Set<GeneratedColumn>> get uniqueKeys => [
+    {shomitiId, memberId, episodeKey, stepType},
+  ];
+  @override
+  DefaultEnforcementStepRow map(
+    Map<String, dynamic> data, {
+    String? tablePrefix,
+  }) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return DefaultEnforcementStepRow(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      shomitiId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}shomiti_id'],
+      )!,
+      memberId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}member_id'],
+      )!,
+      episodeKey: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}episode_key'],
+      )!,
+      stepType: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}step_type'],
+      )!,
+      ruleSetVersionId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}rule_set_version_id'],
+      )!,
+      recordedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}recorded_at'],
+      )!,
+      note: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}note'],
+      ),
+      amountBdt: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}amount_bdt'],
+      ),
+    );
+  }
+
+  @override
+  $DefaultEnforcementStepsTable createAlias(String alias) {
+    return $DefaultEnforcementStepsTable(attachedDatabase, alias);
+  }
+}
+
+class DefaultEnforcementStepRow extends DataClass
+    implements Insertable<DefaultEnforcementStepRow> {
+  final int id;
+  final String shomitiId;
+  final String memberId;
+
+  /// Identifier for the current default episode (BillingMonth key of the
+  /// earliest missed payment in the current consecutive streak).
+  final String episodeKey;
+
+  /// Enforcement step type (reminder/notice/guarantor_or_deposit/dispute).
+  final String stepType;
+  final String ruleSetVersionId;
+  final DateTime recordedAt;
+  final String? note;
+
+  /// Optional: amount covered when applying guarantor/deposit (BDT).
+  final int? amountBdt;
+  const DefaultEnforcementStepRow({
+    required this.id,
+    required this.shomitiId,
+    required this.memberId,
+    required this.episodeKey,
+    required this.stepType,
+    required this.ruleSetVersionId,
+    required this.recordedAt,
+    this.note,
+    this.amountBdt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['shomiti_id'] = Variable<String>(shomitiId);
+    map['member_id'] = Variable<String>(memberId);
+    map['episode_key'] = Variable<String>(episodeKey);
+    map['step_type'] = Variable<String>(stepType);
+    map['rule_set_version_id'] = Variable<String>(ruleSetVersionId);
+    map['recorded_at'] = Variable<DateTime>(recordedAt);
+    if (!nullToAbsent || note != null) {
+      map['note'] = Variable<String>(note);
+    }
+    if (!nullToAbsent || amountBdt != null) {
+      map['amount_bdt'] = Variable<int>(amountBdt);
+    }
+    return map;
+  }
+
+  DefaultEnforcementStepsCompanion toCompanion(bool nullToAbsent) {
+    return DefaultEnforcementStepsCompanion(
+      id: Value(id),
+      shomitiId: Value(shomitiId),
+      memberId: Value(memberId),
+      episodeKey: Value(episodeKey),
+      stepType: Value(stepType),
+      ruleSetVersionId: Value(ruleSetVersionId),
+      recordedAt: Value(recordedAt),
+      note: note == null && nullToAbsent ? const Value.absent() : Value(note),
+      amountBdt: amountBdt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(amountBdt),
+    );
+  }
+
+  factory DefaultEnforcementStepRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return DefaultEnforcementStepRow(
+      id: serializer.fromJson<int>(json['id']),
+      shomitiId: serializer.fromJson<String>(json['shomitiId']),
+      memberId: serializer.fromJson<String>(json['memberId']),
+      episodeKey: serializer.fromJson<String>(json['episodeKey']),
+      stepType: serializer.fromJson<String>(json['stepType']),
+      ruleSetVersionId: serializer.fromJson<String>(json['ruleSetVersionId']),
+      recordedAt: serializer.fromJson<DateTime>(json['recordedAt']),
+      note: serializer.fromJson<String?>(json['note']),
+      amountBdt: serializer.fromJson<int?>(json['amountBdt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'shomitiId': serializer.toJson<String>(shomitiId),
+      'memberId': serializer.toJson<String>(memberId),
+      'episodeKey': serializer.toJson<String>(episodeKey),
+      'stepType': serializer.toJson<String>(stepType),
+      'ruleSetVersionId': serializer.toJson<String>(ruleSetVersionId),
+      'recordedAt': serializer.toJson<DateTime>(recordedAt),
+      'note': serializer.toJson<String?>(note),
+      'amountBdt': serializer.toJson<int?>(amountBdt),
+    };
+  }
+
+  DefaultEnforcementStepRow copyWith({
+    int? id,
+    String? shomitiId,
+    String? memberId,
+    String? episodeKey,
+    String? stepType,
+    String? ruleSetVersionId,
+    DateTime? recordedAt,
+    Value<String?> note = const Value.absent(),
+    Value<int?> amountBdt = const Value.absent(),
+  }) => DefaultEnforcementStepRow(
+    id: id ?? this.id,
+    shomitiId: shomitiId ?? this.shomitiId,
+    memberId: memberId ?? this.memberId,
+    episodeKey: episodeKey ?? this.episodeKey,
+    stepType: stepType ?? this.stepType,
+    ruleSetVersionId: ruleSetVersionId ?? this.ruleSetVersionId,
+    recordedAt: recordedAt ?? this.recordedAt,
+    note: note.present ? note.value : this.note,
+    amountBdt: amountBdt.present ? amountBdt.value : this.amountBdt,
+  );
+  DefaultEnforcementStepRow copyWithCompanion(
+    DefaultEnforcementStepsCompanion data,
+  ) {
+    return DefaultEnforcementStepRow(
+      id: data.id.present ? data.id.value : this.id,
+      shomitiId: data.shomitiId.present ? data.shomitiId.value : this.shomitiId,
+      memberId: data.memberId.present ? data.memberId.value : this.memberId,
+      episodeKey: data.episodeKey.present
+          ? data.episodeKey.value
+          : this.episodeKey,
+      stepType: data.stepType.present ? data.stepType.value : this.stepType,
+      ruleSetVersionId: data.ruleSetVersionId.present
+          ? data.ruleSetVersionId.value
+          : this.ruleSetVersionId,
+      recordedAt: data.recordedAt.present
+          ? data.recordedAt.value
+          : this.recordedAt,
+      note: data.note.present ? data.note.value : this.note,
+      amountBdt: data.amountBdt.present ? data.amountBdt.value : this.amountBdt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('DefaultEnforcementStepRow(')
+          ..write('id: $id, ')
+          ..write('shomitiId: $shomitiId, ')
+          ..write('memberId: $memberId, ')
+          ..write('episodeKey: $episodeKey, ')
+          ..write('stepType: $stepType, ')
+          ..write('ruleSetVersionId: $ruleSetVersionId, ')
+          ..write('recordedAt: $recordedAt, ')
+          ..write('note: $note, ')
+          ..write('amountBdt: $amountBdt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    shomitiId,
+    memberId,
+    episodeKey,
+    stepType,
+    ruleSetVersionId,
+    recordedAt,
+    note,
+    amountBdt,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is DefaultEnforcementStepRow &&
+          other.id == this.id &&
+          other.shomitiId == this.shomitiId &&
+          other.memberId == this.memberId &&
+          other.episodeKey == this.episodeKey &&
+          other.stepType == this.stepType &&
+          other.ruleSetVersionId == this.ruleSetVersionId &&
+          other.recordedAt == this.recordedAt &&
+          other.note == this.note &&
+          other.amountBdt == this.amountBdt);
+}
+
+class DefaultEnforcementStepsCompanion
+    extends UpdateCompanion<DefaultEnforcementStepRow> {
+  final Value<int> id;
+  final Value<String> shomitiId;
+  final Value<String> memberId;
+  final Value<String> episodeKey;
+  final Value<String> stepType;
+  final Value<String> ruleSetVersionId;
+  final Value<DateTime> recordedAt;
+  final Value<String?> note;
+  final Value<int?> amountBdt;
+  const DefaultEnforcementStepsCompanion({
+    this.id = const Value.absent(),
+    this.shomitiId = const Value.absent(),
+    this.memberId = const Value.absent(),
+    this.episodeKey = const Value.absent(),
+    this.stepType = const Value.absent(),
+    this.ruleSetVersionId = const Value.absent(),
+    this.recordedAt = const Value.absent(),
+    this.note = const Value.absent(),
+    this.amountBdt = const Value.absent(),
+  });
+  DefaultEnforcementStepsCompanion.insert({
+    this.id = const Value.absent(),
+    required String shomitiId,
+    required String memberId,
+    required String episodeKey,
+    required String stepType,
+    required String ruleSetVersionId,
+    required DateTime recordedAt,
+    this.note = const Value.absent(),
+    this.amountBdt = const Value.absent(),
+  }) : shomitiId = Value(shomitiId),
+       memberId = Value(memberId),
+       episodeKey = Value(episodeKey),
+       stepType = Value(stepType),
+       ruleSetVersionId = Value(ruleSetVersionId),
+       recordedAt = Value(recordedAt);
+  static Insertable<DefaultEnforcementStepRow> custom({
+    Expression<int>? id,
+    Expression<String>? shomitiId,
+    Expression<String>? memberId,
+    Expression<String>? episodeKey,
+    Expression<String>? stepType,
+    Expression<String>? ruleSetVersionId,
+    Expression<DateTime>? recordedAt,
+    Expression<String>? note,
+    Expression<int>? amountBdt,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (shomitiId != null) 'shomiti_id': shomitiId,
+      if (memberId != null) 'member_id': memberId,
+      if (episodeKey != null) 'episode_key': episodeKey,
+      if (stepType != null) 'step_type': stepType,
+      if (ruleSetVersionId != null) 'rule_set_version_id': ruleSetVersionId,
+      if (recordedAt != null) 'recorded_at': recordedAt,
+      if (note != null) 'note': note,
+      if (amountBdt != null) 'amount_bdt': amountBdt,
+    });
+  }
+
+  DefaultEnforcementStepsCompanion copyWith({
+    Value<int>? id,
+    Value<String>? shomitiId,
+    Value<String>? memberId,
+    Value<String>? episodeKey,
+    Value<String>? stepType,
+    Value<String>? ruleSetVersionId,
+    Value<DateTime>? recordedAt,
+    Value<String?>? note,
+    Value<int?>? amountBdt,
+  }) {
+    return DefaultEnforcementStepsCompanion(
+      id: id ?? this.id,
+      shomitiId: shomitiId ?? this.shomitiId,
+      memberId: memberId ?? this.memberId,
+      episodeKey: episodeKey ?? this.episodeKey,
+      stepType: stepType ?? this.stepType,
+      ruleSetVersionId: ruleSetVersionId ?? this.ruleSetVersionId,
+      recordedAt: recordedAt ?? this.recordedAt,
+      note: note ?? this.note,
+      amountBdt: amountBdt ?? this.amountBdt,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (shomitiId.present) {
+      map['shomiti_id'] = Variable<String>(shomitiId.value);
+    }
+    if (memberId.present) {
+      map['member_id'] = Variable<String>(memberId.value);
+    }
+    if (episodeKey.present) {
+      map['episode_key'] = Variable<String>(episodeKey.value);
+    }
+    if (stepType.present) {
+      map['step_type'] = Variable<String>(stepType.value);
+    }
+    if (ruleSetVersionId.present) {
+      map['rule_set_version_id'] = Variable<String>(ruleSetVersionId.value);
+    }
+    if (recordedAt.present) {
+      map['recorded_at'] = Variable<DateTime>(recordedAt.value);
+    }
+    if (note.present) {
+      map['note'] = Variable<String>(note.value);
+    }
+    if (amountBdt.present) {
+      map['amount_bdt'] = Variable<int>(amountBdt.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('DefaultEnforcementStepsCompanion(')
+          ..write('id: $id, ')
+          ..write('shomitiId: $shomitiId, ')
+          ..write('memberId: $memberId, ')
+          ..write('episodeKey: $episodeKey, ')
+          ..write('stepType: $stepType, ')
+          ..write('ruleSetVersionId: $ruleSetVersionId, ')
+          ..write('recordedAt: $recordedAt, ')
+          ..write('note: $note, ')
+          ..write('amountBdt: $amountBdt')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
@@ -7683,6 +8267,8 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $PaymentsTable payments = $PaymentsTable(this);
   late final $CollectionResolutionsTable collectionResolutions =
       $CollectionResolutionsTable(this);
+  late final $DefaultEnforcementStepsTable defaultEnforcementSteps =
+      $DefaultEnforcementStepsTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -7704,6 +8290,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     monthlyDues,
     payments,
     collectionResolutions,
+    defaultEnforcementSteps,
   ];
 }
 
@@ -8364,6 +8951,34 @@ final class $$ShomitisTableReferences
       manager.$state.copyWith(prefetchedData: cache),
     );
   }
+
+  static MultiTypedResultKey<
+    $DefaultEnforcementStepsTable,
+    List<DefaultEnforcementStepRow>
+  >
+  _defaultEnforcementStepsRefsTable(_$AppDatabase db) =>
+      MultiTypedResultKey.fromTable(
+        db.defaultEnforcementSteps,
+        aliasName: $_aliasNameGenerator(
+          db.shomitis.id,
+          db.defaultEnforcementSteps.shomitiId,
+        ),
+      );
+
+  $$DefaultEnforcementStepsTableProcessedTableManager
+  get defaultEnforcementStepsRefs {
+    final manager = $$DefaultEnforcementStepsTableTableManager(
+      $_db,
+      $_db.defaultEnforcementSteps,
+    ).filter((f) => f.shomitiId.id.sqlEquals($_itemColumn<String>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(
+      _defaultEnforcementStepsRefsTable($_db),
+    );
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
 }
 
 class $$ShomitisTableFilterComposer
@@ -8621,6 +9236,32 @@ class $$ShomitisTableFilterComposer
               }) => $$CollectionResolutionsTableFilterComposer(
                 $db: $db,
                 $table: $db.collectionResolutions,
+                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                joinBuilder: joinBuilder,
+                $removeJoinBuilderFromRootComposer:
+                    $removeJoinBuilderFromRootComposer,
+              ),
+        );
+    return f(composer);
+  }
+
+  Expression<bool> defaultEnforcementStepsRefs(
+    Expression<bool> Function($$DefaultEnforcementStepsTableFilterComposer f) f,
+  ) {
+    final $$DefaultEnforcementStepsTableFilterComposer composer =
+        $composerBuilder(
+          composer: this,
+          getCurrentColumn: (t) => t.id,
+          referencedTable: $db.defaultEnforcementSteps,
+          getReferencedColumn: (t) => t.shomitiId,
+          builder:
+              (
+                joinBuilder, {
+                $addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer,
+              }) => $$DefaultEnforcementStepsTableFilterComposer(
+                $db: $db,
+                $table: $db.defaultEnforcementSteps,
                 $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
                 joinBuilder: joinBuilder,
                 $removeJoinBuilderFromRootComposer:
@@ -8921,6 +9562,33 @@ class $$ShomitisTableAnnotationComposer
         );
     return f(composer);
   }
+
+  Expression<T> defaultEnforcementStepsRefs<T extends Object>(
+    Expression<T> Function($$DefaultEnforcementStepsTableAnnotationComposer a)
+    f,
+  ) {
+    final $$DefaultEnforcementStepsTableAnnotationComposer composer =
+        $composerBuilder(
+          composer: this,
+          getCurrentColumn: (t) => t.id,
+          referencedTable: $db.defaultEnforcementSteps,
+          getReferencedColumn: (t) => t.shomitiId,
+          builder:
+              (
+                joinBuilder, {
+                $addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer,
+              }) => $$DefaultEnforcementStepsTableAnnotationComposer(
+                $db: $db,
+                $table: $db.defaultEnforcementSteps,
+                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                joinBuilder: joinBuilder,
+                $removeJoinBuilderFromRootComposer:
+                    $removeJoinBuilderFromRootComposer,
+              ),
+        );
+    return f(composer);
+  }
 }
 
 class $$ShomitisTableTableManager
@@ -8946,6 +9614,7 @@ class $$ShomitisTableTableManager
             bool monthlyDuesRefs,
             bool paymentsRefs,
             bool collectionResolutionsRefs,
+            bool defaultEnforcementStepsRefs,
           })
         > {
   $$ShomitisTableTableManager(_$AppDatabase db, $ShomitisTable table)
@@ -9010,6 +9679,7 @@ class $$ShomitisTableTableManager
                 monthlyDuesRefs = false,
                 paymentsRefs = false,
                 collectionResolutionsRefs = false,
+                defaultEnforcementStepsRefs = false,
               }) {
                 return PrefetchHooks(
                   db: db,
@@ -9025,6 +9695,7 @@ class $$ShomitisTableTableManager
                     if (monthlyDuesRefs) db.monthlyDues,
                     if (paymentsRefs) db.payments,
                     if (collectionResolutionsRefs) db.collectionResolutions,
+                    if (defaultEnforcementStepsRefs) db.defaultEnforcementSteps,
                   ],
                   addJoins: null,
                   getPrefetchedDataCallback: (items) async {
@@ -9218,6 +9889,27 @@ class $$ShomitisTableTableManager
                               ),
                           typedResults: items,
                         ),
+                      if (defaultEnforcementStepsRefs)
+                        await $_getPrefetchedData<
+                          ShomitiRow,
+                          $ShomitisTable,
+                          DefaultEnforcementStepRow
+                        >(
+                          currentTable: table,
+                          referencedTable: $$ShomitisTableReferences
+                              ._defaultEnforcementStepsRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$ShomitisTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).defaultEnforcementStepsRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.shomitiId == item.id,
+                              ),
+                          typedResults: items,
+                        ),
                     ];
                   },
                 );
@@ -9248,6 +9940,7 @@ typedef $$ShomitisTableProcessedTableManager =
         bool monthlyDuesRefs,
         bool paymentsRefs,
         bool collectionResolutionsRefs,
+        bool defaultEnforcementStepsRefs,
       })
     >;
 typedef $$MembersTableCreateCompanionBuilder =
@@ -9406,6 +10099,34 @@ final class $$MembersTableReferences
     ).filter((f) => f.memberId.id.sqlEquals($_itemColumn<String>('id')!));
 
     final cache = $_typedResult.readTableOrNull(_paymentsRefsTable($_db));
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+
+  static MultiTypedResultKey<
+    $DefaultEnforcementStepsTable,
+    List<DefaultEnforcementStepRow>
+  >
+  _defaultEnforcementStepsRefsTable(_$AppDatabase db) =>
+      MultiTypedResultKey.fromTable(
+        db.defaultEnforcementSteps,
+        aliasName: $_aliasNameGenerator(
+          db.members.id,
+          db.defaultEnforcementSteps.memberId,
+        ),
+      );
+
+  $$DefaultEnforcementStepsTableProcessedTableManager
+  get defaultEnforcementStepsRefs {
+    final manager = $$DefaultEnforcementStepsTableTableManager(
+      $_db,
+      $_db.defaultEnforcementSteps,
+    ).filter((f) => f.memberId.id.sqlEquals($_itemColumn<String>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(
+      _defaultEnforcementStepsRefsTable($_db),
+    );
     return ProcessedTableManager(
       manager.$state.copyWith(prefetchedData: cache),
     );
@@ -9628,6 +10349,32 @@ class $$MembersTableFilterComposer
                 $removeJoinBuilderFromRootComposer,
           ),
     );
+    return f(composer);
+  }
+
+  Expression<bool> defaultEnforcementStepsRefs(
+    Expression<bool> Function($$DefaultEnforcementStepsTableFilterComposer f) f,
+  ) {
+    final $$DefaultEnforcementStepsTableFilterComposer composer =
+        $composerBuilder(
+          composer: this,
+          getCurrentColumn: (t) => t.id,
+          referencedTable: $db.defaultEnforcementSteps,
+          getReferencedColumn: (t) => t.memberId,
+          builder:
+              (
+                joinBuilder, {
+                $addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer,
+              }) => $$DefaultEnforcementStepsTableFilterComposer(
+                $db: $db,
+                $table: $db.defaultEnforcementSteps,
+                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                joinBuilder: joinBuilder,
+                $removeJoinBuilderFromRootComposer:
+                    $removeJoinBuilderFromRootComposer,
+              ),
+        );
     return f(composer);
   }
 }
@@ -9929,6 +10676,33 @@ class $$MembersTableAnnotationComposer
     );
     return f(composer);
   }
+
+  Expression<T> defaultEnforcementStepsRefs<T extends Object>(
+    Expression<T> Function($$DefaultEnforcementStepsTableAnnotationComposer a)
+    f,
+  ) {
+    final $$DefaultEnforcementStepsTableAnnotationComposer composer =
+        $composerBuilder(
+          composer: this,
+          getCurrentColumn: (t) => t.id,
+          referencedTable: $db.defaultEnforcementSteps,
+          getReferencedColumn: (t) => t.memberId,
+          builder:
+              (
+                joinBuilder, {
+                $addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer,
+              }) => $$DefaultEnforcementStepsTableAnnotationComposer(
+                $db: $db,
+                $table: $db.defaultEnforcementSteps,
+                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                joinBuilder: joinBuilder,
+                $removeJoinBuilderFromRootComposer:
+                    $removeJoinBuilderFromRootComposer,
+              ),
+        );
+    return f(composer);
+  }
 }
 
 class $$MembersTableTableManager
@@ -9951,6 +10725,7 @@ class $$MembersTableTableManager
             bool membershipChangeRequestsRefs,
             bool monthlyDuesRefs,
             bool paymentsRefs,
+            bool defaultEnforcementStepsRefs,
           })
         > {
   $$MembersTableTableManager(_$AppDatabase db, $MembersTable table)
@@ -10044,6 +10819,7 @@ class $$MembersTableTableManager
                 membershipChangeRequestsRefs = false,
                 monthlyDuesRefs = false,
                 paymentsRefs = false,
+                defaultEnforcementStepsRefs = false,
               }) {
                 return PrefetchHooks(
                   db: db,
@@ -10054,6 +10830,7 @@ class $$MembersTableTableManager
                       db.membershipChangeRequests,
                     if (monthlyDuesRefs) db.monthlyDues,
                     if (paymentsRefs) db.payments,
+                    if (defaultEnforcementStepsRefs) db.defaultEnforcementSteps,
                   ],
                   addJoins:
                       <
@@ -10194,6 +10971,27 @@ class $$MembersTableTableManager
                               ),
                           typedResults: items,
                         ),
+                      if (defaultEnforcementStepsRefs)
+                        await $_getPrefetchedData<
+                          MemberRow,
+                          $MembersTable,
+                          DefaultEnforcementStepRow
+                        >(
+                          currentTable: table,
+                          referencedTable: $$MembersTableReferences
+                              ._defaultEnforcementStepsRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$MembersTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).defaultEnforcementStepsRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.memberId == item.id,
+                              ),
+                          typedResults: items,
+                        ),
                     ];
                   },
                 );
@@ -10221,6 +11019,7 @@ typedef $$MembersTableProcessedTableManager =
         bool membershipChangeRequestsRefs,
         bool monthlyDuesRefs,
         bool paymentsRefs,
+        bool defaultEnforcementStepsRefs,
       })
     >;
 typedef $$MemberSharesTableCreateCompanionBuilder =
@@ -11428,6 +12227,37 @@ final class $$RuleSetVersionsTableReferences
       manager.$state.copyWith(prefetchedData: cache),
     );
   }
+
+  static MultiTypedResultKey<
+    $DefaultEnforcementStepsTable,
+    List<DefaultEnforcementStepRow>
+  >
+  _defaultEnforcementStepsRefsTable(_$AppDatabase db) =>
+      MultiTypedResultKey.fromTable(
+        db.defaultEnforcementSteps,
+        aliasName: $_aliasNameGenerator(
+          db.ruleSetVersions.id,
+          db.defaultEnforcementSteps.ruleSetVersionId,
+        ),
+      );
+
+  $$DefaultEnforcementStepsTableProcessedTableManager
+  get defaultEnforcementStepsRefs {
+    final manager =
+        $$DefaultEnforcementStepsTableTableManager(
+          $_db,
+          $_db.defaultEnforcementSteps,
+        ).filter(
+          (f) => f.ruleSetVersionId.id.sqlEquals($_itemColumn<String>('id')!),
+        );
+
+    final cache = $_typedResult.readTableOrNull(
+      _defaultEnforcementStepsRefsTable($_db),
+    );
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
 }
 
 class $$RuleSetVersionsTableFilterComposer
@@ -11501,6 +12331,32 @@ class $$RuleSetVersionsTableFilterComposer
                 $removeJoinBuilderFromRootComposer,
           ),
     );
+    return f(composer);
+  }
+
+  Expression<bool> defaultEnforcementStepsRefs(
+    Expression<bool> Function($$DefaultEnforcementStepsTableFilterComposer f) f,
+  ) {
+    final $$DefaultEnforcementStepsTableFilterComposer composer =
+        $composerBuilder(
+          composer: this,
+          getCurrentColumn: (t) => t.id,
+          referencedTable: $db.defaultEnforcementSteps,
+          getReferencedColumn: (t) => t.ruleSetVersionId,
+          builder:
+              (
+                joinBuilder, {
+                $addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer,
+              }) => $$DefaultEnforcementStepsTableFilterComposer(
+                $db: $db,
+                $table: $db.defaultEnforcementSteps,
+                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                joinBuilder: joinBuilder,
+                $removeJoinBuilderFromRootComposer:
+                    $removeJoinBuilderFromRootComposer,
+              ),
+        );
     return f(composer);
   }
 }
@@ -11597,6 +12453,33 @@ class $$RuleSetVersionsTableAnnotationComposer
     );
     return f(composer);
   }
+
+  Expression<T> defaultEnforcementStepsRefs<T extends Object>(
+    Expression<T> Function($$DefaultEnforcementStepsTableAnnotationComposer a)
+    f,
+  ) {
+    final $$DefaultEnforcementStepsTableAnnotationComposer composer =
+        $composerBuilder(
+          composer: this,
+          getCurrentColumn: (t) => t.id,
+          referencedTable: $db.defaultEnforcementSteps,
+          getReferencedColumn: (t) => t.ruleSetVersionId,
+          builder:
+              (
+                joinBuilder, {
+                $addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer,
+              }) => $$DefaultEnforcementStepsTableAnnotationComposer(
+                $db: $db,
+                $table: $db.defaultEnforcementSteps,
+                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                joinBuilder: joinBuilder,
+                $removeJoinBuilderFromRootComposer:
+                    $removeJoinBuilderFromRootComposer,
+              ),
+        );
+    return f(composer);
+  }
 }
 
 class $$RuleSetVersionsTableTableManager
@@ -11612,7 +12495,11 @@ class $$RuleSetVersionsTableTableManager
           $$RuleSetVersionsTableUpdateCompanionBuilder,
           (RuleSetVersionRow, $$RuleSetVersionsTableReferences),
           RuleSetVersionRow,
-          PrefetchHooks Function({bool memberConsentsRefs, bool dueMonthsRefs})
+          PrefetchHooks Function({
+            bool memberConsentsRefs,
+            bool dueMonthsRefs,
+            bool defaultEnforcementStepsRefs,
+          })
         > {
   $$RuleSetVersionsTableTableManager(
     _$AppDatabase db,
@@ -11660,12 +12547,17 @@ class $$RuleSetVersionsTableTableManager
               )
               .toList(),
           prefetchHooksCallback:
-              ({memberConsentsRefs = false, dueMonthsRefs = false}) {
+              ({
+                memberConsentsRefs = false,
+                dueMonthsRefs = false,
+                defaultEnforcementStepsRefs = false,
+              }) {
                 return PrefetchHooks(
                   db: db,
                   explicitlyWatchedTables: [
                     if (memberConsentsRefs) db.memberConsents,
                     if (dueMonthsRefs) db.dueMonths,
+                    if (defaultEnforcementStepsRefs) db.defaultEnforcementSteps,
                   ],
                   addJoins: null,
                   getPrefetchedDataCallback: (items) async {
@@ -11712,6 +12604,27 @@ class $$RuleSetVersionsTableTableManager
                               ),
                           typedResults: items,
                         ),
+                      if (defaultEnforcementStepsRefs)
+                        await $_getPrefetchedData<
+                          RuleSetVersionRow,
+                          $RuleSetVersionsTable,
+                          DefaultEnforcementStepRow
+                        >(
+                          currentTable: table,
+                          referencedTable: $$RuleSetVersionsTableReferences
+                              ._defaultEnforcementStepsRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$RuleSetVersionsTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).defaultEnforcementStepsRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.ruleSetVersionId == item.id,
+                              ),
+                          typedResults: items,
+                        ),
                     ];
                   },
                 );
@@ -11732,7 +12645,11 @@ typedef $$RuleSetVersionsTableProcessedTableManager =
       $$RuleSetVersionsTableUpdateCompanionBuilder,
       (RuleSetVersionRow, $$RuleSetVersionsTableReferences),
       RuleSetVersionRow,
-      PrefetchHooks Function({bool memberConsentsRefs, bool dueMonthsRefs})
+      PrefetchHooks Function({
+        bool memberConsentsRefs,
+        bool dueMonthsRefs,
+        bool defaultEnforcementStepsRefs,
+      })
     >;
 typedef $$MemberConsentsTableCreateCompanionBuilder =
     MemberConsentsCompanion Function({
@@ -15184,6 +16101,623 @@ typedef $$CollectionResolutionsTableProcessedTableManager =
       CollectionResolutionRow,
       PrefetchHooks Function({bool shomitiId})
     >;
+typedef $$DefaultEnforcementStepsTableCreateCompanionBuilder =
+    DefaultEnforcementStepsCompanion Function({
+      Value<int> id,
+      required String shomitiId,
+      required String memberId,
+      required String episodeKey,
+      required String stepType,
+      required String ruleSetVersionId,
+      required DateTime recordedAt,
+      Value<String?> note,
+      Value<int?> amountBdt,
+    });
+typedef $$DefaultEnforcementStepsTableUpdateCompanionBuilder =
+    DefaultEnforcementStepsCompanion Function({
+      Value<int> id,
+      Value<String> shomitiId,
+      Value<String> memberId,
+      Value<String> episodeKey,
+      Value<String> stepType,
+      Value<String> ruleSetVersionId,
+      Value<DateTime> recordedAt,
+      Value<String?> note,
+      Value<int?> amountBdt,
+    });
+
+final class $$DefaultEnforcementStepsTableReferences
+    extends
+        BaseReferences<
+          _$AppDatabase,
+          $DefaultEnforcementStepsTable,
+          DefaultEnforcementStepRow
+        > {
+  $$DefaultEnforcementStepsTableReferences(
+    super.$_db,
+    super.$_table,
+    super.$_typedResult,
+  );
+
+  static $ShomitisTable _shomitiIdTable(_$AppDatabase db) =>
+      db.shomitis.createAlias(
+        $_aliasNameGenerator(
+          db.defaultEnforcementSteps.shomitiId,
+          db.shomitis.id,
+        ),
+      );
+
+  $$ShomitisTableProcessedTableManager get shomitiId {
+    final $_column = $_itemColumn<String>('shomiti_id')!;
+
+    final manager = $$ShomitisTableTableManager(
+      $_db,
+      $_db.shomitis,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_shomitiIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+
+  static $MembersTable _memberIdTable(_$AppDatabase db) =>
+      db.members.createAlias(
+        $_aliasNameGenerator(
+          db.defaultEnforcementSteps.memberId,
+          db.members.id,
+        ),
+      );
+
+  $$MembersTableProcessedTableManager get memberId {
+    final $_column = $_itemColumn<String>('member_id')!;
+
+    final manager = $$MembersTableTableManager(
+      $_db,
+      $_db.members,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_memberIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+
+  static $RuleSetVersionsTable _ruleSetVersionIdTable(_$AppDatabase db) =>
+      db.ruleSetVersions.createAlias(
+        $_aliasNameGenerator(
+          db.defaultEnforcementSteps.ruleSetVersionId,
+          db.ruleSetVersions.id,
+        ),
+      );
+
+  $$RuleSetVersionsTableProcessedTableManager get ruleSetVersionId {
+    final $_column = $_itemColumn<String>('rule_set_version_id')!;
+
+    final manager = $$RuleSetVersionsTableTableManager(
+      $_db,
+      $_db.ruleSetVersions,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_ruleSetVersionIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+}
+
+class $$DefaultEnforcementStepsTableFilterComposer
+    extends Composer<_$AppDatabase, $DefaultEnforcementStepsTable> {
+  $$DefaultEnforcementStepsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get episodeKey => $composableBuilder(
+    column: $table.episodeKey,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get stepType => $composableBuilder(
+    column: $table.stepType,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get recordedAt => $composableBuilder(
+    column: $table.recordedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get note => $composableBuilder(
+    column: $table.note,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get amountBdt => $composableBuilder(
+    column: $table.amountBdt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  $$ShomitisTableFilterComposer get shomitiId {
+    final $$ShomitisTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.shomitiId,
+      referencedTable: $db.shomitis,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ShomitisTableFilterComposer(
+            $db: $db,
+            $table: $db.shomitis,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$MembersTableFilterComposer get memberId {
+    final $$MembersTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.memberId,
+      referencedTable: $db.members,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$MembersTableFilterComposer(
+            $db: $db,
+            $table: $db.members,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$RuleSetVersionsTableFilterComposer get ruleSetVersionId {
+    final $$RuleSetVersionsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.ruleSetVersionId,
+      referencedTable: $db.ruleSetVersions,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$RuleSetVersionsTableFilterComposer(
+            $db: $db,
+            $table: $db.ruleSetVersions,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$DefaultEnforcementStepsTableOrderingComposer
+    extends Composer<_$AppDatabase, $DefaultEnforcementStepsTable> {
+  $$DefaultEnforcementStepsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get episodeKey => $composableBuilder(
+    column: $table.episodeKey,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get stepType => $composableBuilder(
+    column: $table.stepType,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get recordedAt => $composableBuilder(
+    column: $table.recordedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get note => $composableBuilder(
+    column: $table.note,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get amountBdt => $composableBuilder(
+    column: $table.amountBdt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  $$ShomitisTableOrderingComposer get shomitiId {
+    final $$ShomitisTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.shomitiId,
+      referencedTable: $db.shomitis,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ShomitisTableOrderingComposer(
+            $db: $db,
+            $table: $db.shomitis,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$MembersTableOrderingComposer get memberId {
+    final $$MembersTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.memberId,
+      referencedTable: $db.members,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$MembersTableOrderingComposer(
+            $db: $db,
+            $table: $db.members,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$RuleSetVersionsTableOrderingComposer get ruleSetVersionId {
+    final $$RuleSetVersionsTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.ruleSetVersionId,
+      referencedTable: $db.ruleSetVersions,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$RuleSetVersionsTableOrderingComposer(
+            $db: $db,
+            $table: $db.ruleSetVersions,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$DefaultEnforcementStepsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $DefaultEnforcementStepsTable> {
+  $$DefaultEnforcementStepsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get episodeKey => $composableBuilder(
+    column: $table.episodeKey,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get stepType =>
+      $composableBuilder(column: $table.stepType, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get recordedAt => $composableBuilder(
+    column: $table.recordedAt,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get note =>
+      $composableBuilder(column: $table.note, builder: (column) => column);
+
+  GeneratedColumn<int> get amountBdt =>
+      $composableBuilder(column: $table.amountBdt, builder: (column) => column);
+
+  $$ShomitisTableAnnotationComposer get shomitiId {
+    final $$ShomitisTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.shomitiId,
+      referencedTable: $db.shomitis,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ShomitisTableAnnotationComposer(
+            $db: $db,
+            $table: $db.shomitis,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$MembersTableAnnotationComposer get memberId {
+    final $$MembersTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.memberId,
+      referencedTable: $db.members,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$MembersTableAnnotationComposer(
+            $db: $db,
+            $table: $db.members,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$RuleSetVersionsTableAnnotationComposer get ruleSetVersionId {
+    final $$RuleSetVersionsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.ruleSetVersionId,
+      referencedTable: $db.ruleSetVersions,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$RuleSetVersionsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.ruleSetVersions,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$DefaultEnforcementStepsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $DefaultEnforcementStepsTable,
+          DefaultEnforcementStepRow,
+          $$DefaultEnforcementStepsTableFilterComposer,
+          $$DefaultEnforcementStepsTableOrderingComposer,
+          $$DefaultEnforcementStepsTableAnnotationComposer,
+          $$DefaultEnforcementStepsTableCreateCompanionBuilder,
+          $$DefaultEnforcementStepsTableUpdateCompanionBuilder,
+          (DefaultEnforcementStepRow, $$DefaultEnforcementStepsTableReferences),
+          DefaultEnforcementStepRow,
+          PrefetchHooks Function({
+            bool shomitiId,
+            bool memberId,
+            bool ruleSetVersionId,
+          })
+        > {
+  $$DefaultEnforcementStepsTableTableManager(
+    _$AppDatabase db,
+    $DefaultEnforcementStepsTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$DefaultEnforcementStepsTableFilterComposer(
+                $db: db,
+                $table: table,
+              ),
+          createOrderingComposer: () =>
+              $$DefaultEnforcementStepsTableOrderingComposer(
+                $db: db,
+                $table: table,
+              ),
+          createComputedFieldComposer: () =>
+              $$DefaultEnforcementStepsTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                Value<String> shomitiId = const Value.absent(),
+                Value<String> memberId = const Value.absent(),
+                Value<String> episodeKey = const Value.absent(),
+                Value<String> stepType = const Value.absent(),
+                Value<String> ruleSetVersionId = const Value.absent(),
+                Value<DateTime> recordedAt = const Value.absent(),
+                Value<String?> note = const Value.absent(),
+                Value<int?> amountBdt = const Value.absent(),
+              }) => DefaultEnforcementStepsCompanion(
+                id: id,
+                shomitiId: shomitiId,
+                memberId: memberId,
+                episodeKey: episodeKey,
+                stepType: stepType,
+                ruleSetVersionId: ruleSetVersionId,
+                recordedAt: recordedAt,
+                note: note,
+                amountBdt: amountBdt,
+              ),
+          createCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                required String shomitiId,
+                required String memberId,
+                required String episodeKey,
+                required String stepType,
+                required String ruleSetVersionId,
+                required DateTime recordedAt,
+                Value<String?> note = const Value.absent(),
+                Value<int?> amountBdt = const Value.absent(),
+              }) => DefaultEnforcementStepsCompanion.insert(
+                id: id,
+                shomitiId: shomitiId,
+                memberId: memberId,
+                episodeKey: episodeKey,
+                stepType: stepType,
+                ruleSetVersionId: ruleSetVersionId,
+                recordedAt: recordedAt,
+                note: note,
+                amountBdt: amountBdt,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable(table),
+                  $$DefaultEnforcementStepsTableReferences(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback:
+              ({
+                shomitiId = false,
+                memberId = false,
+                ruleSetVersionId = false,
+              }) {
+                return PrefetchHooks(
+                  db: db,
+                  explicitlyWatchedTables: [],
+                  addJoins:
+                      <
+                        T extends TableManagerState<
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic
+                        >
+                      >(state) {
+                        if (shomitiId) {
+                          state =
+                              state.withJoin(
+                                    currentTable: table,
+                                    currentColumn: table.shomitiId,
+                                    referencedTable:
+                                        $$DefaultEnforcementStepsTableReferences
+                                            ._shomitiIdTable(db),
+                                    referencedColumn:
+                                        $$DefaultEnforcementStepsTableReferences
+                                            ._shomitiIdTable(db)
+                                            .id,
+                                  )
+                                  as T;
+                        }
+                        if (memberId) {
+                          state =
+                              state.withJoin(
+                                    currentTable: table,
+                                    currentColumn: table.memberId,
+                                    referencedTable:
+                                        $$DefaultEnforcementStepsTableReferences
+                                            ._memberIdTable(db),
+                                    referencedColumn:
+                                        $$DefaultEnforcementStepsTableReferences
+                                            ._memberIdTable(db)
+                                            .id,
+                                  )
+                                  as T;
+                        }
+                        if (ruleSetVersionId) {
+                          state =
+                              state.withJoin(
+                                    currentTable: table,
+                                    currentColumn: table.ruleSetVersionId,
+                                    referencedTable:
+                                        $$DefaultEnforcementStepsTableReferences
+                                            ._ruleSetVersionIdTable(db),
+                                    referencedColumn:
+                                        $$DefaultEnforcementStepsTableReferences
+                                            ._ruleSetVersionIdTable(db)
+                                            .id,
+                                  )
+                                  as T;
+                        }
+
+                        return state;
+                      },
+                  getPrefetchedDataCallback: (items) async {
+                    return [];
+                  },
+                );
+              },
+        ),
+      );
+}
+
+typedef $$DefaultEnforcementStepsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $DefaultEnforcementStepsTable,
+      DefaultEnforcementStepRow,
+      $$DefaultEnforcementStepsTableFilterComposer,
+      $$DefaultEnforcementStepsTableOrderingComposer,
+      $$DefaultEnforcementStepsTableAnnotationComposer,
+      $$DefaultEnforcementStepsTableCreateCompanionBuilder,
+      $$DefaultEnforcementStepsTableUpdateCompanionBuilder,
+      (DefaultEnforcementStepRow, $$DefaultEnforcementStepsTableReferences),
+      DefaultEnforcementStepRow,
+      PrefetchHooks Function({
+        bool shomitiId,
+        bool memberId,
+        bool ruleSetVersionId,
+      })
+    >;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;
@@ -15226,4 +16760,9 @@ class $AppDatabaseManager {
       $$PaymentsTableTableManager(_db, _db.payments);
   $$CollectionResolutionsTableTableManager get collectionResolutions =>
       $$CollectionResolutionsTableTableManager(_db, _db.collectionResolutions);
+  $$DefaultEnforcementStepsTableTableManager get defaultEnforcementSteps =>
+      $$DefaultEnforcementStepsTableTableManager(
+        _db,
+        _db.defaultEnforcementSteps,
+      );
 }
