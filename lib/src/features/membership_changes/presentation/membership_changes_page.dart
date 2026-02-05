@@ -63,6 +63,8 @@ class MembershipChangesPage extends ConsumerWidget {
                       message:
                           'This records an exit request. By default, exit requires an approved replacement.',
                       confirmLabel: 'Request exit',
+                      cancelKey: const Key('membership_exit_cancel'),
+                      confirmKey: const Key('membership_exit_confirm'),
                     );
                     if (confirmed != true) return;
                     try {
@@ -70,6 +72,7 @@ class MembershipChangesPage extends ConsumerWidget {
                           .read(membershipChangesControllerProvider.notifier)
                           .requestExit(row.memberId);
                     } catch (e) {
+                      debugPrint('membership_changes: requestExit failed: $e');
                       if (!context.mounted) return;
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(content: Text(e.toString())),
@@ -98,6 +101,9 @@ class MembershipChangesPage extends ConsumerWidget {
                             replacementPhone: result.phone,
                           );
                     } catch (e) {
+                      debugPrint(
+                        'membership_changes: proposeReplacement failed: $e',
+                      );
                       if (!context.mounted) return;
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(content: Text(e.toString())),
@@ -123,6 +129,9 @@ class MembershipChangesPage extends ConsumerWidget {
                             details: result.details,
                           );
                     } catch (e) {
+                      debugPrint(
+                        'membership_changes: removeForMisconduct failed: $e',
+                      );
                       if (!context.mounted) return;
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(content: Text(e.toString())),
@@ -154,6 +163,7 @@ class MembershipChangesPage extends ConsumerWidget {
                             approverMemberId: approverId,
                           );
                     } catch (e) {
+                      debugPrint('membership_changes: approve failed: $e');
                       if (!context.mounted) return;
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(content: Text(e.toString())),
@@ -290,8 +300,8 @@ Future<_ReplacementInput?> _showProposeReplacementDialog({
   required int position,
 }) async {
   final formKey = GlobalKey<FormState>();
-  final nameController = TextEditingController();
-  final phoneController = TextEditingController();
+  var name = '';
+  var phone = '';
 
   final result = await showDialog<_ReplacementInput>(
     context: context,
@@ -306,7 +316,7 @@ Future<_ReplacementInput?> _showProposeReplacementDialog({
               AppTextField(
                 label: 'Replacement name',
                 fieldKey: const Key('membership_replacement_name'),
-                controller: nameController,
+                onChanged: (v) => name = v,
                 textInputAction: TextInputAction.next,
                 validator: (v) =>
                     v == null || v.trim().isEmpty ? 'Required' : null,
@@ -315,7 +325,7 @@ Future<_ReplacementInput?> _showProposeReplacementDialog({
               AppTextField(
                 label: 'Replacement phone',
                 fieldKey: const Key('membership_replacement_phone'),
-                controller: phoneController,
+                onChanged: (v) => phone = v,
                 keyboardType: TextInputType.phone,
                 validator: (v) =>
                     v == null || v.trim().isEmpty ? 'Required' : null,
@@ -335,8 +345,8 @@ Future<_ReplacementInput?> _showProposeReplacementDialog({
               if (formKey.currentState?.validate() != true) return;
               Navigator.of(context).pop(
                 _ReplacementInput(
-                  name: nameController.text.trim(),
-                  phone: phoneController.text.trim(),
+                  name: name.trim(),
+                  phone: phone.trim(),
                 ),
               );
             },
@@ -347,8 +357,6 @@ Future<_ReplacementInput?> _showProposeReplacementDialog({
     },
   );
 
-  nameController.dispose();
-  phoneController.dispose();
   return result;
 }
 
@@ -365,7 +373,7 @@ Future<_RemovalInput?> _showRemoveForMisconductDialog({
 }) async {
   final formKey = GlobalKey<FormState>();
   String reason = 'fraud_or_manipulation';
-  final detailsController = TextEditingController();
+  var details = '';
 
   final result = await showDialog<_RemovalInput>(
     context: context,
@@ -402,7 +410,7 @@ Future<_RemovalInput?> _showRemoveForMisconductDialog({
               AppTextField(
                 label: 'Details (optional)',
                 fieldKey: const Key('membership_removal_details'),
-                controller: detailsController,
+                onChanged: (v) => details = v,
               ),
               const SizedBox(height: AppSpacing.s8),
               Text(
@@ -425,9 +433,7 @@ Future<_RemovalInput?> _showRemoveForMisconductDialog({
               Navigator.of(context).pop(
                 _RemovalInput(
                   reasonCode: reason,
-                  details: detailsController.text.trim().isEmpty
-                      ? null
-                      : detailsController.text.trim(),
+                  details: details.trim().isEmpty ? null : details.trim(),
                 ),
               );
             },
@@ -438,7 +444,6 @@ Future<_RemovalInput?> _showRemoveForMisconductDialog({
     },
   );
 
-  detailsController.dispose();
   return result;
 }
 

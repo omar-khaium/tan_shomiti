@@ -31,10 +31,10 @@ class MembershipChangesController
     final repo = ref.watch(membershipChangesRepositoryProvider);
     final allRequests = await repo.listRequests(shomitiId: context.shomitiId);
 
-    final openByMemberId = <String, MembershipChangeRequest>{
-      for (final r in allRequests.where((r) => r.isOpen))
-        r.outgoingMemberId: r,
-    };
+    final openByMemberId = <String, MembershipChangeRequest>{};
+    for (final r in allRequests.where((r) => r.isOpen)) {
+      openByMemberId.putIfAbsent(r.outgoingMemberId, () => r);
+    }
 
     final latestByMemberId = <String, MembershipChangeRequest>{};
     for (final r in allRequests) {
@@ -149,13 +149,14 @@ class MembershipChangesController
         (await ref.watch(membersContextProvider.future))?.shomitiId;
     if (shomitiId == null) return;
 
+    state = const AsyncValue.loading();
+
     await ref.watch(requestExitProvider)(
       shomitiId: shomitiId,
       memberId: memberId,
       requiresReplacement: true,
     );
 
-    state = const AsyncValue.loading();
     state = AsyncValue.data(await _load());
   }
 
@@ -169,6 +170,8 @@ class MembershipChangesController
         (await ref.watch(membersContextProvider.future))?.shomitiId;
     if (shomitiId == null) return;
 
+    state = const AsyncValue.loading();
+
     await ref.watch(proposeReplacementProvider)(
       shomitiId: shomitiId,
       outgoingMemberId: memberId,
@@ -176,7 +179,6 @@ class MembershipChangesController
       replacementPhone: replacementPhone,
     );
 
-    state = const AsyncValue.loading();
     state = AsyncValue.data(await _load());
   }
 
@@ -190,6 +192,8 @@ class MembershipChangesController
         (await ref.watch(membersContextProvider.future))?.shomitiId;
     if (shomitiId == null) return;
 
+    state = const AsyncValue.loading();
+
     await ref.watch(removeForMisconductProvider)(
       shomitiId: shomitiId,
       memberId: memberId,
@@ -197,7 +201,6 @@ class MembershipChangesController
       details: details,
     );
 
-    state = const AsyncValue.loading();
     state = AsyncValue.data(await _load());
   }
 
@@ -211,6 +214,8 @@ class MembershipChangesController
         (await ref.watch(membersContextProvider.future))?.shomitiId;
     if (shomitiId == null) return;
 
+    state = const AsyncValue.loading();
+
     await ref.watch(approveMembershipChangeProvider)(
       shomitiId: shomitiId,
       requestId: requestId,
@@ -218,7 +223,6 @@ class MembershipChangesController
       approverMemberId: approverMemberId,
     );
 
-    state = const AsyncValue.loading();
     state = AsyncValue.data(await _load());
   }
 }
