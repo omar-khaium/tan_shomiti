@@ -18,11 +18,14 @@ void main() {
   testWidgets('Contributions page can record payment and show receipt', (
     tester,
   ) async {
-    const month = BillingMonth(year: 2026, month: 2);
+    final month = BillingMonth.fromDate(DateTime.now());
     final paymentsRepo = _FakePaymentsRepository();
     final ui = ContributionsUiState(
       shomitiId: 's1',
       month: month,
+      paymentDeadline: '28th day of the month',
+      gracePeriodDays: 3,
+      lateFeeBdtPerDay: 50,
       totalDueBdt: 2000,
       rows: const [
         MonthlyDueRow(
@@ -51,6 +54,7 @@ void main() {
 
     expect(find.text('Unpaid'), findsOneWidget);
     expect(find.text('Not eligible'), findsOneWidget);
+    expect(find.text('Late fee: -'), findsOneWidget);
     await tester.tap(find.byKey(const Key('dues_record_payment_1')));
     await tester.pumpAndSettle();
 
@@ -60,6 +64,7 @@ void main() {
 
     expect(find.text('Paid'), findsOneWidget);
     expect(find.text('Eligible'), findsOneWidget);
+    expect(find.text('Late fee: 0 BDT'), findsOneWidget);
     expect(find.byKey(const Key('dues_view_receipt_1')), findsOneWidget);
 
     await tester.tap(find.byKey(const Key('dues_view_receipt_1')));

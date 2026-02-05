@@ -72,6 +72,9 @@ class ContributionsController
     return ContributionsUiState(
       shomitiId: context.shomitiId,
       month: month,
+      paymentDeadline: context.rules.paymentDeadline,
+      gracePeriodDays: context.rules.gracePeriodDays,
+      lateFeeBdtPerDay: context.rules.lateFeeBdtPerDay,
       totalDueBdt: total,
       rows: List.unmodifiable(rows),
     );
