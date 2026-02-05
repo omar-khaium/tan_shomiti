@@ -12,9 +12,12 @@ import '../../payments/domain/value_objects/payment_method.dart';
 import '../../payments/presentation/providers/payments_domain_providers.dart';
 import '../../payments/presentation/providers/payments_policy_providers.dart';
 import 'models/contributions_ui_state.dart';
+import 'providers/contributions_collection_providers.dart';
+import 'providers/contributions_domain_providers.dart';
 import 'providers/contributions_payments_providers.dart';
 import 'providers/contributions_providers.dart';
 import '../../rules/domain/entities/rule_set_snapshot.dart';
+import '../domain/entities/collection_resolution.dart';
 
 class ContributionsPage extends ConsumerWidget {
   const ContributionsPage({super.key});
@@ -122,19 +125,30 @@ class ContributionsPage extends ConsumerWidget {
   }
 }
 
-class _CollectionStatusCard extends StatelessWidget {
+class _CollectionStatusCard extends ConsumerWidget {
   const _CollectionStatusCard({required this.ui, required this.payments});
 
   final ContributionsUiState ui;
   final Map<String, Payment> payments;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final resolution = ref
+        .watch(
+          collectionResolutionProvider(
+            CollectionResolutionArgs(shomitiId: ui.shomitiId, month: ui.month),
+          ),
+        )
+        .valueOrNull;
+
     final collected = payments.values.fold<int>(
       0,
       (sum, p) => sum + p.amountBdt,
     );
-    final shortfall = (ui.totalDueBdt - collected).clamp(0, ui.totalDueBdt);
+    final covered = resolution?.amountBdt ?? 0;
+    final effectiveCollected = collected + covered;
+    final shortfall =
+        (ui.totalDueBdt - effectiveCollected).clamp(0, ui.totalDueBdt);
     final isComplete = shortfall == 0;
 
     final policyLabel = switch (ui.missedPaymentPolicy) {
@@ -180,6 +194,13 @@ class _CollectionStatusCard extends StatelessWidget {
           ),
           const SizedBox(height: AppSpacing.s8),
           Text(policyLabel, style: Theme.of(context).textTheme.bodySmall),
+          if (resolution != null) ...[
+            const SizedBox(height: AppSpacing.s8),
+            Text(
+              'Covered: ${resolution.amountBdt} BDT (${resolution.method.name})',
+              style: Theme.of(context).textTheme.bodySmall,
+            ),
+          ],
           if (!isComplete) ...[
             const SizedBox(height: AppSpacing.s8),
             switch (ui.missedPaymentPolicy) {
@@ -189,12 +210,30 @@ class _CollectionStatusCard extends StatelessWidget {
               ),
               MissedPaymentPolicy.coverFromReserve => FilledButton(
                 key: const Key('collection_cover_reserve'),
-                onPressed: null,
+                onPressed: resolution == null
+                    ? () async {
+                        await ref.watch(resolveShortfallProvider)(
+                          shomitiId: ui.shomitiId,
+                          month: ui.month,
+                          method: CollectionResolutionMethod.reserve,
+                          amountBdt: shortfall,
+                        );
+                      }
+                    : null,
                 child: const Text('Cover shortfall from reserve'),
               ),
               MissedPaymentPolicy.coverByGuarantor => FilledButton(
                 key: const Key('collection_mark_guarantor_cover'),
-                onPressed: null,
+                onPressed: resolution == null
+                    ? () async {
+                        await ref.watch(resolveShortfallProvider)(
+                          shomitiId: ui.shomitiId,
+                          month: ui.month,
+                          method: CollectionResolutionMethod.guarantor,
+                          amountBdt: shortfall,
+                        );
+                      }
+                    : null,
                 child: const Text('Mark guarantor cover'),
               ),
             },
