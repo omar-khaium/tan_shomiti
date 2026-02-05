@@ -21,6 +21,7 @@ import 'tables/monthly_dues.dart';
 import 'tables/payments.dart';
 import 'tables/collection_resolutions.dart';
 import 'tables/default_enforcement_steps.dart';
+import 'tables/draw_records.dart';
 import 'tables/shomitis.dart';
 
 part 'app_database.g.dart';
@@ -43,6 +44,7 @@ part 'app_database.g.dart';
     Payments,
     CollectionResolutions,
     DefaultEnforcementSteps,
+    DrawRecords,
     Shomitis,
   ],
 )
@@ -54,7 +56,7 @@ class AppDatabase extends _$AppDatabase {
   factory AppDatabase.memory() => AppDatabase(NativeDatabase.memory());
 
   @override
-  int get schemaVersion => 11;
+  int get schemaVersion => 12;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -103,6 +105,9 @@ class AppDatabase extends _$AppDatabase {
       }
       if (from < 11) {
         await m.createTable(defaultEnforcementSteps);
+      }
+      if (from < 12) {
+        await m.createTable(drawRecords);
       }
     },
   );
