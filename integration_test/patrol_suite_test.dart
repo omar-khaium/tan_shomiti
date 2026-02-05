@@ -14,6 +14,7 @@ import 'ts_204_membership_changes_e2e_test.dart'
 import 'ts_301_contributions_e2e_test.dart' as ts_301_contributions_e2e_test;
 import 'ts_302_payments_e2e_test.dart' as ts_302_payments_e2e_test;
 import 'ts_303_late_fees_e2e_test.dart' as ts_303_late_fees_e2e_test;
+import 'ts_304_short_pot_e2e_test.dart' as ts_304_short_pot_e2e_test;
 
 void main() {
   ts_101_setup_wizard_e2e_test.main();
@@ -30,4 +31,5 @@ void main() {
   ts_301_contributions_e2e_test.main();
   ts_302_payments_e2e_test.main();
   ts_303_late_fees_e2e_test.main();
+  ts_304_short_pot_e2e_test.main();
 }
