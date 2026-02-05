@@ -40,6 +40,12 @@ class MorePage extends ConsumerWidget {
           onTap: () => context.push(ledgerLocation),
         ),
         _MoreTile(
+          tileKey: const Key('more_statements'),
+          title: statementsTitle,
+          subtitle: 'Generate and view monthly statements',
+          onTap: () => context.push(statementsLocation),
+        ),
+        _MoreTile(
           tileKey: const Key('more_audit'),
           title: auditTitle,
           subtitle: 'View audit events and approvals',
