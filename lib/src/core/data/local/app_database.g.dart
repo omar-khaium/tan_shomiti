@@ -6492,6 +6492,743 @@ class MonthlyDuesCompanion extends UpdateCompanion<MonthlyDueRow> {
   }
 }
 
+class $PaymentsTable extends Payments
+    with TableInfo<$PaymentsTable, PaymentRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $PaymentsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _shomitiIdMeta = const VerificationMeta(
+    'shomitiId',
+  );
+  @override
+  late final GeneratedColumn<String> shomitiId = GeneratedColumn<String>(
+    'shomiti_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES shomitis (id)',
+    ),
+  );
+  static const VerificationMeta _monthKeyMeta = const VerificationMeta(
+    'monthKey',
+  );
+  @override
+  late final GeneratedColumn<String> monthKey = GeneratedColumn<String>(
+    'month_key',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _memberIdMeta = const VerificationMeta(
+    'memberId',
+  );
+  @override
+  late final GeneratedColumn<String> memberId = GeneratedColumn<String>(
+    'member_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES members (id)',
+    ),
+  );
+  static const VerificationMeta _amountBdtMeta = const VerificationMeta(
+    'amountBdt',
+  );
+  @override
+  late final GeneratedColumn<int> amountBdt = GeneratedColumn<int>(
+    'amount_bdt',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _methodMeta = const VerificationMeta('method');
+  @override
+  late final GeneratedColumn<String> method = GeneratedColumn<String>(
+    'method',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _referenceMeta = const VerificationMeta(
+    'reference',
+  );
+  @override
+  late final GeneratedColumn<String> reference = GeneratedColumn<String>(
+    'reference',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _proofNoteMeta = const VerificationMeta(
+    'proofNote',
+  );
+  @override
+  late final GeneratedColumn<String> proofNote = GeneratedColumn<String>(
+    'proof_note',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _recordedAtMeta = const VerificationMeta(
+    'recordedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> recordedAt = GeneratedColumn<DateTime>(
+    'recorded_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _confirmedAtMeta = const VerificationMeta(
+    'confirmedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> confirmedAt = GeneratedColumn<DateTime>(
+    'confirmed_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _receiptNumberMeta = const VerificationMeta(
+    'receiptNumber',
+  );
+  @override
+  late final GeneratedColumn<String> receiptNumber = GeneratedColumn<String>(
+    'receipt_number',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _receiptIssuedAtMeta = const VerificationMeta(
+    'receiptIssuedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> receiptIssuedAt =
+      GeneratedColumn<DateTime>(
+        'receipt_issued_at',
+        aliasedName,
+        true,
+        type: DriftSqlType.dateTime,
+        requiredDuringInsert: false,
+      );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    shomitiId,
+    monthKey,
+    memberId,
+    amountBdt,
+    method,
+    reference,
+    proofNote,
+    recordedAt,
+    confirmedAt,
+    receiptNumber,
+    receiptIssuedAt,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'payments';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<PaymentRow> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('shomiti_id')) {
+      context.handle(
+        _shomitiIdMeta,
+        shomitiId.isAcceptableOrUnknown(data['shomiti_id']!, _shomitiIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_shomitiIdMeta);
+    }
+    if (data.containsKey('month_key')) {
+      context.handle(
+        _monthKeyMeta,
+        monthKey.isAcceptableOrUnknown(data['month_key']!, _monthKeyMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_monthKeyMeta);
+    }
+    if (data.containsKey('member_id')) {
+      context.handle(
+        _memberIdMeta,
+        memberId.isAcceptableOrUnknown(data['member_id']!, _memberIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_memberIdMeta);
+    }
+    if (data.containsKey('amount_bdt')) {
+      context.handle(
+        _amountBdtMeta,
+        amountBdt.isAcceptableOrUnknown(data['amount_bdt']!, _amountBdtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_amountBdtMeta);
+    }
+    if (data.containsKey('method')) {
+      context.handle(
+        _methodMeta,
+        method.isAcceptableOrUnknown(data['method']!, _methodMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_methodMeta);
+    }
+    if (data.containsKey('reference')) {
+      context.handle(
+        _referenceMeta,
+        reference.isAcceptableOrUnknown(data['reference']!, _referenceMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_referenceMeta);
+    }
+    if (data.containsKey('proof_note')) {
+      context.handle(
+        _proofNoteMeta,
+        proofNote.isAcceptableOrUnknown(data['proof_note']!, _proofNoteMeta),
+      );
+    }
+    if (data.containsKey('recorded_at')) {
+      context.handle(
+        _recordedAtMeta,
+        recordedAt.isAcceptableOrUnknown(data['recorded_at']!, _recordedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_recordedAtMeta);
+    }
+    if (data.containsKey('confirmed_at')) {
+      context.handle(
+        _confirmedAtMeta,
+        confirmedAt.isAcceptableOrUnknown(
+          data['confirmed_at']!,
+          _confirmedAtMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_confirmedAtMeta);
+    }
+    if (data.containsKey('receipt_number')) {
+      context.handle(
+        _receiptNumberMeta,
+        receiptNumber.isAcceptableOrUnknown(
+          data['receipt_number']!,
+          _receiptNumberMeta,
+        ),
+      );
+    }
+    if (data.containsKey('receipt_issued_at')) {
+      context.handle(
+        _receiptIssuedAtMeta,
+        receiptIssuedAt.isAcceptableOrUnknown(
+          data['receipt_issued_at']!,
+          _receiptIssuedAtMeta,
+        ),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  List<Set<GeneratedColumn>> get uniqueKeys => [
+    {shomitiId, monthKey, memberId},
+  ];
+  @override
+  PaymentRow map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return PaymentRow(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      shomitiId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}shomiti_id'],
+      )!,
+      monthKey: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}month_key'],
+      )!,
+      memberId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}member_id'],
+      )!,
+      amountBdt: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}amount_bdt'],
+      )!,
+      method: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}method'],
+      )!,
+      reference: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}reference'],
+      )!,
+      proofNote: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}proof_note'],
+      ),
+      recordedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}recorded_at'],
+      )!,
+      confirmedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}confirmed_at'],
+      )!,
+      receiptNumber: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}receipt_number'],
+      ),
+      receiptIssuedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}receipt_issued_at'],
+      ),
+    );
+  }
+
+  @override
+  $PaymentsTable createAlias(String alias) {
+    return $PaymentsTable(attachedDatabase, alias);
+  }
+}
+
+class PaymentRow extends DataClass implements Insertable<PaymentRow> {
+  final String id;
+  final String shomitiId;
+  final String monthKey;
+  final String memberId;
+  final int amountBdt;
+  final String method;
+  final String reference;
+  final String? proofNote;
+  final DateTime recordedAt;
+  final DateTime confirmedAt;
+  final String? receiptNumber;
+  final DateTime? receiptIssuedAt;
+  const PaymentRow({
+    required this.id,
+    required this.shomitiId,
+    required this.monthKey,
+    required this.memberId,
+    required this.amountBdt,
+    required this.method,
+    required this.reference,
+    this.proofNote,
+    required this.recordedAt,
+    required this.confirmedAt,
+    this.receiptNumber,
+    this.receiptIssuedAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['shomiti_id'] = Variable<String>(shomitiId);
+    map['month_key'] = Variable<String>(monthKey);
+    map['member_id'] = Variable<String>(memberId);
+    map['amount_bdt'] = Variable<int>(amountBdt);
+    map['method'] = Variable<String>(method);
+    map['reference'] = Variable<String>(reference);
+    if (!nullToAbsent || proofNote != null) {
+      map['proof_note'] = Variable<String>(proofNote);
+    }
+    map['recorded_at'] = Variable<DateTime>(recordedAt);
+    map['confirmed_at'] = Variable<DateTime>(confirmedAt);
+    if (!nullToAbsent || receiptNumber != null) {
+      map['receipt_number'] = Variable<String>(receiptNumber);
+    }
+    if (!nullToAbsent || receiptIssuedAt != null) {
+      map['receipt_issued_at'] = Variable<DateTime>(receiptIssuedAt);
+    }
+    return map;
+  }
+
+  PaymentsCompanion toCompanion(bool nullToAbsent) {
+    return PaymentsCompanion(
+      id: Value(id),
+      shomitiId: Value(shomitiId),
+      monthKey: Value(monthKey),
+      memberId: Value(memberId),
+      amountBdt: Value(amountBdt),
+      method: Value(method),
+      reference: Value(reference),
+      proofNote: proofNote == null && nullToAbsent
+          ? const Value.absent()
+          : Value(proofNote),
+      recordedAt: Value(recordedAt),
+      confirmedAt: Value(confirmedAt),
+      receiptNumber: receiptNumber == null && nullToAbsent
+          ? const Value.absent()
+          : Value(receiptNumber),
+      receiptIssuedAt: receiptIssuedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(receiptIssuedAt),
+    );
+  }
+
+  factory PaymentRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return PaymentRow(
+      id: serializer.fromJson<String>(json['id']),
+      shomitiId: serializer.fromJson<String>(json['shomitiId']),
+      monthKey: serializer.fromJson<String>(json['monthKey']),
+      memberId: serializer.fromJson<String>(json['memberId']),
+      amountBdt: serializer.fromJson<int>(json['amountBdt']),
+      method: serializer.fromJson<String>(json['method']),
+      reference: serializer.fromJson<String>(json['reference']),
+      proofNote: serializer.fromJson<String?>(json['proofNote']),
+      recordedAt: serializer.fromJson<DateTime>(json['recordedAt']),
+      confirmedAt: serializer.fromJson<DateTime>(json['confirmedAt']),
+      receiptNumber: serializer.fromJson<String?>(json['receiptNumber']),
+      receiptIssuedAt: serializer.fromJson<DateTime?>(json['receiptIssuedAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'shomitiId': serializer.toJson<String>(shomitiId),
+      'monthKey': serializer.toJson<String>(monthKey),
+      'memberId': serializer.toJson<String>(memberId),
+      'amountBdt': serializer.toJson<int>(amountBdt),
+      'method': serializer.toJson<String>(method),
+      'reference': serializer.toJson<String>(reference),
+      'proofNote': serializer.toJson<String?>(proofNote),
+      'recordedAt': serializer.toJson<DateTime>(recordedAt),
+      'confirmedAt': serializer.toJson<DateTime>(confirmedAt),
+      'receiptNumber': serializer.toJson<String?>(receiptNumber),
+      'receiptIssuedAt': serializer.toJson<DateTime?>(receiptIssuedAt),
+    };
+  }
+
+  PaymentRow copyWith({
+    String? id,
+    String? shomitiId,
+    String? monthKey,
+    String? memberId,
+    int? amountBdt,
+    String? method,
+    String? reference,
+    Value<String?> proofNote = const Value.absent(),
+    DateTime? recordedAt,
+    DateTime? confirmedAt,
+    Value<String?> receiptNumber = const Value.absent(),
+    Value<DateTime?> receiptIssuedAt = const Value.absent(),
+  }) => PaymentRow(
+    id: id ?? this.id,
+    shomitiId: shomitiId ?? this.shomitiId,
+    monthKey: monthKey ?? this.monthKey,
+    memberId: memberId ?? this.memberId,
+    amountBdt: amountBdt ?? this.amountBdt,
+    method: method ?? this.method,
+    reference: reference ?? this.reference,
+    proofNote: proofNote.present ? proofNote.value : this.proofNote,
+    recordedAt: recordedAt ?? this.recordedAt,
+    confirmedAt: confirmedAt ?? this.confirmedAt,
+    receiptNumber: receiptNumber.present
+        ? receiptNumber.value
+        : this.receiptNumber,
+    receiptIssuedAt: receiptIssuedAt.present
+        ? receiptIssuedAt.value
+        : this.receiptIssuedAt,
+  );
+  PaymentRow copyWithCompanion(PaymentsCompanion data) {
+    return PaymentRow(
+      id: data.id.present ? data.id.value : this.id,
+      shomitiId: data.shomitiId.present ? data.shomitiId.value : this.shomitiId,
+      monthKey: data.monthKey.present ? data.monthKey.value : this.monthKey,
+      memberId: data.memberId.present ? data.memberId.value : this.memberId,
+      amountBdt: data.amountBdt.present ? data.amountBdt.value : this.amountBdt,
+      method: data.method.present ? data.method.value : this.method,
+      reference: data.reference.present ? data.reference.value : this.reference,
+      proofNote: data.proofNote.present ? data.proofNote.value : this.proofNote,
+      recordedAt: data.recordedAt.present
+          ? data.recordedAt.value
+          : this.recordedAt,
+      confirmedAt: data.confirmedAt.present
+          ? data.confirmedAt.value
+          : this.confirmedAt,
+      receiptNumber: data.receiptNumber.present
+          ? data.receiptNumber.value
+          : this.receiptNumber,
+      receiptIssuedAt: data.receiptIssuedAt.present
+          ? data.receiptIssuedAt.value
+          : this.receiptIssuedAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('PaymentRow(')
+          ..write('id: $id, ')
+          ..write('shomitiId: $shomitiId, ')
+          ..write('monthKey: $monthKey, ')
+          ..write('memberId: $memberId, ')
+          ..write('amountBdt: $amountBdt, ')
+          ..write('method: $method, ')
+          ..write('reference: $reference, ')
+          ..write('proofNote: $proofNote, ')
+          ..write('recordedAt: $recordedAt, ')
+          ..write('confirmedAt: $confirmedAt, ')
+          ..write('receiptNumber: $receiptNumber, ')
+          ..write('receiptIssuedAt: $receiptIssuedAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    shomitiId,
+    monthKey,
+    memberId,
+    amountBdt,
+    method,
+    reference,
+    proofNote,
+    recordedAt,
+    confirmedAt,
+    receiptNumber,
+    receiptIssuedAt,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is PaymentRow &&
+          other.id == this.id &&
+          other.shomitiId == this.shomitiId &&
+          other.monthKey == this.monthKey &&
+          other.memberId == this.memberId &&
+          other.amountBdt == this.amountBdt &&
+          other.method == this.method &&
+          other.reference == this.reference &&
+          other.proofNote == this.proofNote &&
+          other.recordedAt == this.recordedAt &&
+          other.confirmedAt == this.confirmedAt &&
+          other.receiptNumber == this.receiptNumber &&
+          other.receiptIssuedAt == this.receiptIssuedAt);
+}
+
+class PaymentsCompanion extends UpdateCompanion<PaymentRow> {
+  final Value<String> id;
+  final Value<String> shomitiId;
+  final Value<String> monthKey;
+  final Value<String> memberId;
+  final Value<int> amountBdt;
+  final Value<String> method;
+  final Value<String> reference;
+  final Value<String?> proofNote;
+  final Value<DateTime> recordedAt;
+  final Value<DateTime> confirmedAt;
+  final Value<String?> receiptNumber;
+  final Value<DateTime?> receiptIssuedAt;
+  final Value<int> rowid;
+  const PaymentsCompanion({
+    this.id = const Value.absent(),
+    this.shomitiId = const Value.absent(),
+    this.monthKey = const Value.absent(),
+    this.memberId = const Value.absent(),
+    this.amountBdt = const Value.absent(),
+    this.method = const Value.absent(),
+    this.reference = const Value.absent(),
+    this.proofNote = const Value.absent(),
+    this.recordedAt = const Value.absent(),
+    this.confirmedAt = const Value.absent(),
+    this.receiptNumber = const Value.absent(),
+    this.receiptIssuedAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  PaymentsCompanion.insert({
+    required String id,
+    required String shomitiId,
+    required String monthKey,
+    required String memberId,
+    required int amountBdt,
+    required String method,
+    required String reference,
+    this.proofNote = const Value.absent(),
+    required DateTime recordedAt,
+    required DateTime confirmedAt,
+    this.receiptNumber = const Value.absent(),
+    this.receiptIssuedAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       shomitiId = Value(shomitiId),
+       monthKey = Value(monthKey),
+       memberId = Value(memberId),
+       amountBdt = Value(amountBdt),
+       method = Value(method),
+       reference = Value(reference),
+       recordedAt = Value(recordedAt),
+       confirmedAt = Value(confirmedAt);
+  static Insertable<PaymentRow> custom({
+    Expression<String>? id,
+    Expression<String>? shomitiId,
+    Expression<String>? monthKey,
+    Expression<String>? memberId,
+    Expression<int>? amountBdt,
+    Expression<String>? method,
+    Expression<String>? reference,
+    Expression<String>? proofNote,
+    Expression<DateTime>? recordedAt,
+    Expression<DateTime>? confirmedAt,
+    Expression<String>? receiptNumber,
+    Expression<DateTime>? receiptIssuedAt,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (shomitiId != null) 'shomiti_id': shomitiId,
+      if (monthKey != null) 'month_key': monthKey,
+      if (memberId != null) 'member_id': memberId,
+      if (amountBdt != null) 'amount_bdt': amountBdt,
+      if (method != null) 'method': method,
+      if (reference != null) 'reference': reference,
+      if (proofNote != null) 'proof_note': proofNote,
+      if (recordedAt != null) 'recorded_at': recordedAt,
+      if (confirmedAt != null) 'confirmed_at': confirmedAt,
+      if (receiptNumber != null) 'receipt_number': receiptNumber,
+      if (receiptIssuedAt != null) 'receipt_issued_at': receiptIssuedAt,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  PaymentsCompanion copyWith({
+    Value<String>? id,
+    Value<String>? shomitiId,
+    Value<String>? monthKey,
+    Value<String>? memberId,
+    Value<int>? amountBdt,
+    Value<String>? method,
+    Value<String>? reference,
+    Value<String?>? proofNote,
+    Value<DateTime>? recordedAt,
+    Value<DateTime>? confirmedAt,
+    Value<String?>? receiptNumber,
+    Value<DateTime?>? receiptIssuedAt,
+    Value<int>? rowid,
+  }) {
+    return PaymentsCompanion(
+      id: id ?? this.id,
+      shomitiId: shomitiId ?? this.shomitiId,
+      monthKey: monthKey ?? this.monthKey,
+      memberId: memberId ?? this.memberId,
+      amountBdt: amountBdt ?? this.amountBdt,
+      method: method ?? this.method,
+      reference: reference ?? this.reference,
+      proofNote: proofNote ?? this.proofNote,
+      recordedAt: recordedAt ?? this.recordedAt,
+      confirmedAt: confirmedAt ?? this.confirmedAt,
+      receiptNumber: receiptNumber ?? this.receiptNumber,
+      receiptIssuedAt: receiptIssuedAt ?? this.receiptIssuedAt,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (shomitiId.present) {
+      map['shomiti_id'] = Variable<String>(shomitiId.value);
+    }
+    if (monthKey.present) {
+      map['month_key'] = Variable<String>(monthKey.value);
+    }
+    if (memberId.present) {
+      map['member_id'] = Variable<String>(memberId.value);
+    }
+    if (amountBdt.present) {
+      map['amount_bdt'] = Variable<int>(amountBdt.value);
+    }
+    if (method.present) {
+      map['method'] = Variable<String>(method.value);
+    }
+    if (reference.present) {
+      map['reference'] = Variable<String>(reference.value);
+    }
+    if (proofNote.present) {
+      map['proof_note'] = Variable<String>(proofNote.value);
+    }
+    if (recordedAt.present) {
+      map['recorded_at'] = Variable<DateTime>(recordedAt.value);
+    }
+    if (confirmedAt.present) {
+      map['confirmed_at'] = Variable<DateTime>(confirmedAt.value);
+    }
+    if (receiptNumber.present) {
+      map['receipt_number'] = Variable<String>(receiptNumber.value);
+    }
+    if (receiptIssuedAt.present) {
+      map['receipt_issued_at'] = Variable<DateTime>(receiptIssuedAt.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('PaymentsCompanion(')
+          ..write('id: $id, ')
+          ..write('shomitiId: $shomitiId, ')
+          ..write('monthKey: $monthKey, ')
+          ..write('memberId: $memberId, ')
+          ..write('amountBdt: $amountBdt, ')
+          ..write('method: $method, ')
+          ..write('reference: $reference, ')
+          ..write('proofNote: $proofNote, ')
+          ..write('recordedAt: $recordedAt, ')
+          ..write('confirmedAt: $confirmedAt, ')
+          ..write('receiptNumber: $receiptNumber, ')
+          ..write('receiptIssuedAt: $receiptIssuedAt, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
@@ -6517,6 +7254,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
       $MembershipChangeApprovalsTable(this);
   late final $DueMonthsTable dueMonths = $DueMonthsTable(this);
   late final $MonthlyDuesTable monthlyDues = $MonthlyDuesTable(this);
+  late final $PaymentsTable payments = $PaymentsTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -6536,6 +7274,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     membershipChangeApprovals,
     dueMonths,
     monthlyDues,
+    payments,
   ];
 }
 
@@ -7150,6 +7889,24 @@ final class $$ShomitisTableReferences
       manager.$state.copyWith(prefetchedData: cache),
     );
   }
+
+  static MultiTypedResultKey<$PaymentsTable, List<PaymentRow>>
+  _paymentsRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
+    db.payments,
+    aliasName: $_aliasNameGenerator(db.shomitis.id, db.payments.shomitiId),
+  );
+
+  $$PaymentsTableProcessedTableManager get paymentsRefs {
+    final manager = $$PaymentsTableTableManager(
+      $_db,
+      $_db.payments,
+    ).filter((f) => f.shomitiId.id.sqlEquals($_itemColumn<String>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(_paymentsRefsTable($_db));
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
 }
 
 class $$ShomitisTableFilterComposer
@@ -7356,6 +8113,31 @@ class $$ShomitisTableFilterComposer
           }) => $$MonthlyDuesTableFilterComposer(
             $db: $db,
             $table: $db.monthlyDues,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<bool> paymentsRefs(
+    Expression<bool> Function($$PaymentsTableFilterComposer f) f,
+  ) {
+    final $$PaymentsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.payments,
+      getReferencedColumn: (t) => t.shomitiId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$PaymentsTableFilterComposer(
+            $db: $db,
+            $table: $db.payments,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -7605,6 +8387,31 @@ class $$ShomitisTableAnnotationComposer
     );
     return f(composer);
   }
+
+  Expression<T> paymentsRefs<T extends Object>(
+    Expression<T> Function($$PaymentsTableAnnotationComposer a) f,
+  ) {
+    final $$PaymentsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.payments,
+      getReferencedColumn: (t) => t.shomitiId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$PaymentsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.payments,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
 }
 
 class $$ShomitisTableTableManager
@@ -7628,6 +8435,7 @@ class $$ShomitisTableTableManager
             bool membershipChangeApprovalsRefs,
             bool dueMonthsRefs,
             bool monthlyDuesRefs,
+            bool paymentsRefs,
           })
         > {
   $$ShomitisTableTableManager(_$AppDatabase db, $ShomitisTable table)
@@ -7690,6 +8498,7 @@ class $$ShomitisTableTableManager
                 membershipChangeApprovalsRefs = false,
                 dueMonthsRefs = false,
                 monthlyDuesRefs = false,
+                paymentsRefs = false,
               }) {
                 return PrefetchHooks(
                   db: db,
@@ -7703,6 +8512,7 @@ class $$ShomitisTableTableManager
                       db.membershipChangeApprovals,
                     if (dueMonthsRefs) db.dueMonths,
                     if (monthlyDuesRefs) db.monthlyDues,
+                    if (paymentsRefs) db.payments,
                   ],
                   addJoins: null,
                   getPrefetchedDataCallback: (items) async {
@@ -7854,6 +8664,27 @@ class $$ShomitisTableTableManager
                               ),
                           typedResults: items,
                         ),
+                      if (paymentsRefs)
+                        await $_getPrefetchedData<
+                          ShomitiRow,
+                          $ShomitisTable,
+                          PaymentRow
+                        >(
+                          currentTable: table,
+                          referencedTable: $$ShomitisTableReferences
+                              ._paymentsRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$ShomitisTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).paymentsRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.shomitiId == item.id,
+                              ),
+                          typedResults: items,
+                        ),
                     ];
                   },
                 );
@@ -7882,6 +8713,7 @@ typedef $$ShomitisTableProcessedTableManager =
         bool membershipChangeApprovalsRefs,
         bool dueMonthsRefs,
         bool monthlyDuesRefs,
+        bool paymentsRefs,
       })
     >;
 typedef $$MembersTableCreateCompanionBuilder =
@@ -8022,6 +8854,24 @@ final class $$MembersTableReferences
     ).filter((f) => f.memberId.id.sqlEquals($_itemColumn<String>('id')!));
 
     final cache = $_typedResult.readTableOrNull(_monthlyDuesRefsTable($_db));
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+
+  static MultiTypedResultKey<$PaymentsTable, List<PaymentRow>>
+  _paymentsRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
+    db.payments,
+    aliasName: $_aliasNameGenerator(db.members.id, db.payments.memberId),
+  );
+
+  $$PaymentsTableProcessedTableManager get paymentsRefs {
+    final manager = $$PaymentsTableTableManager(
+      $_db,
+      $_db.payments,
+    ).filter((f) => f.memberId.id.sqlEquals($_itemColumn<String>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(_paymentsRefsTable($_db));
     return ProcessedTableManager(
       manager.$state.copyWith(prefetchedData: cache),
     );
@@ -8213,6 +9063,31 @@ class $$MembersTableFilterComposer
           }) => $$MonthlyDuesTableFilterComposer(
             $db: $db,
             $table: $db.monthlyDues,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<bool> paymentsRefs(
+    Expression<bool> Function($$PaymentsTableFilterComposer f) f,
+  ) {
+    final $$PaymentsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.payments,
+      getReferencedColumn: (t) => t.memberId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$PaymentsTableFilterComposer(
+            $db: $db,
+            $table: $db.payments,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -8495,6 +9370,31 @@ class $$MembersTableAnnotationComposer
     );
     return f(composer);
   }
+
+  Expression<T> paymentsRefs<T extends Object>(
+    Expression<T> Function($$PaymentsTableAnnotationComposer a) f,
+  ) {
+    final $$PaymentsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.payments,
+      getReferencedColumn: (t) => t.memberId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$PaymentsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.payments,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
 }
 
 class $$MembersTableTableManager
@@ -8516,6 +9416,7 @@ class $$MembersTableTableManager
             bool memberConsentsRefs,
             bool membershipChangeRequestsRefs,
             bool monthlyDuesRefs,
+            bool paymentsRefs,
           })
         > {
   $$MembersTableTableManager(_$AppDatabase db, $MembersTable table)
@@ -8608,6 +9509,7 @@ class $$MembersTableTableManager
                 memberConsentsRefs = false,
                 membershipChangeRequestsRefs = false,
                 monthlyDuesRefs = false,
+                paymentsRefs = false,
               }) {
                 return PrefetchHooks(
                   db: db,
@@ -8617,6 +9519,7 @@ class $$MembersTableTableManager
                     if (membershipChangeRequestsRefs)
                       db.membershipChangeRequests,
                     if (monthlyDuesRefs) db.monthlyDues,
+                    if (paymentsRefs) db.payments,
                   ],
                   addJoins:
                       <
@@ -8736,6 +9639,27 @@ class $$MembersTableTableManager
                               ),
                           typedResults: items,
                         ),
+                      if (paymentsRefs)
+                        await $_getPrefetchedData<
+                          MemberRow,
+                          $MembersTable,
+                          PaymentRow
+                        >(
+                          currentTable: table,
+                          referencedTable: $$MembersTableReferences
+                              ._paymentsRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$MembersTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).paymentsRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.memberId == item.id,
+                              ),
+                          typedResults: items,
+                        ),
                     ];
                   },
                 );
@@ -8762,6 +9686,7 @@ typedef $$MembersTableProcessedTableManager =
         bool memberConsentsRefs,
         bool membershipChangeRequestsRefs,
         bool monthlyDuesRefs,
+        bool paymentsRefs,
       })
     >;
 typedef $$MemberSharesTableCreateCompanionBuilder =
@@ -12818,6 +13743,550 @@ typedef $$MonthlyDuesTableProcessedTableManager =
       MonthlyDueRow,
       PrefetchHooks Function({bool shomitiId, bool memberId})
     >;
+typedef $$PaymentsTableCreateCompanionBuilder =
+    PaymentsCompanion Function({
+      required String id,
+      required String shomitiId,
+      required String monthKey,
+      required String memberId,
+      required int amountBdt,
+      required String method,
+      required String reference,
+      Value<String?> proofNote,
+      required DateTime recordedAt,
+      required DateTime confirmedAt,
+      Value<String?> receiptNumber,
+      Value<DateTime?> receiptIssuedAt,
+      Value<int> rowid,
+    });
+typedef $$PaymentsTableUpdateCompanionBuilder =
+    PaymentsCompanion Function({
+      Value<String> id,
+      Value<String> shomitiId,
+      Value<String> monthKey,
+      Value<String> memberId,
+      Value<int> amountBdt,
+      Value<String> method,
+      Value<String> reference,
+      Value<String?> proofNote,
+      Value<DateTime> recordedAt,
+      Value<DateTime> confirmedAt,
+      Value<String?> receiptNumber,
+      Value<DateTime?> receiptIssuedAt,
+      Value<int> rowid,
+    });
+
+final class $$PaymentsTableReferences
+    extends BaseReferences<_$AppDatabase, $PaymentsTable, PaymentRow> {
+  $$PaymentsTableReferences(super.$_db, super.$_table, super.$_typedResult);
+
+  static $ShomitisTable _shomitiIdTable(_$AppDatabase db) => db.shomitis
+      .createAlias($_aliasNameGenerator(db.payments.shomitiId, db.shomitis.id));
+
+  $$ShomitisTableProcessedTableManager get shomitiId {
+    final $_column = $_itemColumn<String>('shomiti_id')!;
+
+    final manager = $$ShomitisTableTableManager(
+      $_db,
+      $_db.shomitis,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_shomitiIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+
+  static $MembersTable _memberIdTable(_$AppDatabase db) => db.members
+      .createAlias($_aliasNameGenerator(db.payments.memberId, db.members.id));
+
+  $$MembersTableProcessedTableManager get memberId {
+    final $_column = $_itemColumn<String>('member_id')!;
+
+    final manager = $$MembersTableTableManager(
+      $_db,
+      $_db.members,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_memberIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+}
+
+class $$PaymentsTableFilterComposer
+    extends Composer<_$AppDatabase, $PaymentsTable> {
+  $$PaymentsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get monthKey => $composableBuilder(
+    column: $table.monthKey,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get amountBdt => $composableBuilder(
+    column: $table.amountBdt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get method => $composableBuilder(
+    column: $table.method,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get reference => $composableBuilder(
+    column: $table.reference,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get proofNote => $composableBuilder(
+    column: $table.proofNote,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get recordedAt => $composableBuilder(
+    column: $table.recordedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get confirmedAt => $composableBuilder(
+    column: $table.confirmedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get receiptNumber => $composableBuilder(
+    column: $table.receiptNumber,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get receiptIssuedAt => $composableBuilder(
+    column: $table.receiptIssuedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  $$ShomitisTableFilterComposer get shomitiId {
+    final $$ShomitisTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.shomitiId,
+      referencedTable: $db.shomitis,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ShomitisTableFilterComposer(
+            $db: $db,
+            $table: $db.shomitis,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$MembersTableFilterComposer get memberId {
+    final $$MembersTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.memberId,
+      referencedTable: $db.members,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$MembersTableFilterComposer(
+            $db: $db,
+            $table: $db.members,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$PaymentsTableOrderingComposer
+    extends Composer<_$AppDatabase, $PaymentsTable> {
+  $$PaymentsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get monthKey => $composableBuilder(
+    column: $table.monthKey,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get amountBdt => $composableBuilder(
+    column: $table.amountBdt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get method => $composableBuilder(
+    column: $table.method,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get reference => $composableBuilder(
+    column: $table.reference,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get proofNote => $composableBuilder(
+    column: $table.proofNote,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get recordedAt => $composableBuilder(
+    column: $table.recordedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get confirmedAt => $composableBuilder(
+    column: $table.confirmedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get receiptNumber => $composableBuilder(
+    column: $table.receiptNumber,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get receiptIssuedAt => $composableBuilder(
+    column: $table.receiptIssuedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  $$ShomitisTableOrderingComposer get shomitiId {
+    final $$ShomitisTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.shomitiId,
+      referencedTable: $db.shomitis,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ShomitisTableOrderingComposer(
+            $db: $db,
+            $table: $db.shomitis,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$MembersTableOrderingComposer get memberId {
+    final $$MembersTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.memberId,
+      referencedTable: $db.members,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$MembersTableOrderingComposer(
+            $db: $db,
+            $table: $db.members,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$PaymentsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $PaymentsTable> {
+  $$PaymentsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get monthKey =>
+      $composableBuilder(column: $table.monthKey, builder: (column) => column);
+
+  GeneratedColumn<int> get amountBdt =>
+      $composableBuilder(column: $table.amountBdt, builder: (column) => column);
+
+  GeneratedColumn<String> get method =>
+      $composableBuilder(column: $table.method, builder: (column) => column);
+
+  GeneratedColumn<String> get reference =>
+      $composableBuilder(column: $table.reference, builder: (column) => column);
+
+  GeneratedColumn<String> get proofNote =>
+      $composableBuilder(column: $table.proofNote, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get recordedAt => $composableBuilder(
+    column: $table.recordedAt,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get confirmedAt => $composableBuilder(
+    column: $table.confirmedAt,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get receiptNumber => $composableBuilder(
+    column: $table.receiptNumber,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get receiptIssuedAt => $composableBuilder(
+    column: $table.receiptIssuedAt,
+    builder: (column) => column,
+  );
+
+  $$ShomitisTableAnnotationComposer get shomitiId {
+    final $$ShomitisTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.shomitiId,
+      referencedTable: $db.shomitis,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ShomitisTableAnnotationComposer(
+            $db: $db,
+            $table: $db.shomitis,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$MembersTableAnnotationComposer get memberId {
+    final $$MembersTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.memberId,
+      referencedTable: $db.members,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$MembersTableAnnotationComposer(
+            $db: $db,
+            $table: $db.members,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$PaymentsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $PaymentsTable,
+          PaymentRow,
+          $$PaymentsTableFilterComposer,
+          $$PaymentsTableOrderingComposer,
+          $$PaymentsTableAnnotationComposer,
+          $$PaymentsTableCreateCompanionBuilder,
+          $$PaymentsTableUpdateCompanionBuilder,
+          (PaymentRow, $$PaymentsTableReferences),
+          PaymentRow,
+          PrefetchHooks Function({bool shomitiId, bool memberId})
+        > {
+  $$PaymentsTableTableManager(_$AppDatabase db, $PaymentsTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$PaymentsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$PaymentsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$PaymentsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> shomitiId = const Value.absent(),
+                Value<String> monthKey = const Value.absent(),
+                Value<String> memberId = const Value.absent(),
+                Value<int> amountBdt = const Value.absent(),
+                Value<String> method = const Value.absent(),
+                Value<String> reference = const Value.absent(),
+                Value<String?> proofNote = const Value.absent(),
+                Value<DateTime> recordedAt = const Value.absent(),
+                Value<DateTime> confirmedAt = const Value.absent(),
+                Value<String?> receiptNumber = const Value.absent(),
+                Value<DateTime?> receiptIssuedAt = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => PaymentsCompanion(
+                id: id,
+                shomitiId: shomitiId,
+                monthKey: monthKey,
+                memberId: memberId,
+                amountBdt: amountBdt,
+                method: method,
+                reference: reference,
+                proofNote: proofNote,
+                recordedAt: recordedAt,
+                confirmedAt: confirmedAt,
+                receiptNumber: receiptNumber,
+                receiptIssuedAt: receiptIssuedAt,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required String shomitiId,
+                required String monthKey,
+                required String memberId,
+                required int amountBdt,
+                required String method,
+                required String reference,
+                Value<String?> proofNote = const Value.absent(),
+                required DateTime recordedAt,
+                required DateTime confirmedAt,
+                Value<String?> receiptNumber = const Value.absent(),
+                Value<DateTime?> receiptIssuedAt = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => PaymentsCompanion.insert(
+                id: id,
+                shomitiId: shomitiId,
+                monthKey: monthKey,
+                memberId: memberId,
+                amountBdt: amountBdt,
+                method: method,
+                reference: reference,
+                proofNote: proofNote,
+                recordedAt: recordedAt,
+                confirmedAt: confirmedAt,
+                receiptNumber: receiptNumber,
+                receiptIssuedAt: receiptIssuedAt,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable(table),
+                  $$PaymentsTableReferences(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: ({shomitiId = false, memberId = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [],
+              addJoins:
+                  <
+                    T extends TableManagerState<
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic
+                    >
+                  >(state) {
+                    if (shomitiId) {
+                      state =
+                          state.withJoin(
+                                currentTable: table,
+                                currentColumn: table.shomitiId,
+                                referencedTable: $$PaymentsTableReferences
+                                    ._shomitiIdTable(db),
+                                referencedColumn: $$PaymentsTableReferences
+                                    ._shomitiIdTable(db)
+                                    .id,
+                              )
+                              as T;
+                    }
+                    if (memberId) {
+                      state =
+                          state.withJoin(
+                                currentTable: table,
+                                currentColumn: table.memberId,
+                                referencedTable: $$PaymentsTableReferences
+                                    ._memberIdTable(db),
+                                referencedColumn: $$PaymentsTableReferences
+                                    ._memberIdTable(db)
+                                    .id,
+                              )
+                              as T;
+                    }
+
+                    return state;
+                  },
+              getPrefetchedDataCallback: (items) async {
+                return [];
+              },
+            );
+          },
+        ),
+      );
+}
+
+typedef $$PaymentsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $PaymentsTable,
+      PaymentRow,
+      $$PaymentsTableFilterComposer,
+      $$PaymentsTableOrderingComposer,
+      $$PaymentsTableAnnotationComposer,
+      $$PaymentsTableCreateCompanionBuilder,
+      $$PaymentsTableUpdateCompanionBuilder,
+      (PaymentRow, $$PaymentsTableReferences),
+      PaymentRow,
+      PrefetchHooks Function({bool shomitiId, bool memberId})
+    >;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;
@@ -12856,4 +14325,6 @@ class $AppDatabaseManager {
       $$DueMonthsTableTableManager(_db, _db.dueMonths);
   $$MonthlyDuesTableTableManager get monthlyDues =>
       $$MonthlyDuesTableTableManager(_db, _db.monthlyDues);
+  $$PaymentsTableTableManager get payments =>
+      $$PaymentsTableTableManager(_db, _db.payments);
 }

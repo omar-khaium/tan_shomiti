@@ -18,6 +18,7 @@ import 'tables/membership_change_requests.dart';
 import 'tables/membership_change_approvals.dart';
 import 'tables/due_months.dart';
 import 'tables/monthly_dues.dart';
+import 'tables/payments.dart';
 import 'tables/shomitis.dart';
 
 part 'app_database.g.dart';
@@ -37,6 +38,7 @@ part 'app_database.g.dart';
     MembershipChangeApprovals,
     DueMonths,
     MonthlyDues,
+    Payments,
     Shomitis,
   ],
 )
@@ -48,7 +50,7 @@ class AppDatabase extends _$AppDatabase {
   factory AppDatabase.memory() => AppDatabase(NativeDatabase.memory());
 
   @override
-  int get schemaVersion => 8;
+  int get schemaVersion => 9;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -88,6 +90,9 @@ class AppDatabase extends _$AppDatabase {
       if (from < 8) {
         await m.createTable(dueMonths);
         await m.createTable(monthlyDues);
+      }
+      if (from < 9) {
+        await m.createTable(payments);
       }
     },
   );

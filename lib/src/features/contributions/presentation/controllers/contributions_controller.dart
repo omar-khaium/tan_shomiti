@@ -70,6 +70,7 @@ class ContributionsController
     final total = rows.fold<int>(0, (sum, r) => sum + r.dueAmountBdt);
 
     return ContributionsUiState(
+      shomitiId: context.shomitiId,
       month: month,
       totalDueBdt: total,
       rows: List.unmodifiable(rows),
