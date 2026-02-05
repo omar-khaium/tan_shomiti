@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 
 import '../../domain/value_objects/billing_month.dart';
+import '../../../rules/domain/entities/rule_set_snapshot.dart';
 
 @immutable
 class MonthlyDueRow {
@@ -27,6 +28,7 @@ class ContributionsUiState {
     required this.paymentDeadline,
     required this.gracePeriodDays,
     required this.lateFeeBdtPerDay,
+    required this.missedPaymentPolicy,
     required this.totalDueBdt,
     required this.rows,
   });
@@ -36,6 +38,7 @@ class ContributionsUiState {
   final String paymentDeadline;
   final int? gracePeriodDays;
   final int? lateFeeBdtPerDay;
+  final MissedPaymentPolicy missedPaymentPolicy;
   final int totalDueBdt;
   final List<MonthlyDueRow> rows;
 }

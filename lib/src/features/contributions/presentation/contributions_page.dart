@@ -14,6 +14,7 @@ import '../../payments/presentation/providers/payments_policy_providers.dart';
 import 'models/contributions_ui_state.dart';
 import 'providers/contributions_payments_providers.dart';
 import 'providers/contributions_providers.dart';
+import '../../rules/domain/entities/rule_set_snapshot.dart';
 
 class ContributionsPage extends ConsumerWidget {
   const ContributionsPage({super.key});
@@ -99,6 +100,11 @@ class ContributionsPage extends ConsumerWidget {
               ),
             ),
             const SizedBox(height: AppSpacing.s16),
+            _CollectionStatusCard(
+              ui: ui,
+              payments: payments,
+            ),
+            const SizedBox(height: AppSpacing.s16),
             for (final row in ui.rows)
               _DueRow(
                 shomitiId: ui.shomitiId,
@@ -112,6 +118,89 @@ class ContributionsPage extends ConsumerWidget {
           ],
         );
       },
+    );
+  }
+}
+
+class _CollectionStatusCard extends StatelessWidget {
+  const _CollectionStatusCard({required this.ui, required this.payments});
+
+  final ContributionsUiState ui;
+  final Map<String, Payment> payments;
+
+  @override
+  Widget build(BuildContext context) {
+    final collected = payments.values.fold<int>(
+      0,
+      (sum, p) => sum + p.amountBdt,
+    );
+    final shortfall = (ui.totalDueBdt - collected).clamp(0, ui.totalDueBdt);
+    final isComplete = shortfall == 0;
+
+    final policyLabel = switch (ui.missedPaymentPolicy) {
+      MissedPaymentPolicy.postponePayout => 'Policy A: Postpone payout',
+      MissedPaymentPolicy.coverFromReserve => 'Policy B: Cover from reserve',
+      MissedPaymentPolicy.coverByGuarantor => 'Policy C: Guarantor cover',
+    };
+
+    return AppCard(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Collection status',
+            style: Theme.of(context).textTheme.labelLarge,
+          ),
+          const SizedBox(height: AppSpacing.s8),
+          Text('Total collected', style: Theme.of(context).textTheme.bodySmall),
+          Text(
+            '$collected BDT',
+            key: const Key('collection_total_collected'),
+            style: Theme.of(context).textTheme.titleMedium,
+          ),
+          const SizedBox(height: AppSpacing.s8),
+          Text('Shortfall', style: Theme.of(context).textTheme.bodySmall),
+          Text(
+            '$shortfall BDT',
+            key: const Key('collection_shortfall'),
+            style: Theme.of(context).textTheme.titleMedium,
+          ),
+          const SizedBox(height: AppSpacing.s8),
+          Text('Total due', style: Theme.of(context).textTheme.bodySmall),
+          Text(
+            '${ui.totalDueBdt} BDT',
+            key: const Key('collection_total_due'),
+            style: Theme.of(context).textTheme.titleMedium,
+          ),
+          const SizedBox(height: AppSpacing.s8),
+          Text(
+            isComplete ? 'Complete' : 'Short',
+            key: const Key('collection_status_badge'),
+            style: Theme.of(context).textTheme.bodySmall,
+          ),
+          const SizedBox(height: AppSpacing.s8),
+          Text(policyLabel, style: Theme.of(context).textTheme.bodySmall),
+          if (!isComplete) ...[
+            const SizedBox(height: AppSpacing.s8),
+            switch (ui.missedPaymentPolicy) {
+              MissedPaymentPolicy.postponePayout => Text(
+                'Payout postponed until full collection is complete.',
+                style: Theme.of(context).textTheme.bodySmall,
+              ),
+              MissedPaymentPolicy.coverFromReserve => FilledButton(
+                key: const Key('collection_cover_reserve'),
+                onPressed: null,
+                child: const Text('Cover shortfall from reserve'),
+              ),
+              MissedPaymentPolicy.coverByGuarantor => FilledButton(
+                key: const Key('collection_mark_guarantor_cover'),
+                onPressed: null,
+                child: const Text('Mark guarantor cover'),
+              ),
+            },
+          ],
+        ],
+      ),
     );
   }
 }
