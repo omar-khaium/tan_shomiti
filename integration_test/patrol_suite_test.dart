@@ -11,6 +11,7 @@ import 'ts_202_shares_e2e_test.dart' as ts_202_shares_e2e_test;
 import 'ts_203_risk_controls_e2e_test.dart' as ts_203_risk_controls_e2e_test;
 import 'ts_204_membership_changes_e2e_test.dart'
     as ts_204_membership_changes_e2e_test;
+import 'ts_301_contributions_e2e_test.dart' as ts_301_contributions_e2e_test;
 
 void main() {
   ts_101_setup_wizard_e2e_test.main();
@@ -24,4 +25,5 @@ void main() {
   ts_202_shares_e2e_test.main();
   ts_203_risk_controls_e2e_test.main();
   ts_204_membership_changes_e2e_test.main();
+  ts_301_contributions_e2e_test.main();
 }
