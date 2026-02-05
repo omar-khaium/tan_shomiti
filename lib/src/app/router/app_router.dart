@@ -26,6 +26,10 @@ import '../../features/draw/presentation/draw_record_details_page.dart';
 import '../../features/draw/presentation/redo_draw_page.dart';
 import '../../features/draw/presentation/run_draw_page.dart';
 import '../../features/draw/presentation/witness_signoff_page.dart';
+import '../../features/payout/presentation/payout_approvals_page.dart';
+import '../../features/payout/presentation/payout_collection_verification_page.dart';
+import '../../features/payout/presentation/payout_overview_page.dart';
+import '../../features/payout/presentation/payout_proof_page.dart';
 import '../../features/contributions/domain/value_objects/billing_month.dart';
 import '../../features/shomiti_setup/presentation/setup_wizard_page.dart';
 import '../../features/shomiti_setup/presentation/providers/shomiti_setup_providers.dart';
@@ -84,6 +88,15 @@ const drawRedoRouteName = 'drawRedo';
 const payoutLocation = '/payout';
 const payoutRouteName = 'payout';
 const payoutTitle = 'Payout';
+
+const payoutCollectionLocation = '/payout/collection';
+const payoutCollectionRouteName = 'payoutCollection';
+
+const payoutApprovalsLocation = '/payout/approvals';
+const payoutApprovalsRouteName = 'payoutApprovals';
+
+const payoutProofLocation = '/payout/proof';
+const payoutProofRouteName = 'payoutProof';
 
 const ledgerLocation = '/ledger';
 const ledgerRouteName = 'ledger';
@@ -277,8 +290,22 @@ final appRouterProvider = Provider<GoRouter>((ref) {
           GoRoute(
             path: payoutLocation,
             name: payoutRouteName,
-            builder: (context, state) =>
-                const PlaceholderPage(title: payoutTitle),
+            builder: (context, state) => const PayoutOverviewPage(),
+          ),
+          GoRoute(
+            path: payoutCollectionLocation,
+            name: payoutCollectionRouteName,
+            builder: (context, state) => const PayoutCollectionVerificationPage(),
+          ),
+          GoRoute(
+            path: payoutApprovalsLocation,
+            name: payoutApprovalsRouteName,
+            builder: (context, state) => const PayoutApprovalsPage(),
+          ),
+          GoRoute(
+            path: payoutProofLocation,
+            name: payoutProofRouteName,
+            builder: (context, state) => const PayoutProofPage(),
           ),
           GoRoute(
             path: ledgerLocation,
