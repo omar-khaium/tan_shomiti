@@ -58,6 +58,7 @@ void main() {
           (ref) => AsyncData(
             DrawUiState(
               shomitiId: 'active',
+              ruleSetVersionId: 'rsv_1',
               month: const BillingMonth(year: 2026, month: 1),
               hasDuesForMonth: false,
               summary: const DrawEligibilitySummary(
@@ -66,6 +67,7 @@ void main() {
                 ineligibleReasons: {},
               ),
               rows: const [],
+              eligibleShares: const [],
             ),
           ),
         ),

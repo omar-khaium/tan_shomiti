@@ -219,10 +219,21 @@ final appRouterProvider = Provider<GoRouter>((ref) {
             path: drawRunLocation,
             name: drawRunRouteName,
             builder: (context, state) {
-              final month = state.extra is BillingMonth
-                  ? state.extra! as BillingMonth
-                  : BillingMonth.fromDate(DateTime.now());
-              return RunDrawPage(month: month);
+              final args = state.extra;
+              if (args is RunDrawArgs) {
+                return RunDrawPage(args: args);
+              }
+
+              return RunDrawPage(
+                args: RunDrawArgs(
+                  shomitiId: 'unknown',
+                  ruleSetVersionId: 'unknown',
+                  month: args is BillingMonth
+                      ? args
+                      : BillingMonth.fromDate(DateTime.now()),
+                  eligibleShares: const [],
+                ),
+              );
             },
           ),
           GoRoute(

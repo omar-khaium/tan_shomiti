@@ -14,6 +14,7 @@ import '../../../app/router/app_router.dart';
 import '../../contributions/domain/value_objects/billing_month.dart';
 import 'models/draw_ui_state.dart';
 import 'providers/draw_providers.dart';
+import 'run_draw_page.dart';
 
 class DrawPage extends ConsumerWidget {
   const DrawPage({super.key});
@@ -55,12 +56,8 @@ class _DrawBody extends ConsumerWidget {
       children: [
         _MonthHeader(
           month: state.month,
-          onPrev: () => ref
-              .read(drawControllerProvider.notifier)
-              .setMonth(state.month.previous()),
-          onNext: () => ref
-              .read(drawControllerProvider.notifier)
-              .setMonth(state.month.next()),
+          onPrev: () => ref.read(drawControllerProvider.notifier).previousMonth(),
+          onNext: () => ref.read(drawControllerProvider.notifier).nextMonth(),
         ),
         const SizedBox(height: AppSpacing.s16),
         _SummaryCard(summary: state.summary),
@@ -78,7 +75,12 @@ class _DrawBody extends ConsumerWidget {
           onPressed: state.canRunDraw
               ? () => context.push(
                     drawRunLocation,
-                    extra: state.month,
+                    extra: RunDrawArgs(
+                      shomitiId: state.shomitiId,
+                      ruleSetVersionId: state.ruleSetVersionId,
+                      month: state.month,
+                      eligibleShares: state.eligibleShares,
+                    ),
                   )
               : null,
         ),

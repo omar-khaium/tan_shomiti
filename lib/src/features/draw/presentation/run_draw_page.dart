@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/ui/components/app_button.dart';
 import '../../../core/ui/components/app_card.dart';
@@ -6,6 +7,10 @@ import '../../../core/ui/components/app_empty_state.dart';
 import '../../../core/ui/formatters/billing_month_label.dart';
 import '../../../core/ui/tokens/app_spacing.dart';
 import '../../contributions/domain/value_objects/billing_month.dart';
+import '../domain/value_objects/draw_method.dart';
+import 'models/draw_ui_state.dart';
+import 'providers/draw_domain_providers.dart';
+import 'providers/draw_providers.dart';
 
 enum DrawMethodUi {
   physicalSlips,
@@ -13,17 +18,33 @@ enum DrawMethodUi {
   simpleRandomizer,
 }
 
-class RunDrawPage extends StatefulWidget {
-  const RunDrawPage({required this.month, super.key});
+@immutable
+class RunDrawArgs {
+  const RunDrawArgs({
+    required this.shomitiId,
+    required this.ruleSetVersionId,
+    required this.month,
+    required this.eligibleShares,
+  });
 
+  final String shomitiId;
+  final String ruleSetVersionId;
   final BillingMonth month;
-
-  @override
-  State<RunDrawPage> createState() => _RunDrawPageState();
+  final List<DrawEligibleShareUiModel> eligibleShares;
 }
 
-class _RunDrawPageState extends State<RunDrawPage> {
+class RunDrawPage extends ConsumerStatefulWidget {
+  const RunDrawPage({required this.args, super.key});
+
+  final RunDrawArgs args;
+
+  @override
+  ConsumerState<RunDrawPage> createState() => _RunDrawPageState();
+}
+
+class _RunDrawPageState extends ConsumerState<RunDrawPage> {
   DrawMethodUi? _method;
+  DrawEligibleShareUiModel? _winner;
   final _proofController = TextEditingController();
   final _notesController = TextEditingController();
 
@@ -36,7 +57,12 @@ class _RunDrawPageState extends State<RunDrawPage> {
 
   @override
   Widget build(BuildContext context) {
-    final monthLabel = formatBillingMonthLabel(widget.month);
+    final monthLabel = formatBillingMonthLabel(widget.args.month);
+    final eligible = widget.args.eligibleShares;
+    final canSave = eligible.isNotEmpty &&
+        _method != null &&
+        _winner != null &&
+        _proofController.text.trim().isNotEmpty;
 
     return Scaffold(
       appBar: AppBar(title: const Text('Run draw')),
@@ -91,6 +117,36 @@ class _RunDrawPageState extends State<RunDrawPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
+                    'Winner',
+                    style: Theme.of(context).textTheme.titleSmall,
+                  ),
+                  const SizedBox(height: AppSpacing.s12),
+                  DropdownButtonFormField<DrawEligibleShareUiModel>(
+                    decoration: const InputDecoration(
+                      labelText: 'Select winning share',
+                      border: OutlineInputBorder(),
+                    ),
+                    initialValue: _winner,
+                    items: [
+                      for (final item in eligible)
+                        DropdownMenuItem(
+                          value: item,
+                          child: Text(item.label),
+                        ),
+                    ],
+                    onChanged: eligible.isEmpty
+                        ? null
+                        : (value) => setState(() => _winner = value),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: AppSpacing.s16),
+            AppCard(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
                     'Inputs',
                     style: Theme.of(context).textTheme.titleSmall,
                   ),
@@ -103,6 +159,7 @@ class _RunDrawPageState extends State<RunDrawPage> {
                       hintText: 'Video/screenshot/link id',
                       border: OutlineInputBorder(),
                     ),
+                    onChanged: (_) => setState(() {}),
                   ),
                   const SizedBox(height: AppSpacing.s12),
                   TextField(
@@ -118,11 +175,13 @@ class _RunDrawPageState extends State<RunDrawPage> {
               ),
             ),
             const SizedBox(height: AppSpacing.s16),
-            const AppEmptyState(
-              title: 'No eligible entries',
-              message: 'Return to the eligibility list and ensure there are eligible entries.',
-              icon: Icons.info_outline,
-            ),
+            if (eligible.isEmpty)
+              const AppEmptyState(
+                title: 'No eligible entries',
+                message:
+                    'Return to the eligibility list and ensure there are eligible entries.',
+                icon: Icons.info_outline,
+              ),
             const SizedBox(height: AppSpacing.s16),
             AppCard(
               child: Row(
@@ -134,7 +193,7 @@ class _RunDrawPageState extends State<RunDrawPage> {
                     ),
                   ),
                   Text(
-                    '—',
+                    _winner?.label ?? '—',
                     key: const Key('draw_selected_winner'),
                   ),
                 ],
@@ -144,11 +203,55 @@ class _RunDrawPageState extends State<RunDrawPage> {
             AppButton.primary(
               key: const Key('draw_save'),
               label: 'Save draw result',
-              onPressed: null,
+              onPressed: canSave
+                  ? () async {
+                      final winner = _winner!;
+                      final method = _mapMethod(_method!);
+                      final eligibleKeys = [
+                        for (final item in eligible) item.shareKey,
+                      ];
+
+                      try {
+                        await ref.read(recordDrawResultProvider)(
+                          shomitiId: widget.args.shomitiId,
+                          ruleSetVersionId: widget.args.ruleSetVersionId,
+                          month: widget.args.month,
+                          method: method,
+                          proofReference: _proofController.text,
+                          notes: _notesController.text,
+                          winnerMemberId: winner.memberId,
+                          winnerShareIndex: winner.shareIndex,
+                          eligibleShareKeys: eligibleKeys,
+                          now: DateTime.now(),
+                        );
+
+                        ref.invalidate(drawControllerProvider);
+
+                        if (!context.mounted) return;
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('Draw result saved.')),
+                        );
+                        Navigator.of(context).pop();
+                      } catch (e) {
+                        if (!context.mounted) return;
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('Failed to save: $e')),
+                        );
+                      }
+                    }
+                  : null,
             ),
           ],
         ),
       ),
     );
+  }
+
+  static DrawMethod _mapMethod(DrawMethodUi method) {
+    return switch (method) {
+      DrawMethodUi.physicalSlips => DrawMethod.physicalSlips,
+      DrawMethodUi.numberedTokens => DrawMethod.numberedTokens,
+      DrawMethodUi.simpleRandomizer => DrawMethod.simpleRandomizer,
+    };
   }
 }
