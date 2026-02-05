@@ -9,6 +9,8 @@ import '../shell/app_shell.dart';
 import '../../core/ui/pages/components_gallery_page.dart';
 import '../../features/audit/presentation/audit_log_page.dart';
 import '../../features/ledger/presentation/ledger_page.dart';
+import '../../features/statements/presentation/statement_detail_page.dart';
+import '../../features/statements/presentation/statements_overview_page.dart';
 import '../../features/members/presentation/governance/governance_page.dart';
 import '../../features/members/presentation/governance/member_signoff_page.dart';
 import '../../features/members/presentation/governance/roles_assignment_page.dart';
@@ -105,6 +107,13 @@ const ledgerTitle = 'Ledger';
 const rulesLocation = '/rules';
 const rulesRouteName = 'rules';
 const rulesTitle = 'Rules';
+
+const statementsLocation = '/statements';
+const statementsRouteName = 'statements';
+const statementsTitle = 'Statements';
+
+const statementDetailsLocation = '/statements/detail';
+const statementDetailsRouteName = 'statementDetails';
 
 const sharesLocation = '/shares';
 const sharesRouteName = 'shares';
@@ -321,6 +330,16 @@ final appRouterProvider = Provider<GoRouter>((ref) {
             path: rulesLocation,
             name: rulesRouteName,
             builder: (context, state) => const RulesPage(),
+          ),
+          GoRoute(
+            path: statementsLocation,
+            name: statementsRouteName,
+            builder: (context, state) => const StatementsOverviewPage(),
+          ),
+          GoRoute(
+            path: statementDetailsLocation,
+            name: statementDetailsRouteName,
+            builder: (context, state) => const StatementDetailPage(),
           ),
           GoRoute(
             path: sharesLocation,
