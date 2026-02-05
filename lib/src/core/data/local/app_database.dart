@@ -14,6 +14,8 @@ import 'tables/guarantors.dart';
 import 'tables/security_deposits.dart';
 import 'tables/role_assignments.dart';
 import 'tables/rule_set_versions.dart';
+import 'tables/membership_change_requests.dart';
+import 'tables/membership_change_approvals.dart';
 import 'tables/shomitis.dart';
 
 part 'app_database.g.dart';
@@ -29,6 +31,8 @@ part 'app_database.g.dart';
     RoleAssignments,
     MemberConsents,
     RuleSetVersions,
+    MembershipChangeRequests,
+    MembershipChangeApprovals,
     Shomitis,
   ],
 )
@@ -40,7 +44,7 @@ class AppDatabase extends _$AppDatabase {
   factory AppDatabase.memory() => AppDatabase(NativeDatabase.memory());
 
   @override
-  int get schemaVersion => 6;
+  int get schemaVersion => 7;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -72,6 +76,10 @@ class AppDatabase extends _$AppDatabase {
       if (from < 6) {
         await m.createTable(guarantors);
         await m.createTable(securityDeposits);
+      }
+      if (from < 7) {
+        await m.createTable(membershipChangeRequests);
+        await m.createTable(membershipChangeApprovals);
       }
     },
   );
