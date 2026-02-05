@@ -16,6 +16,7 @@ class ResetAppData {
       await _db.delete(_db.membershipChangeApprovals).go();
       await _db.delete(_db.membershipChangeRequests).go();
       await _db.delete(_db.roleAssignments).go();
+      await _db.delete(_db.collectionResolutions).go();
       await _db.delete(_db.payments).go();
       await _db.delete(_db.monthlyDues).go();
       await _db.delete(_db.dueMonths).go();

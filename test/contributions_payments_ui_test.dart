@@ -13,6 +13,9 @@ import 'package:tan_shomiti/src/features/payments/presentation/providers/payment
 import 'package:tan_shomiti/src/features/audit/domain/entities/audit_event.dart';
 import 'package:tan_shomiti/src/features/audit/domain/repositories/audit_repository.dart';
 import 'package:tan_shomiti/src/features/audit/presentation/providers/audit_providers.dart';
+import 'package:tan_shomiti/src/features/contributions/domain/entities/collection_resolution.dart';
+import 'package:tan_shomiti/src/features/contributions/domain/repositories/monthly_collection_repository.dart';
+import 'package:tan_shomiti/src/features/contributions/presentation/providers/contributions_domain_providers.dart';
 import 'package:tan_shomiti/src/features/rules/domain/entities/rule_set_snapshot.dart';
 
 void main() {
@@ -21,6 +24,7 @@ void main() {
   ) async {
     final month = BillingMonth.fromDate(DateTime.now());
     final paymentsRepo = _FakePaymentsRepository();
+    final collectionRepo = _FakeMonthlyCollectionRepository();
     final ui = ContributionsUiState(
       shomitiId: 's1',
       month: month,
@@ -48,6 +52,7 @@ void main() {
           ),
           paymentsRepositoryProvider.overrideWithValue(paymentsRepo),
           auditRepositoryProvider.overrideWithValue(_FakeAuditRepository()),
+          monthlyCollectionRepositoryProvider.overrideWithValue(collectionRepo),
         ],
         child: const MaterialApp(home: Scaffold(body: ContributionsPage())),
       ),
@@ -125,5 +130,26 @@ class _FakeAuditRepository implements AuditRepository {
   @override
   Stream<List<AuditEvent>> watchLatest({int limit = 50}) async* {
     yield const [];
+  }
+}
+
+class _FakeMonthlyCollectionRepository implements MonthlyCollectionRepository {
+  @override
+  Future<CollectionResolution?> getResolution({
+    required String shomitiId,
+    required BillingMonth month,
+  }) async {
+    return null;
+  }
+
+  @override
+  Future<void> upsertResolution(CollectionResolution resolution) async {}
+
+  @override
+  Stream<CollectionResolution?> watchResolution({
+    required String shomitiId,
+    required BillingMonth month,
+  }) {
+    return const Stream<CollectionResolution?>.empty();
   }
 }

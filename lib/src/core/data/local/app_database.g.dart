@@ -7229,6 +7229,432 @@ class PaymentsCompanion extends UpdateCompanion<PaymentRow> {
   }
 }
 
+class $CollectionResolutionsTable extends CollectionResolutions
+    with TableInfo<$CollectionResolutionsTable, CollectionResolutionRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $CollectionResolutionsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _shomitiIdMeta = const VerificationMeta(
+    'shomitiId',
+  );
+  @override
+  late final GeneratedColumn<String> shomitiId = GeneratedColumn<String>(
+    'shomiti_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES shomitis (id)',
+    ),
+  );
+  static const VerificationMeta _monthKeyMeta = const VerificationMeta(
+    'monthKey',
+  );
+  @override
+  late final GeneratedColumn<String> monthKey = GeneratedColumn<String>(
+    'month_key',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _methodMeta = const VerificationMeta('method');
+  @override
+  late final GeneratedColumn<String> method = GeneratedColumn<String>(
+    'method',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _amountBdtMeta = const VerificationMeta(
+    'amountBdt',
+  );
+  @override
+  late final GeneratedColumn<int> amountBdt = GeneratedColumn<int>(
+    'amount_bdt',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _noteMeta = const VerificationMeta('note');
+  @override
+  late final GeneratedColumn<String> note = GeneratedColumn<String>(
+    'note',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    shomitiId,
+    monthKey,
+    method,
+    amountBdt,
+    note,
+    createdAt,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'collection_resolutions';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<CollectionResolutionRow> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('shomiti_id')) {
+      context.handle(
+        _shomitiIdMeta,
+        shomitiId.isAcceptableOrUnknown(data['shomiti_id']!, _shomitiIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_shomitiIdMeta);
+    }
+    if (data.containsKey('month_key')) {
+      context.handle(
+        _monthKeyMeta,
+        monthKey.isAcceptableOrUnknown(data['month_key']!, _monthKeyMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_monthKeyMeta);
+    }
+    if (data.containsKey('method')) {
+      context.handle(
+        _methodMeta,
+        method.isAcceptableOrUnknown(data['method']!, _methodMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_methodMeta);
+    }
+    if (data.containsKey('amount_bdt')) {
+      context.handle(
+        _amountBdtMeta,
+        amountBdt.isAcceptableOrUnknown(data['amount_bdt']!, _amountBdtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_amountBdtMeta);
+    }
+    if (data.containsKey('note')) {
+      context.handle(
+        _noteMeta,
+        note.isAcceptableOrUnknown(data['note']!, _noteMeta),
+      );
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {shomitiId, monthKey};
+  @override
+  CollectionResolutionRow map(
+    Map<String, dynamic> data, {
+    String? tablePrefix,
+  }) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return CollectionResolutionRow(
+      shomitiId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}shomiti_id'],
+      )!,
+      monthKey: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}month_key'],
+      )!,
+      method: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}method'],
+      )!,
+      amountBdt: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}amount_bdt'],
+      )!,
+      note: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}note'],
+      ),
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+    );
+  }
+
+  @override
+  $CollectionResolutionsTable createAlias(String alias) {
+    return $CollectionResolutionsTable(attachedDatabase, alias);
+  }
+}
+
+class CollectionResolutionRow extends DataClass
+    implements Insertable<CollectionResolutionRow> {
+  final String shomitiId;
+  final String monthKey;
+
+  /// reserve | guarantor
+  final String method;
+
+  /// Amount covered (BDT, taka).
+  final int amountBdt;
+
+  /// Optional note (avoid PII).
+  final String? note;
+  final DateTime createdAt;
+  const CollectionResolutionRow({
+    required this.shomitiId,
+    required this.monthKey,
+    required this.method,
+    required this.amountBdt,
+    this.note,
+    required this.createdAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['shomiti_id'] = Variable<String>(shomitiId);
+    map['month_key'] = Variable<String>(monthKey);
+    map['method'] = Variable<String>(method);
+    map['amount_bdt'] = Variable<int>(amountBdt);
+    if (!nullToAbsent || note != null) {
+      map['note'] = Variable<String>(note);
+    }
+    map['created_at'] = Variable<DateTime>(createdAt);
+    return map;
+  }
+
+  CollectionResolutionsCompanion toCompanion(bool nullToAbsent) {
+    return CollectionResolutionsCompanion(
+      shomitiId: Value(shomitiId),
+      monthKey: Value(monthKey),
+      method: Value(method),
+      amountBdt: Value(amountBdt),
+      note: note == null && nullToAbsent ? const Value.absent() : Value(note),
+      createdAt: Value(createdAt),
+    );
+  }
+
+  factory CollectionResolutionRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return CollectionResolutionRow(
+      shomitiId: serializer.fromJson<String>(json['shomitiId']),
+      monthKey: serializer.fromJson<String>(json['monthKey']),
+      method: serializer.fromJson<String>(json['method']),
+      amountBdt: serializer.fromJson<int>(json['amountBdt']),
+      note: serializer.fromJson<String?>(json['note']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'shomitiId': serializer.toJson<String>(shomitiId),
+      'monthKey': serializer.toJson<String>(monthKey),
+      'method': serializer.toJson<String>(method),
+      'amountBdt': serializer.toJson<int>(amountBdt),
+      'note': serializer.toJson<String?>(note),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+    };
+  }
+
+  CollectionResolutionRow copyWith({
+    String? shomitiId,
+    String? monthKey,
+    String? method,
+    int? amountBdt,
+    Value<String?> note = const Value.absent(),
+    DateTime? createdAt,
+  }) => CollectionResolutionRow(
+    shomitiId: shomitiId ?? this.shomitiId,
+    monthKey: monthKey ?? this.monthKey,
+    method: method ?? this.method,
+    amountBdt: amountBdt ?? this.amountBdt,
+    note: note.present ? note.value : this.note,
+    createdAt: createdAt ?? this.createdAt,
+  );
+  CollectionResolutionRow copyWithCompanion(
+    CollectionResolutionsCompanion data,
+  ) {
+    return CollectionResolutionRow(
+      shomitiId: data.shomitiId.present ? data.shomitiId.value : this.shomitiId,
+      monthKey: data.monthKey.present ? data.monthKey.value : this.monthKey,
+      method: data.method.present ? data.method.value : this.method,
+      amountBdt: data.amountBdt.present ? data.amountBdt.value : this.amountBdt,
+      note: data.note.present ? data.note.value : this.note,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('CollectionResolutionRow(')
+          ..write('shomitiId: $shomitiId, ')
+          ..write('monthKey: $monthKey, ')
+          ..write('method: $method, ')
+          ..write('amountBdt: $amountBdt, ')
+          ..write('note: $note, ')
+          ..write('createdAt: $createdAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(shomitiId, monthKey, method, amountBdt, note, createdAt);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is CollectionResolutionRow &&
+          other.shomitiId == this.shomitiId &&
+          other.monthKey == this.monthKey &&
+          other.method == this.method &&
+          other.amountBdt == this.amountBdt &&
+          other.note == this.note &&
+          other.createdAt == this.createdAt);
+}
+
+class CollectionResolutionsCompanion
+    extends UpdateCompanion<CollectionResolutionRow> {
+  final Value<String> shomitiId;
+  final Value<String> monthKey;
+  final Value<String> method;
+  final Value<int> amountBdt;
+  final Value<String?> note;
+  final Value<DateTime> createdAt;
+  final Value<int> rowid;
+  const CollectionResolutionsCompanion({
+    this.shomitiId = const Value.absent(),
+    this.monthKey = const Value.absent(),
+    this.method = const Value.absent(),
+    this.amountBdt = const Value.absent(),
+    this.note = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  CollectionResolutionsCompanion.insert({
+    required String shomitiId,
+    required String monthKey,
+    required String method,
+    required int amountBdt,
+    this.note = const Value.absent(),
+    required DateTime createdAt,
+    this.rowid = const Value.absent(),
+  }) : shomitiId = Value(shomitiId),
+       monthKey = Value(monthKey),
+       method = Value(method),
+       amountBdt = Value(amountBdt),
+       createdAt = Value(createdAt);
+  static Insertable<CollectionResolutionRow> custom({
+    Expression<String>? shomitiId,
+    Expression<String>? monthKey,
+    Expression<String>? method,
+    Expression<int>? amountBdt,
+    Expression<String>? note,
+    Expression<DateTime>? createdAt,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (shomitiId != null) 'shomiti_id': shomitiId,
+      if (monthKey != null) 'month_key': monthKey,
+      if (method != null) 'method': method,
+      if (amountBdt != null) 'amount_bdt': amountBdt,
+      if (note != null) 'note': note,
+      if (createdAt != null) 'created_at': createdAt,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  CollectionResolutionsCompanion copyWith({
+    Value<String>? shomitiId,
+    Value<String>? monthKey,
+    Value<String>? method,
+    Value<int>? amountBdt,
+    Value<String?>? note,
+    Value<DateTime>? createdAt,
+    Value<int>? rowid,
+  }) {
+    return CollectionResolutionsCompanion(
+      shomitiId: shomitiId ?? this.shomitiId,
+      monthKey: monthKey ?? this.monthKey,
+      method: method ?? this.method,
+      amountBdt: amountBdt ?? this.amountBdt,
+      note: note ?? this.note,
+      createdAt: createdAt ?? this.createdAt,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (shomitiId.present) {
+      map['shomiti_id'] = Variable<String>(shomitiId.value);
+    }
+    if (monthKey.present) {
+      map['month_key'] = Variable<String>(monthKey.value);
+    }
+    if (method.present) {
+      map['method'] = Variable<String>(method.value);
+    }
+    if (amountBdt.present) {
+      map['amount_bdt'] = Variable<int>(amountBdt.value);
+    }
+    if (note.present) {
+      map['note'] = Variable<String>(note.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('CollectionResolutionsCompanion(')
+          ..write('shomitiId: $shomitiId, ')
+          ..write('monthKey: $monthKey, ')
+          ..write('method: $method, ')
+          ..write('amountBdt: $amountBdt, ')
+          ..write('note: $note, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
@@ -7255,6 +7681,8 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $DueMonthsTable dueMonths = $DueMonthsTable(this);
   late final $MonthlyDuesTable monthlyDues = $MonthlyDuesTable(this);
   late final $PaymentsTable payments = $PaymentsTable(this);
+  late final $CollectionResolutionsTable collectionResolutions =
+      $CollectionResolutionsTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -7275,6 +7703,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     dueMonths,
     monthlyDues,
     payments,
+    collectionResolutions,
   ];
 }
 
@@ -7907,6 +8336,34 @@ final class $$ShomitisTableReferences
       manager.$state.copyWith(prefetchedData: cache),
     );
   }
+
+  static MultiTypedResultKey<
+    $CollectionResolutionsTable,
+    List<CollectionResolutionRow>
+  >
+  _collectionResolutionsRefsTable(_$AppDatabase db) =>
+      MultiTypedResultKey.fromTable(
+        db.collectionResolutions,
+        aliasName: $_aliasNameGenerator(
+          db.shomitis.id,
+          db.collectionResolutions.shomitiId,
+        ),
+      );
+
+  $$CollectionResolutionsTableProcessedTableManager
+  get collectionResolutionsRefs {
+    final manager = $$CollectionResolutionsTableTableManager(
+      $_db,
+      $_db.collectionResolutions,
+    ).filter((f) => f.shomitiId.id.sqlEquals($_itemColumn<String>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(
+      _collectionResolutionsRefsTable($_db),
+    );
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
 }
 
 class $$ShomitisTableFilterComposer
@@ -8144,6 +8601,32 @@ class $$ShomitisTableFilterComposer
                 $removeJoinBuilderFromRootComposer,
           ),
     );
+    return f(composer);
+  }
+
+  Expression<bool> collectionResolutionsRefs(
+    Expression<bool> Function($$CollectionResolutionsTableFilterComposer f) f,
+  ) {
+    final $$CollectionResolutionsTableFilterComposer composer =
+        $composerBuilder(
+          composer: this,
+          getCurrentColumn: (t) => t.id,
+          referencedTable: $db.collectionResolutions,
+          getReferencedColumn: (t) => t.shomitiId,
+          builder:
+              (
+                joinBuilder, {
+                $addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer,
+              }) => $$CollectionResolutionsTableFilterComposer(
+                $db: $db,
+                $table: $db.collectionResolutions,
+                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                joinBuilder: joinBuilder,
+                $removeJoinBuilderFromRootComposer:
+                    $removeJoinBuilderFromRootComposer,
+              ),
+        );
     return f(composer);
   }
 }
@@ -8412,6 +8895,32 @@ class $$ShomitisTableAnnotationComposer
     );
     return f(composer);
   }
+
+  Expression<T> collectionResolutionsRefs<T extends Object>(
+    Expression<T> Function($$CollectionResolutionsTableAnnotationComposer a) f,
+  ) {
+    final $$CollectionResolutionsTableAnnotationComposer composer =
+        $composerBuilder(
+          composer: this,
+          getCurrentColumn: (t) => t.id,
+          referencedTable: $db.collectionResolutions,
+          getReferencedColumn: (t) => t.shomitiId,
+          builder:
+              (
+                joinBuilder, {
+                $addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer,
+              }) => $$CollectionResolutionsTableAnnotationComposer(
+                $db: $db,
+                $table: $db.collectionResolutions,
+                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                joinBuilder: joinBuilder,
+                $removeJoinBuilderFromRootComposer:
+                    $removeJoinBuilderFromRootComposer,
+              ),
+        );
+    return f(composer);
+  }
 }
 
 class $$ShomitisTableTableManager
@@ -8436,6 +8945,7 @@ class $$ShomitisTableTableManager
             bool dueMonthsRefs,
             bool monthlyDuesRefs,
             bool paymentsRefs,
+            bool collectionResolutionsRefs,
           })
         > {
   $$ShomitisTableTableManager(_$AppDatabase db, $ShomitisTable table)
@@ -8499,6 +9009,7 @@ class $$ShomitisTableTableManager
                 dueMonthsRefs = false,
                 monthlyDuesRefs = false,
                 paymentsRefs = false,
+                collectionResolutionsRefs = false,
               }) {
                 return PrefetchHooks(
                   db: db,
@@ -8513,6 +9024,7 @@ class $$ShomitisTableTableManager
                     if (dueMonthsRefs) db.dueMonths,
                     if (monthlyDuesRefs) db.monthlyDues,
                     if (paymentsRefs) db.payments,
+                    if (collectionResolutionsRefs) db.collectionResolutions,
                   ],
                   addJoins: null,
                   getPrefetchedDataCallback: (items) async {
@@ -8685,6 +9197,27 @@ class $$ShomitisTableTableManager
                               ),
                           typedResults: items,
                         ),
+                      if (collectionResolutionsRefs)
+                        await $_getPrefetchedData<
+                          ShomitiRow,
+                          $ShomitisTable,
+                          CollectionResolutionRow
+                        >(
+                          currentTable: table,
+                          referencedTable: $$ShomitisTableReferences
+                              ._collectionResolutionsRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$ShomitisTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).collectionResolutionsRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.shomitiId == item.id,
+                              ),
+                          typedResults: items,
+                        ),
                     ];
                   },
                 );
@@ -8714,6 +9247,7 @@ typedef $$ShomitisTableProcessedTableManager =
         bool dueMonthsRefs,
         bool monthlyDuesRefs,
         bool paymentsRefs,
+        bool collectionResolutionsRefs,
       })
     >;
 typedef $$MembersTableCreateCompanionBuilder =
@@ -14287,6 +14821,369 @@ typedef $$PaymentsTableProcessedTableManager =
       PaymentRow,
       PrefetchHooks Function({bool shomitiId, bool memberId})
     >;
+typedef $$CollectionResolutionsTableCreateCompanionBuilder =
+    CollectionResolutionsCompanion Function({
+      required String shomitiId,
+      required String monthKey,
+      required String method,
+      required int amountBdt,
+      Value<String?> note,
+      required DateTime createdAt,
+      Value<int> rowid,
+    });
+typedef $$CollectionResolutionsTableUpdateCompanionBuilder =
+    CollectionResolutionsCompanion Function({
+      Value<String> shomitiId,
+      Value<String> monthKey,
+      Value<String> method,
+      Value<int> amountBdt,
+      Value<String?> note,
+      Value<DateTime> createdAt,
+      Value<int> rowid,
+    });
+
+final class $$CollectionResolutionsTableReferences
+    extends
+        BaseReferences<
+          _$AppDatabase,
+          $CollectionResolutionsTable,
+          CollectionResolutionRow
+        > {
+  $$CollectionResolutionsTableReferences(
+    super.$_db,
+    super.$_table,
+    super.$_typedResult,
+  );
+
+  static $ShomitisTable _shomitiIdTable(_$AppDatabase db) =>
+      db.shomitis.createAlias(
+        $_aliasNameGenerator(
+          db.collectionResolutions.shomitiId,
+          db.shomitis.id,
+        ),
+      );
+
+  $$ShomitisTableProcessedTableManager get shomitiId {
+    final $_column = $_itemColumn<String>('shomiti_id')!;
+
+    final manager = $$ShomitisTableTableManager(
+      $_db,
+      $_db.shomitis,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_shomitiIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+}
+
+class $$CollectionResolutionsTableFilterComposer
+    extends Composer<_$AppDatabase, $CollectionResolutionsTable> {
+  $$CollectionResolutionsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get monthKey => $composableBuilder(
+    column: $table.monthKey,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get method => $composableBuilder(
+    column: $table.method,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get amountBdt => $composableBuilder(
+    column: $table.amountBdt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get note => $composableBuilder(
+    column: $table.note,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  $$ShomitisTableFilterComposer get shomitiId {
+    final $$ShomitisTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.shomitiId,
+      referencedTable: $db.shomitis,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ShomitisTableFilterComposer(
+            $db: $db,
+            $table: $db.shomitis,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$CollectionResolutionsTableOrderingComposer
+    extends Composer<_$AppDatabase, $CollectionResolutionsTable> {
+  $$CollectionResolutionsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get monthKey => $composableBuilder(
+    column: $table.monthKey,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get method => $composableBuilder(
+    column: $table.method,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get amountBdt => $composableBuilder(
+    column: $table.amountBdt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get note => $composableBuilder(
+    column: $table.note,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  $$ShomitisTableOrderingComposer get shomitiId {
+    final $$ShomitisTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.shomitiId,
+      referencedTable: $db.shomitis,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ShomitisTableOrderingComposer(
+            $db: $db,
+            $table: $db.shomitis,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$CollectionResolutionsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $CollectionResolutionsTable> {
+  $$CollectionResolutionsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get monthKey =>
+      $composableBuilder(column: $table.monthKey, builder: (column) => column);
+
+  GeneratedColumn<String> get method =>
+      $composableBuilder(column: $table.method, builder: (column) => column);
+
+  GeneratedColumn<int> get amountBdt =>
+      $composableBuilder(column: $table.amountBdt, builder: (column) => column);
+
+  GeneratedColumn<String> get note =>
+      $composableBuilder(column: $table.note, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  $$ShomitisTableAnnotationComposer get shomitiId {
+    final $$ShomitisTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.shomitiId,
+      referencedTable: $db.shomitis,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ShomitisTableAnnotationComposer(
+            $db: $db,
+            $table: $db.shomitis,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$CollectionResolutionsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $CollectionResolutionsTable,
+          CollectionResolutionRow,
+          $$CollectionResolutionsTableFilterComposer,
+          $$CollectionResolutionsTableOrderingComposer,
+          $$CollectionResolutionsTableAnnotationComposer,
+          $$CollectionResolutionsTableCreateCompanionBuilder,
+          $$CollectionResolutionsTableUpdateCompanionBuilder,
+          (CollectionResolutionRow, $$CollectionResolutionsTableReferences),
+          CollectionResolutionRow,
+          PrefetchHooks Function({bool shomitiId})
+        > {
+  $$CollectionResolutionsTableTableManager(
+    _$AppDatabase db,
+    $CollectionResolutionsTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$CollectionResolutionsTableFilterComposer(
+                $db: db,
+                $table: table,
+              ),
+          createOrderingComposer: () =>
+              $$CollectionResolutionsTableOrderingComposer(
+                $db: db,
+                $table: table,
+              ),
+          createComputedFieldComposer: () =>
+              $$CollectionResolutionsTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<String> shomitiId = const Value.absent(),
+                Value<String> monthKey = const Value.absent(),
+                Value<String> method = const Value.absent(),
+                Value<int> amountBdt = const Value.absent(),
+                Value<String?> note = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => CollectionResolutionsCompanion(
+                shomitiId: shomitiId,
+                monthKey: monthKey,
+                method: method,
+                amountBdt: amountBdt,
+                note: note,
+                createdAt: createdAt,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String shomitiId,
+                required String monthKey,
+                required String method,
+                required int amountBdt,
+                Value<String?> note = const Value.absent(),
+                required DateTime createdAt,
+                Value<int> rowid = const Value.absent(),
+              }) => CollectionResolutionsCompanion.insert(
+                shomitiId: shomitiId,
+                monthKey: monthKey,
+                method: method,
+                amountBdt: amountBdt,
+                note: note,
+                createdAt: createdAt,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable(table),
+                  $$CollectionResolutionsTableReferences(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: ({shomitiId = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [],
+              addJoins:
+                  <
+                    T extends TableManagerState<
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic
+                    >
+                  >(state) {
+                    if (shomitiId) {
+                      state =
+                          state.withJoin(
+                                currentTable: table,
+                                currentColumn: table.shomitiId,
+                                referencedTable:
+                                    $$CollectionResolutionsTableReferences
+                                        ._shomitiIdTable(db),
+                                referencedColumn:
+                                    $$CollectionResolutionsTableReferences
+                                        ._shomitiIdTable(db)
+                                        .id,
+                              )
+                              as T;
+                    }
+
+                    return state;
+                  },
+              getPrefetchedDataCallback: (items) async {
+                return [];
+              },
+            );
+          },
+        ),
+      );
+}
+
+typedef $$CollectionResolutionsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $CollectionResolutionsTable,
+      CollectionResolutionRow,
+      $$CollectionResolutionsTableFilterComposer,
+      $$CollectionResolutionsTableOrderingComposer,
+      $$CollectionResolutionsTableAnnotationComposer,
+      $$CollectionResolutionsTableCreateCompanionBuilder,
+      $$CollectionResolutionsTableUpdateCompanionBuilder,
+      (CollectionResolutionRow, $$CollectionResolutionsTableReferences),
+      CollectionResolutionRow,
+      PrefetchHooks Function({bool shomitiId})
+    >;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;
@@ -14327,4 +15224,6 @@ class $AppDatabaseManager {
       $$MonthlyDuesTableTableManager(_db, _db.monthlyDues);
   $$PaymentsTableTableManager get payments =>
       $$PaymentsTableTableManager(_db, _db.payments);
+  $$CollectionResolutionsTableTableManager get collectionResolutions =>
+      $$CollectionResolutionsTableTableManager(_db, _db.collectionResolutions);
 }
