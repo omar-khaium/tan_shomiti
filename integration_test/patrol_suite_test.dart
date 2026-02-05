@@ -17,6 +17,7 @@ import 'ts_303_late_fees_e2e_test.dart' as ts_303_late_fees_e2e_test;
 import 'ts_304_short_pot_e2e_test.dart' as ts_304_short_pot_e2e_test;
 import 'ts_305_defaults_e2e_test.dart' as ts_305_defaults_e2e_test;
 import 'ts_401_draw_e2e_test.dart' as ts_401_draw_e2e_test;
+import 'ts_402_witness_redo_e2e_test.dart' as ts_402_witness_redo_e2e_test;
 
 void main() {
   ts_101_setup_wizard_e2e_test.main();
@@ -36,4 +37,5 @@ void main() {
   ts_304_short_pot_e2e_test.main();
   ts_305_defaults_e2e_test.main();
   ts_401_draw_e2e_test.main();
+  ts_402_witness_redo_e2e_test.main();
 }
