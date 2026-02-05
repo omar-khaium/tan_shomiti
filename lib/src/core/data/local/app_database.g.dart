@@ -4468,6 +4468,1206 @@ class MemberConsentsCompanion extends UpdateCompanion<MemberConsentRow> {
   }
 }
 
+class $MembershipChangeRequestsTable extends MembershipChangeRequests
+    with TableInfo<$MembershipChangeRequestsTable, MembershipChangeRequestRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $MembershipChangeRequestsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _shomitiIdMeta = const VerificationMeta(
+    'shomitiId',
+  );
+  @override
+  late final GeneratedColumn<String> shomitiId = GeneratedColumn<String>(
+    'shomiti_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES shomitis (id)',
+    ),
+  );
+  static const VerificationMeta _outgoingMemberIdMeta = const VerificationMeta(
+    'outgoingMemberId',
+  );
+  @override
+  late final GeneratedColumn<String> outgoingMemberId = GeneratedColumn<String>(
+    'outgoing_member_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES members (id)',
+    ),
+  );
+  static const VerificationMeta _typeMeta = const VerificationMeta('type');
+  @override
+  late final GeneratedColumn<String> type = GeneratedColumn<String>(
+    'type',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _requiresReplacementMeta =
+      const VerificationMeta('requiresReplacement');
+  @override
+  late final GeneratedColumn<bool> requiresReplacement = GeneratedColumn<bool>(
+    'requires_replacement',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("requires_replacement" IN (0, 1))',
+    ),
+    defaultValue: const Constant(true),
+  );
+  static const VerificationMeta _replacementCandidateNameMeta =
+      const VerificationMeta('replacementCandidateName');
+  @override
+  late final GeneratedColumn<String> replacementCandidateName =
+      GeneratedColumn<String>(
+        'replacement_candidate_name',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _replacementCandidatePhoneMeta =
+      const VerificationMeta('replacementCandidatePhone');
+  @override
+  late final GeneratedColumn<String> replacementCandidatePhone =
+      GeneratedColumn<String>(
+        'replacement_candidate_phone',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _removalReasonCodeMeta = const VerificationMeta(
+    'removalReasonCode',
+  );
+  @override
+  late final GeneratedColumn<String> removalReasonCode =
+      GeneratedColumn<String>(
+        'removal_reason_code',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _removalReasonDetailsMeta =
+      const VerificationMeta('removalReasonDetails');
+  @override
+  late final GeneratedColumn<String> removalReasonDetails =
+      GeneratedColumn<String>(
+        'removal_reason_details',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _requestedAtMeta = const VerificationMeta(
+    'requestedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> requestedAt = GeneratedColumn<DateTime>(
+    'requested_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _finalizedAtMeta = const VerificationMeta(
+    'finalizedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> finalizedAt = GeneratedColumn<DateTime>(
+    'finalized_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    shomitiId,
+    outgoingMemberId,
+    type,
+    requiresReplacement,
+    replacementCandidateName,
+    replacementCandidatePhone,
+    removalReasonCode,
+    removalReasonDetails,
+    requestedAt,
+    updatedAt,
+    finalizedAt,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'membership_change_requests';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<MembershipChangeRequestRow> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('shomiti_id')) {
+      context.handle(
+        _shomitiIdMeta,
+        shomitiId.isAcceptableOrUnknown(data['shomiti_id']!, _shomitiIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_shomitiIdMeta);
+    }
+    if (data.containsKey('outgoing_member_id')) {
+      context.handle(
+        _outgoingMemberIdMeta,
+        outgoingMemberId.isAcceptableOrUnknown(
+          data['outgoing_member_id']!,
+          _outgoingMemberIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_outgoingMemberIdMeta);
+    }
+    if (data.containsKey('type')) {
+      context.handle(
+        _typeMeta,
+        type.isAcceptableOrUnknown(data['type']!, _typeMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_typeMeta);
+    }
+    if (data.containsKey('requires_replacement')) {
+      context.handle(
+        _requiresReplacementMeta,
+        requiresReplacement.isAcceptableOrUnknown(
+          data['requires_replacement']!,
+          _requiresReplacementMeta,
+        ),
+      );
+    }
+    if (data.containsKey('replacement_candidate_name')) {
+      context.handle(
+        _replacementCandidateNameMeta,
+        replacementCandidateName.isAcceptableOrUnknown(
+          data['replacement_candidate_name']!,
+          _replacementCandidateNameMeta,
+        ),
+      );
+    }
+    if (data.containsKey('replacement_candidate_phone')) {
+      context.handle(
+        _replacementCandidatePhoneMeta,
+        replacementCandidatePhone.isAcceptableOrUnknown(
+          data['replacement_candidate_phone']!,
+          _replacementCandidatePhoneMeta,
+        ),
+      );
+    }
+    if (data.containsKey('removal_reason_code')) {
+      context.handle(
+        _removalReasonCodeMeta,
+        removalReasonCode.isAcceptableOrUnknown(
+          data['removal_reason_code']!,
+          _removalReasonCodeMeta,
+        ),
+      );
+    }
+    if (data.containsKey('removal_reason_details')) {
+      context.handle(
+        _removalReasonDetailsMeta,
+        removalReasonDetails.isAcceptableOrUnknown(
+          data['removal_reason_details']!,
+          _removalReasonDetailsMeta,
+        ),
+      );
+    }
+    if (data.containsKey('requested_at')) {
+      context.handle(
+        _requestedAtMeta,
+        requestedAt.isAcceptableOrUnknown(
+          data['requested_at']!,
+          _requestedAtMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_requestedAtMeta);
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    }
+    if (data.containsKey('finalized_at')) {
+      context.handle(
+        _finalizedAtMeta,
+        finalizedAt.isAcceptableOrUnknown(
+          data['finalized_at']!,
+          _finalizedAtMeta,
+        ),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  MembershipChangeRequestRow map(
+    Map<String, dynamic> data, {
+    String? tablePrefix,
+  }) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return MembershipChangeRequestRow(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      shomitiId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}shomiti_id'],
+      )!,
+      outgoingMemberId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}outgoing_member_id'],
+      )!,
+      type: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}type'],
+      )!,
+      requiresReplacement: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}requires_replacement'],
+      )!,
+      replacementCandidateName: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}replacement_candidate_name'],
+      ),
+      replacementCandidatePhone: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}replacement_candidate_phone'],
+      ),
+      removalReasonCode: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}removal_reason_code'],
+      ),
+      removalReasonDetails: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}removal_reason_details'],
+      ),
+      requestedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}requested_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      ),
+      finalizedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}finalized_at'],
+      ),
+    );
+  }
+
+  @override
+  $MembershipChangeRequestsTable createAlias(String alias) {
+    return $MembershipChangeRequestsTable(attachedDatabase, alias);
+  }
+}
+
+class MembershipChangeRequestRow extends DataClass
+    implements Insertable<MembershipChangeRequestRow> {
+  final String id;
+  final String shomitiId;
+  final String outgoingMemberId;
+
+  /// exit | replacement | removal
+  final String type;
+
+  /// `rules.md` Section 14 recommends requiring replacement by default.
+  final bool requiresReplacement;
+  final String? replacementCandidateName;
+  final String? replacementCandidatePhone;
+
+  /// removal reason codes (non-accusatory). Optional details allowed.
+  final String? removalReasonCode;
+  final String? removalReasonDetails;
+  final DateTime requestedAt;
+  final DateTime? updatedAt;
+  final DateTime? finalizedAt;
+  const MembershipChangeRequestRow({
+    required this.id,
+    required this.shomitiId,
+    required this.outgoingMemberId,
+    required this.type,
+    required this.requiresReplacement,
+    this.replacementCandidateName,
+    this.replacementCandidatePhone,
+    this.removalReasonCode,
+    this.removalReasonDetails,
+    required this.requestedAt,
+    this.updatedAt,
+    this.finalizedAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['shomiti_id'] = Variable<String>(shomitiId);
+    map['outgoing_member_id'] = Variable<String>(outgoingMemberId);
+    map['type'] = Variable<String>(type);
+    map['requires_replacement'] = Variable<bool>(requiresReplacement);
+    if (!nullToAbsent || replacementCandidateName != null) {
+      map['replacement_candidate_name'] = Variable<String>(
+        replacementCandidateName,
+      );
+    }
+    if (!nullToAbsent || replacementCandidatePhone != null) {
+      map['replacement_candidate_phone'] = Variable<String>(
+        replacementCandidatePhone,
+      );
+    }
+    if (!nullToAbsent || removalReasonCode != null) {
+      map['removal_reason_code'] = Variable<String>(removalReasonCode);
+    }
+    if (!nullToAbsent || removalReasonDetails != null) {
+      map['removal_reason_details'] = Variable<String>(removalReasonDetails);
+    }
+    map['requested_at'] = Variable<DateTime>(requestedAt);
+    if (!nullToAbsent || updatedAt != null) {
+      map['updated_at'] = Variable<DateTime>(updatedAt);
+    }
+    if (!nullToAbsent || finalizedAt != null) {
+      map['finalized_at'] = Variable<DateTime>(finalizedAt);
+    }
+    return map;
+  }
+
+  MembershipChangeRequestsCompanion toCompanion(bool nullToAbsent) {
+    return MembershipChangeRequestsCompanion(
+      id: Value(id),
+      shomitiId: Value(shomitiId),
+      outgoingMemberId: Value(outgoingMemberId),
+      type: Value(type),
+      requiresReplacement: Value(requiresReplacement),
+      replacementCandidateName: replacementCandidateName == null && nullToAbsent
+          ? const Value.absent()
+          : Value(replacementCandidateName),
+      replacementCandidatePhone:
+          replacementCandidatePhone == null && nullToAbsent
+          ? const Value.absent()
+          : Value(replacementCandidatePhone),
+      removalReasonCode: removalReasonCode == null && nullToAbsent
+          ? const Value.absent()
+          : Value(removalReasonCode),
+      removalReasonDetails: removalReasonDetails == null && nullToAbsent
+          ? const Value.absent()
+          : Value(removalReasonDetails),
+      requestedAt: Value(requestedAt),
+      updatedAt: updatedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(updatedAt),
+      finalizedAt: finalizedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(finalizedAt),
+    );
+  }
+
+  factory MembershipChangeRequestRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return MembershipChangeRequestRow(
+      id: serializer.fromJson<String>(json['id']),
+      shomitiId: serializer.fromJson<String>(json['shomitiId']),
+      outgoingMemberId: serializer.fromJson<String>(json['outgoingMemberId']),
+      type: serializer.fromJson<String>(json['type']),
+      requiresReplacement: serializer.fromJson<bool>(
+        json['requiresReplacement'],
+      ),
+      replacementCandidateName: serializer.fromJson<String?>(
+        json['replacementCandidateName'],
+      ),
+      replacementCandidatePhone: serializer.fromJson<String?>(
+        json['replacementCandidatePhone'],
+      ),
+      removalReasonCode: serializer.fromJson<String?>(
+        json['removalReasonCode'],
+      ),
+      removalReasonDetails: serializer.fromJson<String?>(
+        json['removalReasonDetails'],
+      ),
+      requestedAt: serializer.fromJson<DateTime>(json['requestedAt']),
+      updatedAt: serializer.fromJson<DateTime?>(json['updatedAt']),
+      finalizedAt: serializer.fromJson<DateTime?>(json['finalizedAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'shomitiId': serializer.toJson<String>(shomitiId),
+      'outgoingMemberId': serializer.toJson<String>(outgoingMemberId),
+      'type': serializer.toJson<String>(type),
+      'requiresReplacement': serializer.toJson<bool>(requiresReplacement),
+      'replacementCandidateName': serializer.toJson<String?>(
+        replacementCandidateName,
+      ),
+      'replacementCandidatePhone': serializer.toJson<String?>(
+        replacementCandidatePhone,
+      ),
+      'removalReasonCode': serializer.toJson<String?>(removalReasonCode),
+      'removalReasonDetails': serializer.toJson<String?>(removalReasonDetails),
+      'requestedAt': serializer.toJson<DateTime>(requestedAt),
+      'updatedAt': serializer.toJson<DateTime?>(updatedAt),
+      'finalizedAt': serializer.toJson<DateTime?>(finalizedAt),
+    };
+  }
+
+  MembershipChangeRequestRow copyWith({
+    String? id,
+    String? shomitiId,
+    String? outgoingMemberId,
+    String? type,
+    bool? requiresReplacement,
+    Value<String?> replacementCandidateName = const Value.absent(),
+    Value<String?> replacementCandidatePhone = const Value.absent(),
+    Value<String?> removalReasonCode = const Value.absent(),
+    Value<String?> removalReasonDetails = const Value.absent(),
+    DateTime? requestedAt,
+    Value<DateTime?> updatedAt = const Value.absent(),
+    Value<DateTime?> finalizedAt = const Value.absent(),
+  }) => MembershipChangeRequestRow(
+    id: id ?? this.id,
+    shomitiId: shomitiId ?? this.shomitiId,
+    outgoingMemberId: outgoingMemberId ?? this.outgoingMemberId,
+    type: type ?? this.type,
+    requiresReplacement: requiresReplacement ?? this.requiresReplacement,
+    replacementCandidateName: replacementCandidateName.present
+        ? replacementCandidateName.value
+        : this.replacementCandidateName,
+    replacementCandidatePhone: replacementCandidatePhone.present
+        ? replacementCandidatePhone.value
+        : this.replacementCandidatePhone,
+    removalReasonCode: removalReasonCode.present
+        ? removalReasonCode.value
+        : this.removalReasonCode,
+    removalReasonDetails: removalReasonDetails.present
+        ? removalReasonDetails.value
+        : this.removalReasonDetails,
+    requestedAt: requestedAt ?? this.requestedAt,
+    updatedAt: updatedAt.present ? updatedAt.value : this.updatedAt,
+    finalizedAt: finalizedAt.present ? finalizedAt.value : this.finalizedAt,
+  );
+  MembershipChangeRequestRow copyWithCompanion(
+    MembershipChangeRequestsCompanion data,
+  ) {
+    return MembershipChangeRequestRow(
+      id: data.id.present ? data.id.value : this.id,
+      shomitiId: data.shomitiId.present ? data.shomitiId.value : this.shomitiId,
+      outgoingMemberId: data.outgoingMemberId.present
+          ? data.outgoingMemberId.value
+          : this.outgoingMemberId,
+      type: data.type.present ? data.type.value : this.type,
+      requiresReplacement: data.requiresReplacement.present
+          ? data.requiresReplacement.value
+          : this.requiresReplacement,
+      replacementCandidateName: data.replacementCandidateName.present
+          ? data.replacementCandidateName.value
+          : this.replacementCandidateName,
+      replacementCandidatePhone: data.replacementCandidatePhone.present
+          ? data.replacementCandidatePhone.value
+          : this.replacementCandidatePhone,
+      removalReasonCode: data.removalReasonCode.present
+          ? data.removalReasonCode.value
+          : this.removalReasonCode,
+      removalReasonDetails: data.removalReasonDetails.present
+          ? data.removalReasonDetails.value
+          : this.removalReasonDetails,
+      requestedAt: data.requestedAt.present
+          ? data.requestedAt.value
+          : this.requestedAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+      finalizedAt: data.finalizedAt.present
+          ? data.finalizedAt.value
+          : this.finalizedAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('MembershipChangeRequestRow(')
+          ..write('id: $id, ')
+          ..write('shomitiId: $shomitiId, ')
+          ..write('outgoingMemberId: $outgoingMemberId, ')
+          ..write('type: $type, ')
+          ..write('requiresReplacement: $requiresReplacement, ')
+          ..write('replacementCandidateName: $replacementCandidateName, ')
+          ..write('replacementCandidatePhone: $replacementCandidatePhone, ')
+          ..write('removalReasonCode: $removalReasonCode, ')
+          ..write('removalReasonDetails: $removalReasonDetails, ')
+          ..write('requestedAt: $requestedAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('finalizedAt: $finalizedAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    shomitiId,
+    outgoingMemberId,
+    type,
+    requiresReplacement,
+    replacementCandidateName,
+    replacementCandidatePhone,
+    removalReasonCode,
+    removalReasonDetails,
+    requestedAt,
+    updatedAt,
+    finalizedAt,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is MembershipChangeRequestRow &&
+          other.id == this.id &&
+          other.shomitiId == this.shomitiId &&
+          other.outgoingMemberId == this.outgoingMemberId &&
+          other.type == this.type &&
+          other.requiresReplacement == this.requiresReplacement &&
+          other.replacementCandidateName == this.replacementCandidateName &&
+          other.replacementCandidatePhone == this.replacementCandidatePhone &&
+          other.removalReasonCode == this.removalReasonCode &&
+          other.removalReasonDetails == this.removalReasonDetails &&
+          other.requestedAt == this.requestedAt &&
+          other.updatedAt == this.updatedAt &&
+          other.finalizedAt == this.finalizedAt);
+}
+
+class MembershipChangeRequestsCompanion
+    extends UpdateCompanion<MembershipChangeRequestRow> {
+  final Value<String> id;
+  final Value<String> shomitiId;
+  final Value<String> outgoingMemberId;
+  final Value<String> type;
+  final Value<bool> requiresReplacement;
+  final Value<String?> replacementCandidateName;
+  final Value<String?> replacementCandidatePhone;
+  final Value<String?> removalReasonCode;
+  final Value<String?> removalReasonDetails;
+  final Value<DateTime> requestedAt;
+  final Value<DateTime?> updatedAt;
+  final Value<DateTime?> finalizedAt;
+  final Value<int> rowid;
+  const MembershipChangeRequestsCompanion({
+    this.id = const Value.absent(),
+    this.shomitiId = const Value.absent(),
+    this.outgoingMemberId = const Value.absent(),
+    this.type = const Value.absent(),
+    this.requiresReplacement = const Value.absent(),
+    this.replacementCandidateName = const Value.absent(),
+    this.replacementCandidatePhone = const Value.absent(),
+    this.removalReasonCode = const Value.absent(),
+    this.removalReasonDetails = const Value.absent(),
+    this.requestedAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.finalizedAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  MembershipChangeRequestsCompanion.insert({
+    required String id,
+    required String shomitiId,
+    required String outgoingMemberId,
+    required String type,
+    this.requiresReplacement = const Value.absent(),
+    this.replacementCandidateName = const Value.absent(),
+    this.replacementCandidatePhone = const Value.absent(),
+    this.removalReasonCode = const Value.absent(),
+    this.removalReasonDetails = const Value.absent(),
+    required DateTime requestedAt,
+    this.updatedAt = const Value.absent(),
+    this.finalizedAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       shomitiId = Value(shomitiId),
+       outgoingMemberId = Value(outgoingMemberId),
+       type = Value(type),
+       requestedAt = Value(requestedAt);
+  static Insertable<MembershipChangeRequestRow> custom({
+    Expression<String>? id,
+    Expression<String>? shomitiId,
+    Expression<String>? outgoingMemberId,
+    Expression<String>? type,
+    Expression<bool>? requiresReplacement,
+    Expression<String>? replacementCandidateName,
+    Expression<String>? replacementCandidatePhone,
+    Expression<String>? removalReasonCode,
+    Expression<String>? removalReasonDetails,
+    Expression<DateTime>? requestedAt,
+    Expression<DateTime>? updatedAt,
+    Expression<DateTime>? finalizedAt,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (shomitiId != null) 'shomiti_id': shomitiId,
+      if (outgoingMemberId != null) 'outgoing_member_id': outgoingMemberId,
+      if (type != null) 'type': type,
+      if (requiresReplacement != null)
+        'requires_replacement': requiresReplacement,
+      if (replacementCandidateName != null)
+        'replacement_candidate_name': replacementCandidateName,
+      if (replacementCandidatePhone != null)
+        'replacement_candidate_phone': replacementCandidatePhone,
+      if (removalReasonCode != null) 'removal_reason_code': removalReasonCode,
+      if (removalReasonDetails != null)
+        'removal_reason_details': removalReasonDetails,
+      if (requestedAt != null) 'requested_at': requestedAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (finalizedAt != null) 'finalized_at': finalizedAt,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  MembershipChangeRequestsCompanion copyWith({
+    Value<String>? id,
+    Value<String>? shomitiId,
+    Value<String>? outgoingMemberId,
+    Value<String>? type,
+    Value<bool>? requiresReplacement,
+    Value<String?>? replacementCandidateName,
+    Value<String?>? replacementCandidatePhone,
+    Value<String?>? removalReasonCode,
+    Value<String?>? removalReasonDetails,
+    Value<DateTime>? requestedAt,
+    Value<DateTime?>? updatedAt,
+    Value<DateTime?>? finalizedAt,
+    Value<int>? rowid,
+  }) {
+    return MembershipChangeRequestsCompanion(
+      id: id ?? this.id,
+      shomitiId: shomitiId ?? this.shomitiId,
+      outgoingMemberId: outgoingMemberId ?? this.outgoingMemberId,
+      type: type ?? this.type,
+      requiresReplacement: requiresReplacement ?? this.requiresReplacement,
+      replacementCandidateName:
+          replacementCandidateName ?? this.replacementCandidateName,
+      replacementCandidatePhone:
+          replacementCandidatePhone ?? this.replacementCandidatePhone,
+      removalReasonCode: removalReasonCode ?? this.removalReasonCode,
+      removalReasonDetails: removalReasonDetails ?? this.removalReasonDetails,
+      requestedAt: requestedAt ?? this.requestedAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      finalizedAt: finalizedAt ?? this.finalizedAt,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (shomitiId.present) {
+      map['shomiti_id'] = Variable<String>(shomitiId.value);
+    }
+    if (outgoingMemberId.present) {
+      map['outgoing_member_id'] = Variable<String>(outgoingMemberId.value);
+    }
+    if (type.present) {
+      map['type'] = Variable<String>(type.value);
+    }
+    if (requiresReplacement.present) {
+      map['requires_replacement'] = Variable<bool>(requiresReplacement.value);
+    }
+    if (replacementCandidateName.present) {
+      map['replacement_candidate_name'] = Variable<String>(
+        replacementCandidateName.value,
+      );
+    }
+    if (replacementCandidatePhone.present) {
+      map['replacement_candidate_phone'] = Variable<String>(
+        replacementCandidatePhone.value,
+      );
+    }
+    if (removalReasonCode.present) {
+      map['removal_reason_code'] = Variable<String>(removalReasonCode.value);
+    }
+    if (removalReasonDetails.present) {
+      map['removal_reason_details'] = Variable<String>(
+        removalReasonDetails.value,
+      );
+    }
+    if (requestedAt.present) {
+      map['requested_at'] = Variable<DateTime>(requestedAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (finalizedAt.present) {
+      map['finalized_at'] = Variable<DateTime>(finalizedAt.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('MembershipChangeRequestsCompanion(')
+          ..write('id: $id, ')
+          ..write('shomitiId: $shomitiId, ')
+          ..write('outgoingMemberId: $outgoingMemberId, ')
+          ..write('type: $type, ')
+          ..write('requiresReplacement: $requiresReplacement, ')
+          ..write('replacementCandidateName: $replacementCandidateName, ')
+          ..write('replacementCandidatePhone: $replacementCandidatePhone, ')
+          ..write('removalReasonCode: $removalReasonCode, ')
+          ..write('removalReasonDetails: $removalReasonDetails, ')
+          ..write('requestedAt: $requestedAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('finalizedAt: $finalizedAt, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $MembershipChangeApprovalsTable extends MembershipChangeApprovals
+    with
+        TableInfo<
+          $MembershipChangeApprovalsTable,
+          MembershipChangeApprovalRow
+        > {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $MembershipChangeApprovalsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _shomitiIdMeta = const VerificationMeta(
+    'shomitiId',
+  );
+  @override
+  late final GeneratedColumn<String> shomitiId = GeneratedColumn<String>(
+    'shomiti_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES shomitis (id)',
+    ),
+  );
+  static const VerificationMeta _requestIdMeta = const VerificationMeta(
+    'requestId',
+  );
+  @override
+  late final GeneratedColumn<String> requestId = GeneratedColumn<String>(
+    'request_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES membership_change_requests (id)',
+    ),
+  );
+  static const VerificationMeta _approverMemberIdMeta = const VerificationMeta(
+    'approverMemberId',
+  );
+  @override
+  late final GeneratedColumn<String> approverMemberId = GeneratedColumn<String>(
+    'approver_member_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _approvedAtMeta = const VerificationMeta(
+    'approvedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> approvedAt = GeneratedColumn<DateTime>(
+    'approved_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _noteMeta = const VerificationMeta('note');
+  @override
+  late final GeneratedColumn<String> note = GeneratedColumn<String>(
+    'note',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    shomitiId,
+    requestId,
+    approverMemberId,
+    approvedAt,
+    note,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'membership_change_approvals';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<MembershipChangeApprovalRow> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('shomiti_id')) {
+      context.handle(
+        _shomitiIdMeta,
+        shomitiId.isAcceptableOrUnknown(data['shomiti_id']!, _shomitiIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_shomitiIdMeta);
+    }
+    if (data.containsKey('request_id')) {
+      context.handle(
+        _requestIdMeta,
+        requestId.isAcceptableOrUnknown(data['request_id']!, _requestIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_requestIdMeta);
+    }
+    if (data.containsKey('approver_member_id')) {
+      context.handle(
+        _approverMemberIdMeta,
+        approverMemberId.isAcceptableOrUnknown(
+          data['approver_member_id']!,
+          _approverMemberIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_approverMemberIdMeta);
+    }
+    if (data.containsKey('approved_at')) {
+      context.handle(
+        _approvedAtMeta,
+        approvedAt.isAcceptableOrUnknown(data['approved_at']!, _approvedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_approvedAtMeta);
+    }
+    if (data.containsKey('note')) {
+      context.handle(
+        _noteMeta,
+        note.isAcceptableOrUnknown(data['note']!, _noteMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {
+    shomitiId,
+    requestId,
+    approverMemberId,
+  };
+  @override
+  MembershipChangeApprovalRow map(
+    Map<String, dynamic> data, {
+    String? tablePrefix,
+  }) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return MembershipChangeApprovalRow(
+      shomitiId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}shomiti_id'],
+      )!,
+      requestId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}request_id'],
+      )!,
+      approverMemberId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}approver_member_id'],
+      )!,
+      approvedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}approved_at'],
+      )!,
+      note: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}note'],
+      ),
+    );
+  }
+
+  @override
+  $MembershipChangeApprovalsTable createAlias(String alias) {
+    return $MembershipChangeApprovalsTable(attachedDatabase, alias);
+  }
+}
+
+class MembershipChangeApprovalRow extends DataClass
+    implements Insertable<MembershipChangeApprovalRow> {
+  final String shomitiId;
+  final String requestId;
+  final String approverMemberId;
+  final DateTime approvedAt;
+  final String? note;
+  const MembershipChangeApprovalRow({
+    required this.shomitiId,
+    required this.requestId,
+    required this.approverMemberId,
+    required this.approvedAt,
+    this.note,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['shomiti_id'] = Variable<String>(shomitiId);
+    map['request_id'] = Variable<String>(requestId);
+    map['approver_member_id'] = Variable<String>(approverMemberId);
+    map['approved_at'] = Variable<DateTime>(approvedAt);
+    if (!nullToAbsent || note != null) {
+      map['note'] = Variable<String>(note);
+    }
+    return map;
+  }
+
+  MembershipChangeApprovalsCompanion toCompanion(bool nullToAbsent) {
+    return MembershipChangeApprovalsCompanion(
+      shomitiId: Value(shomitiId),
+      requestId: Value(requestId),
+      approverMemberId: Value(approverMemberId),
+      approvedAt: Value(approvedAt),
+      note: note == null && nullToAbsent ? const Value.absent() : Value(note),
+    );
+  }
+
+  factory MembershipChangeApprovalRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return MembershipChangeApprovalRow(
+      shomitiId: serializer.fromJson<String>(json['shomitiId']),
+      requestId: serializer.fromJson<String>(json['requestId']),
+      approverMemberId: serializer.fromJson<String>(json['approverMemberId']),
+      approvedAt: serializer.fromJson<DateTime>(json['approvedAt']),
+      note: serializer.fromJson<String?>(json['note']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'shomitiId': serializer.toJson<String>(shomitiId),
+      'requestId': serializer.toJson<String>(requestId),
+      'approverMemberId': serializer.toJson<String>(approverMemberId),
+      'approvedAt': serializer.toJson<DateTime>(approvedAt),
+      'note': serializer.toJson<String?>(note),
+    };
+  }
+
+  MembershipChangeApprovalRow copyWith({
+    String? shomitiId,
+    String? requestId,
+    String? approverMemberId,
+    DateTime? approvedAt,
+    Value<String?> note = const Value.absent(),
+  }) => MembershipChangeApprovalRow(
+    shomitiId: shomitiId ?? this.shomitiId,
+    requestId: requestId ?? this.requestId,
+    approverMemberId: approverMemberId ?? this.approverMemberId,
+    approvedAt: approvedAt ?? this.approvedAt,
+    note: note.present ? note.value : this.note,
+  );
+  MembershipChangeApprovalRow copyWithCompanion(
+    MembershipChangeApprovalsCompanion data,
+  ) {
+    return MembershipChangeApprovalRow(
+      shomitiId: data.shomitiId.present ? data.shomitiId.value : this.shomitiId,
+      requestId: data.requestId.present ? data.requestId.value : this.requestId,
+      approverMemberId: data.approverMemberId.present
+          ? data.approverMemberId.value
+          : this.approverMemberId,
+      approvedAt: data.approvedAt.present
+          ? data.approvedAt.value
+          : this.approvedAt,
+      note: data.note.present ? data.note.value : this.note,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('MembershipChangeApprovalRow(')
+          ..write('shomitiId: $shomitiId, ')
+          ..write('requestId: $requestId, ')
+          ..write('approverMemberId: $approverMemberId, ')
+          ..write('approvedAt: $approvedAt, ')
+          ..write('note: $note')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(shomitiId, requestId, approverMemberId, approvedAt, note);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is MembershipChangeApprovalRow &&
+          other.shomitiId == this.shomitiId &&
+          other.requestId == this.requestId &&
+          other.approverMemberId == this.approverMemberId &&
+          other.approvedAt == this.approvedAt &&
+          other.note == this.note);
+}
+
+class MembershipChangeApprovalsCompanion
+    extends UpdateCompanion<MembershipChangeApprovalRow> {
+  final Value<String> shomitiId;
+  final Value<String> requestId;
+  final Value<String> approverMemberId;
+  final Value<DateTime> approvedAt;
+  final Value<String?> note;
+  final Value<int> rowid;
+  const MembershipChangeApprovalsCompanion({
+    this.shomitiId = const Value.absent(),
+    this.requestId = const Value.absent(),
+    this.approverMemberId = const Value.absent(),
+    this.approvedAt = const Value.absent(),
+    this.note = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  MembershipChangeApprovalsCompanion.insert({
+    required String shomitiId,
+    required String requestId,
+    required String approverMemberId,
+    required DateTime approvedAt,
+    this.note = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : shomitiId = Value(shomitiId),
+       requestId = Value(requestId),
+       approverMemberId = Value(approverMemberId),
+       approvedAt = Value(approvedAt);
+  static Insertable<MembershipChangeApprovalRow> custom({
+    Expression<String>? shomitiId,
+    Expression<String>? requestId,
+    Expression<String>? approverMemberId,
+    Expression<DateTime>? approvedAt,
+    Expression<String>? note,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (shomitiId != null) 'shomiti_id': shomitiId,
+      if (requestId != null) 'request_id': requestId,
+      if (approverMemberId != null) 'approver_member_id': approverMemberId,
+      if (approvedAt != null) 'approved_at': approvedAt,
+      if (note != null) 'note': note,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  MembershipChangeApprovalsCompanion copyWith({
+    Value<String>? shomitiId,
+    Value<String>? requestId,
+    Value<String>? approverMemberId,
+    Value<DateTime>? approvedAt,
+    Value<String?>? note,
+    Value<int>? rowid,
+  }) {
+    return MembershipChangeApprovalsCompanion(
+      shomitiId: shomitiId ?? this.shomitiId,
+      requestId: requestId ?? this.requestId,
+      approverMemberId: approverMemberId ?? this.approverMemberId,
+      approvedAt: approvedAt ?? this.approvedAt,
+      note: note ?? this.note,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (shomitiId.present) {
+      map['shomiti_id'] = Variable<String>(shomitiId.value);
+    }
+    if (requestId.present) {
+      map['request_id'] = Variable<String>(requestId.value);
+    }
+    if (approverMemberId.present) {
+      map['approver_member_id'] = Variable<String>(approverMemberId.value);
+    }
+    if (approvedAt.present) {
+      map['approved_at'] = Variable<DateTime>(approvedAt.value);
+    }
+    if (note.present) {
+      map['note'] = Variable<String>(note.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('MembershipChangeApprovalsCompanion(')
+          ..write('shomitiId: $shomitiId, ')
+          ..write('requestId: $requestId, ')
+          ..write('approverMemberId: $approverMemberId, ')
+          ..write('approvedAt: $approvedAt, ')
+          ..write('note: $note, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
@@ -4487,6 +5687,10 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     this,
   );
   late final $MemberConsentsTable memberConsents = $MemberConsentsTable(this);
+  late final $MembershipChangeRequestsTable membershipChangeRequests =
+      $MembershipChangeRequestsTable(this);
+  late final $MembershipChangeApprovalsTable membershipChangeApprovals =
+      $MembershipChangeApprovalsTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -4502,6 +5706,8 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     roleAssignments,
     ruleSetVersions,
     memberConsents,
+    membershipChangeRequests,
+    membershipChangeApprovals,
   ];
 }
 
@@ -5024,6 +6230,62 @@ final class $$ShomitisTableReferences
       manager.$state.copyWith(prefetchedData: cache),
     );
   }
+
+  static MultiTypedResultKey<
+    $MembershipChangeRequestsTable,
+    List<MembershipChangeRequestRow>
+  >
+  _membershipChangeRequestsRefsTable(_$AppDatabase db) =>
+      MultiTypedResultKey.fromTable(
+        db.membershipChangeRequests,
+        aliasName: $_aliasNameGenerator(
+          db.shomitis.id,
+          db.membershipChangeRequests.shomitiId,
+        ),
+      );
+
+  $$MembershipChangeRequestsTableProcessedTableManager
+  get membershipChangeRequestsRefs {
+    final manager = $$MembershipChangeRequestsTableTableManager(
+      $_db,
+      $_db.membershipChangeRequests,
+    ).filter((f) => f.shomitiId.id.sqlEquals($_itemColumn<String>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(
+      _membershipChangeRequestsRefsTable($_db),
+    );
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+
+  static MultiTypedResultKey<
+    $MembershipChangeApprovalsTable,
+    List<MembershipChangeApprovalRow>
+  >
+  _membershipChangeApprovalsRefsTable(_$AppDatabase db) =>
+      MultiTypedResultKey.fromTable(
+        db.membershipChangeApprovals,
+        aliasName: $_aliasNameGenerator(
+          db.shomitis.id,
+          db.membershipChangeApprovals.shomitiId,
+        ),
+      );
+
+  $$MembershipChangeApprovalsTableProcessedTableManager
+  get membershipChangeApprovalsRefs {
+    final manager = $$MembershipChangeApprovalsTableTableManager(
+      $_db,
+      $_db.membershipChangeApprovals,
+    ).filter((f) => f.shomitiId.id.sqlEquals($_itemColumn<String>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(
+      _membershipChangeApprovalsRefsTable($_db),
+    );
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
 }
 
 class $$ShomitisTableFilterComposer
@@ -5132,6 +6394,60 @@ class $$ShomitisTableFilterComposer
                 $removeJoinBuilderFromRootComposer,
           ),
     );
+    return f(composer);
+  }
+
+  Expression<bool> membershipChangeRequestsRefs(
+    Expression<bool> Function($$MembershipChangeRequestsTableFilterComposer f)
+    f,
+  ) {
+    final $$MembershipChangeRequestsTableFilterComposer composer =
+        $composerBuilder(
+          composer: this,
+          getCurrentColumn: (t) => t.id,
+          referencedTable: $db.membershipChangeRequests,
+          getReferencedColumn: (t) => t.shomitiId,
+          builder:
+              (
+                joinBuilder, {
+                $addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer,
+              }) => $$MembershipChangeRequestsTableFilterComposer(
+                $db: $db,
+                $table: $db.membershipChangeRequests,
+                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                joinBuilder: joinBuilder,
+                $removeJoinBuilderFromRootComposer:
+                    $removeJoinBuilderFromRootComposer,
+              ),
+        );
+    return f(composer);
+  }
+
+  Expression<bool> membershipChangeApprovalsRefs(
+    Expression<bool> Function($$MembershipChangeApprovalsTableFilterComposer f)
+    f,
+  ) {
+    final $$MembershipChangeApprovalsTableFilterComposer composer =
+        $composerBuilder(
+          composer: this,
+          getCurrentColumn: (t) => t.id,
+          referencedTable: $db.membershipChangeApprovals,
+          getReferencedColumn: (t) => t.shomitiId,
+          builder:
+              (
+                joinBuilder, {
+                $addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer,
+              }) => $$MembershipChangeApprovalsTableFilterComposer(
+                $db: $db,
+                $table: $db.membershipChangeApprovals,
+                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                joinBuilder: joinBuilder,
+                $removeJoinBuilderFromRootComposer:
+                    $removeJoinBuilderFromRootComposer,
+              ),
+        );
     return f(composer);
   }
 }
@@ -5271,6 +6587,60 @@ class $$ShomitisTableAnnotationComposer
     );
     return f(composer);
   }
+
+  Expression<T> membershipChangeRequestsRefs<T extends Object>(
+    Expression<T> Function($$MembershipChangeRequestsTableAnnotationComposer a)
+    f,
+  ) {
+    final $$MembershipChangeRequestsTableAnnotationComposer composer =
+        $composerBuilder(
+          composer: this,
+          getCurrentColumn: (t) => t.id,
+          referencedTable: $db.membershipChangeRequests,
+          getReferencedColumn: (t) => t.shomitiId,
+          builder:
+              (
+                joinBuilder, {
+                $addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer,
+              }) => $$MembershipChangeRequestsTableAnnotationComposer(
+                $db: $db,
+                $table: $db.membershipChangeRequests,
+                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                joinBuilder: joinBuilder,
+                $removeJoinBuilderFromRootComposer:
+                    $removeJoinBuilderFromRootComposer,
+              ),
+        );
+    return f(composer);
+  }
+
+  Expression<T> membershipChangeApprovalsRefs<T extends Object>(
+    Expression<T> Function($$MembershipChangeApprovalsTableAnnotationComposer a)
+    f,
+  ) {
+    final $$MembershipChangeApprovalsTableAnnotationComposer composer =
+        $composerBuilder(
+          composer: this,
+          getCurrentColumn: (t) => t.id,
+          referencedTable: $db.membershipChangeApprovals,
+          getReferencedColumn: (t) => t.shomitiId,
+          builder:
+              (
+                joinBuilder, {
+                $addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer,
+              }) => $$MembershipChangeApprovalsTableAnnotationComposer(
+                $db: $db,
+                $table: $db.membershipChangeApprovals,
+                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                joinBuilder: joinBuilder,
+                $removeJoinBuilderFromRootComposer:
+                    $removeJoinBuilderFromRootComposer,
+              ),
+        );
+    return f(composer);
+  }
 }
 
 class $$ShomitisTableTableManager
@@ -5290,6 +6660,8 @@ class $$ShomitisTableTableManager
             bool membersRefs,
             bool roleAssignmentsRefs,
             bool memberConsentsRefs,
+            bool membershipChangeRequestsRefs,
+            bool membershipChangeApprovalsRefs,
           })
         > {
   $$ShomitisTableTableManager(_$AppDatabase db, $ShomitisTable table)
@@ -5348,6 +6720,8 @@ class $$ShomitisTableTableManager
                 membersRefs = false,
                 roleAssignmentsRefs = false,
                 memberConsentsRefs = false,
+                membershipChangeRequestsRefs = false,
+                membershipChangeApprovalsRefs = false,
               }) {
                 return PrefetchHooks(
                   db: db,
@@ -5355,6 +6729,10 @@ class $$ShomitisTableTableManager
                     if (membersRefs) db.members,
                     if (roleAssignmentsRefs) db.roleAssignments,
                     if (memberConsentsRefs) db.memberConsents,
+                    if (membershipChangeRequestsRefs)
+                      db.membershipChangeRequests,
+                    if (membershipChangeApprovalsRefs)
+                      db.membershipChangeApprovals,
                   ],
                   addJoins: null,
                   getPrefetchedDataCallback: (items) async {
@@ -5422,6 +6800,48 @@ class $$ShomitisTableTableManager
                               ),
                           typedResults: items,
                         ),
+                      if (membershipChangeRequestsRefs)
+                        await $_getPrefetchedData<
+                          ShomitiRow,
+                          $ShomitisTable,
+                          MembershipChangeRequestRow
+                        >(
+                          currentTable: table,
+                          referencedTable: $$ShomitisTableReferences
+                              ._membershipChangeRequestsRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$ShomitisTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).membershipChangeRequestsRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.shomitiId == item.id,
+                              ),
+                          typedResults: items,
+                        ),
+                      if (membershipChangeApprovalsRefs)
+                        await $_getPrefetchedData<
+                          ShomitiRow,
+                          $ShomitisTable,
+                          MembershipChangeApprovalRow
+                        >(
+                          currentTable: table,
+                          referencedTable: $$ShomitisTableReferences
+                              ._membershipChangeApprovalsRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$ShomitisTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).membershipChangeApprovalsRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.shomitiId == item.id,
+                              ),
+                          typedResults: items,
+                        ),
                     ];
                   },
                 );
@@ -5446,6 +6866,8 @@ typedef $$ShomitisTableProcessedTableManager =
         bool membersRefs,
         bool roleAssignmentsRefs,
         bool memberConsentsRefs,
+        bool membershipChangeRequestsRefs,
+        bool membershipChangeApprovalsRefs,
       })
     >;
 typedef $$MembersTableCreateCompanionBuilder =
@@ -5537,6 +6959,37 @@ final class $$MembersTableReferences
     ).filter((f) => f.memberId.id.sqlEquals($_itemColumn<String>('id')!));
 
     final cache = $_typedResult.readTableOrNull(_memberConsentsRefsTable($_db));
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+
+  static MultiTypedResultKey<
+    $MembershipChangeRequestsTable,
+    List<MembershipChangeRequestRow>
+  >
+  _membershipChangeRequestsRefsTable(_$AppDatabase db) =>
+      MultiTypedResultKey.fromTable(
+        db.membershipChangeRequests,
+        aliasName: $_aliasNameGenerator(
+          db.members.id,
+          db.membershipChangeRequests.outgoingMemberId,
+        ),
+      );
+
+  $$MembershipChangeRequestsTableProcessedTableManager
+  get membershipChangeRequestsRefs {
+    final manager =
+        $$MembershipChangeRequestsTableTableManager(
+          $_db,
+          $_db.membershipChangeRequests,
+        ).filter(
+          (f) => f.outgoingMemberId.id.sqlEquals($_itemColumn<String>('id')!),
+        );
+
+    final cache = $_typedResult.readTableOrNull(
+      _membershipChangeRequestsRefsTable($_db),
+    );
     return ProcessedTableManager(
       manager.$state.copyWith(prefetchedData: cache),
     );
@@ -5682,6 +7135,33 @@ class $$MembersTableFilterComposer
                 $removeJoinBuilderFromRootComposer,
           ),
     );
+    return f(composer);
+  }
+
+  Expression<bool> membershipChangeRequestsRefs(
+    Expression<bool> Function($$MembershipChangeRequestsTableFilterComposer f)
+    f,
+  ) {
+    final $$MembershipChangeRequestsTableFilterComposer composer =
+        $composerBuilder(
+          composer: this,
+          getCurrentColumn: (t) => t.id,
+          referencedTable: $db.membershipChangeRequests,
+          getReferencedColumn: (t) => t.outgoingMemberId,
+          builder:
+              (
+                joinBuilder, {
+                $addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer,
+              }) => $$MembershipChangeRequestsTableFilterComposer(
+                $db: $db,
+                $table: $db.membershipChangeRequests,
+                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                joinBuilder: joinBuilder,
+                $removeJoinBuilderFromRootComposer:
+                    $removeJoinBuilderFromRootComposer,
+              ),
+        );
     return f(composer);
   }
 }
@@ -5906,6 +7386,33 @@ class $$MembersTableAnnotationComposer
     );
     return f(composer);
   }
+
+  Expression<T> membershipChangeRequestsRefs<T extends Object>(
+    Expression<T> Function($$MembershipChangeRequestsTableAnnotationComposer a)
+    f,
+  ) {
+    final $$MembershipChangeRequestsTableAnnotationComposer composer =
+        $composerBuilder(
+          composer: this,
+          getCurrentColumn: (t) => t.id,
+          referencedTable: $db.membershipChangeRequests,
+          getReferencedColumn: (t) => t.outgoingMemberId,
+          builder:
+              (
+                joinBuilder, {
+                $addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer,
+              }) => $$MembershipChangeRequestsTableAnnotationComposer(
+                $db: $db,
+                $table: $db.membershipChangeRequests,
+                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                joinBuilder: joinBuilder,
+                $removeJoinBuilderFromRootComposer:
+                    $removeJoinBuilderFromRootComposer,
+              ),
+        );
+    return f(composer);
+  }
 }
 
 class $$MembersTableTableManager
@@ -5925,6 +7432,7 @@ class $$MembersTableTableManager
             bool shomitiId,
             bool roleAssignmentsRefs,
             bool memberConsentsRefs,
+            bool membershipChangeRequestsRefs,
           })
         > {
   $$MembersTableTableManager(_$AppDatabase db, $MembersTable table)
@@ -6015,12 +7523,15 @@ class $$MembersTableTableManager
                 shomitiId = false,
                 roleAssignmentsRefs = false,
                 memberConsentsRefs = false,
+                membershipChangeRequestsRefs = false,
               }) {
                 return PrefetchHooks(
                   db: db,
                   explicitlyWatchedTables: [
                     if (roleAssignmentsRefs) db.roleAssignments,
                     if (memberConsentsRefs) db.memberConsents,
+                    if (membershipChangeRequestsRefs)
+                      db.membershipChangeRequests,
                   ],
                   addJoins:
                       <
@@ -6098,6 +7609,27 @@ class $$MembersTableTableManager
                               ),
                           typedResults: items,
                         ),
+                      if (membershipChangeRequestsRefs)
+                        await $_getPrefetchedData<
+                          MemberRow,
+                          $MembersTable,
+                          MembershipChangeRequestRow
+                        >(
+                          currentTable: table,
+                          referencedTable: $$MembersTableReferences
+                              ._membershipChangeRequestsRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$MembersTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).membershipChangeRequestsRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.outgoingMemberId == item.id,
+                              ),
+                          typedResults: items,
+                        ),
                     ];
                   },
                 );
@@ -6122,6 +7654,7 @@ typedef $$MembersTableProcessedTableManager =
         bool shomitiId,
         bool roleAssignmentsRefs,
         bool memberConsentsRefs,
+        bool membershipChangeRequestsRefs,
       })
     >;
 typedef $$MemberSharesTableCreateCompanionBuilder =
@@ -8087,6 +9620,1161 @@ typedef $$MemberConsentsTableProcessedTableManager =
         bool shomitiId,
       })
     >;
+typedef $$MembershipChangeRequestsTableCreateCompanionBuilder =
+    MembershipChangeRequestsCompanion Function({
+      required String id,
+      required String shomitiId,
+      required String outgoingMemberId,
+      required String type,
+      Value<bool> requiresReplacement,
+      Value<String?> replacementCandidateName,
+      Value<String?> replacementCandidatePhone,
+      Value<String?> removalReasonCode,
+      Value<String?> removalReasonDetails,
+      required DateTime requestedAt,
+      Value<DateTime?> updatedAt,
+      Value<DateTime?> finalizedAt,
+      Value<int> rowid,
+    });
+typedef $$MembershipChangeRequestsTableUpdateCompanionBuilder =
+    MembershipChangeRequestsCompanion Function({
+      Value<String> id,
+      Value<String> shomitiId,
+      Value<String> outgoingMemberId,
+      Value<String> type,
+      Value<bool> requiresReplacement,
+      Value<String?> replacementCandidateName,
+      Value<String?> replacementCandidatePhone,
+      Value<String?> removalReasonCode,
+      Value<String?> removalReasonDetails,
+      Value<DateTime> requestedAt,
+      Value<DateTime?> updatedAt,
+      Value<DateTime?> finalizedAt,
+      Value<int> rowid,
+    });
+
+final class $$MembershipChangeRequestsTableReferences
+    extends
+        BaseReferences<
+          _$AppDatabase,
+          $MembershipChangeRequestsTable,
+          MembershipChangeRequestRow
+        > {
+  $$MembershipChangeRequestsTableReferences(
+    super.$_db,
+    super.$_table,
+    super.$_typedResult,
+  );
+
+  static $ShomitisTable _shomitiIdTable(_$AppDatabase db) =>
+      db.shomitis.createAlias(
+        $_aliasNameGenerator(
+          db.membershipChangeRequests.shomitiId,
+          db.shomitis.id,
+        ),
+      );
+
+  $$ShomitisTableProcessedTableManager get shomitiId {
+    final $_column = $_itemColumn<String>('shomiti_id')!;
+
+    final manager = $$ShomitisTableTableManager(
+      $_db,
+      $_db.shomitis,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_shomitiIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+
+  static $MembersTable _outgoingMemberIdTable(_$AppDatabase db) =>
+      db.members.createAlias(
+        $_aliasNameGenerator(
+          db.membershipChangeRequests.outgoingMemberId,
+          db.members.id,
+        ),
+      );
+
+  $$MembersTableProcessedTableManager get outgoingMemberId {
+    final $_column = $_itemColumn<String>('outgoing_member_id')!;
+
+    final manager = $$MembersTableTableManager(
+      $_db,
+      $_db.members,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_outgoingMemberIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+
+  static MultiTypedResultKey<
+    $MembershipChangeApprovalsTable,
+    List<MembershipChangeApprovalRow>
+  >
+  _membershipChangeApprovalsRefsTable(_$AppDatabase db) =>
+      MultiTypedResultKey.fromTable(
+        db.membershipChangeApprovals,
+        aliasName: $_aliasNameGenerator(
+          db.membershipChangeRequests.id,
+          db.membershipChangeApprovals.requestId,
+        ),
+      );
+
+  $$MembershipChangeApprovalsTableProcessedTableManager
+  get membershipChangeApprovalsRefs {
+    final manager = $$MembershipChangeApprovalsTableTableManager(
+      $_db,
+      $_db.membershipChangeApprovals,
+    ).filter((f) => f.requestId.id.sqlEquals($_itemColumn<String>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(
+      _membershipChangeApprovalsRefsTable($_db),
+    );
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+}
+
+class $$MembershipChangeRequestsTableFilterComposer
+    extends Composer<_$AppDatabase, $MembershipChangeRequestsTable> {
+  $$MembershipChangeRequestsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get type => $composableBuilder(
+    column: $table.type,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get requiresReplacement => $composableBuilder(
+    column: $table.requiresReplacement,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get replacementCandidateName => $composableBuilder(
+    column: $table.replacementCandidateName,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get replacementCandidatePhone => $composableBuilder(
+    column: $table.replacementCandidatePhone,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get removalReasonCode => $composableBuilder(
+    column: $table.removalReasonCode,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get removalReasonDetails => $composableBuilder(
+    column: $table.removalReasonDetails,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get requestedAt => $composableBuilder(
+    column: $table.requestedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get finalizedAt => $composableBuilder(
+    column: $table.finalizedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  $$ShomitisTableFilterComposer get shomitiId {
+    final $$ShomitisTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.shomitiId,
+      referencedTable: $db.shomitis,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ShomitisTableFilterComposer(
+            $db: $db,
+            $table: $db.shomitis,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$MembersTableFilterComposer get outgoingMemberId {
+    final $$MembersTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.outgoingMemberId,
+      referencedTable: $db.members,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$MembersTableFilterComposer(
+            $db: $db,
+            $table: $db.members,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  Expression<bool> membershipChangeApprovalsRefs(
+    Expression<bool> Function($$MembershipChangeApprovalsTableFilterComposer f)
+    f,
+  ) {
+    final $$MembershipChangeApprovalsTableFilterComposer composer =
+        $composerBuilder(
+          composer: this,
+          getCurrentColumn: (t) => t.id,
+          referencedTable: $db.membershipChangeApprovals,
+          getReferencedColumn: (t) => t.requestId,
+          builder:
+              (
+                joinBuilder, {
+                $addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer,
+              }) => $$MembershipChangeApprovalsTableFilterComposer(
+                $db: $db,
+                $table: $db.membershipChangeApprovals,
+                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                joinBuilder: joinBuilder,
+                $removeJoinBuilderFromRootComposer:
+                    $removeJoinBuilderFromRootComposer,
+              ),
+        );
+    return f(composer);
+  }
+}
+
+class $$MembershipChangeRequestsTableOrderingComposer
+    extends Composer<_$AppDatabase, $MembershipChangeRequestsTable> {
+  $$MembershipChangeRequestsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get type => $composableBuilder(
+    column: $table.type,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get requiresReplacement => $composableBuilder(
+    column: $table.requiresReplacement,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get replacementCandidateName => $composableBuilder(
+    column: $table.replacementCandidateName,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get replacementCandidatePhone => $composableBuilder(
+    column: $table.replacementCandidatePhone,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get removalReasonCode => $composableBuilder(
+    column: $table.removalReasonCode,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get removalReasonDetails => $composableBuilder(
+    column: $table.removalReasonDetails,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get requestedAt => $composableBuilder(
+    column: $table.requestedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get finalizedAt => $composableBuilder(
+    column: $table.finalizedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  $$ShomitisTableOrderingComposer get shomitiId {
+    final $$ShomitisTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.shomitiId,
+      referencedTable: $db.shomitis,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ShomitisTableOrderingComposer(
+            $db: $db,
+            $table: $db.shomitis,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$MembersTableOrderingComposer get outgoingMemberId {
+    final $$MembersTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.outgoingMemberId,
+      referencedTable: $db.members,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$MembersTableOrderingComposer(
+            $db: $db,
+            $table: $db.members,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$MembershipChangeRequestsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $MembershipChangeRequestsTable> {
+  $$MembershipChangeRequestsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get type =>
+      $composableBuilder(column: $table.type, builder: (column) => column);
+
+  GeneratedColumn<bool> get requiresReplacement => $composableBuilder(
+    column: $table.requiresReplacement,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get replacementCandidateName => $composableBuilder(
+    column: $table.replacementCandidateName,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get replacementCandidatePhone => $composableBuilder(
+    column: $table.replacementCandidatePhone,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get removalReasonCode => $composableBuilder(
+    column: $table.removalReasonCode,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get removalReasonDetails => $composableBuilder(
+    column: $table.removalReasonDetails,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get requestedAt => $composableBuilder(
+    column: $table.requestedAt,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get finalizedAt => $composableBuilder(
+    column: $table.finalizedAt,
+    builder: (column) => column,
+  );
+
+  $$ShomitisTableAnnotationComposer get shomitiId {
+    final $$ShomitisTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.shomitiId,
+      referencedTable: $db.shomitis,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ShomitisTableAnnotationComposer(
+            $db: $db,
+            $table: $db.shomitis,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$MembersTableAnnotationComposer get outgoingMemberId {
+    final $$MembersTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.outgoingMemberId,
+      referencedTable: $db.members,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$MembersTableAnnotationComposer(
+            $db: $db,
+            $table: $db.members,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  Expression<T> membershipChangeApprovalsRefs<T extends Object>(
+    Expression<T> Function($$MembershipChangeApprovalsTableAnnotationComposer a)
+    f,
+  ) {
+    final $$MembershipChangeApprovalsTableAnnotationComposer composer =
+        $composerBuilder(
+          composer: this,
+          getCurrentColumn: (t) => t.id,
+          referencedTable: $db.membershipChangeApprovals,
+          getReferencedColumn: (t) => t.requestId,
+          builder:
+              (
+                joinBuilder, {
+                $addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer,
+              }) => $$MembershipChangeApprovalsTableAnnotationComposer(
+                $db: $db,
+                $table: $db.membershipChangeApprovals,
+                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                joinBuilder: joinBuilder,
+                $removeJoinBuilderFromRootComposer:
+                    $removeJoinBuilderFromRootComposer,
+              ),
+        );
+    return f(composer);
+  }
+}
+
+class $$MembershipChangeRequestsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $MembershipChangeRequestsTable,
+          MembershipChangeRequestRow,
+          $$MembershipChangeRequestsTableFilterComposer,
+          $$MembershipChangeRequestsTableOrderingComposer,
+          $$MembershipChangeRequestsTableAnnotationComposer,
+          $$MembershipChangeRequestsTableCreateCompanionBuilder,
+          $$MembershipChangeRequestsTableUpdateCompanionBuilder,
+          (
+            MembershipChangeRequestRow,
+            $$MembershipChangeRequestsTableReferences,
+          ),
+          MembershipChangeRequestRow,
+          PrefetchHooks Function({
+            bool shomitiId,
+            bool outgoingMemberId,
+            bool membershipChangeApprovalsRefs,
+          })
+        > {
+  $$MembershipChangeRequestsTableTableManager(
+    _$AppDatabase db,
+    $MembershipChangeRequestsTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$MembershipChangeRequestsTableFilterComposer(
+                $db: db,
+                $table: table,
+              ),
+          createOrderingComposer: () =>
+              $$MembershipChangeRequestsTableOrderingComposer(
+                $db: db,
+                $table: table,
+              ),
+          createComputedFieldComposer: () =>
+              $$MembershipChangeRequestsTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> shomitiId = const Value.absent(),
+                Value<String> outgoingMemberId = const Value.absent(),
+                Value<String> type = const Value.absent(),
+                Value<bool> requiresReplacement = const Value.absent(),
+                Value<String?> replacementCandidateName = const Value.absent(),
+                Value<String?> replacementCandidatePhone = const Value.absent(),
+                Value<String?> removalReasonCode = const Value.absent(),
+                Value<String?> removalReasonDetails = const Value.absent(),
+                Value<DateTime> requestedAt = const Value.absent(),
+                Value<DateTime?> updatedAt = const Value.absent(),
+                Value<DateTime?> finalizedAt = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => MembershipChangeRequestsCompanion(
+                id: id,
+                shomitiId: shomitiId,
+                outgoingMemberId: outgoingMemberId,
+                type: type,
+                requiresReplacement: requiresReplacement,
+                replacementCandidateName: replacementCandidateName,
+                replacementCandidatePhone: replacementCandidatePhone,
+                removalReasonCode: removalReasonCode,
+                removalReasonDetails: removalReasonDetails,
+                requestedAt: requestedAt,
+                updatedAt: updatedAt,
+                finalizedAt: finalizedAt,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required String shomitiId,
+                required String outgoingMemberId,
+                required String type,
+                Value<bool> requiresReplacement = const Value.absent(),
+                Value<String?> replacementCandidateName = const Value.absent(),
+                Value<String?> replacementCandidatePhone = const Value.absent(),
+                Value<String?> removalReasonCode = const Value.absent(),
+                Value<String?> removalReasonDetails = const Value.absent(),
+                required DateTime requestedAt,
+                Value<DateTime?> updatedAt = const Value.absent(),
+                Value<DateTime?> finalizedAt = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => MembershipChangeRequestsCompanion.insert(
+                id: id,
+                shomitiId: shomitiId,
+                outgoingMemberId: outgoingMemberId,
+                type: type,
+                requiresReplacement: requiresReplacement,
+                replacementCandidateName: replacementCandidateName,
+                replacementCandidatePhone: replacementCandidatePhone,
+                removalReasonCode: removalReasonCode,
+                removalReasonDetails: removalReasonDetails,
+                requestedAt: requestedAt,
+                updatedAt: updatedAt,
+                finalizedAt: finalizedAt,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable(table),
+                  $$MembershipChangeRequestsTableReferences(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback:
+              ({
+                shomitiId = false,
+                outgoingMemberId = false,
+                membershipChangeApprovalsRefs = false,
+              }) {
+                return PrefetchHooks(
+                  db: db,
+                  explicitlyWatchedTables: [
+                    if (membershipChangeApprovalsRefs)
+                      db.membershipChangeApprovals,
+                  ],
+                  addJoins:
+                      <
+                        T extends TableManagerState<
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic
+                        >
+                      >(state) {
+                        if (shomitiId) {
+                          state =
+                              state.withJoin(
+                                    currentTable: table,
+                                    currentColumn: table.shomitiId,
+                                    referencedTable:
+                                        $$MembershipChangeRequestsTableReferences
+                                            ._shomitiIdTable(db),
+                                    referencedColumn:
+                                        $$MembershipChangeRequestsTableReferences
+                                            ._shomitiIdTable(db)
+                                            .id,
+                                  )
+                                  as T;
+                        }
+                        if (outgoingMemberId) {
+                          state =
+                              state.withJoin(
+                                    currentTable: table,
+                                    currentColumn: table.outgoingMemberId,
+                                    referencedTable:
+                                        $$MembershipChangeRequestsTableReferences
+                                            ._outgoingMemberIdTable(db),
+                                    referencedColumn:
+                                        $$MembershipChangeRequestsTableReferences
+                                            ._outgoingMemberIdTable(db)
+                                            .id,
+                                  )
+                                  as T;
+                        }
+
+                        return state;
+                      },
+                  getPrefetchedDataCallback: (items) async {
+                    return [
+                      if (membershipChangeApprovalsRefs)
+                        await $_getPrefetchedData<
+                          MembershipChangeRequestRow,
+                          $MembershipChangeRequestsTable,
+                          MembershipChangeApprovalRow
+                        >(
+                          currentTable: table,
+                          referencedTable:
+                              $$MembershipChangeRequestsTableReferences
+                                  ._membershipChangeApprovalsRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$MembershipChangeRequestsTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).membershipChangeApprovalsRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.requestId == item.id,
+                              ),
+                          typedResults: items,
+                        ),
+                    ];
+                  },
+                );
+              },
+        ),
+      );
+}
+
+typedef $$MembershipChangeRequestsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $MembershipChangeRequestsTable,
+      MembershipChangeRequestRow,
+      $$MembershipChangeRequestsTableFilterComposer,
+      $$MembershipChangeRequestsTableOrderingComposer,
+      $$MembershipChangeRequestsTableAnnotationComposer,
+      $$MembershipChangeRequestsTableCreateCompanionBuilder,
+      $$MembershipChangeRequestsTableUpdateCompanionBuilder,
+      (MembershipChangeRequestRow, $$MembershipChangeRequestsTableReferences),
+      MembershipChangeRequestRow,
+      PrefetchHooks Function({
+        bool shomitiId,
+        bool outgoingMemberId,
+        bool membershipChangeApprovalsRefs,
+      })
+    >;
+typedef $$MembershipChangeApprovalsTableCreateCompanionBuilder =
+    MembershipChangeApprovalsCompanion Function({
+      required String shomitiId,
+      required String requestId,
+      required String approverMemberId,
+      required DateTime approvedAt,
+      Value<String?> note,
+      Value<int> rowid,
+    });
+typedef $$MembershipChangeApprovalsTableUpdateCompanionBuilder =
+    MembershipChangeApprovalsCompanion Function({
+      Value<String> shomitiId,
+      Value<String> requestId,
+      Value<String> approverMemberId,
+      Value<DateTime> approvedAt,
+      Value<String?> note,
+      Value<int> rowid,
+    });
+
+final class $$MembershipChangeApprovalsTableReferences
+    extends
+        BaseReferences<
+          _$AppDatabase,
+          $MembershipChangeApprovalsTable,
+          MembershipChangeApprovalRow
+        > {
+  $$MembershipChangeApprovalsTableReferences(
+    super.$_db,
+    super.$_table,
+    super.$_typedResult,
+  );
+
+  static $ShomitisTable _shomitiIdTable(_$AppDatabase db) =>
+      db.shomitis.createAlias(
+        $_aliasNameGenerator(
+          db.membershipChangeApprovals.shomitiId,
+          db.shomitis.id,
+        ),
+      );
+
+  $$ShomitisTableProcessedTableManager get shomitiId {
+    final $_column = $_itemColumn<String>('shomiti_id')!;
+
+    final manager = $$ShomitisTableTableManager(
+      $_db,
+      $_db.shomitis,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_shomitiIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+
+  static $MembershipChangeRequestsTable _requestIdTable(_$AppDatabase db) =>
+      db.membershipChangeRequests.createAlias(
+        $_aliasNameGenerator(
+          db.membershipChangeApprovals.requestId,
+          db.membershipChangeRequests.id,
+        ),
+      );
+
+  $$MembershipChangeRequestsTableProcessedTableManager get requestId {
+    final $_column = $_itemColumn<String>('request_id')!;
+
+    final manager = $$MembershipChangeRequestsTableTableManager(
+      $_db,
+      $_db.membershipChangeRequests,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_requestIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+}
+
+class $$MembershipChangeApprovalsTableFilterComposer
+    extends Composer<_$AppDatabase, $MembershipChangeApprovalsTable> {
+  $$MembershipChangeApprovalsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get approverMemberId => $composableBuilder(
+    column: $table.approverMemberId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get approvedAt => $composableBuilder(
+    column: $table.approvedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get note => $composableBuilder(
+    column: $table.note,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  $$ShomitisTableFilterComposer get shomitiId {
+    final $$ShomitisTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.shomitiId,
+      referencedTable: $db.shomitis,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ShomitisTableFilterComposer(
+            $db: $db,
+            $table: $db.shomitis,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$MembershipChangeRequestsTableFilterComposer get requestId {
+    final $$MembershipChangeRequestsTableFilterComposer composer =
+        $composerBuilder(
+          composer: this,
+          getCurrentColumn: (t) => t.requestId,
+          referencedTable: $db.membershipChangeRequests,
+          getReferencedColumn: (t) => t.id,
+          builder:
+              (
+                joinBuilder, {
+                $addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer,
+              }) => $$MembershipChangeRequestsTableFilterComposer(
+                $db: $db,
+                $table: $db.membershipChangeRequests,
+                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                joinBuilder: joinBuilder,
+                $removeJoinBuilderFromRootComposer:
+                    $removeJoinBuilderFromRootComposer,
+              ),
+        );
+    return composer;
+  }
+}
+
+class $$MembershipChangeApprovalsTableOrderingComposer
+    extends Composer<_$AppDatabase, $MembershipChangeApprovalsTable> {
+  $$MembershipChangeApprovalsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get approverMemberId => $composableBuilder(
+    column: $table.approverMemberId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get approvedAt => $composableBuilder(
+    column: $table.approvedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get note => $composableBuilder(
+    column: $table.note,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  $$ShomitisTableOrderingComposer get shomitiId {
+    final $$ShomitisTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.shomitiId,
+      referencedTable: $db.shomitis,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ShomitisTableOrderingComposer(
+            $db: $db,
+            $table: $db.shomitis,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$MembershipChangeRequestsTableOrderingComposer get requestId {
+    final $$MembershipChangeRequestsTableOrderingComposer composer =
+        $composerBuilder(
+          composer: this,
+          getCurrentColumn: (t) => t.requestId,
+          referencedTable: $db.membershipChangeRequests,
+          getReferencedColumn: (t) => t.id,
+          builder:
+              (
+                joinBuilder, {
+                $addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer,
+              }) => $$MembershipChangeRequestsTableOrderingComposer(
+                $db: $db,
+                $table: $db.membershipChangeRequests,
+                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                joinBuilder: joinBuilder,
+                $removeJoinBuilderFromRootComposer:
+                    $removeJoinBuilderFromRootComposer,
+              ),
+        );
+    return composer;
+  }
+}
+
+class $$MembershipChangeApprovalsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $MembershipChangeApprovalsTable> {
+  $$MembershipChangeApprovalsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get approverMemberId => $composableBuilder(
+    column: $table.approverMemberId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get approvedAt => $composableBuilder(
+    column: $table.approvedAt,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get note =>
+      $composableBuilder(column: $table.note, builder: (column) => column);
+
+  $$ShomitisTableAnnotationComposer get shomitiId {
+    final $$ShomitisTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.shomitiId,
+      referencedTable: $db.shomitis,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ShomitisTableAnnotationComposer(
+            $db: $db,
+            $table: $db.shomitis,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$MembershipChangeRequestsTableAnnotationComposer get requestId {
+    final $$MembershipChangeRequestsTableAnnotationComposer composer =
+        $composerBuilder(
+          composer: this,
+          getCurrentColumn: (t) => t.requestId,
+          referencedTable: $db.membershipChangeRequests,
+          getReferencedColumn: (t) => t.id,
+          builder:
+              (
+                joinBuilder, {
+                $addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer,
+              }) => $$MembershipChangeRequestsTableAnnotationComposer(
+                $db: $db,
+                $table: $db.membershipChangeRequests,
+                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                joinBuilder: joinBuilder,
+                $removeJoinBuilderFromRootComposer:
+                    $removeJoinBuilderFromRootComposer,
+              ),
+        );
+    return composer;
+  }
+}
+
+class $$MembershipChangeApprovalsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $MembershipChangeApprovalsTable,
+          MembershipChangeApprovalRow,
+          $$MembershipChangeApprovalsTableFilterComposer,
+          $$MembershipChangeApprovalsTableOrderingComposer,
+          $$MembershipChangeApprovalsTableAnnotationComposer,
+          $$MembershipChangeApprovalsTableCreateCompanionBuilder,
+          $$MembershipChangeApprovalsTableUpdateCompanionBuilder,
+          (
+            MembershipChangeApprovalRow,
+            $$MembershipChangeApprovalsTableReferences,
+          ),
+          MembershipChangeApprovalRow,
+          PrefetchHooks Function({bool shomitiId, bool requestId})
+        > {
+  $$MembershipChangeApprovalsTableTableManager(
+    _$AppDatabase db,
+    $MembershipChangeApprovalsTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$MembershipChangeApprovalsTableFilterComposer(
+                $db: db,
+                $table: table,
+              ),
+          createOrderingComposer: () =>
+              $$MembershipChangeApprovalsTableOrderingComposer(
+                $db: db,
+                $table: table,
+              ),
+          createComputedFieldComposer: () =>
+              $$MembershipChangeApprovalsTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<String> shomitiId = const Value.absent(),
+                Value<String> requestId = const Value.absent(),
+                Value<String> approverMemberId = const Value.absent(),
+                Value<DateTime> approvedAt = const Value.absent(),
+                Value<String?> note = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => MembershipChangeApprovalsCompanion(
+                shomitiId: shomitiId,
+                requestId: requestId,
+                approverMemberId: approverMemberId,
+                approvedAt: approvedAt,
+                note: note,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String shomitiId,
+                required String requestId,
+                required String approverMemberId,
+                required DateTime approvedAt,
+                Value<String?> note = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => MembershipChangeApprovalsCompanion.insert(
+                shomitiId: shomitiId,
+                requestId: requestId,
+                approverMemberId: approverMemberId,
+                approvedAt: approvedAt,
+                note: note,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable(table),
+                  $$MembershipChangeApprovalsTableReferences(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: ({shomitiId = false, requestId = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [],
+              addJoins:
+                  <
+                    T extends TableManagerState<
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic
+                    >
+                  >(state) {
+                    if (shomitiId) {
+                      state =
+                          state.withJoin(
+                                currentTable: table,
+                                currentColumn: table.shomitiId,
+                                referencedTable:
+                                    $$MembershipChangeApprovalsTableReferences
+                                        ._shomitiIdTable(db),
+                                referencedColumn:
+                                    $$MembershipChangeApprovalsTableReferences
+                                        ._shomitiIdTable(db)
+                                        .id,
+                              )
+                              as T;
+                    }
+                    if (requestId) {
+                      state =
+                          state.withJoin(
+                                currentTable: table,
+                                currentColumn: table.requestId,
+                                referencedTable:
+                                    $$MembershipChangeApprovalsTableReferences
+                                        ._requestIdTable(db),
+                                referencedColumn:
+                                    $$MembershipChangeApprovalsTableReferences
+                                        ._requestIdTable(db)
+                                        .id,
+                              )
+                              as T;
+                    }
+
+                    return state;
+                  },
+              getPrefetchedDataCallback: (items) async {
+                return [];
+              },
+            );
+          },
+        ),
+      );
+}
+
+typedef $$MembershipChangeApprovalsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $MembershipChangeApprovalsTable,
+      MembershipChangeApprovalRow,
+      $$MembershipChangeApprovalsTableFilterComposer,
+      $$MembershipChangeApprovalsTableOrderingComposer,
+      $$MembershipChangeApprovalsTableAnnotationComposer,
+      $$MembershipChangeApprovalsTableCreateCompanionBuilder,
+      $$MembershipChangeApprovalsTableUpdateCompanionBuilder,
+      (MembershipChangeApprovalRow, $$MembershipChangeApprovalsTableReferences),
+      MembershipChangeApprovalRow,
+      PrefetchHooks Function({bool shomitiId, bool requestId})
+    >;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;
@@ -8111,4 +10799,14 @@ class $AppDatabaseManager {
       $$RuleSetVersionsTableTableManager(_db, _db.ruleSetVersions);
   $$MemberConsentsTableTableManager get memberConsents =>
       $$MemberConsentsTableTableManager(_db, _db.memberConsents);
+  $$MembershipChangeRequestsTableTableManager get membershipChangeRequests =>
+      $$MembershipChangeRequestsTableTableManager(
+        _db,
+        _db.membershipChangeRequests,
+      );
+  $$MembershipChangeApprovalsTableTableManager get membershipChangeApprovals =>
+      $$MembershipChangeApprovalsTableTableManager(
+        _db,
+        _db.membershipChangeApprovals,
+      );
 }

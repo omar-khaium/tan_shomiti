@@ -7,9 +7,9 @@ import '../../../core/ui/components/app_empty_state.dart';
 import '../../../core/ui/components/app_error_state.dart';
 import '../../../core/ui/components/app_loading_state.dart';
 import '../../../core/ui/components/app_status_chip.dart';
+import '../../../core/ui/components/app_text_field.dart';
 import '../../../core/ui/tokens/app_spacing.dart';
 import 'models/membership_change_ui_models.dart';
-import 'providers/demo_membership_changes_store.dart';
 import 'providers/membership_changes_providers.dart';
 
 class MembershipChangesPage extends ConsumerWidget {
@@ -47,14 +47,16 @@ class MembershipChangesPage extends ConsumerWidget {
             children: [
               AppCard(
                 child: Text(
-                  'Recommended: no exit without replacement. Changes should be unanimous and recorded.',
+                  'Recommended: no exit without replacement. Changes should be unanimous and recorded as approvals (rules.md Section 14).',
                 ),
               ),
               const SizedBox(height: AppSpacing.s16),
               for (final row in ui.rows)
                 _MemberRow(
                   row: row,
-                  onRequestExit: () async {
+                  onRequestExit: row.activeRequestId == null
+                      ? () {
+                    () async {
                     final confirmed = await showAppConfirmDialog(
                       context: context,
                       title: 'Request exit?',
@@ -63,36 +65,103 @@ class MembershipChangesPage extends ConsumerWidget {
                       confirmLabel: 'Request exit',
                     );
                     if (confirmed != true) return;
-                    ref
-                        .read(demoMembershipChangesStoreProvider.notifier)
-                        .requestExit(row.memberId);
-                  },
-                  onProposeReplacement: () async {
-                    final confirmed = await showAppConfirmDialog(
+                    try {
+                      await ref
+                          .read(membershipChangesControllerProvider.notifier)
+                          .requestExit(row.memberId);
+                    } catch (e) {
+                      if (!context.mounted) return;
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text(e.toString())),
+                      );
+                    }
+                    }();
+                  }
+                      : null,
+                  onProposeReplacement:
+                      row.status == MemberChangeStatus.exitRequested ||
+                              row.status ==
+                                  MemberChangeStatus.replacementProposed
+                          ? () {
+                    () async {
+                    final result = await _showProposeReplacementDialog(
                       context: context,
-                      title: 'Propose replacement?',
-                      message:
-                          'This is a demo flow. Stage 3 will add approvals + proof + settlement checks.',
-                      confirmLabel: 'Propose',
+                      position: row.position,
                     );
-                    if (confirmed != true) return;
-                    ref
-                        .read(demoMembershipChangesStoreProvider.notifier)
-                        .proposeReplacement(row.memberId);
-                  },
-                  onRemoveForMisconduct: () async {
-                    final confirmed = await showAppConfirmDialog(
+                    if (result == null) return;
+                    try {
+                      await ref
+                          .read(membershipChangesControllerProvider.notifier)
+                          .proposeReplacement(
+                            memberId: row.memberId,
+                            replacementName: result.name,
+                            replacementPhone: result.phone,
+                          );
+                    } catch (e) {
+                      if (!context.mounted) return;
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text(e.toString())),
+                      );
+                    }
+                    }();
+                  }
+                          : null,
+                  onRemoveForMisconduct: row.activeRequestId == null
+                      ? () {
+                    () async {
+                    final result = await _showRemoveForMisconductDialog(
                       context: context,
-                      title: 'Remove for misconduct?',
-                      message:
-                          'This is a serious action. Use respectful language and require unanimous approval.',
-                      confirmLabel: 'Remove',
+                      position: row.position,
                     );
-                    if (confirmed != true) return;
-                    ref
-                        .read(demoMembershipChangesStoreProvider.notifier)
-                        .removeForMisconduct(row.memberId);
-                  },
+                    if (result == null) return;
+                    try {
+                      await ref
+                          .read(membershipChangesControllerProvider.notifier)
+                          .removeForMisconduct(
+                            memberId: row.memberId,
+                            reasonCode: result.reasonCode,
+                            details: result.details,
+                          );
+                    } catch (e) {
+                      if (!context.mounted) return;
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text(e.toString())),
+                      );
+                    }
+                    }();
+                  }
+                      : null,
+                  onApprove: row.activeRequestId != null &&
+                          row.status != MemberChangeStatus.exitRequested &&
+                          row.approvalsRequired > 0 &&
+                          row.approvalsCount < row.approvalsRequired
+                      ? () {
+                    () async {
+                    final approverId = await _showApprovalDialog(
+                      context: context,
+                      outgoingMemberId: row.memberId,
+                      alreadyApprovedMemberIds: row.approvedByMemberIds,
+                      members: ui.members,
+                      position: row.position,
+                    );
+                    if (approverId == null) return;
+                    try {
+                      await ref
+                          .read(membershipChangesControllerProvider.notifier)
+                          .approve(
+                            requestId: row.activeRequestId!,
+                            outgoingMemberId: row.memberId,
+                            approverMemberId: approverId,
+                          );
+                    } catch (e) {
+                      if (!context.mounted) return;
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text(e.toString())),
+                      );
+                    }
+                    }();
+                  }
+                      : null,
                 ),
             ],
           );
@@ -108,12 +177,14 @@ class _MemberRow extends StatelessWidget {
     required this.onRequestExit,
     required this.onProposeReplacement,
     required this.onRemoveForMisconduct,
+    required this.onApprove,
   });
 
   final MemberChangeRow row;
-  final VoidCallback onRequestExit;
-  final VoidCallback onProposeReplacement;
-  final VoidCallback onRemoveForMisconduct;
+  final VoidCallback? onRequestExit;
+  final VoidCallback? onProposeReplacement;
+  final VoidCallback? onRemoveForMisconduct;
+  final VoidCallback? onApprove;
 
   @override
   Widget build(BuildContext context) {
@@ -137,6 +208,22 @@ class _MemberRow extends StatelessWidget {
               ),
             ],
           ),
+          if (row.activeRequestId != null) ...[
+            const SizedBox(height: AppSpacing.s8),
+            Text(
+              'Approvals: ${row.approvalsCount}/${row.approvalsRequired} (unanimous)',
+              key: Key('membership_approvals_${row.position}'),
+              style: Theme.of(context).textTheme.bodySmall,
+            ),
+          ],
+          if (row.replacementCandidateName?.trim().isNotEmpty == true) ...[
+            const SizedBox(height: AppSpacing.s4),
+            Text(
+              'Proposed: ${row.replacementCandidateName}',
+              key: Key('membership_replacement_${row.position}'),
+              style: Theme.of(context).textTheme.bodySmall,
+            ),
+          ],
           const SizedBox(height: AppSpacing.s12),
           Wrap(
             spacing: AppSpacing.s8,
@@ -157,6 +244,12 @@ class _MemberRow extends StatelessWidget {
                 onPressed: onRemoveForMisconduct,
                 child: const Text('Remove'),
               ),
+              if (onApprove != null)
+                TextButton(
+                  key: Key('membership_approve_${row.position}'),
+                  onPressed: onApprove,
+                  child: const Text('Approve'),
+                ),
             ],
           ),
         ],
@@ -169,6 +262,7 @@ class _MemberRow extends StatelessWidget {
       MemberChangeStatus.active => 'Active',
       MemberChangeStatus.exitRequested => 'Exit requested',
       MemberChangeStatus.replacementProposed => 'Replacement proposed',
+      MemberChangeStatus.removalProposed => 'Removal proposed',
       MemberChangeStatus.removedForMisconduct => 'Removed',
     };
   }
@@ -178,7 +272,227 @@ class _MemberRow extends StatelessWidget {
       MemberChangeStatus.active => AppStatusKind.success,
       MemberChangeStatus.exitRequested => AppStatusKind.warning,
       MemberChangeStatus.replacementProposed => AppStatusKind.warning,
+      MemberChangeStatus.removalProposed => AppStatusKind.warning,
       MemberChangeStatus.removedForMisconduct => AppStatusKind.error,
     };
   }
+}
+
+class _ReplacementInput {
+  const _ReplacementInput({required this.name, required this.phone});
+
+  final String name;
+  final String phone;
+}
+
+Future<_ReplacementInput?> _showProposeReplacementDialog({
+  required BuildContext context,
+  required int position,
+}) async {
+  final formKey = GlobalKey<FormState>();
+  final nameController = TextEditingController();
+  final phoneController = TextEditingController();
+
+  final result = await showDialog<_ReplacementInput>(
+    context: context,
+    builder: (context) {
+      return AlertDialog(
+        title: Text('Replacement for member #$position'),
+        content: Form(
+          key: formKey,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              AppTextField(
+                label: 'Replacement name',
+                fieldKey: const Key('membership_replacement_name'),
+                controller: nameController,
+                textInputAction: TextInputAction.next,
+                validator: (v) =>
+                    v == null || v.trim().isEmpty ? 'Required' : null,
+              ),
+              const SizedBox(height: AppSpacing.s12),
+              AppTextField(
+                label: 'Replacement phone',
+                fieldKey: const Key('membership_replacement_phone'),
+                controller: phoneController,
+                keyboardType: TextInputType.phone,
+                validator: (v) =>
+                    v == null || v.trim().isEmpty ? 'Required' : null,
+              ),
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(
+            key: const Key('membership_replacement_cancel'),
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('Cancel'),
+          ),
+          FilledButton(
+            key: const Key('membership_replacement_confirm'),
+            onPressed: () {
+              if (formKey.currentState?.validate() != true) return;
+              Navigator.of(context).pop(
+                _ReplacementInput(
+                  name: nameController.text.trim(),
+                  phone: phoneController.text.trim(),
+                ),
+              );
+            },
+            child: const Text('Propose'),
+          ),
+        ],
+      );
+    },
+  );
+
+  nameController.dispose();
+  phoneController.dispose();
+  return result;
+}
+
+class _RemovalInput {
+  const _RemovalInput({required this.reasonCode, required this.details});
+
+  final String reasonCode;
+  final String? details;
+}
+
+Future<_RemovalInput?> _showRemoveForMisconductDialog({
+  required BuildContext context,
+  required int position,
+}) async {
+  final formKey = GlobalKey<FormState>();
+  String reason = 'fraud_or_manipulation';
+  final detailsController = TextEditingController();
+
+  final result = await showDialog<_RemovalInput>(
+    context: context,
+    builder: (context) {
+      return AlertDialog(
+        title: Text('Remove member #$position?'),
+        content: Form(
+          key: formKey,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              DropdownButtonFormField<String>(
+                key: const Key('membership_removal_reason'),
+                initialValue: reason,
+                items: const [
+                  DropdownMenuItem(
+                    value: 'fraud_or_manipulation',
+                    child: Text('Fraud or manipulation'),
+                  ),
+                  DropdownMenuItem(
+                    value: 'repeated_default',
+                    child: Text('Repeated default'),
+                  ),
+                  DropdownMenuItem(
+                    value: 'abusive_behavior',
+                    child: Text('Abusive behavior'),
+                  ),
+                  DropdownMenuItem(value: 'other', child: Text('Other')),
+                ],
+                onChanged: (v) => reason = v ?? reason,
+                decoration: const InputDecoration(labelText: 'Reason'),
+              ),
+              const SizedBox(height: AppSpacing.s12),
+              AppTextField(
+                label: 'Details (optional)',
+                fieldKey: const Key('membership_removal_details'),
+                controller: detailsController,
+              ),
+              const SizedBox(height: AppSpacing.s8),
+              Text(
+                'Unanimous approval is required. Keep language respectful and avoid public shaming.',
+                style: Theme.of(context).textTheme.bodySmall,
+              ),
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(
+            key: const Key('membership_removal_cancel'),
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('Cancel'),
+          ),
+          FilledButton(
+            key: const Key('membership_removal_confirm'),
+            onPressed: () {
+              if (formKey.currentState?.validate() != true) return;
+              Navigator.of(context).pop(
+                _RemovalInput(
+                  reasonCode: reason,
+                  details: detailsController.text.trim().isEmpty
+                      ? null
+                      : detailsController.text.trim(),
+                ),
+              );
+            },
+            child: const Text('Propose removal'),
+          ),
+        ],
+      );
+    },
+  );
+
+  detailsController.dispose();
+  return result;
+}
+
+Future<String?> _showApprovalDialog({
+  required BuildContext context,
+  required String outgoingMemberId,
+  required List<String> alreadyApprovedMemberIds,
+  required List<ApproverOption> members,
+  required int position,
+}) async {
+  final eligible = members
+      .where((m) => m.isActive)
+      .where((m) => m.memberId != outgoingMemberId)
+      .where((m) => !alreadyApprovedMemberIds.contains(m.memberId))
+      .toList(growable: false)
+    ..sort((a, b) => a.position.compareTo(b.position));
+
+  if (eligible.isEmpty) return null;
+
+  var selected = eligible.first.memberId;
+
+  final result = await showDialog<String>(
+    context: context,
+    builder: (context) {
+              return AlertDialog(
+        title: Text('Approve change for member #$position'),
+        content: DropdownButtonFormField<String>(
+          key: const Key('membership_approval_approver'),
+          initialValue: selected,
+          items: [
+            for (final m in eligible)
+              DropdownMenuItem(
+                value: m.memberId,
+                child: Text('#${m.position} — ${m.displayName}'),
+              ),
+          ],
+          onChanged: (v) => selected = v ?? selected,
+          decoration: const InputDecoration(labelText: 'Approver'),
+        ),
+        actions: [
+          TextButton(
+            key: const Key('membership_approval_cancel'),
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('Cancel'),
+          ),
+          FilledButton(
+            key: const Key('membership_approval_confirm'),
+            onPressed: () => Navigator.of(context).pop(selected),
+            child: const Text('Approve'),
+          ),
+        ],
+      );
+    },
+  );
+
+  return result;
 }
