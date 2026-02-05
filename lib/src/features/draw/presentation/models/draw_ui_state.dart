@@ -61,6 +61,7 @@ class DrawUiState {
     required this.rows,
     required this.eligibleShares,
     required this.hasDuesForMonth,
+    required this.recordedDrawId,
   });
 
   final String shomitiId;
@@ -70,6 +71,7 @@ class DrawUiState {
   final List<DrawEligibilityRowUiModel> rows;
   final List<DrawEligibleShareUiModel> eligibleShares;
   final bool hasDuesForMonth;
+  final String? recordedDrawId;
 
-  bool get canRunDraw => summary.eligibleEntries > 0;
+  bool get canRunDraw => summary.eligibleEntries > 0 && recordedDrawId == null;
 }

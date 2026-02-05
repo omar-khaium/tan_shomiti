@@ -14,16 +14,45 @@ class DriftDrawRecordsRepository implements DrawRecordsRepository {
   final AppDatabase _db;
 
   @override
-  Future<DrawRecord?> getForMonth({
+  Future<DrawRecord?> getById({required String id}) async {
+    final row =
+        await (_db.select(_db.drawRecords)..where((r) => r.id.equals(id)))
+            .getSingleOrNull();
+    return row == null ? null : _mapRow(row);
+  }
+
+  @override
+  Future<DrawRecord?> getEffectiveForMonth({
     required String shomitiId,
     required BillingMonth month,
   }) async {
-    final row =
-        await (_db.select(_db.drawRecords)
-              ..where((r) => r.shomitiId.equals(shomitiId))
-              ..where((r) => r.monthKey.equals(month.key)))
-            .getSingleOrNull();
-    return row == null ? null : _mapRow(row);
+    final rows = await (_db.select(_db.drawRecords)
+          ..where((r) => r.shomitiId.equals(shomitiId))
+          ..where((r) => r.monthKey.equals(month.key))
+          ..where((r) => r.invalidatedAt.isNull())
+          ..orderBy([
+            (r) => OrderingTerm.desc(r.recordedAt),
+            (r) => OrderingTerm.desc(r.id),
+          ])
+          ..limit(1))
+        .get();
+    return rows.isEmpty ? null : _mapRow(rows.single);
+  }
+
+  @override
+  Future<List<DrawRecord>> listForMonth({
+    required String shomitiId,
+    required BillingMonth month,
+  }) async {
+    final rows = await (_db.select(_db.drawRecords)
+          ..where((r) => r.shomitiId.equals(shomitiId))
+          ..where((r) => r.monthKey.equals(month.key))
+          ..orderBy([
+            (r) => OrderingTerm.desc(r.recordedAt),
+            (r) => OrderingTerm.desc(r.id),
+          ]))
+        .get();
+    return rows.map(_mapRow).toList(growable: false);
   }
 
   @override
@@ -31,7 +60,11 @@ class DriftDrawRecordsRepository implements DrawRecordsRepository {
     final rows =
         await (_db.select(_db.drawRecords)
               ..where((r) => r.shomitiId.equals(shomitiId))
-              ..orderBy([(r) => OrderingTerm(expression: r.monthKey)]))
+              ..orderBy([
+                (r) => OrderingTerm.desc(r.monthKey),
+                (r) => OrderingTerm.desc(r.recordedAt),
+                (r) => OrderingTerm.desc(r.id),
+              ]))
             .get();
     return rows.map(_mapRow).toList(growable: false);
   }
@@ -50,6 +83,10 @@ class DriftDrawRecordsRepository implements DrawRecordsRepository {
             winnerMemberId: record.winnerMemberId,
             winnerShareIndex: record.winnerShareIndex,
             eligibleShareKeysJson: jsonEncode(record.eligibleShareKeys),
+            redoOfDrawId: Value(record.redoOfDrawId),
+            invalidatedAt: Value(record.invalidatedAt),
+            invalidatedReason: Value(record.invalidatedReason),
+            finalizedAt: Value(record.finalizedAt),
             recordedAt: record.recordedAt,
           ),
         );
@@ -71,8 +108,11 @@ class DriftDrawRecordsRepository implements DrawRecordsRepository {
       winnerMemberId: row.winnerMemberId,
       winnerShareIndex: row.winnerShareIndex,
       eligibleShareKeys: eligibleKeys,
+      redoOfDrawId: row.redoOfDrawId,
+      invalidatedAt: row.invalidatedAt,
+      invalidatedReason: row.invalidatedReason,
+      finalizedAt: row.finalizedAt,
       recordedAt: row.recordedAt,
     );
   }
 }
-

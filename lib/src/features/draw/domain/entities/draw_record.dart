@@ -16,6 +16,10 @@ class DrawRecord {
     required this.winnerMemberId,
     required this.winnerShareIndex,
     required this.eligibleShareKeys,
+    required this.redoOfDrawId,
+    required this.invalidatedAt,
+    required this.invalidatedReason,
+    required this.finalizedAt,
     required this.recordedAt,
   });
 
@@ -29,7 +33,15 @@ class DrawRecord {
   final String winnerMemberId;
   final int winnerShareIndex;
   final List<String> eligibleShareKeys;
+  final String? redoOfDrawId;
+  final DateTime? invalidatedAt;
+  final String? invalidatedReason;
+  final DateTime? finalizedAt;
   final DateTime recordedAt;
 
   String get winnerShareKey => '$winnerMemberId#$winnerShareIndex';
+
+  bool get isInvalidated => invalidatedAt != null;
+
+  bool get isFinalized => finalizedAt != null && !isInvalidated;
 }

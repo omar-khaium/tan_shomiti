@@ -434,6 +434,10 @@ void main() {
         winnerMemberId: 'm_active_1',
         winnerShareIndex: 1,
         eligibleShareKeys: const ['m_active_1#1', 'm_active_1#2'],
+        redoOfDrawId: null,
+        invalidatedAt: null,
+        invalidatedReason: null,
+        finalizedAt: null,
         recordedAt: now,
       ),
     );
@@ -531,7 +535,10 @@ void main() {
       now: now,
     );
 
-    final loaded = await drawsRepo.getForMonth(shomitiId: 'active', month: month);
+    final loaded = await drawsRepo.getEffectiveForMonth(
+      shomitiId: 'active',
+      month: month,
+    );
     expect(loaded, isNotNull);
     expect(loaded!.winnerShareKey, record.winnerShareKey);
     expect(loaded.eligibleShareKeys.length, 2);

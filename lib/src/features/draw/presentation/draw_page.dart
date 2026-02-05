@@ -60,6 +60,26 @@ class _DrawBody extends ConsumerWidget {
           onNext: () => ref.read(drawControllerProvider.notifier).nextMonth(),
         ),
         const SizedBox(height: AppSpacing.s16),
+        if (state.recordedDrawId != null) ...[
+          AppCard(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Draw already recorded for this month.',
+                  style: Theme.of(context).textTheme.titleSmall,
+                ),
+                const SizedBox(height: AppSpacing.s12),
+                AppButton.secondary(
+                  key: const Key('draw_view_record'),
+                  label: 'View draw record',
+                  onPressed: () => context.push(drawRecordLocation),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: AppSpacing.s16),
+        ],
         _SummaryCard(summary: state.summary),
         const SizedBox(height: AppSpacing.s16),
         Expanded(

@@ -22,6 +22,7 @@ import 'tables/payments.dart';
 import 'tables/collection_resolutions.dart';
 import 'tables/default_enforcement_steps.dart';
 import 'tables/draw_records.dart';
+import 'tables/draw_witness_approvals.dart';
 import 'tables/shomitis.dart';
 
 part 'app_database.g.dart';
@@ -45,6 +46,7 @@ part 'app_database.g.dart';
     CollectionResolutions,
     DefaultEnforcementSteps,
     DrawRecords,
+    DrawWitnessApprovals,
     Shomitis,
   ],
 )
@@ -56,7 +58,7 @@ class AppDatabase extends _$AppDatabase {
   factory AppDatabase.memory() => AppDatabase(NativeDatabase.memory());
 
   @override
-  int get schemaVersion => 12;
+  int get schemaVersion => 13;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -108,6 +110,13 @@ class AppDatabase extends _$AppDatabase {
       }
       if (from < 12) {
         await m.createTable(drawRecords);
+      }
+      if (from < 13) {
+        await m.addColumn(drawRecords, drawRecords.redoOfDrawId);
+        await m.addColumn(drawRecords, drawRecords.invalidatedAt);
+        await m.addColumn(drawRecords, drawRecords.invalidatedReason);
+        await m.addColumn(drawRecords, drawRecords.finalizedAt);
+        await m.createTable(drawWitnessApprovals);
       }
     },
   );

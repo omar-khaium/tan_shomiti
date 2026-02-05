@@ -25,12 +25,14 @@ class RunDrawArgs {
     required this.ruleSetVersionId,
     required this.month,
     required this.eligibleShares,
+    this.redoOfDrawId,
   });
 
   final String shomitiId;
   final String ruleSetVersionId;
   final BillingMonth month;
   final List<DrawEligibleShareUiModel> eligibleShares;
+  final String? redoOfDrawId;
 }
 
 class RunDrawPage extends ConsumerStatefulWidget {
@@ -222,6 +224,7 @@ class _RunDrawPageState extends ConsumerState<RunDrawPage> {
                           winnerMemberId: winner.memberId,
                           winnerShareIndex: winner.shareIndex,
                           eligibleShareKeys: eligibleKeys,
+                          redoOfDrawId: widget.args.redoOfDrawId,
                           now: DateTime.now(),
                         );
 

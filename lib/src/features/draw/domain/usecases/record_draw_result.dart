@@ -32,6 +32,7 @@ class RecordDrawResult {
     required String winnerMemberId,
     required int winnerShareIndex,
     required List<String> eligibleShareKeys,
+    String? redoOfDrawId,
     required DateTime now,
   }) async {
     if (eligibleShareKeys.isEmpty) {
@@ -49,12 +50,25 @@ class RecordDrawResult {
       throw const DrawRecordingException('Winner must be an eligible entry.');
     }
 
-    final existing = await _drawRecordsRepository.getForMonth(
+    final existing = await _drawRecordsRepository.getEffectiveForMonth(
       shomitiId: shomitiId,
       month: month,
     );
     if (existing != null) {
       throw const DrawRecordingException('A draw is already recorded for this month.');
+    }
+
+    if (redoOfDrawId != null) {
+      final redoOf = await _drawRecordsRepository.getById(id: redoOfDrawId);
+      if (redoOf == null) {
+        throw const DrawRecordingException('Redo reference not found.');
+      }
+      if (!redoOf.isInvalidated) {
+        throw const DrawRecordingException('Redo reference must be invalidated.');
+      }
+      if (redoOf.shomitiId != shomitiId || redoOf.month != month) {
+        throw const DrawRecordingException('Redo reference must match month and shomiti.');
+      }
     }
 
     final id = _newDrawId(month: month, now: now);
@@ -69,6 +83,10 @@ class RecordDrawResult {
       winnerMemberId: winnerMemberId,
       winnerShareIndex: winnerShareIndex,
       eligibleShareKeys: List.unmodifiable(eligibleShareKeys),
+      redoOfDrawId: redoOfDrawId,
+      invalidatedAt: null,
+      invalidatedReason: null,
+      finalizedAt: null,
       recordedAt: now,
     );
 
@@ -85,6 +103,7 @@ class RecordDrawResult {
           'proofReference': record.proofReference,
           'winnerShareKey': record.winnerShareKey,
           'eligibleCount': eligibleShareKeys.length,
+          'redoOfDrawId': redoOfDrawId,
         }),
       ),
     );

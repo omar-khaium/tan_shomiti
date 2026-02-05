@@ -230,23 +230,25 @@ final appRouterProvider = Provider<GoRouter>((ref) {
           GoRoute(
             path: drawRecordLocation,
             name: drawRecordRouteName,
-            builder: (context, state) => DrawRecordDetailsPage(
-              month: BillingMonth.fromDate(DateTime.now()),
-              methodLabel: 'Numbered tokens',
-              proofReference: 'vid-001',
-              winnerLabel: 'Member 1 (share 1)',
-              statusLabel: 'Pending witness sign-off',
-            ),
+            builder: (context, state) => const DrawRecordDetailsPage(),
           ),
           GoRoute(
             path: drawWitnessesLocation,
             name: drawWitnessesRouteName,
-            builder: (context, state) => const WitnessSignoffPage(),
+            builder: (context, state) {
+              final extra = state.extra;
+              final drawId = extra is String ? extra : '';
+              return WitnessSignoffPage(drawId: drawId);
+            },
           ),
           GoRoute(
             path: drawRedoLocation,
             name: drawRedoRouteName,
-            builder: (context, state) => const RedoDrawPage(),
+            builder: (context, state) {
+              final extra = state.extra;
+              final drawId = extra is String ? extra : '';
+              return RedoDrawPage(drawId: drawId);
+            },
           ),
           GoRoute(
             path: drawRunLocation,

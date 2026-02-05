@@ -8355,6 +8355,52 @@ class $DrawRecordsTable extends DrawRecords
         type: DriftSqlType.string,
         requiredDuringInsert: true,
       );
+  static const VerificationMeta _redoOfDrawIdMeta = const VerificationMeta(
+    'redoOfDrawId',
+  );
+  @override
+  late final GeneratedColumn<String> redoOfDrawId = GeneratedColumn<String>(
+    'redo_of_draw_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _invalidatedAtMeta = const VerificationMeta(
+    'invalidatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> invalidatedAt =
+      GeneratedColumn<DateTime>(
+        'invalidated_at',
+        aliasedName,
+        true,
+        type: DriftSqlType.dateTime,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _invalidatedReasonMeta = const VerificationMeta(
+    'invalidatedReason',
+  );
+  @override
+  late final GeneratedColumn<String> invalidatedReason =
+      GeneratedColumn<String>(
+        'invalidated_reason',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _finalizedAtMeta = const VerificationMeta(
+    'finalizedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> finalizedAt = GeneratedColumn<DateTime>(
+    'finalized_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
   static const VerificationMeta _recordedAtMeta = const VerificationMeta(
     'recordedAt',
   );
@@ -8378,6 +8424,10 @@ class $DrawRecordsTable extends DrawRecords
     winnerMemberId,
     winnerShareIndex,
     eligibleShareKeysJson,
+    redoOfDrawId,
+    invalidatedAt,
+    invalidatedReason,
+    finalizedAt,
     recordedAt,
   ];
   @override
@@ -8482,6 +8532,42 @@ class $DrawRecordsTable extends DrawRecords
     } else if (isInserting) {
       context.missing(_eligibleShareKeysJsonMeta);
     }
+    if (data.containsKey('redo_of_draw_id')) {
+      context.handle(
+        _redoOfDrawIdMeta,
+        redoOfDrawId.isAcceptableOrUnknown(
+          data['redo_of_draw_id']!,
+          _redoOfDrawIdMeta,
+        ),
+      );
+    }
+    if (data.containsKey('invalidated_at')) {
+      context.handle(
+        _invalidatedAtMeta,
+        invalidatedAt.isAcceptableOrUnknown(
+          data['invalidated_at']!,
+          _invalidatedAtMeta,
+        ),
+      );
+    }
+    if (data.containsKey('invalidated_reason')) {
+      context.handle(
+        _invalidatedReasonMeta,
+        invalidatedReason.isAcceptableOrUnknown(
+          data['invalidated_reason']!,
+          _invalidatedReasonMeta,
+        ),
+      );
+    }
+    if (data.containsKey('finalized_at')) {
+      context.handle(
+        _finalizedAtMeta,
+        finalizedAt.isAcceptableOrUnknown(
+          data['finalized_at']!,
+          _finalizedAtMeta,
+        ),
+      );
+    }
     if (data.containsKey('recorded_at')) {
       context.handle(
         _recordedAtMeta,
@@ -8539,6 +8625,22 @@ class $DrawRecordsTable extends DrawRecords
         DriftSqlType.string,
         data['${effectivePrefix}eligible_share_keys_json'],
       )!,
+      redoOfDrawId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}redo_of_draw_id'],
+      ),
+      invalidatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}invalidated_at'],
+      ),
+      invalidatedReason: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}invalidated_reason'],
+      ),
+      finalizedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}finalized_at'],
+      ),
       recordedAt: attachedDatabase.typeMapping.read(
         DriftSqlType.dateTime,
         data['${effectivePrefix}recorded_at'],
@@ -8573,6 +8675,19 @@ class DrawRecordRow extends DataClass implements Insertable<DrawRecordRow> {
 
   /// JSON array of eligible share entry keys at record time.
   final String eligibleShareKeysJson;
+
+  /// Optional linkage when this record is a redo of a previous record.
+  final String? redoOfDrawId;
+
+  /// Set when the draw is invalidated (redo flow). Invalidated draws are not
+  /// effective for eligibility/winner exclusion.
+  final DateTime? invalidatedAt;
+
+  /// Required when invalidating a draw.
+  final String? invalidatedReason;
+
+  /// Set when witness approvals are complete and the draw is finalized.
+  final DateTime? finalizedAt;
   final DateTime recordedAt;
   const DrawRecordRow({
     required this.id,
@@ -8585,6 +8700,10 @@ class DrawRecordRow extends DataClass implements Insertable<DrawRecordRow> {
     required this.winnerMemberId,
     required this.winnerShareIndex,
     required this.eligibleShareKeysJson,
+    this.redoOfDrawId,
+    this.invalidatedAt,
+    this.invalidatedReason,
+    this.finalizedAt,
     required this.recordedAt,
   });
   @override
@@ -8602,6 +8721,18 @@ class DrawRecordRow extends DataClass implements Insertable<DrawRecordRow> {
     map['winner_member_id'] = Variable<String>(winnerMemberId);
     map['winner_share_index'] = Variable<int>(winnerShareIndex);
     map['eligible_share_keys_json'] = Variable<String>(eligibleShareKeysJson);
+    if (!nullToAbsent || redoOfDrawId != null) {
+      map['redo_of_draw_id'] = Variable<String>(redoOfDrawId);
+    }
+    if (!nullToAbsent || invalidatedAt != null) {
+      map['invalidated_at'] = Variable<DateTime>(invalidatedAt);
+    }
+    if (!nullToAbsent || invalidatedReason != null) {
+      map['invalidated_reason'] = Variable<String>(invalidatedReason);
+    }
+    if (!nullToAbsent || finalizedAt != null) {
+      map['finalized_at'] = Variable<DateTime>(finalizedAt);
+    }
     map['recorded_at'] = Variable<DateTime>(recordedAt);
     return map;
   }
@@ -8620,6 +8751,18 @@ class DrawRecordRow extends DataClass implements Insertable<DrawRecordRow> {
       winnerMemberId: Value(winnerMemberId),
       winnerShareIndex: Value(winnerShareIndex),
       eligibleShareKeysJson: Value(eligibleShareKeysJson),
+      redoOfDrawId: redoOfDrawId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(redoOfDrawId),
+      invalidatedAt: invalidatedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(invalidatedAt),
+      invalidatedReason: invalidatedReason == null && nullToAbsent
+          ? const Value.absent()
+          : Value(invalidatedReason),
+      finalizedAt: finalizedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(finalizedAt),
       recordedAt: Value(recordedAt),
     );
   }
@@ -8642,6 +8785,12 @@ class DrawRecordRow extends DataClass implements Insertable<DrawRecordRow> {
       eligibleShareKeysJson: serializer.fromJson<String>(
         json['eligibleShareKeysJson'],
       ),
+      redoOfDrawId: serializer.fromJson<String?>(json['redoOfDrawId']),
+      invalidatedAt: serializer.fromJson<DateTime?>(json['invalidatedAt']),
+      invalidatedReason: serializer.fromJson<String?>(
+        json['invalidatedReason'],
+      ),
+      finalizedAt: serializer.fromJson<DateTime?>(json['finalizedAt']),
       recordedAt: serializer.fromJson<DateTime>(json['recordedAt']),
     );
   }
@@ -8659,6 +8808,10 @@ class DrawRecordRow extends DataClass implements Insertable<DrawRecordRow> {
       'winnerMemberId': serializer.toJson<String>(winnerMemberId),
       'winnerShareIndex': serializer.toJson<int>(winnerShareIndex),
       'eligibleShareKeysJson': serializer.toJson<String>(eligibleShareKeysJson),
+      'redoOfDrawId': serializer.toJson<String?>(redoOfDrawId),
+      'invalidatedAt': serializer.toJson<DateTime?>(invalidatedAt),
+      'invalidatedReason': serializer.toJson<String?>(invalidatedReason),
+      'finalizedAt': serializer.toJson<DateTime?>(finalizedAt),
       'recordedAt': serializer.toJson<DateTime>(recordedAt),
     };
   }
@@ -8674,6 +8827,10 @@ class DrawRecordRow extends DataClass implements Insertable<DrawRecordRow> {
     String? winnerMemberId,
     int? winnerShareIndex,
     String? eligibleShareKeysJson,
+    Value<String?> redoOfDrawId = const Value.absent(),
+    Value<DateTime?> invalidatedAt = const Value.absent(),
+    Value<String?> invalidatedReason = const Value.absent(),
+    Value<DateTime?> finalizedAt = const Value.absent(),
     DateTime? recordedAt,
   }) => DrawRecordRow(
     id: id ?? this.id,
@@ -8686,6 +8843,14 @@ class DrawRecordRow extends DataClass implements Insertable<DrawRecordRow> {
     winnerMemberId: winnerMemberId ?? this.winnerMemberId,
     winnerShareIndex: winnerShareIndex ?? this.winnerShareIndex,
     eligibleShareKeysJson: eligibleShareKeysJson ?? this.eligibleShareKeysJson,
+    redoOfDrawId: redoOfDrawId.present ? redoOfDrawId.value : this.redoOfDrawId,
+    invalidatedAt: invalidatedAt.present
+        ? invalidatedAt.value
+        : this.invalidatedAt,
+    invalidatedReason: invalidatedReason.present
+        ? invalidatedReason.value
+        : this.invalidatedReason,
+    finalizedAt: finalizedAt.present ? finalizedAt.value : this.finalizedAt,
     recordedAt: recordedAt ?? this.recordedAt,
   );
   DrawRecordRow copyWithCompanion(DrawRecordsCompanion data) {
@@ -8710,6 +8875,18 @@ class DrawRecordRow extends DataClass implements Insertable<DrawRecordRow> {
       eligibleShareKeysJson: data.eligibleShareKeysJson.present
           ? data.eligibleShareKeysJson.value
           : this.eligibleShareKeysJson,
+      redoOfDrawId: data.redoOfDrawId.present
+          ? data.redoOfDrawId.value
+          : this.redoOfDrawId,
+      invalidatedAt: data.invalidatedAt.present
+          ? data.invalidatedAt.value
+          : this.invalidatedAt,
+      invalidatedReason: data.invalidatedReason.present
+          ? data.invalidatedReason.value
+          : this.invalidatedReason,
+      finalizedAt: data.finalizedAt.present
+          ? data.finalizedAt.value
+          : this.finalizedAt,
       recordedAt: data.recordedAt.present
           ? data.recordedAt.value
           : this.recordedAt,
@@ -8729,6 +8906,10 @@ class DrawRecordRow extends DataClass implements Insertable<DrawRecordRow> {
           ..write('winnerMemberId: $winnerMemberId, ')
           ..write('winnerShareIndex: $winnerShareIndex, ')
           ..write('eligibleShareKeysJson: $eligibleShareKeysJson, ')
+          ..write('redoOfDrawId: $redoOfDrawId, ')
+          ..write('invalidatedAt: $invalidatedAt, ')
+          ..write('invalidatedReason: $invalidatedReason, ')
+          ..write('finalizedAt: $finalizedAt, ')
           ..write('recordedAt: $recordedAt')
           ..write(')'))
         .toString();
@@ -8746,6 +8927,10 @@ class DrawRecordRow extends DataClass implements Insertable<DrawRecordRow> {
     winnerMemberId,
     winnerShareIndex,
     eligibleShareKeysJson,
+    redoOfDrawId,
+    invalidatedAt,
+    invalidatedReason,
+    finalizedAt,
     recordedAt,
   );
   @override
@@ -8762,6 +8947,10 @@ class DrawRecordRow extends DataClass implements Insertable<DrawRecordRow> {
           other.winnerMemberId == this.winnerMemberId &&
           other.winnerShareIndex == this.winnerShareIndex &&
           other.eligibleShareKeysJson == this.eligibleShareKeysJson &&
+          other.redoOfDrawId == this.redoOfDrawId &&
+          other.invalidatedAt == this.invalidatedAt &&
+          other.invalidatedReason == this.invalidatedReason &&
+          other.finalizedAt == this.finalizedAt &&
           other.recordedAt == this.recordedAt);
 }
 
@@ -8776,6 +8965,10 @@ class DrawRecordsCompanion extends UpdateCompanion<DrawRecordRow> {
   final Value<String> winnerMemberId;
   final Value<int> winnerShareIndex;
   final Value<String> eligibleShareKeysJson;
+  final Value<String?> redoOfDrawId;
+  final Value<DateTime?> invalidatedAt;
+  final Value<String?> invalidatedReason;
+  final Value<DateTime?> finalizedAt;
   final Value<DateTime> recordedAt;
   final Value<int> rowid;
   const DrawRecordsCompanion({
@@ -8789,6 +8982,10 @@ class DrawRecordsCompanion extends UpdateCompanion<DrawRecordRow> {
     this.winnerMemberId = const Value.absent(),
     this.winnerShareIndex = const Value.absent(),
     this.eligibleShareKeysJson = const Value.absent(),
+    this.redoOfDrawId = const Value.absent(),
+    this.invalidatedAt = const Value.absent(),
+    this.invalidatedReason = const Value.absent(),
+    this.finalizedAt = const Value.absent(),
     this.recordedAt = const Value.absent(),
     this.rowid = const Value.absent(),
   });
@@ -8803,6 +9000,10 @@ class DrawRecordsCompanion extends UpdateCompanion<DrawRecordRow> {
     required String winnerMemberId,
     required int winnerShareIndex,
     required String eligibleShareKeysJson,
+    this.redoOfDrawId = const Value.absent(),
+    this.invalidatedAt = const Value.absent(),
+    this.invalidatedReason = const Value.absent(),
+    this.finalizedAt = const Value.absent(),
     required DateTime recordedAt,
     this.rowid = const Value.absent(),
   }) : id = Value(id),
@@ -8826,6 +9027,10 @@ class DrawRecordsCompanion extends UpdateCompanion<DrawRecordRow> {
     Expression<String>? winnerMemberId,
     Expression<int>? winnerShareIndex,
     Expression<String>? eligibleShareKeysJson,
+    Expression<String>? redoOfDrawId,
+    Expression<DateTime>? invalidatedAt,
+    Expression<String>? invalidatedReason,
+    Expression<DateTime>? finalizedAt,
     Expression<DateTime>? recordedAt,
     Expression<int>? rowid,
   }) {
@@ -8841,6 +9046,10 @@ class DrawRecordsCompanion extends UpdateCompanion<DrawRecordRow> {
       if (winnerShareIndex != null) 'winner_share_index': winnerShareIndex,
       if (eligibleShareKeysJson != null)
         'eligible_share_keys_json': eligibleShareKeysJson,
+      if (redoOfDrawId != null) 'redo_of_draw_id': redoOfDrawId,
+      if (invalidatedAt != null) 'invalidated_at': invalidatedAt,
+      if (invalidatedReason != null) 'invalidated_reason': invalidatedReason,
+      if (finalizedAt != null) 'finalized_at': finalizedAt,
       if (recordedAt != null) 'recorded_at': recordedAt,
       if (rowid != null) 'rowid': rowid,
     });
@@ -8857,6 +9066,10 @@ class DrawRecordsCompanion extends UpdateCompanion<DrawRecordRow> {
     Value<String>? winnerMemberId,
     Value<int>? winnerShareIndex,
     Value<String>? eligibleShareKeysJson,
+    Value<String?>? redoOfDrawId,
+    Value<DateTime?>? invalidatedAt,
+    Value<String?>? invalidatedReason,
+    Value<DateTime?>? finalizedAt,
     Value<DateTime>? recordedAt,
     Value<int>? rowid,
   }) {
@@ -8872,6 +9085,10 @@ class DrawRecordsCompanion extends UpdateCompanion<DrawRecordRow> {
       winnerShareIndex: winnerShareIndex ?? this.winnerShareIndex,
       eligibleShareKeysJson:
           eligibleShareKeysJson ?? this.eligibleShareKeysJson,
+      redoOfDrawId: redoOfDrawId ?? this.redoOfDrawId,
+      invalidatedAt: invalidatedAt ?? this.invalidatedAt,
+      invalidatedReason: invalidatedReason ?? this.invalidatedReason,
+      finalizedAt: finalizedAt ?? this.finalizedAt,
       recordedAt: recordedAt ?? this.recordedAt,
       rowid: rowid ?? this.rowid,
     );
@@ -8912,6 +9129,18 @@ class DrawRecordsCompanion extends UpdateCompanion<DrawRecordRow> {
         eligibleShareKeysJson.value,
       );
     }
+    if (redoOfDrawId.present) {
+      map['redo_of_draw_id'] = Variable<String>(redoOfDrawId.value);
+    }
+    if (invalidatedAt.present) {
+      map['invalidated_at'] = Variable<DateTime>(invalidatedAt.value);
+    }
+    if (invalidatedReason.present) {
+      map['invalidated_reason'] = Variable<String>(invalidatedReason.value);
+    }
+    if (finalizedAt.present) {
+      map['finalized_at'] = Variable<DateTime>(finalizedAt.value);
+    }
     if (recordedAt.present) {
       map['recorded_at'] = Variable<DateTime>(recordedAt.value);
     }
@@ -8934,7 +9163,394 @@ class DrawRecordsCompanion extends UpdateCompanion<DrawRecordRow> {
           ..write('winnerMemberId: $winnerMemberId, ')
           ..write('winnerShareIndex: $winnerShareIndex, ')
           ..write('eligibleShareKeysJson: $eligibleShareKeysJson, ')
+          ..write('redoOfDrawId: $redoOfDrawId, ')
+          ..write('invalidatedAt: $invalidatedAt, ')
+          ..write('invalidatedReason: $invalidatedReason, ')
+          ..write('finalizedAt: $finalizedAt, ')
           ..write('recordedAt: $recordedAt, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $DrawWitnessApprovalsTable extends DrawWitnessApprovals
+    with TableInfo<$DrawWitnessApprovalsTable, DrawWitnessApprovalRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $DrawWitnessApprovalsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _drawIdMeta = const VerificationMeta('drawId');
+  @override
+  late final GeneratedColumn<String> drawId = GeneratedColumn<String>(
+    'draw_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES draw_records (id)',
+    ),
+  );
+  static const VerificationMeta _witnessMemberIdMeta = const VerificationMeta(
+    'witnessMemberId',
+  );
+  @override
+  late final GeneratedColumn<String> witnessMemberId = GeneratedColumn<String>(
+    'witness_member_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _ruleSetVersionIdMeta = const VerificationMeta(
+    'ruleSetVersionId',
+  );
+  @override
+  late final GeneratedColumn<String> ruleSetVersionId = GeneratedColumn<String>(
+    'rule_set_version_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES rule_set_versions (id)',
+    ),
+  );
+  static const VerificationMeta _noteMeta = const VerificationMeta('note');
+  @override
+  late final GeneratedColumn<String> note = GeneratedColumn<String>(
+    'note',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _approvedAtMeta = const VerificationMeta(
+    'approvedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> approvedAt = GeneratedColumn<DateTime>(
+    'approved_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    drawId,
+    witnessMemberId,
+    ruleSetVersionId,
+    note,
+    approvedAt,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'draw_witness_approvals';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<DrawWitnessApprovalRow> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('draw_id')) {
+      context.handle(
+        _drawIdMeta,
+        drawId.isAcceptableOrUnknown(data['draw_id']!, _drawIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_drawIdMeta);
+    }
+    if (data.containsKey('witness_member_id')) {
+      context.handle(
+        _witnessMemberIdMeta,
+        witnessMemberId.isAcceptableOrUnknown(
+          data['witness_member_id']!,
+          _witnessMemberIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_witnessMemberIdMeta);
+    }
+    if (data.containsKey('rule_set_version_id')) {
+      context.handle(
+        _ruleSetVersionIdMeta,
+        ruleSetVersionId.isAcceptableOrUnknown(
+          data['rule_set_version_id']!,
+          _ruleSetVersionIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_ruleSetVersionIdMeta);
+    }
+    if (data.containsKey('note')) {
+      context.handle(
+        _noteMeta,
+        note.isAcceptableOrUnknown(data['note']!, _noteMeta),
+      );
+    }
+    if (data.containsKey('approved_at')) {
+      context.handle(
+        _approvedAtMeta,
+        approvedAt.isAcceptableOrUnknown(data['approved_at']!, _approvedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_approvedAtMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {drawId, witnessMemberId};
+  @override
+  DrawWitnessApprovalRow map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return DrawWitnessApprovalRow(
+      drawId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}draw_id'],
+      )!,
+      witnessMemberId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}witness_member_id'],
+      )!,
+      ruleSetVersionId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}rule_set_version_id'],
+      )!,
+      note: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}note'],
+      ),
+      approvedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}approved_at'],
+      )!,
+    );
+  }
+
+  @override
+  $DrawWitnessApprovalsTable createAlias(String alias) {
+    return $DrawWitnessApprovalsTable(attachedDatabase, alias);
+  }
+}
+
+class DrawWitnessApprovalRow extends DataClass
+    implements Insertable<DrawWitnessApprovalRow> {
+  final String drawId;
+  final String witnessMemberId;
+  final String ruleSetVersionId;
+  final String? note;
+  final DateTime approvedAt;
+  const DrawWitnessApprovalRow({
+    required this.drawId,
+    required this.witnessMemberId,
+    required this.ruleSetVersionId,
+    this.note,
+    required this.approvedAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['draw_id'] = Variable<String>(drawId);
+    map['witness_member_id'] = Variable<String>(witnessMemberId);
+    map['rule_set_version_id'] = Variable<String>(ruleSetVersionId);
+    if (!nullToAbsent || note != null) {
+      map['note'] = Variable<String>(note);
+    }
+    map['approved_at'] = Variable<DateTime>(approvedAt);
+    return map;
+  }
+
+  DrawWitnessApprovalsCompanion toCompanion(bool nullToAbsent) {
+    return DrawWitnessApprovalsCompanion(
+      drawId: Value(drawId),
+      witnessMemberId: Value(witnessMemberId),
+      ruleSetVersionId: Value(ruleSetVersionId),
+      note: note == null && nullToAbsent ? const Value.absent() : Value(note),
+      approvedAt: Value(approvedAt),
+    );
+  }
+
+  factory DrawWitnessApprovalRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return DrawWitnessApprovalRow(
+      drawId: serializer.fromJson<String>(json['drawId']),
+      witnessMemberId: serializer.fromJson<String>(json['witnessMemberId']),
+      ruleSetVersionId: serializer.fromJson<String>(json['ruleSetVersionId']),
+      note: serializer.fromJson<String?>(json['note']),
+      approvedAt: serializer.fromJson<DateTime>(json['approvedAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'drawId': serializer.toJson<String>(drawId),
+      'witnessMemberId': serializer.toJson<String>(witnessMemberId),
+      'ruleSetVersionId': serializer.toJson<String>(ruleSetVersionId),
+      'note': serializer.toJson<String?>(note),
+      'approvedAt': serializer.toJson<DateTime>(approvedAt),
+    };
+  }
+
+  DrawWitnessApprovalRow copyWith({
+    String? drawId,
+    String? witnessMemberId,
+    String? ruleSetVersionId,
+    Value<String?> note = const Value.absent(),
+    DateTime? approvedAt,
+  }) => DrawWitnessApprovalRow(
+    drawId: drawId ?? this.drawId,
+    witnessMemberId: witnessMemberId ?? this.witnessMemberId,
+    ruleSetVersionId: ruleSetVersionId ?? this.ruleSetVersionId,
+    note: note.present ? note.value : this.note,
+    approvedAt: approvedAt ?? this.approvedAt,
+  );
+  DrawWitnessApprovalRow copyWithCompanion(DrawWitnessApprovalsCompanion data) {
+    return DrawWitnessApprovalRow(
+      drawId: data.drawId.present ? data.drawId.value : this.drawId,
+      witnessMemberId: data.witnessMemberId.present
+          ? data.witnessMemberId.value
+          : this.witnessMemberId,
+      ruleSetVersionId: data.ruleSetVersionId.present
+          ? data.ruleSetVersionId.value
+          : this.ruleSetVersionId,
+      note: data.note.present ? data.note.value : this.note,
+      approvedAt: data.approvedAt.present
+          ? data.approvedAt.value
+          : this.approvedAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('DrawWitnessApprovalRow(')
+          ..write('drawId: $drawId, ')
+          ..write('witnessMemberId: $witnessMemberId, ')
+          ..write('ruleSetVersionId: $ruleSetVersionId, ')
+          ..write('note: $note, ')
+          ..write('approvedAt: $approvedAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(drawId, witnessMemberId, ruleSetVersionId, note, approvedAt);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is DrawWitnessApprovalRow &&
+          other.drawId == this.drawId &&
+          other.witnessMemberId == this.witnessMemberId &&
+          other.ruleSetVersionId == this.ruleSetVersionId &&
+          other.note == this.note &&
+          other.approvedAt == this.approvedAt);
+}
+
+class DrawWitnessApprovalsCompanion
+    extends UpdateCompanion<DrawWitnessApprovalRow> {
+  final Value<String> drawId;
+  final Value<String> witnessMemberId;
+  final Value<String> ruleSetVersionId;
+  final Value<String?> note;
+  final Value<DateTime> approvedAt;
+  final Value<int> rowid;
+  const DrawWitnessApprovalsCompanion({
+    this.drawId = const Value.absent(),
+    this.witnessMemberId = const Value.absent(),
+    this.ruleSetVersionId = const Value.absent(),
+    this.note = const Value.absent(),
+    this.approvedAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  DrawWitnessApprovalsCompanion.insert({
+    required String drawId,
+    required String witnessMemberId,
+    required String ruleSetVersionId,
+    this.note = const Value.absent(),
+    required DateTime approvedAt,
+    this.rowid = const Value.absent(),
+  }) : drawId = Value(drawId),
+       witnessMemberId = Value(witnessMemberId),
+       ruleSetVersionId = Value(ruleSetVersionId),
+       approvedAt = Value(approvedAt);
+  static Insertable<DrawWitnessApprovalRow> custom({
+    Expression<String>? drawId,
+    Expression<String>? witnessMemberId,
+    Expression<String>? ruleSetVersionId,
+    Expression<String>? note,
+    Expression<DateTime>? approvedAt,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (drawId != null) 'draw_id': drawId,
+      if (witnessMemberId != null) 'witness_member_id': witnessMemberId,
+      if (ruleSetVersionId != null) 'rule_set_version_id': ruleSetVersionId,
+      if (note != null) 'note': note,
+      if (approvedAt != null) 'approved_at': approvedAt,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  DrawWitnessApprovalsCompanion copyWith({
+    Value<String>? drawId,
+    Value<String>? witnessMemberId,
+    Value<String>? ruleSetVersionId,
+    Value<String?>? note,
+    Value<DateTime>? approvedAt,
+    Value<int>? rowid,
+  }) {
+    return DrawWitnessApprovalsCompanion(
+      drawId: drawId ?? this.drawId,
+      witnessMemberId: witnessMemberId ?? this.witnessMemberId,
+      ruleSetVersionId: ruleSetVersionId ?? this.ruleSetVersionId,
+      note: note ?? this.note,
+      approvedAt: approvedAt ?? this.approvedAt,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (drawId.present) {
+      map['draw_id'] = Variable<String>(drawId.value);
+    }
+    if (witnessMemberId.present) {
+      map['witness_member_id'] = Variable<String>(witnessMemberId.value);
+    }
+    if (ruleSetVersionId.present) {
+      map['rule_set_version_id'] = Variable<String>(ruleSetVersionId.value);
+    }
+    if (note.present) {
+      map['note'] = Variable<String>(note.value);
+    }
+    if (approvedAt.present) {
+      map['approved_at'] = Variable<DateTime>(approvedAt.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('DrawWitnessApprovalsCompanion(')
+          ..write('drawId: $drawId, ')
+          ..write('witnessMemberId: $witnessMemberId, ')
+          ..write('ruleSetVersionId: $ruleSetVersionId, ')
+          ..write('note: $note, ')
+          ..write('approvedAt: $approvedAt, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -8972,6 +9588,8 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $DefaultEnforcementStepsTable defaultEnforcementSteps =
       $DefaultEnforcementStepsTable(this);
   late final $DrawRecordsTable drawRecords = $DrawRecordsTable(this);
+  late final $DrawWitnessApprovalsTable drawWitnessApprovals =
+      $DrawWitnessApprovalsTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -8995,6 +9613,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     collectionResolutions,
     defaultEnforcementSteps,
     drawRecords,
+    drawWitnessApprovals,
   ];
 }
 
@@ -13076,6 +13695,37 @@ final class $$RuleSetVersionsTableReferences
       manager.$state.copyWith(prefetchedData: cache),
     );
   }
+
+  static MultiTypedResultKey<
+    $DrawWitnessApprovalsTable,
+    List<DrawWitnessApprovalRow>
+  >
+  _drawWitnessApprovalsRefsTable(_$AppDatabase db) =>
+      MultiTypedResultKey.fromTable(
+        db.drawWitnessApprovals,
+        aliasName: $_aliasNameGenerator(
+          db.ruleSetVersions.id,
+          db.drawWitnessApprovals.ruleSetVersionId,
+        ),
+      );
+
+  $$DrawWitnessApprovalsTableProcessedTableManager
+  get drawWitnessApprovalsRefs {
+    final manager =
+        $$DrawWitnessApprovalsTableTableManager(
+          $_db,
+          $_db.drawWitnessApprovals,
+        ).filter(
+          (f) => f.ruleSetVersionId.id.sqlEquals($_itemColumn<String>('id')!),
+        );
+
+    final cache = $_typedResult.readTableOrNull(
+      _drawWitnessApprovalsRefsTable($_db),
+    );
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
 }
 
 class $$RuleSetVersionsTableFilterComposer
@@ -13194,6 +13844,31 @@ class $$RuleSetVersionsTableFilterComposer
           }) => $$DrawRecordsTableFilterComposer(
             $db: $db,
             $table: $db.drawRecords,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<bool> drawWitnessApprovalsRefs(
+    Expression<bool> Function($$DrawWitnessApprovalsTableFilterComposer f) f,
+  ) {
+    final $$DrawWitnessApprovalsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.drawWitnessApprovals,
+      getReferencedColumn: (t) => t.ruleSetVersionId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$DrawWitnessApprovalsTableFilterComposer(
+            $db: $db,
+            $table: $db.drawWitnessApprovals,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -13348,6 +14023,32 @@ class $$RuleSetVersionsTableAnnotationComposer
     );
     return f(composer);
   }
+
+  Expression<T> drawWitnessApprovalsRefs<T extends Object>(
+    Expression<T> Function($$DrawWitnessApprovalsTableAnnotationComposer a) f,
+  ) {
+    final $$DrawWitnessApprovalsTableAnnotationComposer composer =
+        $composerBuilder(
+          composer: this,
+          getCurrentColumn: (t) => t.id,
+          referencedTable: $db.drawWitnessApprovals,
+          getReferencedColumn: (t) => t.ruleSetVersionId,
+          builder:
+              (
+                joinBuilder, {
+                $addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer,
+              }) => $$DrawWitnessApprovalsTableAnnotationComposer(
+                $db: $db,
+                $table: $db.drawWitnessApprovals,
+                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                joinBuilder: joinBuilder,
+                $removeJoinBuilderFromRootComposer:
+                    $removeJoinBuilderFromRootComposer,
+              ),
+        );
+    return f(composer);
+  }
 }
 
 class $$RuleSetVersionsTableTableManager
@@ -13368,6 +14069,7 @@ class $$RuleSetVersionsTableTableManager
             bool dueMonthsRefs,
             bool defaultEnforcementStepsRefs,
             bool drawRecordsRefs,
+            bool drawWitnessApprovalsRefs,
           })
         > {
   $$RuleSetVersionsTableTableManager(
@@ -13421,6 +14123,7 @@ class $$RuleSetVersionsTableTableManager
                 dueMonthsRefs = false,
                 defaultEnforcementStepsRefs = false,
                 drawRecordsRefs = false,
+                drawWitnessApprovalsRefs = false,
               }) {
                 return PrefetchHooks(
                   db: db,
@@ -13429,6 +14132,7 @@ class $$RuleSetVersionsTableTableManager
                     if (dueMonthsRefs) db.dueMonths,
                     if (defaultEnforcementStepsRefs) db.defaultEnforcementSteps,
                     if (drawRecordsRefs) db.drawRecords,
+                    if (drawWitnessApprovalsRefs) db.drawWitnessApprovals,
                   ],
                   addJoins: null,
                   getPrefetchedDataCallback: (items) async {
@@ -13517,6 +14221,27 @@ class $$RuleSetVersionsTableTableManager
                               ),
                           typedResults: items,
                         ),
+                      if (drawWitnessApprovalsRefs)
+                        await $_getPrefetchedData<
+                          RuleSetVersionRow,
+                          $RuleSetVersionsTable,
+                          DrawWitnessApprovalRow
+                        >(
+                          currentTable: table,
+                          referencedTable: $$RuleSetVersionsTableReferences
+                              ._drawWitnessApprovalsRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$RuleSetVersionsTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).drawWitnessApprovalsRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.ruleSetVersionId == item.id,
+                              ),
+                          typedResults: items,
+                        ),
                     ];
                   },
                 );
@@ -13542,6 +14267,7 @@ typedef $$RuleSetVersionsTableProcessedTableManager =
         bool dueMonthsRefs,
         bool defaultEnforcementStepsRefs,
         bool drawRecordsRefs,
+        bool drawWitnessApprovalsRefs,
       })
     >;
 typedef $$MemberConsentsTableCreateCompanionBuilder =
@@ -17623,6 +18349,10 @@ typedef $$DrawRecordsTableCreateCompanionBuilder =
       required String winnerMemberId,
       required int winnerShareIndex,
       required String eligibleShareKeysJson,
+      Value<String?> redoOfDrawId,
+      Value<DateTime?> invalidatedAt,
+      Value<String?> invalidatedReason,
+      Value<DateTime?> finalizedAt,
       required DateTime recordedAt,
       Value<int> rowid,
     });
@@ -17638,6 +18368,10 @@ typedef $$DrawRecordsTableUpdateCompanionBuilder =
       Value<String> winnerMemberId,
       Value<int> winnerShareIndex,
       Value<String> eligibleShareKeysJson,
+      Value<String?> redoOfDrawId,
+      Value<DateTime?> invalidatedAt,
+      Value<String?> invalidatedReason,
+      Value<DateTime?> finalizedAt,
       Value<DateTime> recordedAt,
       Value<int> rowid,
     });
@@ -17684,6 +18418,34 @@ final class $$DrawRecordsTableReferences
     if (item == null) return manager;
     return ProcessedTableManager(
       manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+
+  static MultiTypedResultKey<
+    $DrawWitnessApprovalsTable,
+    List<DrawWitnessApprovalRow>
+  >
+  _drawWitnessApprovalsRefsTable(_$AppDatabase db) =>
+      MultiTypedResultKey.fromTable(
+        db.drawWitnessApprovals,
+        aliasName: $_aliasNameGenerator(
+          db.drawRecords.id,
+          db.drawWitnessApprovals.drawId,
+        ),
+      );
+
+  $$DrawWitnessApprovalsTableProcessedTableManager
+  get drawWitnessApprovalsRefs {
+    final manager = $$DrawWitnessApprovalsTableTableManager(
+      $_db,
+      $_db.drawWitnessApprovals,
+    ).filter((f) => f.drawId.id.sqlEquals($_itemColumn<String>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(
+      _drawWitnessApprovalsRefsTable($_db),
+    );
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
     );
   }
 }
@@ -17737,6 +18499,26 @@ class $$DrawRecordsTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
+  ColumnFilters<String> get redoOfDrawId => $composableBuilder(
+    column: $table.redoOfDrawId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get invalidatedAt => $composableBuilder(
+    column: $table.invalidatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get invalidatedReason => $composableBuilder(
+    column: $table.invalidatedReason,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get finalizedAt => $composableBuilder(
+    column: $table.finalizedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
   ColumnFilters<DateTime> get recordedAt => $composableBuilder(
     column: $table.recordedAt,
     builder: (column) => ColumnFilters(column),
@@ -17787,6 +18569,31 @@ class $$DrawRecordsTableFilterComposer
     );
     return composer;
   }
+
+  Expression<bool> drawWitnessApprovalsRefs(
+    Expression<bool> Function($$DrawWitnessApprovalsTableFilterComposer f) f,
+  ) {
+    final $$DrawWitnessApprovalsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.drawWitnessApprovals,
+      getReferencedColumn: (t) => t.drawId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$DrawWitnessApprovalsTableFilterComposer(
+            $db: $db,
+            $table: $db.drawWitnessApprovals,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
 }
 
 class $$DrawRecordsTableOrderingComposer
@@ -17835,6 +18642,26 @@ class $$DrawRecordsTableOrderingComposer
 
   ColumnOrderings<String> get eligibleShareKeysJson => $composableBuilder(
     column: $table.eligibleShareKeysJson,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get redoOfDrawId => $composableBuilder(
+    column: $table.redoOfDrawId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get invalidatedAt => $composableBuilder(
+    column: $table.invalidatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get invalidatedReason => $composableBuilder(
+    column: $table.invalidatedReason,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get finalizedAt => $composableBuilder(
+    column: $table.finalizedAt,
     builder: (column) => ColumnOrderings(column),
   );
 
@@ -17931,6 +18758,26 @@ class $$DrawRecordsTableAnnotationComposer
     builder: (column) => column,
   );
 
+  GeneratedColumn<String> get redoOfDrawId => $composableBuilder(
+    column: $table.redoOfDrawId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get invalidatedAt => $composableBuilder(
+    column: $table.invalidatedAt,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get invalidatedReason => $composableBuilder(
+    column: $table.invalidatedReason,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get finalizedAt => $composableBuilder(
+    column: $table.finalizedAt,
+    builder: (column) => column,
+  );
+
   GeneratedColumn<DateTime> get recordedAt => $composableBuilder(
     column: $table.recordedAt,
     builder: (column) => column,
@@ -17981,6 +18828,32 @@ class $$DrawRecordsTableAnnotationComposer
     );
     return composer;
   }
+
+  Expression<T> drawWitnessApprovalsRefs<T extends Object>(
+    Expression<T> Function($$DrawWitnessApprovalsTableAnnotationComposer a) f,
+  ) {
+    final $$DrawWitnessApprovalsTableAnnotationComposer composer =
+        $composerBuilder(
+          composer: this,
+          getCurrentColumn: (t) => t.id,
+          referencedTable: $db.drawWitnessApprovals,
+          getReferencedColumn: (t) => t.drawId,
+          builder:
+              (
+                joinBuilder, {
+                $addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer,
+              }) => $$DrawWitnessApprovalsTableAnnotationComposer(
+                $db: $db,
+                $table: $db.drawWitnessApprovals,
+                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                joinBuilder: joinBuilder,
+                $removeJoinBuilderFromRootComposer:
+                    $removeJoinBuilderFromRootComposer,
+              ),
+        );
+    return f(composer);
+  }
 }
 
 class $$DrawRecordsTableTableManager
@@ -17996,7 +18869,11 @@ class $$DrawRecordsTableTableManager
           $$DrawRecordsTableUpdateCompanionBuilder,
           (DrawRecordRow, $$DrawRecordsTableReferences),
           DrawRecordRow,
-          PrefetchHooks Function({bool shomitiId, bool ruleSetVersionId})
+          PrefetchHooks Function({
+            bool shomitiId,
+            bool ruleSetVersionId,
+            bool drawWitnessApprovalsRefs,
+          })
         > {
   $$DrawRecordsTableTableManager(_$AppDatabase db, $DrawRecordsTable table)
     : super(
@@ -18021,6 +18898,10 @@ class $$DrawRecordsTableTableManager
                 Value<String> winnerMemberId = const Value.absent(),
                 Value<int> winnerShareIndex = const Value.absent(),
                 Value<String> eligibleShareKeysJson = const Value.absent(),
+                Value<String?> redoOfDrawId = const Value.absent(),
+                Value<DateTime?> invalidatedAt = const Value.absent(),
+                Value<String?> invalidatedReason = const Value.absent(),
+                Value<DateTime?> finalizedAt = const Value.absent(),
                 Value<DateTime> recordedAt = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => DrawRecordsCompanion(
@@ -18034,6 +18915,10 @@ class $$DrawRecordsTableTableManager
                 winnerMemberId: winnerMemberId,
                 winnerShareIndex: winnerShareIndex,
                 eligibleShareKeysJson: eligibleShareKeysJson,
+                redoOfDrawId: redoOfDrawId,
+                invalidatedAt: invalidatedAt,
+                invalidatedReason: invalidatedReason,
+                finalizedAt: finalizedAt,
                 recordedAt: recordedAt,
                 rowid: rowid,
               ),
@@ -18049,6 +18934,10 @@ class $$DrawRecordsTableTableManager
                 required String winnerMemberId,
                 required int winnerShareIndex,
                 required String eligibleShareKeysJson,
+                Value<String?> redoOfDrawId = const Value.absent(),
+                Value<DateTime?> invalidatedAt = const Value.absent(),
+                Value<String?> invalidatedReason = const Value.absent(),
+                Value<DateTime?> finalizedAt = const Value.absent(),
                 required DateTime recordedAt,
                 Value<int> rowid = const Value.absent(),
               }) => DrawRecordsCompanion.insert(
@@ -18062,6 +18951,10 @@ class $$DrawRecordsTableTableManager
                 winnerMemberId: winnerMemberId,
                 winnerShareIndex: winnerShareIndex,
                 eligibleShareKeysJson: eligibleShareKeysJson,
+                redoOfDrawId: redoOfDrawId,
+                invalidatedAt: invalidatedAt,
+                invalidatedReason: invalidatedReason,
+                finalizedAt: finalizedAt,
                 recordedAt: recordedAt,
                 rowid: rowid,
               ),
@@ -18074,10 +18967,16 @@ class $$DrawRecordsTableTableManager
               )
               .toList(),
           prefetchHooksCallback:
-              ({shomitiId = false, ruleSetVersionId = false}) {
+              ({
+                shomitiId = false,
+                ruleSetVersionId = false,
+                drawWitnessApprovalsRefs = false,
+              }) {
                 return PrefetchHooks(
                   db: db,
-                  explicitlyWatchedTables: [],
+                  explicitlyWatchedTables: [
+                    if (drawWitnessApprovalsRefs) db.drawWitnessApprovals,
+                  ],
                   addJoins:
                       <
                         T extends TableManagerState<
@@ -18128,7 +19027,29 @@ class $$DrawRecordsTableTableManager
                         return state;
                       },
                   getPrefetchedDataCallback: (items) async {
-                    return [];
+                    return [
+                      if (drawWitnessApprovalsRefs)
+                        await $_getPrefetchedData<
+                          DrawRecordRow,
+                          $DrawRecordsTable,
+                          DrawWitnessApprovalRow
+                        >(
+                          currentTable: table,
+                          referencedTable: $$DrawRecordsTableReferences
+                              ._drawWitnessApprovalsRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$DrawRecordsTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).drawWitnessApprovalsRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.drawId == item.id,
+                              ),
+                          typedResults: items,
+                        ),
+                    ];
                   },
                 );
               },
@@ -18148,7 +19069,446 @@ typedef $$DrawRecordsTableProcessedTableManager =
       $$DrawRecordsTableUpdateCompanionBuilder,
       (DrawRecordRow, $$DrawRecordsTableReferences),
       DrawRecordRow,
-      PrefetchHooks Function({bool shomitiId, bool ruleSetVersionId})
+      PrefetchHooks Function({
+        bool shomitiId,
+        bool ruleSetVersionId,
+        bool drawWitnessApprovalsRefs,
+      })
+    >;
+typedef $$DrawWitnessApprovalsTableCreateCompanionBuilder =
+    DrawWitnessApprovalsCompanion Function({
+      required String drawId,
+      required String witnessMemberId,
+      required String ruleSetVersionId,
+      Value<String?> note,
+      required DateTime approvedAt,
+      Value<int> rowid,
+    });
+typedef $$DrawWitnessApprovalsTableUpdateCompanionBuilder =
+    DrawWitnessApprovalsCompanion Function({
+      Value<String> drawId,
+      Value<String> witnessMemberId,
+      Value<String> ruleSetVersionId,
+      Value<String?> note,
+      Value<DateTime> approvedAt,
+      Value<int> rowid,
+    });
+
+final class $$DrawWitnessApprovalsTableReferences
+    extends
+        BaseReferences<
+          _$AppDatabase,
+          $DrawWitnessApprovalsTable,
+          DrawWitnessApprovalRow
+        > {
+  $$DrawWitnessApprovalsTableReferences(
+    super.$_db,
+    super.$_table,
+    super.$_typedResult,
+  );
+
+  static $DrawRecordsTable _drawIdTable(_$AppDatabase db) =>
+      db.drawRecords.createAlias(
+        $_aliasNameGenerator(db.drawWitnessApprovals.drawId, db.drawRecords.id),
+      );
+
+  $$DrawRecordsTableProcessedTableManager get drawId {
+    final $_column = $_itemColumn<String>('draw_id')!;
+
+    final manager = $$DrawRecordsTableTableManager(
+      $_db,
+      $_db.drawRecords,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_drawIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+
+  static $RuleSetVersionsTable _ruleSetVersionIdTable(_$AppDatabase db) =>
+      db.ruleSetVersions.createAlias(
+        $_aliasNameGenerator(
+          db.drawWitnessApprovals.ruleSetVersionId,
+          db.ruleSetVersions.id,
+        ),
+      );
+
+  $$RuleSetVersionsTableProcessedTableManager get ruleSetVersionId {
+    final $_column = $_itemColumn<String>('rule_set_version_id')!;
+
+    final manager = $$RuleSetVersionsTableTableManager(
+      $_db,
+      $_db.ruleSetVersions,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_ruleSetVersionIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+}
+
+class $$DrawWitnessApprovalsTableFilterComposer
+    extends Composer<_$AppDatabase, $DrawWitnessApprovalsTable> {
+  $$DrawWitnessApprovalsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get witnessMemberId => $composableBuilder(
+    column: $table.witnessMemberId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get note => $composableBuilder(
+    column: $table.note,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get approvedAt => $composableBuilder(
+    column: $table.approvedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  $$DrawRecordsTableFilterComposer get drawId {
+    final $$DrawRecordsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.drawId,
+      referencedTable: $db.drawRecords,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$DrawRecordsTableFilterComposer(
+            $db: $db,
+            $table: $db.drawRecords,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$RuleSetVersionsTableFilterComposer get ruleSetVersionId {
+    final $$RuleSetVersionsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.ruleSetVersionId,
+      referencedTable: $db.ruleSetVersions,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$RuleSetVersionsTableFilterComposer(
+            $db: $db,
+            $table: $db.ruleSetVersions,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$DrawWitnessApprovalsTableOrderingComposer
+    extends Composer<_$AppDatabase, $DrawWitnessApprovalsTable> {
+  $$DrawWitnessApprovalsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get witnessMemberId => $composableBuilder(
+    column: $table.witnessMemberId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get note => $composableBuilder(
+    column: $table.note,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get approvedAt => $composableBuilder(
+    column: $table.approvedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  $$DrawRecordsTableOrderingComposer get drawId {
+    final $$DrawRecordsTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.drawId,
+      referencedTable: $db.drawRecords,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$DrawRecordsTableOrderingComposer(
+            $db: $db,
+            $table: $db.drawRecords,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$RuleSetVersionsTableOrderingComposer get ruleSetVersionId {
+    final $$RuleSetVersionsTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.ruleSetVersionId,
+      referencedTable: $db.ruleSetVersions,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$RuleSetVersionsTableOrderingComposer(
+            $db: $db,
+            $table: $db.ruleSetVersions,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$DrawWitnessApprovalsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $DrawWitnessApprovalsTable> {
+  $$DrawWitnessApprovalsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get witnessMemberId => $composableBuilder(
+    column: $table.witnessMemberId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get note =>
+      $composableBuilder(column: $table.note, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get approvedAt => $composableBuilder(
+    column: $table.approvedAt,
+    builder: (column) => column,
+  );
+
+  $$DrawRecordsTableAnnotationComposer get drawId {
+    final $$DrawRecordsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.drawId,
+      referencedTable: $db.drawRecords,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$DrawRecordsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.drawRecords,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$RuleSetVersionsTableAnnotationComposer get ruleSetVersionId {
+    final $$RuleSetVersionsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.ruleSetVersionId,
+      referencedTable: $db.ruleSetVersions,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$RuleSetVersionsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.ruleSetVersions,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$DrawWitnessApprovalsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $DrawWitnessApprovalsTable,
+          DrawWitnessApprovalRow,
+          $$DrawWitnessApprovalsTableFilterComposer,
+          $$DrawWitnessApprovalsTableOrderingComposer,
+          $$DrawWitnessApprovalsTableAnnotationComposer,
+          $$DrawWitnessApprovalsTableCreateCompanionBuilder,
+          $$DrawWitnessApprovalsTableUpdateCompanionBuilder,
+          (DrawWitnessApprovalRow, $$DrawWitnessApprovalsTableReferences),
+          DrawWitnessApprovalRow,
+          PrefetchHooks Function({bool drawId, bool ruleSetVersionId})
+        > {
+  $$DrawWitnessApprovalsTableTableManager(
+    _$AppDatabase db,
+    $DrawWitnessApprovalsTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$DrawWitnessApprovalsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$DrawWitnessApprovalsTableOrderingComposer(
+                $db: db,
+                $table: table,
+              ),
+          createComputedFieldComposer: () =>
+              $$DrawWitnessApprovalsTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<String> drawId = const Value.absent(),
+                Value<String> witnessMemberId = const Value.absent(),
+                Value<String> ruleSetVersionId = const Value.absent(),
+                Value<String?> note = const Value.absent(),
+                Value<DateTime> approvedAt = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => DrawWitnessApprovalsCompanion(
+                drawId: drawId,
+                witnessMemberId: witnessMemberId,
+                ruleSetVersionId: ruleSetVersionId,
+                note: note,
+                approvedAt: approvedAt,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String drawId,
+                required String witnessMemberId,
+                required String ruleSetVersionId,
+                Value<String?> note = const Value.absent(),
+                required DateTime approvedAt,
+                Value<int> rowid = const Value.absent(),
+              }) => DrawWitnessApprovalsCompanion.insert(
+                drawId: drawId,
+                witnessMemberId: witnessMemberId,
+                ruleSetVersionId: ruleSetVersionId,
+                note: note,
+                approvedAt: approvedAt,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable(table),
+                  $$DrawWitnessApprovalsTableReferences(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: ({drawId = false, ruleSetVersionId = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [],
+              addJoins:
+                  <
+                    T extends TableManagerState<
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic
+                    >
+                  >(state) {
+                    if (drawId) {
+                      state =
+                          state.withJoin(
+                                currentTable: table,
+                                currentColumn: table.drawId,
+                                referencedTable:
+                                    $$DrawWitnessApprovalsTableReferences
+                                        ._drawIdTable(db),
+                                referencedColumn:
+                                    $$DrawWitnessApprovalsTableReferences
+                                        ._drawIdTable(db)
+                                        .id,
+                              )
+                              as T;
+                    }
+                    if (ruleSetVersionId) {
+                      state =
+                          state.withJoin(
+                                currentTable: table,
+                                currentColumn: table.ruleSetVersionId,
+                                referencedTable:
+                                    $$DrawWitnessApprovalsTableReferences
+                                        ._ruleSetVersionIdTable(db),
+                                referencedColumn:
+                                    $$DrawWitnessApprovalsTableReferences
+                                        ._ruleSetVersionIdTable(db)
+                                        .id,
+                              )
+                              as T;
+                    }
+
+                    return state;
+                  },
+              getPrefetchedDataCallback: (items) async {
+                return [];
+              },
+            );
+          },
+        ),
+      );
+}
+
+typedef $$DrawWitnessApprovalsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $DrawWitnessApprovalsTable,
+      DrawWitnessApprovalRow,
+      $$DrawWitnessApprovalsTableFilterComposer,
+      $$DrawWitnessApprovalsTableOrderingComposer,
+      $$DrawWitnessApprovalsTableAnnotationComposer,
+      $$DrawWitnessApprovalsTableCreateCompanionBuilder,
+      $$DrawWitnessApprovalsTableUpdateCompanionBuilder,
+      (DrawWitnessApprovalRow, $$DrawWitnessApprovalsTableReferences),
+      DrawWitnessApprovalRow,
+      PrefetchHooks Function({bool drawId, bool ruleSetVersionId})
     >;
 
 class $AppDatabaseManager {
@@ -18199,4 +19559,6 @@ class $AppDatabaseManager {
       );
   $$DrawRecordsTableTableManager get drawRecords =>
       $$DrawRecordsTableTableManager(_db, _db.drawRecords);
+  $$DrawWitnessApprovalsTableTableManager get drawWitnessApprovals =>
+      $$DrawWitnessApprovalsTableTableManager(_db, _db.drawWitnessApprovals);
 }
