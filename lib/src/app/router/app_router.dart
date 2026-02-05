@@ -19,6 +19,7 @@ import '../../features/shares/presentation/shares_page.dart';
 import '../../features/risk_controls/presentation/risk_controls_page.dart';
 import '../../features/membership_changes/presentation/membership_changes_page.dart';
 import '../../features/contributions/presentation/contributions_page.dart';
+import '../../features/defaults/presentation/defaults_page.dart';
 import '../../features/shomiti_setup/presentation/setup_wizard_page.dart';
 import '../../features/shomiti_setup/presentation/providers/shomiti_setup_providers.dart';
 
@@ -84,6 +85,10 @@ const riskControlsTitle = 'Risk controls';
 const membershipChangesLocation = '/membership-changes';
 const membershipChangesRouteName = 'membershipChanges';
 const membershipChangesTitle = 'Membership changes';
+
+const defaultsLocation = '/defaults';
+const defaultsRouteName = 'defaults';
+const defaultsTitle = 'Defaults';
 
 const disputesLocation = '/disputes';
 const disputesRouteName = 'disputes';
@@ -240,6 +245,11 @@ final appRouterProvider = Provider<GoRouter>((ref) {
             path: membershipChangesLocation,
             name: membershipChangesRouteName,
             builder: (context, state) => const MembershipChangesPage(),
+          ),
+          GoRoute(
+            path: defaultsLocation,
+            name: defaultsRouteName,
+            builder: (context, state) => const DefaultsPage(),
           ),
           GoRoute(
             path: disputesLocation,
