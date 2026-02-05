@@ -87,6 +87,8 @@ void main() {
               missedPaymentPolicy: MissedPaymentPolicy.postponePayout,
               gracePeriodDays: null,
               lateFeeBdtPerDay: null,
+              defaultConsecutiveMissedThreshold: 2,
+              defaultTotalMissedThreshold: 3,
               feesEnabled: false,
               feeAmountBdt: null,
               feePayerModel: FeePayerModel.everyoneEqually,
@@ -102,4 +104,3 @@ void main() {
     expect(find.text('rsv_test'), findsOneWidget);
   });
 }
-

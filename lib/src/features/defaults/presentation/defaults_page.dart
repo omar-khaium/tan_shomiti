@@ -4,15 +4,16 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/ui/components/app_button.dart';
 import '../../../core/ui/components/app_card.dart';
 import '../../../core/ui/tokens/app_spacing.dart';
+import '../domain/usecases/defaults_exceptions.dart';
 import 'models/defaults_row_ui_model.dart';
-import 'providers/defaults_providers.dart';
+import 'providers/defaults_controller_providers.dart';
 
 class DefaultsPage extends ConsumerWidget {
   const DefaultsPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final rows = ref.watch(defaultsDashboardRowsProvider);
+    final rows = ref.watch(defaultsControllerProvider);
 
     return Scaffold(
       appBar: AppBar(title: const Text('Defaults')),
@@ -34,6 +35,8 @@ class DefaultsPage extends ConsumerWidget {
                   const SizedBox(height: AppSpacing.s12),
               itemBuilder: (context, index) {
                 final row = items[index];
+                final episodeKey = row.episodeKey;
+                final controller = ref.read(defaultsControllerProvider.notifier);
 
                 return AppCard(
                   child: Padding(
@@ -82,10 +85,17 @@ class DefaultsPage extends ConsumerWidget {
                                 key: Key('defaults_record_reminder_$index'),
                                 label: 'Record reminder',
                                 onPressed: _isEnabled(
-                                      row.nextStep,
-                                      DefaultsNextStepUi.reminder,
-                                    )
-                                    ? () {}
+                                          row.nextStep,
+                                          DefaultsNextStepUi.reminder,
+                                        ) &&
+                                        episodeKey != null
+                                    ? () => _runAction(
+                                          context,
+                                          () => controller.recordReminder(
+                                            memberId: row.memberId,
+                                            episodeKey: episodeKey,
+                                          ),
+                                        )
                                     : null,
                               ),
                             ),
@@ -95,10 +105,17 @@ class DefaultsPage extends ConsumerWidget {
                                 key: Key('defaults_record_notice_$index'),
                                 label: 'Record notice',
                                 onPressed: _isEnabled(
-                                      row.nextStep,
-                                      DefaultsNextStepUi.notice,
-                                    )
-                                    ? () {}
+                                          row.nextStep,
+                                          DefaultsNextStepUi.notice,
+                                        ) &&
+                                        episodeKey != null
+                                    ? () => _runAction(
+                                          context,
+                                          () => controller.recordNotice(
+                                            memberId: row.memberId,
+                                            episodeKey: episodeKey,
+                                          ),
+                                        )
                                     : null,
                               ),
                             ),
@@ -112,7 +129,14 @@ class DefaultsPage extends ConsumerWidget {
                                 row.nextStep,
                                 DefaultsNextStepUi.guarantorOrDeposit,
                               )
-                              ? () {}
+                              && episodeKey != null
+                              ? () => _runAction(
+                                    context,
+                                    () => controller.applyGuarantorOrDeposit(
+                                      memberId: row.memberId,
+                                      episodeKey: episodeKey,
+                                    ),
+                                  )
                               : null,
                         ),
                       ],
@@ -138,6 +162,29 @@ class DefaultsPage extends ConsumerWidget {
         DefaultsNextStepUi.guarantorOrDeposit => 'Guarantor / deposit',
         DefaultsNextStepUi.dispute => 'Dispute',
       };
+
+  static Future<void> _runAction(
+    BuildContext context,
+    Future<void> Function() action,
+  ) async {
+    try {
+      await action();
+      if (!context.mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Saved.')),
+      );
+    } on DefaultsValidationException catch (e) {
+      if (!context.mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(e.message)),
+      );
+    } catch (_) {
+      if (!context.mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Something went wrong. Please try again.')),
+      );
+    }
+  }
 }
 
 class _StatusBadge extends StatelessWidget {

@@ -39,6 +39,8 @@ class RuleSetSnapshot {
     required this.missedPaymentPolicy,
     required this.gracePeriodDays,
     required this.lateFeeBdtPerDay,
+    required this.defaultConsecutiveMissedThreshold,
+    required this.defaultTotalMissedThreshold,
     required this.feesEnabled,
     required this.feeAmountBdt,
     required this.feePayerModel,
@@ -67,6 +69,10 @@ class RuleSetSnapshot {
   final int? gracePeriodDays;
   final int? lateFeeBdtPerDay;
 
+  /// `rules.md` Section 9.3.
+  final int defaultConsecutiveMissedThreshold;
+  final int defaultTotalMissedThreshold;
+
   /// `rules.md` Section 11.
   final bool feesEnabled;
   final int? feeAmountBdt;
@@ -93,6 +99,8 @@ class RuleSetSnapshot {
       'missedPaymentPolicy': missedPaymentPolicy.name,
       'gracePeriodDays': gracePeriodDays,
       'lateFeeBdtPerDay': lateFeeBdtPerDay,
+      'defaultConsecutiveMissedThreshold': defaultConsecutiveMissedThreshold,
+      'defaultTotalMissedThreshold': defaultTotalMissedThreshold,
       'feesEnabled': feesEnabled,
       'feeAmountBdt': feeAmountBdt,
       'feePayerModel': feePayerModel.name,
@@ -123,6 +131,10 @@ class RuleSetSnapshot {
       ),
       gracePeriodDays: json['gracePeriodDays'] as int?,
       lateFeeBdtPerDay: json['lateFeeBdtPerDay'] as int?,
+      defaultConsecutiveMissedThreshold:
+          (json['defaultConsecutiveMissedThreshold'] as int?) ?? 2,
+      defaultTotalMissedThreshold:
+          (json['defaultTotalMissedThreshold'] as int?) ?? 3,
       feesEnabled: json['feesEnabled'] as bool,
       feeAmountBdt: json['feeAmountBdt'] as int?,
       feePayerModel: FeePayerModel.values.byName(
@@ -133,4 +145,3 @@ class RuleSetSnapshot {
     );
   }
 }
-

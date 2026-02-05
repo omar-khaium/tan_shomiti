@@ -115,6 +115,16 @@ class CreateShomiti {
         'Late fee must be > 0 when provided.',
       );
     }
+    if (snapshot.defaultConsecutiveMissedThreshold <= 0) {
+      throw const CreateShomitiValidationException(
+        'Default threshold (consecutive missed) must be > 0.',
+      );
+    }
+    if (snapshot.defaultTotalMissedThreshold <= 0) {
+      throw const CreateShomitiValidationException(
+        'Default threshold (total missed) must be > 0.',
+      );
+    }
     if (snapshot.feesEnabled) {
       final amount = snapshot.feeAmountBdt;
       if (amount == null || amount <= 0) {
@@ -136,4 +146,3 @@ class CreateShomiti {
     return 'rsv_${ts}_$rand';
   }
 }
-
