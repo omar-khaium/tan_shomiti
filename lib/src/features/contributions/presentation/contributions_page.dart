@@ -215,6 +215,18 @@ class _DueRow extends ConsumerWidget {
                   key: Key('dues_status_${row.position}'),
                   style: Theme.of(context).textTheme.bodySmall,
                 ),
+                const SizedBox(height: AppSpacing.s4),
+                Text(
+                  isPaid ? 'Eligible' : 'Not eligible',
+                  key: Key('dues_eligibility_${row.position}'),
+                  style: Theme.of(context).textTheme.bodySmall,
+                ),
+                const SizedBox(height: AppSpacing.s4),
+                Text(
+                  isPaid ? 'Late fee: 0 BDT' : 'Late fee: -',
+                  key: Key('dues_late_fee_${row.position}'),
+                  style: Theme.of(context).textTheme.bodySmall,
+                ),
               ],
             ),
           ),

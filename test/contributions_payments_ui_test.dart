@@ -50,6 +50,7 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('Unpaid'), findsOneWidget);
+    expect(find.text('Not eligible'), findsOneWidget);
     await tester.tap(find.byKey(const Key('dues_record_payment_1')));
     await tester.pumpAndSettle();
 
@@ -58,6 +59,7 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('Paid'), findsOneWidget);
+    expect(find.text('Eligible'), findsOneWidget);
     expect(find.byKey(const Key('dues_view_receipt_1')), findsOneWidget);
 
     await tester.tap(find.byKey(const Key('dues_view_receipt_1')));
