@@ -27,7 +27,7 @@ class CreateShomiti {
   })  : _shomitiRepository = shomitiRepository,
         _rulesRepository = rulesRepository,
         _appendAuditEvent = appendAuditEvent,
-        _random = random ?? Random.secure();
+        _random = random ?? Random();
 
   final ShomitiRepository _shomitiRepository;
   final RulesRepository _rulesRepository;
