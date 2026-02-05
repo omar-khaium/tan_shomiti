@@ -24,12 +24,18 @@ class ContributionsUiState {
   const ContributionsUiState({
     required this.shomitiId,
     required this.month,
+    required this.paymentDeadline,
+    required this.gracePeriodDays,
+    required this.lateFeeBdtPerDay,
     required this.totalDueBdt,
     required this.rows,
   });
 
   final String shomitiId;
   final BillingMonth month;
+  final String paymentDeadline;
+  final int? gracePeriodDays;
+  final int? lateFeeBdtPerDay;
   final int totalDueBdt;
   final List<MonthlyDueRow> rows;
 }

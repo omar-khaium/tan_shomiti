@@ -10,6 +10,7 @@ import '../domain/value_objects/billing_month.dart';
 import '../../payments/domain/entities/payment.dart';
 import '../../payments/domain/value_objects/payment_method.dart';
 import '../../payments/presentation/providers/payments_domain_providers.dart';
+import '../../payments/presentation/providers/payments_policy_providers.dart';
 import 'models/contributions_ui_state.dart';
 import 'providers/contributions_payments_providers.dart';
 import 'providers/contributions_providers.dart';
@@ -103,6 +104,9 @@ class ContributionsPage extends ConsumerWidget {
                 shomitiId: ui.shomitiId,
                 row: row,
                 month: ui.month,
+                paymentDeadline: ui.paymentDeadline,
+                gracePeriodDays: ui.gracePeriodDays,
+                lateFeeBdtPerDay: ui.lateFeeBdtPerDay,
                 payment: payments[row.memberId],
               ),
           ],
@@ -178,17 +182,32 @@ class _DueRow extends ConsumerWidget {
     required this.shomitiId,
     required this.row,
     required this.month,
+    required this.paymentDeadline,
+    required this.gracePeriodDays,
+    required this.lateFeeBdtPerDay,
     required this.payment,
   });
 
   final String shomitiId;
   final MonthlyDueRow row;
   final BillingMonth month;
+  final String paymentDeadline;
+  final int? gracePeriodDays;
+  final int? lateFeeBdtPerDay;
   final Payment? payment;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isPaid = payment != null;
+    final compliance = payment == null
+        ? null
+        : ref.watch(computePaymentComplianceProvider)(
+            month: month,
+            confirmedAt: payment!.confirmedAt,
+            paymentDeadline: paymentDeadline,
+            gracePeriodDays: gracePeriodDays,
+            lateFeeBdtPerDay: lateFeeBdtPerDay,
+          );
 
     return AppCard(
       key: Key('dues_row_${row.position}'),
@@ -217,13 +236,19 @@ class _DueRow extends ConsumerWidget {
                 ),
                 const SizedBox(height: AppSpacing.s4),
                 Text(
-                  isPaid ? 'Eligible' : 'Not eligible',
+                  isPaid
+                      ? ((compliance?.isEligible ?? true)
+                          ? 'Eligible'
+                          : 'Not eligible')
+                      : 'Not eligible',
                   key: Key('dues_eligibility_${row.position}'),
                   style: Theme.of(context).textTheme.bodySmall,
                 ),
                 const SizedBox(height: AppSpacing.s4),
                 Text(
-                  isPaid ? 'Late fee: 0 BDT' : 'Late fee: -',
+                  isPaid
+                      ? 'Late fee: ${(compliance?.lateFeeBdt ?? 0)} BDT'
+                      : 'Late fee: -',
                   key: Key('dues_late_fee_${row.position}'),
                   style: Theme.of(context).textTheme.bodySmall,
                 ),
