@@ -462,6 +462,116 @@ void main() {
     expect(byShareKey['m_active_1#2']!.isEligible, isTrue);
   });
 
+  test('ComputeDrawEligibility ignores winners from invalidated draws', () async {
+    final db = await seededDb();
+    addTearDown(db.close);
+
+    final membersRepo = DriftMembersRepository(db);
+    final duesRepo = DriftMonthlyDuesRepository(db);
+    final paymentsRepo = DriftPaymentsRepository(db);
+    final drawsRepo = DriftDrawRecordsRepository(db);
+
+    const month = BillingMonth(year: 2026, month: 2);
+    final now = DateTime.utc(2026, 2, 5, 12);
+
+    await membersRepo.upsert(
+      Member(
+        id: 'm_active_1',
+        shomitiId: 'active',
+        position: 1,
+        fullName: 'Alice',
+        phone: null,
+        addressOrWorkplace: null,
+        emergencyContactName: null,
+        emergencyContactPhone: null,
+        nidOrPassport: null,
+        notes: null,
+        isActive: true,
+        createdAt: now,
+        updatedAt: null,
+      ),
+    );
+
+    await duesRepo.upsertDueMonth(
+      DueMonth(
+        shomitiId: 'active',
+        month: month,
+        ruleSetVersionId: 'rsv_1',
+        generatedAt: now,
+      ),
+    );
+
+    await duesRepo.replaceMonthlyDues(
+      shomitiId: 'active',
+      month: month,
+      dues: [
+        MonthlyDue(
+          shomitiId: 'active',
+          month: month,
+          memberId: 'm_active_1',
+          shares: 1,
+          shareValueBdt: 1000,
+          dueAmountBdt: 1000,
+          createdAt: now,
+        ),
+      ],
+    );
+
+    await paymentsRepo.upsertPayment(
+      Payment(
+        id: 'p1',
+        shomitiId: 'active',
+        month: month,
+        memberId: 'm_active_1',
+        amountBdt: 1000,
+        method: PaymentMethod.cash,
+        reference: 'cash',
+        proofNote: null,
+        recordedAt: now,
+        confirmedAt: now,
+        receiptNumber: null,
+        receiptIssuedAt: null,
+      ),
+    );
+
+    await drawsRepo.upsert(
+      DrawRecord(
+        id: 'draw_invalidated',
+        shomitiId: 'active',
+        month: const BillingMonth(year: 2026, month: 1),
+        ruleSetVersionId: 'rsv_1',
+        method: DrawMethod.physicalSlips,
+        proofReference: 'vid-1',
+        notes: null,
+        winnerMemberId: 'm_active_1',
+        winnerShareIndex: 1,
+        eligibleShareKeys: const ['m_active_1#1'],
+        redoOfDrawId: null,
+        invalidatedAt: now,
+        invalidatedReason: 'redo',
+        finalizedAt: null,
+        recordedAt: now,
+      ),
+    );
+
+    final usecase = ComputeDrawEligibility(
+      monthlyDuesRepository: duesRepo,
+      membersRepository: membersRepo,
+      paymentsRepository: paymentsRepo,
+      drawRecordsRepository: drawsRepo,
+      computePaymentCompliance: const ComputePaymentCompliance(),
+    );
+
+    final result = await usecase(
+      shomitiId: 'active',
+      month: month,
+      rules: rules(),
+    );
+
+    expect(result.items.single.shareKey, 'm_active_1#1');
+    expect(result.items.single.isEligible, isTrue);
+  });
+
   test('RecordDrawResult validates eligible list and winner selection', () async {
     final db = await seededDb();
     addTearDown(db.close);
