@@ -55,7 +55,10 @@ class DriftDefaultsRepository implements DefaultsRepository {
   }) async {
     final query = _db.select(_db.defaultEnforcementSteps)
       ..where((s) => s.shomitiId.equals(shomitiId))
-      ..orderBy([(s) => OrderingTerm(expression: s.recordedAt)]);
+      ..orderBy([
+        (s) => OrderingTerm(expression: s.recordedAt),
+        (s) => OrderingTerm(expression: s.id),
+      ]);
 
     final rows = await query.get();
     return rows.map(_mapRow).toList(growable: false);
