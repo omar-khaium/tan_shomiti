@@ -1,5 +1,7 @@
 import 'package:flutter/foundation.dart';
 
+import '../../domain/value_objects/billing_month.dart';
+
 @immutable
 class MonthlyDueRow {
   const MonthlyDueRow({
@@ -25,9 +27,7 @@ class ContributionsUiState {
     required this.rows,
   });
 
-  /// Month anchor (first day of the month, local time).
-  final DateTime month;
+  final BillingMonth month;
   final int totalDueBdt;
   final List<MonthlyDueRow> rows;
 }
-
