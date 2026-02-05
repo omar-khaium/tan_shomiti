@@ -20,6 +20,9 @@ import '../../features/risk_controls/presentation/risk_controls_page.dart';
 import '../../features/membership_changes/presentation/membership_changes_page.dart';
 import '../../features/contributions/presentation/contributions_page.dart';
 import '../../features/defaults/presentation/defaults_page.dart';
+import '../../features/draw/presentation/draw_page.dart';
+import '../../features/draw/presentation/run_draw_page.dart';
+import '../../features/contributions/domain/value_objects/billing_month.dart';
 import '../../features/shomiti_setup/presentation/setup_wizard_page.dart';
 import '../../features/shomiti_setup/presentation/providers/shomiti_setup_providers.dart';
 
@@ -61,6 +64,9 @@ const componentsTitle = 'Components';
 const drawLocation = '/draw';
 const drawRouteName = 'draw';
 const drawTitle = 'Draw';
+
+const drawRunLocation = '/draw/run';
+const drawRunRouteName = 'drawRun';
 
 const payoutLocation = '/payout';
 const payoutRouteName = 'payout';
@@ -207,8 +213,17 @@ final appRouterProvider = Provider<GoRouter>((ref) {
           GoRoute(
             path: drawLocation,
             name: drawRouteName,
-            builder: (context, state) =>
-                const PlaceholderPage(title: drawTitle),
+            builder: (context, state) => const DrawPage(),
+          ),
+          GoRoute(
+            path: drawRunLocation,
+            name: drawRunRouteName,
+            builder: (context, state) {
+              final month = state.extra is BillingMonth
+                  ? state.extra! as BillingMonth
+                  : BillingMonth.fromDate(DateTime.now());
+              return RunDrawPage(month: month);
+            },
           ),
           GoRoute(
             path: payoutLocation,
