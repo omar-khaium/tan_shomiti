@@ -12,6 +12,59 @@ import 'package:tan_shomiti/src/features/payout/presentation/payout_proof_page.d
 import 'package:tan_shomiti/src/features/payout/presentation/providers/payout_providers.dart';
 
 void main() {
+  PayoutUiState fakeUi({
+    required BillingMonth month,
+    required PayoutPrerequisitesUiState prerequisites,
+    PayoutCollectionTotalsUiState totals = const PayoutCollectionTotalsUiState(
+      dueTotalBdt: 100,
+      paidTotalBdt: 100,
+      coveredTotalBdt: 0,
+      shortfallBdt: 0,
+    ),
+    PayoutVerificationUiState verification = const PayoutVerificationUiState(
+      isVerified: true,
+      verifiedByMemberId: 'm1',
+      verifiedByName: 'Member 1',
+      verifiedAt: null,
+    ),
+    PayoutRoleApprovalUiState treasurerApproval = const PayoutRoleApprovalUiState(
+      hasApproval: true,
+      approverMemberId: 'm1',
+      approverName: 'Member 1',
+      approvedAt: null,
+      note: null,
+    ),
+    PayoutRoleApprovalUiState auditorApproval = const PayoutRoleApprovalUiState(
+      hasApproval: true,
+      approverMemberId: 'm2',
+      approverName: 'Member 2',
+      approvedAt: null,
+      note: null,
+    ),
+    PayoutPaidUiState paid = const PayoutPaidUiState(
+      isPaid: false,
+      proofReference: null,
+      paidAt: null,
+    ),
+    bool allowShortfallCoverage = false,
+  }) {
+    return PayoutUiState(
+      shomitiId: 's1',
+      ruleSetVersionId: 'r1',
+      month: month,
+      drawId: 'd1',
+      winnerLabel: 'Member 1 (share 0)',
+      amountBdt: totals.dueTotalBdt,
+      totals: totals,
+      verification: verification,
+      treasurerApproval: treasurerApproval,
+      auditorApproval: auditorApproval,
+      paid: paid,
+      allowShortfallCoverage: allowShortfallCoverage,
+      prerequisites: prerequisites,
+    );
+  }
+
   Future<void> pumpOverview(
     WidgetTester tester, {
     List<Override> overrides = const [],
@@ -62,10 +115,12 @@ void main() {
       overrides: [
         payoutUiStateProvider.overrideWith(
           (ref) => AsyncData(
-            PayoutUiState(
+            fakeUi(
               month: const BillingMonth(year: 2026, month: 2),
               prerequisites: const PayoutPrerequisitesUiState(
                 hasRecordedDraw: false,
+                isDrawFinalized: false,
+                isCollectionComplete: false,
                 isCollectionVerified: false,
                 hasTreasurerApproval: false,
                 hasAuditorApproval: false,
@@ -90,11 +145,31 @@ void main() {
 
   testWidgets('Payout collection page shows required keys', (tester) async {
     await tester.pumpWidget(
-      MaterialApp(
-        theme: AppTheme.light(),
-        home: const PayoutCollectionVerificationPage(),
+      ProviderScope(
+        overrides: [
+          payoutUiStateProvider.overrideWith(
+            (ref) => AsyncData(
+              fakeUi(
+                month: const BillingMonth(year: 2026, month: 2),
+                prerequisites: const PayoutPrerequisitesUiState(
+                  hasRecordedDraw: true,
+                  isDrawFinalized: true,
+                  isCollectionComplete: true,
+                  isCollectionVerified: true,
+                  hasTreasurerApproval: false,
+                  hasAuditorApproval: false,
+                ),
+              ),
+            ),
+          ),
+        ],
+        child: MaterialApp(
+          theme: AppTheme.light(),
+          home: const PayoutCollectionVerificationPage(),
+        ),
       ),
     );
+    await tester.pumpAndSettle();
 
     expect(find.byKey(const Key('payout_collection_due_total')), findsOneWidget);
     expect(find.byKey(const Key('payout_collection_paid_total')), findsOneWidget);
@@ -106,10 +181,30 @@ void main() {
     expect(button.onPressed, isNotNull);
   });
 
-  testWidgets('Payout approvals page toggles approvals', (tester) async {
+  testWidgets('Payout approvals page shows approved status when complete', (tester) async {
     await tester.pumpWidget(
-      MaterialApp(theme: AppTheme.light(), home: const PayoutApprovalsPage()),
+      ProviderScope(
+        overrides: [
+          payoutUiStateProvider.overrideWith(
+            (ref) => AsyncData(
+              fakeUi(
+                month: const BillingMonth(year: 2026, month: 2),
+                prerequisites: const PayoutPrerequisitesUiState(
+                  hasRecordedDraw: true,
+                  isDrawFinalized: true,
+                  isCollectionComplete: true,
+                  isCollectionVerified: true,
+                  hasTreasurerApproval: true,
+                  hasAuditorApproval: true,
+                ),
+              ),
+            ),
+          ),
+        ],
+        child: MaterialApp(theme: AppTheme.light(), home: const PayoutApprovalsPage()),
+      ),
     );
+    await tester.pumpAndSettle();
 
     expect(find.byKey(const Key('payout_treasurer_note')), findsOneWidget);
     expect(find.byKey(const Key('payout_treasurer_approve')), findsOneWidget);
@@ -117,21 +212,39 @@ void main() {
     expect(find.byKey(const Key('payout_auditor_approve')), findsOneWidget);
     expect(find.byKey(const Key('payout_approval_status')), findsOneWidget);
 
-    expect(find.text('Pending'), findsOneWidget);
-
-    await tester.tap(find.byKey(const Key('payout_treasurer_approve')));
-    await tester.pumpAndSettle();
-    expect(find.text('Pending'), findsOneWidget);
-
-    await tester.tap(find.byKey(const Key('payout_auditor_approve')));
-    await tester.pumpAndSettle();
     expect(find.text('Approved for payout'), findsOneWidget);
   });
 
   testWidgets('Payout proof requires proof reference', (tester) async {
     await tester.pumpWidget(
-      MaterialApp(theme: AppTheme.light(), home: const PayoutProofPage()),
+      ProviderScope(
+        overrides: [
+          payoutUiStateProvider.overrideWith(
+            (ref) => AsyncData(
+              fakeUi(
+                month: const BillingMonth(year: 2026, month: 2),
+                prerequisites: const PayoutPrerequisitesUiState(
+                  hasRecordedDraw: true,
+                  isDrawFinalized: true,
+                  isCollectionComplete: true,
+                  isCollectionVerified: true,
+                  hasTreasurerApproval: true,
+                  hasAuditorApproval: true,
+                ),
+                verification: const PayoutVerificationUiState(
+                  isVerified: true,
+                  verifiedByMemberId: 'm1',
+                  verifiedByName: 'Member 1',
+                  verifiedAt: null,
+                ),
+              ),
+            ),
+          ),
+        ],
+        child: MaterialApp(theme: AppTheme.light(), home: const PayoutProofPage()),
+      ),
     );
+    await tester.pumpAndSettle();
 
     expect(find.byKey(const Key('payout_winner_label')), findsOneWidget);
     expect(find.byKey(const Key('payout_amount_label')), findsOneWidget);
@@ -150,4 +263,3 @@ void main() {
     expect(enabledButton.onPressed, isNotNull);
   });
 }
-

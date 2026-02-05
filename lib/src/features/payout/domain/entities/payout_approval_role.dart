@@ -1,0 +1,5 @@
+enum PayoutApprovalRole {
+  treasurer,
+  auditor,
+}
+

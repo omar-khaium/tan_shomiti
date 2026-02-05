@@ -9557,6 +9557,1657 @@ class DrawWitnessApprovalsCompanion
   }
 }
 
+class $PayoutCollectionVerificationsTable extends PayoutCollectionVerifications
+    with
+        TableInfo<
+          $PayoutCollectionVerificationsTable,
+          PayoutCollectionVerificationRow
+        > {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $PayoutCollectionVerificationsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _shomitiIdMeta = const VerificationMeta(
+    'shomitiId',
+  );
+  @override
+  late final GeneratedColumn<String> shomitiId = GeneratedColumn<String>(
+    'shomiti_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES shomitis (id)',
+    ),
+  );
+  static const VerificationMeta _monthKeyMeta = const VerificationMeta(
+    'monthKey',
+  );
+  @override
+  late final GeneratedColumn<String> monthKey = GeneratedColumn<String>(
+    'month_key',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _ruleSetVersionIdMeta = const VerificationMeta(
+    'ruleSetVersionId',
+  );
+  @override
+  late final GeneratedColumn<String> ruleSetVersionId = GeneratedColumn<String>(
+    'rule_set_version_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES rule_set_versions (id)',
+    ),
+  );
+  static const VerificationMeta _verifiedByMemberIdMeta =
+      const VerificationMeta('verifiedByMemberId');
+  @override
+  late final GeneratedColumn<String> verifiedByMemberId =
+      GeneratedColumn<String>(
+        'verified_by_member_id',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+      );
+  static const VerificationMeta _noteMeta = const VerificationMeta('note');
+  @override
+  late final GeneratedColumn<String> note = GeneratedColumn<String>(
+    'note',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _verifiedAtMeta = const VerificationMeta(
+    'verifiedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> verifiedAt = GeneratedColumn<DateTime>(
+    'verified_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    shomitiId,
+    monthKey,
+    ruleSetVersionId,
+    verifiedByMemberId,
+    note,
+    verifiedAt,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'payout_collection_verifications';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<PayoutCollectionVerificationRow> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('shomiti_id')) {
+      context.handle(
+        _shomitiIdMeta,
+        shomitiId.isAcceptableOrUnknown(data['shomiti_id']!, _shomitiIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_shomitiIdMeta);
+    }
+    if (data.containsKey('month_key')) {
+      context.handle(
+        _monthKeyMeta,
+        monthKey.isAcceptableOrUnknown(data['month_key']!, _monthKeyMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_monthKeyMeta);
+    }
+    if (data.containsKey('rule_set_version_id')) {
+      context.handle(
+        _ruleSetVersionIdMeta,
+        ruleSetVersionId.isAcceptableOrUnknown(
+          data['rule_set_version_id']!,
+          _ruleSetVersionIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_ruleSetVersionIdMeta);
+    }
+    if (data.containsKey('verified_by_member_id')) {
+      context.handle(
+        _verifiedByMemberIdMeta,
+        verifiedByMemberId.isAcceptableOrUnknown(
+          data['verified_by_member_id']!,
+          _verifiedByMemberIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_verifiedByMemberIdMeta);
+    }
+    if (data.containsKey('note')) {
+      context.handle(
+        _noteMeta,
+        note.isAcceptableOrUnknown(data['note']!, _noteMeta),
+      );
+    }
+    if (data.containsKey('verified_at')) {
+      context.handle(
+        _verifiedAtMeta,
+        verifiedAt.isAcceptableOrUnknown(data['verified_at']!, _verifiedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_verifiedAtMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {shomitiId, monthKey};
+  @override
+  PayoutCollectionVerificationRow map(
+    Map<String, dynamic> data, {
+    String? tablePrefix,
+  }) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return PayoutCollectionVerificationRow(
+      shomitiId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}shomiti_id'],
+      )!,
+      monthKey: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}month_key'],
+      )!,
+      ruleSetVersionId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}rule_set_version_id'],
+      )!,
+      verifiedByMemberId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}verified_by_member_id'],
+      )!,
+      note: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}note'],
+      ),
+      verifiedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}verified_at'],
+      )!,
+    );
+  }
+
+  @override
+  $PayoutCollectionVerificationsTable createAlias(String alias) {
+    return $PayoutCollectionVerificationsTable(attachedDatabase, alias);
+  }
+}
+
+class PayoutCollectionVerificationRow extends DataClass
+    implements Insertable<PayoutCollectionVerificationRow> {
+  final String shomitiId;
+  final String monthKey;
+  final String ruleSetVersionId;
+  final String verifiedByMemberId;
+  final String? note;
+  final DateTime verifiedAt;
+  const PayoutCollectionVerificationRow({
+    required this.shomitiId,
+    required this.monthKey,
+    required this.ruleSetVersionId,
+    required this.verifiedByMemberId,
+    this.note,
+    required this.verifiedAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['shomiti_id'] = Variable<String>(shomitiId);
+    map['month_key'] = Variable<String>(monthKey);
+    map['rule_set_version_id'] = Variable<String>(ruleSetVersionId);
+    map['verified_by_member_id'] = Variable<String>(verifiedByMemberId);
+    if (!nullToAbsent || note != null) {
+      map['note'] = Variable<String>(note);
+    }
+    map['verified_at'] = Variable<DateTime>(verifiedAt);
+    return map;
+  }
+
+  PayoutCollectionVerificationsCompanion toCompanion(bool nullToAbsent) {
+    return PayoutCollectionVerificationsCompanion(
+      shomitiId: Value(shomitiId),
+      monthKey: Value(monthKey),
+      ruleSetVersionId: Value(ruleSetVersionId),
+      verifiedByMemberId: Value(verifiedByMemberId),
+      note: note == null && nullToAbsent ? const Value.absent() : Value(note),
+      verifiedAt: Value(verifiedAt),
+    );
+  }
+
+  factory PayoutCollectionVerificationRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return PayoutCollectionVerificationRow(
+      shomitiId: serializer.fromJson<String>(json['shomitiId']),
+      monthKey: serializer.fromJson<String>(json['monthKey']),
+      ruleSetVersionId: serializer.fromJson<String>(json['ruleSetVersionId']),
+      verifiedByMemberId: serializer.fromJson<String>(
+        json['verifiedByMemberId'],
+      ),
+      note: serializer.fromJson<String?>(json['note']),
+      verifiedAt: serializer.fromJson<DateTime>(json['verifiedAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'shomitiId': serializer.toJson<String>(shomitiId),
+      'monthKey': serializer.toJson<String>(monthKey),
+      'ruleSetVersionId': serializer.toJson<String>(ruleSetVersionId),
+      'verifiedByMemberId': serializer.toJson<String>(verifiedByMemberId),
+      'note': serializer.toJson<String?>(note),
+      'verifiedAt': serializer.toJson<DateTime>(verifiedAt),
+    };
+  }
+
+  PayoutCollectionVerificationRow copyWith({
+    String? shomitiId,
+    String? monthKey,
+    String? ruleSetVersionId,
+    String? verifiedByMemberId,
+    Value<String?> note = const Value.absent(),
+    DateTime? verifiedAt,
+  }) => PayoutCollectionVerificationRow(
+    shomitiId: shomitiId ?? this.shomitiId,
+    monthKey: monthKey ?? this.monthKey,
+    ruleSetVersionId: ruleSetVersionId ?? this.ruleSetVersionId,
+    verifiedByMemberId: verifiedByMemberId ?? this.verifiedByMemberId,
+    note: note.present ? note.value : this.note,
+    verifiedAt: verifiedAt ?? this.verifiedAt,
+  );
+  PayoutCollectionVerificationRow copyWithCompanion(
+    PayoutCollectionVerificationsCompanion data,
+  ) {
+    return PayoutCollectionVerificationRow(
+      shomitiId: data.shomitiId.present ? data.shomitiId.value : this.shomitiId,
+      monthKey: data.monthKey.present ? data.monthKey.value : this.monthKey,
+      ruleSetVersionId: data.ruleSetVersionId.present
+          ? data.ruleSetVersionId.value
+          : this.ruleSetVersionId,
+      verifiedByMemberId: data.verifiedByMemberId.present
+          ? data.verifiedByMemberId.value
+          : this.verifiedByMemberId,
+      note: data.note.present ? data.note.value : this.note,
+      verifiedAt: data.verifiedAt.present
+          ? data.verifiedAt.value
+          : this.verifiedAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('PayoutCollectionVerificationRow(')
+          ..write('shomitiId: $shomitiId, ')
+          ..write('monthKey: $monthKey, ')
+          ..write('ruleSetVersionId: $ruleSetVersionId, ')
+          ..write('verifiedByMemberId: $verifiedByMemberId, ')
+          ..write('note: $note, ')
+          ..write('verifiedAt: $verifiedAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    shomitiId,
+    monthKey,
+    ruleSetVersionId,
+    verifiedByMemberId,
+    note,
+    verifiedAt,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is PayoutCollectionVerificationRow &&
+          other.shomitiId == this.shomitiId &&
+          other.monthKey == this.monthKey &&
+          other.ruleSetVersionId == this.ruleSetVersionId &&
+          other.verifiedByMemberId == this.verifiedByMemberId &&
+          other.note == this.note &&
+          other.verifiedAt == this.verifiedAt);
+}
+
+class PayoutCollectionVerificationsCompanion
+    extends UpdateCompanion<PayoutCollectionVerificationRow> {
+  final Value<String> shomitiId;
+  final Value<String> monthKey;
+  final Value<String> ruleSetVersionId;
+  final Value<String> verifiedByMemberId;
+  final Value<String?> note;
+  final Value<DateTime> verifiedAt;
+  final Value<int> rowid;
+  const PayoutCollectionVerificationsCompanion({
+    this.shomitiId = const Value.absent(),
+    this.monthKey = const Value.absent(),
+    this.ruleSetVersionId = const Value.absent(),
+    this.verifiedByMemberId = const Value.absent(),
+    this.note = const Value.absent(),
+    this.verifiedAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  PayoutCollectionVerificationsCompanion.insert({
+    required String shomitiId,
+    required String monthKey,
+    required String ruleSetVersionId,
+    required String verifiedByMemberId,
+    this.note = const Value.absent(),
+    required DateTime verifiedAt,
+    this.rowid = const Value.absent(),
+  }) : shomitiId = Value(shomitiId),
+       monthKey = Value(monthKey),
+       ruleSetVersionId = Value(ruleSetVersionId),
+       verifiedByMemberId = Value(verifiedByMemberId),
+       verifiedAt = Value(verifiedAt);
+  static Insertable<PayoutCollectionVerificationRow> custom({
+    Expression<String>? shomitiId,
+    Expression<String>? monthKey,
+    Expression<String>? ruleSetVersionId,
+    Expression<String>? verifiedByMemberId,
+    Expression<String>? note,
+    Expression<DateTime>? verifiedAt,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (shomitiId != null) 'shomiti_id': shomitiId,
+      if (monthKey != null) 'month_key': monthKey,
+      if (ruleSetVersionId != null) 'rule_set_version_id': ruleSetVersionId,
+      if (verifiedByMemberId != null)
+        'verified_by_member_id': verifiedByMemberId,
+      if (note != null) 'note': note,
+      if (verifiedAt != null) 'verified_at': verifiedAt,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  PayoutCollectionVerificationsCompanion copyWith({
+    Value<String>? shomitiId,
+    Value<String>? monthKey,
+    Value<String>? ruleSetVersionId,
+    Value<String>? verifiedByMemberId,
+    Value<String?>? note,
+    Value<DateTime>? verifiedAt,
+    Value<int>? rowid,
+  }) {
+    return PayoutCollectionVerificationsCompanion(
+      shomitiId: shomitiId ?? this.shomitiId,
+      monthKey: monthKey ?? this.monthKey,
+      ruleSetVersionId: ruleSetVersionId ?? this.ruleSetVersionId,
+      verifiedByMemberId: verifiedByMemberId ?? this.verifiedByMemberId,
+      note: note ?? this.note,
+      verifiedAt: verifiedAt ?? this.verifiedAt,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (shomitiId.present) {
+      map['shomiti_id'] = Variable<String>(shomitiId.value);
+    }
+    if (monthKey.present) {
+      map['month_key'] = Variable<String>(monthKey.value);
+    }
+    if (ruleSetVersionId.present) {
+      map['rule_set_version_id'] = Variable<String>(ruleSetVersionId.value);
+    }
+    if (verifiedByMemberId.present) {
+      map['verified_by_member_id'] = Variable<String>(verifiedByMemberId.value);
+    }
+    if (note.present) {
+      map['note'] = Variable<String>(note.value);
+    }
+    if (verifiedAt.present) {
+      map['verified_at'] = Variable<DateTime>(verifiedAt.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('PayoutCollectionVerificationsCompanion(')
+          ..write('shomitiId: $shomitiId, ')
+          ..write('monthKey: $monthKey, ')
+          ..write('ruleSetVersionId: $ruleSetVersionId, ')
+          ..write('verifiedByMemberId: $verifiedByMemberId, ')
+          ..write('note: $note, ')
+          ..write('verifiedAt: $verifiedAt, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $PayoutApprovalsTable extends PayoutApprovals
+    with TableInfo<$PayoutApprovalsTable, PayoutApprovalRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $PayoutApprovalsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _shomitiIdMeta = const VerificationMeta(
+    'shomitiId',
+  );
+  @override
+  late final GeneratedColumn<String> shomitiId = GeneratedColumn<String>(
+    'shomiti_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES shomitis (id)',
+    ),
+  );
+  static const VerificationMeta _monthKeyMeta = const VerificationMeta(
+    'monthKey',
+  );
+  @override
+  late final GeneratedColumn<String> monthKey = GeneratedColumn<String>(
+    'month_key',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _roleMeta = const VerificationMeta('role');
+  @override
+  late final GeneratedColumn<String> role = GeneratedColumn<String>(
+    'role',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _approverMemberIdMeta = const VerificationMeta(
+    'approverMemberId',
+  );
+  @override
+  late final GeneratedColumn<String> approverMemberId = GeneratedColumn<String>(
+    'approver_member_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _ruleSetVersionIdMeta = const VerificationMeta(
+    'ruleSetVersionId',
+  );
+  @override
+  late final GeneratedColumn<String> ruleSetVersionId = GeneratedColumn<String>(
+    'rule_set_version_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES rule_set_versions (id)',
+    ),
+  );
+  static const VerificationMeta _noteMeta = const VerificationMeta('note');
+  @override
+  late final GeneratedColumn<String> note = GeneratedColumn<String>(
+    'note',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _approvedAtMeta = const VerificationMeta(
+    'approvedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> approvedAt = GeneratedColumn<DateTime>(
+    'approved_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    shomitiId,
+    monthKey,
+    role,
+    approverMemberId,
+    ruleSetVersionId,
+    note,
+    approvedAt,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'payout_approvals';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<PayoutApprovalRow> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('shomiti_id')) {
+      context.handle(
+        _shomitiIdMeta,
+        shomitiId.isAcceptableOrUnknown(data['shomiti_id']!, _shomitiIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_shomitiIdMeta);
+    }
+    if (data.containsKey('month_key')) {
+      context.handle(
+        _monthKeyMeta,
+        monthKey.isAcceptableOrUnknown(data['month_key']!, _monthKeyMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_monthKeyMeta);
+    }
+    if (data.containsKey('role')) {
+      context.handle(
+        _roleMeta,
+        role.isAcceptableOrUnknown(data['role']!, _roleMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_roleMeta);
+    }
+    if (data.containsKey('approver_member_id')) {
+      context.handle(
+        _approverMemberIdMeta,
+        approverMemberId.isAcceptableOrUnknown(
+          data['approver_member_id']!,
+          _approverMemberIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_approverMemberIdMeta);
+    }
+    if (data.containsKey('rule_set_version_id')) {
+      context.handle(
+        _ruleSetVersionIdMeta,
+        ruleSetVersionId.isAcceptableOrUnknown(
+          data['rule_set_version_id']!,
+          _ruleSetVersionIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_ruleSetVersionIdMeta);
+    }
+    if (data.containsKey('note')) {
+      context.handle(
+        _noteMeta,
+        note.isAcceptableOrUnknown(data['note']!, _noteMeta),
+      );
+    }
+    if (data.containsKey('approved_at')) {
+      context.handle(
+        _approvedAtMeta,
+        approvedAt.isAcceptableOrUnknown(data['approved_at']!, _approvedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_approvedAtMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {
+    shomitiId,
+    monthKey,
+    role,
+    approverMemberId,
+  };
+  @override
+  PayoutApprovalRow map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return PayoutApprovalRow(
+      shomitiId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}shomiti_id'],
+      )!,
+      monthKey: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}month_key'],
+      )!,
+      role: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}role'],
+      )!,
+      approverMemberId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}approver_member_id'],
+      )!,
+      ruleSetVersionId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}rule_set_version_id'],
+      )!,
+      note: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}note'],
+      ),
+      approvedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}approved_at'],
+      )!,
+    );
+  }
+
+  @override
+  $PayoutApprovalsTable createAlias(String alias) {
+    return $PayoutApprovalsTable(attachedDatabase, alias);
+  }
+}
+
+class PayoutApprovalRow extends DataClass
+    implements Insertable<PayoutApprovalRow> {
+  final String shomitiId;
+  final String monthKey;
+
+  /// 'treasurer' or 'auditor'
+  final String role;
+  final String approverMemberId;
+  final String ruleSetVersionId;
+  final String? note;
+  final DateTime approvedAt;
+  const PayoutApprovalRow({
+    required this.shomitiId,
+    required this.monthKey,
+    required this.role,
+    required this.approverMemberId,
+    required this.ruleSetVersionId,
+    this.note,
+    required this.approvedAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['shomiti_id'] = Variable<String>(shomitiId);
+    map['month_key'] = Variable<String>(monthKey);
+    map['role'] = Variable<String>(role);
+    map['approver_member_id'] = Variable<String>(approverMemberId);
+    map['rule_set_version_id'] = Variable<String>(ruleSetVersionId);
+    if (!nullToAbsent || note != null) {
+      map['note'] = Variable<String>(note);
+    }
+    map['approved_at'] = Variable<DateTime>(approvedAt);
+    return map;
+  }
+
+  PayoutApprovalsCompanion toCompanion(bool nullToAbsent) {
+    return PayoutApprovalsCompanion(
+      shomitiId: Value(shomitiId),
+      monthKey: Value(monthKey),
+      role: Value(role),
+      approverMemberId: Value(approverMemberId),
+      ruleSetVersionId: Value(ruleSetVersionId),
+      note: note == null && nullToAbsent ? const Value.absent() : Value(note),
+      approvedAt: Value(approvedAt),
+    );
+  }
+
+  factory PayoutApprovalRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return PayoutApprovalRow(
+      shomitiId: serializer.fromJson<String>(json['shomitiId']),
+      monthKey: serializer.fromJson<String>(json['monthKey']),
+      role: serializer.fromJson<String>(json['role']),
+      approverMemberId: serializer.fromJson<String>(json['approverMemberId']),
+      ruleSetVersionId: serializer.fromJson<String>(json['ruleSetVersionId']),
+      note: serializer.fromJson<String?>(json['note']),
+      approvedAt: serializer.fromJson<DateTime>(json['approvedAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'shomitiId': serializer.toJson<String>(shomitiId),
+      'monthKey': serializer.toJson<String>(monthKey),
+      'role': serializer.toJson<String>(role),
+      'approverMemberId': serializer.toJson<String>(approverMemberId),
+      'ruleSetVersionId': serializer.toJson<String>(ruleSetVersionId),
+      'note': serializer.toJson<String?>(note),
+      'approvedAt': serializer.toJson<DateTime>(approvedAt),
+    };
+  }
+
+  PayoutApprovalRow copyWith({
+    String? shomitiId,
+    String? monthKey,
+    String? role,
+    String? approverMemberId,
+    String? ruleSetVersionId,
+    Value<String?> note = const Value.absent(),
+    DateTime? approvedAt,
+  }) => PayoutApprovalRow(
+    shomitiId: shomitiId ?? this.shomitiId,
+    monthKey: monthKey ?? this.monthKey,
+    role: role ?? this.role,
+    approverMemberId: approverMemberId ?? this.approverMemberId,
+    ruleSetVersionId: ruleSetVersionId ?? this.ruleSetVersionId,
+    note: note.present ? note.value : this.note,
+    approvedAt: approvedAt ?? this.approvedAt,
+  );
+  PayoutApprovalRow copyWithCompanion(PayoutApprovalsCompanion data) {
+    return PayoutApprovalRow(
+      shomitiId: data.shomitiId.present ? data.shomitiId.value : this.shomitiId,
+      monthKey: data.monthKey.present ? data.monthKey.value : this.monthKey,
+      role: data.role.present ? data.role.value : this.role,
+      approverMemberId: data.approverMemberId.present
+          ? data.approverMemberId.value
+          : this.approverMemberId,
+      ruleSetVersionId: data.ruleSetVersionId.present
+          ? data.ruleSetVersionId.value
+          : this.ruleSetVersionId,
+      note: data.note.present ? data.note.value : this.note,
+      approvedAt: data.approvedAt.present
+          ? data.approvedAt.value
+          : this.approvedAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('PayoutApprovalRow(')
+          ..write('shomitiId: $shomitiId, ')
+          ..write('monthKey: $monthKey, ')
+          ..write('role: $role, ')
+          ..write('approverMemberId: $approverMemberId, ')
+          ..write('ruleSetVersionId: $ruleSetVersionId, ')
+          ..write('note: $note, ')
+          ..write('approvedAt: $approvedAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    shomitiId,
+    monthKey,
+    role,
+    approverMemberId,
+    ruleSetVersionId,
+    note,
+    approvedAt,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is PayoutApprovalRow &&
+          other.shomitiId == this.shomitiId &&
+          other.monthKey == this.monthKey &&
+          other.role == this.role &&
+          other.approverMemberId == this.approverMemberId &&
+          other.ruleSetVersionId == this.ruleSetVersionId &&
+          other.note == this.note &&
+          other.approvedAt == this.approvedAt);
+}
+
+class PayoutApprovalsCompanion extends UpdateCompanion<PayoutApprovalRow> {
+  final Value<String> shomitiId;
+  final Value<String> monthKey;
+  final Value<String> role;
+  final Value<String> approverMemberId;
+  final Value<String> ruleSetVersionId;
+  final Value<String?> note;
+  final Value<DateTime> approvedAt;
+  final Value<int> rowid;
+  const PayoutApprovalsCompanion({
+    this.shomitiId = const Value.absent(),
+    this.monthKey = const Value.absent(),
+    this.role = const Value.absent(),
+    this.approverMemberId = const Value.absent(),
+    this.ruleSetVersionId = const Value.absent(),
+    this.note = const Value.absent(),
+    this.approvedAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  PayoutApprovalsCompanion.insert({
+    required String shomitiId,
+    required String monthKey,
+    required String role,
+    required String approverMemberId,
+    required String ruleSetVersionId,
+    this.note = const Value.absent(),
+    required DateTime approvedAt,
+    this.rowid = const Value.absent(),
+  }) : shomitiId = Value(shomitiId),
+       monthKey = Value(monthKey),
+       role = Value(role),
+       approverMemberId = Value(approverMemberId),
+       ruleSetVersionId = Value(ruleSetVersionId),
+       approvedAt = Value(approvedAt);
+  static Insertable<PayoutApprovalRow> custom({
+    Expression<String>? shomitiId,
+    Expression<String>? monthKey,
+    Expression<String>? role,
+    Expression<String>? approverMemberId,
+    Expression<String>? ruleSetVersionId,
+    Expression<String>? note,
+    Expression<DateTime>? approvedAt,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (shomitiId != null) 'shomiti_id': shomitiId,
+      if (monthKey != null) 'month_key': monthKey,
+      if (role != null) 'role': role,
+      if (approverMemberId != null) 'approver_member_id': approverMemberId,
+      if (ruleSetVersionId != null) 'rule_set_version_id': ruleSetVersionId,
+      if (note != null) 'note': note,
+      if (approvedAt != null) 'approved_at': approvedAt,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  PayoutApprovalsCompanion copyWith({
+    Value<String>? shomitiId,
+    Value<String>? monthKey,
+    Value<String>? role,
+    Value<String>? approverMemberId,
+    Value<String>? ruleSetVersionId,
+    Value<String?>? note,
+    Value<DateTime>? approvedAt,
+    Value<int>? rowid,
+  }) {
+    return PayoutApprovalsCompanion(
+      shomitiId: shomitiId ?? this.shomitiId,
+      monthKey: monthKey ?? this.monthKey,
+      role: role ?? this.role,
+      approverMemberId: approverMemberId ?? this.approverMemberId,
+      ruleSetVersionId: ruleSetVersionId ?? this.ruleSetVersionId,
+      note: note ?? this.note,
+      approvedAt: approvedAt ?? this.approvedAt,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (shomitiId.present) {
+      map['shomiti_id'] = Variable<String>(shomitiId.value);
+    }
+    if (monthKey.present) {
+      map['month_key'] = Variable<String>(monthKey.value);
+    }
+    if (role.present) {
+      map['role'] = Variable<String>(role.value);
+    }
+    if (approverMemberId.present) {
+      map['approver_member_id'] = Variable<String>(approverMemberId.value);
+    }
+    if (ruleSetVersionId.present) {
+      map['rule_set_version_id'] = Variable<String>(ruleSetVersionId.value);
+    }
+    if (note.present) {
+      map['note'] = Variable<String>(note.value);
+    }
+    if (approvedAt.present) {
+      map['approved_at'] = Variable<DateTime>(approvedAt.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('PayoutApprovalsCompanion(')
+          ..write('shomitiId: $shomitiId, ')
+          ..write('monthKey: $monthKey, ')
+          ..write('role: $role, ')
+          ..write('approverMemberId: $approverMemberId, ')
+          ..write('ruleSetVersionId: $ruleSetVersionId, ')
+          ..write('note: $note, ')
+          ..write('approvedAt: $approvedAt, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $PayoutRecordsTable extends PayoutRecords
+    with TableInfo<$PayoutRecordsTable, PayoutRecordRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $PayoutRecordsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _shomitiIdMeta = const VerificationMeta(
+    'shomitiId',
+  );
+  @override
+  late final GeneratedColumn<String> shomitiId = GeneratedColumn<String>(
+    'shomiti_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES shomitis (id)',
+    ),
+  );
+  static const VerificationMeta _monthKeyMeta = const VerificationMeta(
+    'monthKey',
+  );
+  @override
+  late final GeneratedColumn<String> monthKey = GeneratedColumn<String>(
+    'month_key',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _drawIdMeta = const VerificationMeta('drawId');
+  @override
+  late final GeneratedColumn<String> drawId = GeneratedColumn<String>(
+    'draw_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES draw_records (id)',
+    ),
+  );
+  static const VerificationMeta _ruleSetVersionIdMeta = const VerificationMeta(
+    'ruleSetVersionId',
+  );
+  @override
+  late final GeneratedColumn<String> ruleSetVersionId = GeneratedColumn<String>(
+    'rule_set_version_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES rule_set_versions (id)',
+    ),
+  );
+  static const VerificationMeta _winnerMemberIdMeta = const VerificationMeta(
+    'winnerMemberId',
+  );
+  @override
+  late final GeneratedColumn<String> winnerMemberId = GeneratedColumn<String>(
+    'winner_member_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _winnerShareIndexMeta = const VerificationMeta(
+    'winnerShareIndex',
+  );
+  @override
+  late final GeneratedColumn<int> winnerShareIndex = GeneratedColumn<int>(
+    'winner_share_index',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _amountBdtMeta = const VerificationMeta(
+    'amountBdt',
+  );
+  @override
+  late final GeneratedColumn<int> amountBdt = GeneratedColumn<int>(
+    'amount_bdt',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _proofReferenceMeta = const VerificationMeta(
+    'proofReference',
+  );
+  @override
+  late final GeneratedColumn<String> proofReference = GeneratedColumn<String>(
+    'proof_reference',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _markedPaidByMemberIdMeta =
+      const VerificationMeta('markedPaidByMemberId');
+  @override
+  late final GeneratedColumn<String> markedPaidByMemberId =
+      GeneratedColumn<String>(
+        'marked_paid_by_member_id',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _paidAtMeta = const VerificationMeta('paidAt');
+  @override
+  late final GeneratedColumn<DateTime> paidAt = GeneratedColumn<DateTime>(
+    'paid_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _recordedAtMeta = const VerificationMeta(
+    'recordedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> recordedAt = GeneratedColumn<DateTime>(
+    'recorded_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    shomitiId,
+    monthKey,
+    drawId,
+    ruleSetVersionId,
+    winnerMemberId,
+    winnerShareIndex,
+    amountBdt,
+    proofReference,
+    markedPaidByMemberId,
+    paidAt,
+    recordedAt,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'payout_records';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<PayoutRecordRow> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('shomiti_id')) {
+      context.handle(
+        _shomitiIdMeta,
+        shomitiId.isAcceptableOrUnknown(data['shomiti_id']!, _shomitiIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_shomitiIdMeta);
+    }
+    if (data.containsKey('month_key')) {
+      context.handle(
+        _monthKeyMeta,
+        monthKey.isAcceptableOrUnknown(data['month_key']!, _monthKeyMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_monthKeyMeta);
+    }
+    if (data.containsKey('draw_id')) {
+      context.handle(
+        _drawIdMeta,
+        drawId.isAcceptableOrUnknown(data['draw_id']!, _drawIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_drawIdMeta);
+    }
+    if (data.containsKey('rule_set_version_id')) {
+      context.handle(
+        _ruleSetVersionIdMeta,
+        ruleSetVersionId.isAcceptableOrUnknown(
+          data['rule_set_version_id']!,
+          _ruleSetVersionIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_ruleSetVersionIdMeta);
+    }
+    if (data.containsKey('winner_member_id')) {
+      context.handle(
+        _winnerMemberIdMeta,
+        winnerMemberId.isAcceptableOrUnknown(
+          data['winner_member_id']!,
+          _winnerMemberIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_winnerMemberIdMeta);
+    }
+    if (data.containsKey('winner_share_index')) {
+      context.handle(
+        _winnerShareIndexMeta,
+        winnerShareIndex.isAcceptableOrUnknown(
+          data['winner_share_index']!,
+          _winnerShareIndexMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_winnerShareIndexMeta);
+    }
+    if (data.containsKey('amount_bdt')) {
+      context.handle(
+        _amountBdtMeta,
+        amountBdt.isAcceptableOrUnknown(data['amount_bdt']!, _amountBdtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_amountBdtMeta);
+    }
+    if (data.containsKey('proof_reference')) {
+      context.handle(
+        _proofReferenceMeta,
+        proofReference.isAcceptableOrUnknown(
+          data['proof_reference']!,
+          _proofReferenceMeta,
+        ),
+      );
+    }
+    if (data.containsKey('marked_paid_by_member_id')) {
+      context.handle(
+        _markedPaidByMemberIdMeta,
+        markedPaidByMemberId.isAcceptableOrUnknown(
+          data['marked_paid_by_member_id']!,
+          _markedPaidByMemberIdMeta,
+        ),
+      );
+    }
+    if (data.containsKey('paid_at')) {
+      context.handle(
+        _paidAtMeta,
+        paidAt.isAcceptableOrUnknown(data['paid_at']!, _paidAtMeta),
+      );
+    }
+    if (data.containsKey('recorded_at')) {
+      context.handle(
+        _recordedAtMeta,
+        recordedAt.isAcceptableOrUnknown(data['recorded_at']!, _recordedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_recordedAtMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {shomitiId, monthKey};
+  @override
+  PayoutRecordRow map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return PayoutRecordRow(
+      shomitiId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}shomiti_id'],
+      )!,
+      monthKey: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}month_key'],
+      )!,
+      drawId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}draw_id'],
+      )!,
+      ruleSetVersionId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}rule_set_version_id'],
+      )!,
+      winnerMemberId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}winner_member_id'],
+      )!,
+      winnerShareIndex: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}winner_share_index'],
+      )!,
+      amountBdt: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}amount_bdt'],
+      )!,
+      proofReference: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}proof_reference'],
+      ),
+      markedPaidByMemberId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}marked_paid_by_member_id'],
+      ),
+      paidAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}paid_at'],
+      ),
+      recordedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}recorded_at'],
+      )!,
+    );
+  }
+
+  @override
+  $PayoutRecordsTable createAlias(String alias) {
+    return $PayoutRecordsTable(attachedDatabase, alias);
+  }
+}
+
+class PayoutRecordRow extends DataClass implements Insertable<PayoutRecordRow> {
+  final String shomitiId;
+  final String monthKey;
+  final String drawId;
+  final String ruleSetVersionId;
+  final String winnerMemberId;
+  final int winnerShareIndex;
+
+  /// Amount to pay in BDT.
+  final int amountBdt;
+
+  /// Required to mark paid.
+  final String? proofReference;
+
+  /// Who marked this payout as paid (member id), if available.
+  final String? markedPaidByMemberId;
+  final DateTime? paidAt;
+  final DateTime recordedAt;
+  const PayoutRecordRow({
+    required this.shomitiId,
+    required this.monthKey,
+    required this.drawId,
+    required this.ruleSetVersionId,
+    required this.winnerMemberId,
+    required this.winnerShareIndex,
+    required this.amountBdt,
+    this.proofReference,
+    this.markedPaidByMemberId,
+    this.paidAt,
+    required this.recordedAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['shomiti_id'] = Variable<String>(shomitiId);
+    map['month_key'] = Variable<String>(monthKey);
+    map['draw_id'] = Variable<String>(drawId);
+    map['rule_set_version_id'] = Variable<String>(ruleSetVersionId);
+    map['winner_member_id'] = Variable<String>(winnerMemberId);
+    map['winner_share_index'] = Variable<int>(winnerShareIndex);
+    map['amount_bdt'] = Variable<int>(amountBdt);
+    if (!nullToAbsent || proofReference != null) {
+      map['proof_reference'] = Variable<String>(proofReference);
+    }
+    if (!nullToAbsent || markedPaidByMemberId != null) {
+      map['marked_paid_by_member_id'] = Variable<String>(markedPaidByMemberId);
+    }
+    if (!nullToAbsent || paidAt != null) {
+      map['paid_at'] = Variable<DateTime>(paidAt);
+    }
+    map['recorded_at'] = Variable<DateTime>(recordedAt);
+    return map;
+  }
+
+  PayoutRecordsCompanion toCompanion(bool nullToAbsent) {
+    return PayoutRecordsCompanion(
+      shomitiId: Value(shomitiId),
+      monthKey: Value(monthKey),
+      drawId: Value(drawId),
+      ruleSetVersionId: Value(ruleSetVersionId),
+      winnerMemberId: Value(winnerMemberId),
+      winnerShareIndex: Value(winnerShareIndex),
+      amountBdt: Value(amountBdt),
+      proofReference: proofReference == null && nullToAbsent
+          ? const Value.absent()
+          : Value(proofReference),
+      markedPaidByMemberId: markedPaidByMemberId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(markedPaidByMemberId),
+      paidAt: paidAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(paidAt),
+      recordedAt: Value(recordedAt),
+    );
+  }
+
+  factory PayoutRecordRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return PayoutRecordRow(
+      shomitiId: serializer.fromJson<String>(json['shomitiId']),
+      monthKey: serializer.fromJson<String>(json['monthKey']),
+      drawId: serializer.fromJson<String>(json['drawId']),
+      ruleSetVersionId: serializer.fromJson<String>(json['ruleSetVersionId']),
+      winnerMemberId: serializer.fromJson<String>(json['winnerMemberId']),
+      winnerShareIndex: serializer.fromJson<int>(json['winnerShareIndex']),
+      amountBdt: serializer.fromJson<int>(json['amountBdt']),
+      proofReference: serializer.fromJson<String?>(json['proofReference']),
+      markedPaidByMemberId: serializer.fromJson<String?>(
+        json['markedPaidByMemberId'],
+      ),
+      paidAt: serializer.fromJson<DateTime?>(json['paidAt']),
+      recordedAt: serializer.fromJson<DateTime>(json['recordedAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'shomitiId': serializer.toJson<String>(shomitiId),
+      'monthKey': serializer.toJson<String>(monthKey),
+      'drawId': serializer.toJson<String>(drawId),
+      'ruleSetVersionId': serializer.toJson<String>(ruleSetVersionId),
+      'winnerMemberId': serializer.toJson<String>(winnerMemberId),
+      'winnerShareIndex': serializer.toJson<int>(winnerShareIndex),
+      'amountBdt': serializer.toJson<int>(amountBdt),
+      'proofReference': serializer.toJson<String?>(proofReference),
+      'markedPaidByMemberId': serializer.toJson<String?>(markedPaidByMemberId),
+      'paidAt': serializer.toJson<DateTime?>(paidAt),
+      'recordedAt': serializer.toJson<DateTime>(recordedAt),
+    };
+  }
+
+  PayoutRecordRow copyWith({
+    String? shomitiId,
+    String? monthKey,
+    String? drawId,
+    String? ruleSetVersionId,
+    String? winnerMemberId,
+    int? winnerShareIndex,
+    int? amountBdt,
+    Value<String?> proofReference = const Value.absent(),
+    Value<String?> markedPaidByMemberId = const Value.absent(),
+    Value<DateTime?> paidAt = const Value.absent(),
+    DateTime? recordedAt,
+  }) => PayoutRecordRow(
+    shomitiId: shomitiId ?? this.shomitiId,
+    monthKey: monthKey ?? this.monthKey,
+    drawId: drawId ?? this.drawId,
+    ruleSetVersionId: ruleSetVersionId ?? this.ruleSetVersionId,
+    winnerMemberId: winnerMemberId ?? this.winnerMemberId,
+    winnerShareIndex: winnerShareIndex ?? this.winnerShareIndex,
+    amountBdt: amountBdt ?? this.amountBdt,
+    proofReference: proofReference.present
+        ? proofReference.value
+        : this.proofReference,
+    markedPaidByMemberId: markedPaidByMemberId.present
+        ? markedPaidByMemberId.value
+        : this.markedPaidByMemberId,
+    paidAt: paidAt.present ? paidAt.value : this.paidAt,
+    recordedAt: recordedAt ?? this.recordedAt,
+  );
+  PayoutRecordRow copyWithCompanion(PayoutRecordsCompanion data) {
+    return PayoutRecordRow(
+      shomitiId: data.shomitiId.present ? data.shomitiId.value : this.shomitiId,
+      monthKey: data.monthKey.present ? data.monthKey.value : this.monthKey,
+      drawId: data.drawId.present ? data.drawId.value : this.drawId,
+      ruleSetVersionId: data.ruleSetVersionId.present
+          ? data.ruleSetVersionId.value
+          : this.ruleSetVersionId,
+      winnerMemberId: data.winnerMemberId.present
+          ? data.winnerMemberId.value
+          : this.winnerMemberId,
+      winnerShareIndex: data.winnerShareIndex.present
+          ? data.winnerShareIndex.value
+          : this.winnerShareIndex,
+      amountBdt: data.amountBdt.present ? data.amountBdt.value : this.amountBdt,
+      proofReference: data.proofReference.present
+          ? data.proofReference.value
+          : this.proofReference,
+      markedPaidByMemberId: data.markedPaidByMemberId.present
+          ? data.markedPaidByMemberId.value
+          : this.markedPaidByMemberId,
+      paidAt: data.paidAt.present ? data.paidAt.value : this.paidAt,
+      recordedAt: data.recordedAt.present
+          ? data.recordedAt.value
+          : this.recordedAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('PayoutRecordRow(')
+          ..write('shomitiId: $shomitiId, ')
+          ..write('monthKey: $monthKey, ')
+          ..write('drawId: $drawId, ')
+          ..write('ruleSetVersionId: $ruleSetVersionId, ')
+          ..write('winnerMemberId: $winnerMemberId, ')
+          ..write('winnerShareIndex: $winnerShareIndex, ')
+          ..write('amountBdt: $amountBdt, ')
+          ..write('proofReference: $proofReference, ')
+          ..write('markedPaidByMemberId: $markedPaidByMemberId, ')
+          ..write('paidAt: $paidAt, ')
+          ..write('recordedAt: $recordedAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    shomitiId,
+    monthKey,
+    drawId,
+    ruleSetVersionId,
+    winnerMemberId,
+    winnerShareIndex,
+    amountBdt,
+    proofReference,
+    markedPaidByMemberId,
+    paidAt,
+    recordedAt,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is PayoutRecordRow &&
+          other.shomitiId == this.shomitiId &&
+          other.monthKey == this.monthKey &&
+          other.drawId == this.drawId &&
+          other.ruleSetVersionId == this.ruleSetVersionId &&
+          other.winnerMemberId == this.winnerMemberId &&
+          other.winnerShareIndex == this.winnerShareIndex &&
+          other.amountBdt == this.amountBdt &&
+          other.proofReference == this.proofReference &&
+          other.markedPaidByMemberId == this.markedPaidByMemberId &&
+          other.paidAt == this.paidAt &&
+          other.recordedAt == this.recordedAt);
+}
+
+class PayoutRecordsCompanion extends UpdateCompanion<PayoutRecordRow> {
+  final Value<String> shomitiId;
+  final Value<String> monthKey;
+  final Value<String> drawId;
+  final Value<String> ruleSetVersionId;
+  final Value<String> winnerMemberId;
+  final Value<int> winnerShareIndex;
+  final Value<int> amountBdt;
+  final Value<String?> proofReference;
+  final Value<String?> markedPaidByMemberId;
+  final Value<DateTime?> paidAt;
+  final Value<DateTime> recordedAt;
+  final Value<int> rowid;
+  const PayoutRecordsCompanion({
+    this.shomitiId = const Value.absent(),
+    this.monthKey = const Value.absent(),
+    this.drawId = const Value.absent(),
+    this.ruleSetVersionId = const Value.absent(),
+    this.winnerMemberId = const Value.absent(),
+    this.winnerShareIndex = const Value.absent(),
+    this.amountBdt = const Value.absent(),
+    this.proofReference = const Value.absent(),
+    this.markedPaidByMemberId = const Value.absent(),
+    this.paidAt = const Value.absent(),
+    this.recordedAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  PayoutRecordsCompanion.insert({
+    required String shomitiId,
+    required String monthKey,
+    required String drawId,
+    required String ruleSetVersionId,
+    required String winnerMemberId,
+    required int winnerShareIndex,
+    required int amountBdt,
+    this.proofReference = const Value.absent(),
+    this.markedPaidByMemberId = const Value.absent(),
+    this.paidAt = const Value.absent(),
+    required DateTime recordedAt,
+    this.rowid = const Value.absent(),
+  }) : shomitiId = Value(shomitiId),
+       monthKey = Value(monthKey),
+       drawId = Value(drawId),
+       ruleSetVersionId = Value(ruleSetVersionId),
+       winnerMemberId = Value(winnerMemberId),
+       winnerShareIndex = Value(winnerShareIndex),
+       amountBdt = Value(amountBdt),
+       recordedAt = Value(recordedAt);
+  static Insertable<PayoutRecordRow> custom({
+    Expression<String>? shomitiId,
+    Expression<String>? monthKey,
+    Expression<String>? drawId,
+    Expression<String>? ruleSetVersionId,
+    Expression<String>? winnerMemberId,
+    Expression<int>? winnerShareIndex,
+    Expression<int>? amountBdt,
+    Expression<String>? proofReference,
+    Expression<String>? markedPaidByMemberId,
+    Expression<DateTime>? paidAt,
+    Expression<DateTime>? recordedAt,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (shomitiId != null) 'shomiti_id': shomitiId,
+      if (monthKey != null) 'month_key': monthKey,
+      if (drawId != null) 'draw_id': drawId,
+      if (ruleSetVersionId != null) 'rule_set_version_id': ruleSetVersionId,
+      if (winnerMemberId != null) 'winner_member_id': winnerMemberId,
+      if (winnerShareIndex != null) 'winner_share_index': winnerShareIndex,
+      if (amountBdt != null) 'amount_bdt': amountBdt,
+      if (proofReference != null) 'proof_reference': proofReference,
+      if (markedPaidByMemberId != null)
+        'marked_paid_by_member_id': markedPaidByMemberId,
+      if (paidAt != null) 'paid_at': paidAt,
+      if (recordedAt != null) 'recorded_at': recordedAt,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  PayoutRecordsCompanion copyWith({
+    Value<String>? shomitiId,
+    Value<String>? monthKey,
+    Value<String>? drawId,
+    Value<String>? ruleSetVersionId,
+    Value<String>? winnerMemberId,
+    Value<int>? winnerShareIndex,
+    Value<int>? amountBdt,
+    Value<String?>? proofReference,
+    Value<String?>? markedPaidByMemberId,
+    Value<DateTime?>? paidAt,
+    Value<DateTime>? recordedAt,
+    Value<int>? rowid,
+  }) {
+    return PayoutRecordsCompanion(
+      shomitiId: shomitiId ?? this.shomitiId,
+      monthKey: monthKey ?? this.monthKey,
+      drawId: drawId ?? this.drawId,
+      ruleSetVersionId: ruleSetVersionId ?? this.ruleSetVersionId,
+      winnerMemberId: winnerMemberId ?? this.winnerMemberId,
+      winnerShareIndex: winnerShareIndex ?? this.winnerShareIndex,
+      amountBdt: amountBdt ?? this.amountBdt,
+      proofReference: proofReference ?? this.proofReference,
+      markedPaidByMemberId: markedPaidByMemberId ?? this.markedPaidByMemberId,
+      paidAt: paidAt ?? this.paidAt,
+      recordedAt: recordedAt ?? this.recordedAt,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (shomitiId.present) {
+      map['shomiti_id'] = Variable<String>(shomitiId.value);
+    }
+    if (monthKey.present) {
+      map['month_key'] = Variable<String>(monthKey.value);
+    }
+    if (drawId.present) {
+      map['draw_id'] = Variable<String>(drawId.value);
+    }
+    if (ruleSetVersionId.present) {
+      map['rule_set_version_id'] = Variable<String>(ruleSetVersionId.value);
+    }
+    if (winnerMemberId.present) {
+      map['winner_member_id'] = Variable<String>(winnerMemberId.value);
+    }
+    if (winnerShareIndex.present) {
+      map['winner_share_index'] = Variable<int>(winnerShareIndex.value);
+    }
+    if (amountBdt.present) {
+      map['amount_bdt'] = Variable<int>(amountBdt.value);
+    }
+    if (proofReference.present) {
+      map['proof_reference'] = Variable<String>(proofReference.value);
+    }
+    if (markedPaidByMemberId.present) {
+      map['marked_paid_by_member_id'] = Variable<String>(
+        markedPaidByMemberId.value,
+      );
+    }
+    if (paidAt.present) {
+      map['paid_at'] = Variable<DateTime>(paidAt.value);
+    }
+    if (recordedAt.present) {
+      map['recorded_at'] = Variable<DateTime>(recordedAt.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('PayoutRecordsCompanion(')
+          ..write('shomitiId: $shomitiId, ')
+          ..write('monthKey: $monthKey, ')
+          ..write('drawId: $drawId, ')
+          ..write('ruleSetVersionId: $ruleSetVersionId, ')
+          ..write('winnerMemberId: $winnerMemberId, ')
+          ..write('winnerShareIndex: $winnerShareIndex, ')
+          ..write('amountBdt: $amountBdt, ')
+          ..write('proofReference: $proofReference, ')
+          ..write('markedPaidByMemberId: $markedPaidByMemberId, ')
+          ..write('paidAt: $paidAt, ')
+          ..write('recordedAt: $recordedAt, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
@@ -9590,6 +11241,12 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $DrawRecordsTable drawRecords = $DrawRecordsTable(this);
   late final $DrawWitnessApprovalsTable drawWitnessApprovals =
       $DrawWitnessApprovalsTable(this);
+  late final $PayoutCollectionVerificationsTable payoutCollectionVerifications =
+      $PayoutCollectionVerificationsTable(this);
+  late final $PayoutApprovalsTable payoutApprovals = $PayoutApprovalsTable(
+    this,
+  );
+  late final $PayoutRecordsTable payoutRecords = $PayoutRecordsTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -9614,6 +11271,9 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     defaultEnforcementSteps,
     drawRecords,
     drawWitnessApprovals,
+    payoutCollectionVerifications,
+    payoutApprovals,
+    payoutRecords,
   ];
 }
 
@@ -10320,6 +11980,75 @@ final class $$ShomitisTableReferences
       manager.$state.copyWith(prefetchedData: cache),
     );
   }
+
+  static MultiTypedResultKey<
+    $PayoutCollectionVerificationsTable,
+    List<PayoutCollectionVerificationRow>
+  >
+  _payoutCollectionVerificationsRefsTable(_$AppDatabase db) =>
+      MultiTypedResultKey.fromTable(
+        db.payoutCollectionVerifications,
+        aliasName: $_aliasNameGenerator(
+          db.shomitis.id,
+          db.payoutCollectionVerifications.shomitiId,
+        ),
+      );
+
+  $$PayoutCollectionVerificationsTableProcessedTableManager
+  get payoutCollectionVerificationsRefs {
+    final manager = $$PayoutCollectionVerificationsTableTableManager(
+      $_db,
+      $_db.payoutCollectionVerifications,
+    ).filter((f) => f.shomitiId.id.sqlEquals($_itemColumn<String>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(
+      _payoutCollectionVerificationsRefsTable($_db),
+    );
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+
+  static MultiTypedResultKey<$PayoutApprovalsTable, List<PayoutApprovalRow>>
+  _payoutApprovalsRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
+    db.payoutApprovals,
+    aliasName: $_aliasNameGenerator(
+      db.shomitis.id,
+      db.payoutApprovals.shomitiId,
+    ),
+  );
+
+  $$PayoutApprovalsTableProcessedTableManager get payoutApprovalsRefs {
+    final manager = $$PayoutApprovalsTableTableManager(
+      $_db,
+      $_db.payoutApprovals,
+    ).filter((f) => f.shomitiId.id.sqlEquals($_itemColumn<String>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(
+      _payoutApprovalsRefsTable($_db),
+    );
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+
+  static MultiTypedResultKey<$PayoutRecordsTable, List<PayoutRecordRow>>
+  _payoutRecordsRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
+    db.payoutRecords,
+    aliasName: $_aliasNameGenerator(db.shomitis.id, db.payoutRecords.shomitiId),
+  );
+
+  $$PayoutRecordsTableProcessedTableManager get payoutRecordsRefs {
+    final manager = $$PayoutRecordsTableTableManager(
+      $_db,
+      $_db.payoutRecords,
+    ).filter((f) => f.shomitiId.id.sqlEquals($_itemColumn<String>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(_payoutRecordsRefsTable($_db));
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
 }
 
 class $$ShomitisTableFilterComposer
@@ -10628,6 +12357,85 @@ class $$ShomitisTableFilterComposer
           }) => $$DrawRecordsTableFilterComposer(
             $db: $db,
             $table: $db.drawRecords,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<bool> payoutCollectionVerificationsRefs(
+    Expression<bool> Function(
+      $$PayoutCollectionVerificationsTableFilterComposer f,
+    )
+    f,
+  ) {
+    final $$PayoutCollectionVerificationsTableFilterComposer composer =
+        $composerBuilder(
+          composer: this,
+          getCurrentColumn: (t) => t.id,
+          referencedTable: $db.payoutCollectionVerifications,
+          getReferencedColumn: (t) => t.shomitiId,
+          builder:
+              (
+                joinBuilder, {
+                $addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer,
+              }) => $$PayoutCollectionVerificationsTableFilterComposer(
+                $db: $db,
+                $table: $db.payoutCollectionVerifications,
+                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                joinBuilder: joinBuilder,
+                $removeJoinBuilderFromRootComposer:
+                    $removeJoinBuilderFromRootComposer,
+              ),
+        );
+    return f(composer);
+  }
+
+  Expression<bool> payoutApprovalsRefs(
+    Expression<bool> Function($$PayoutApprovalsTableFilterComposer f) f,
+  ) {
+    final $$PayoutApprovalsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.payoutApprovals,
+      getReferencedColumn: (t) => t.shomitiId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$PayoutApprovalsTableFilterComposer(
+            $db: $db,
+            $table: $db.payoutApprovals,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<bool> payoutRecordsRefs(
+    Expression<bool> Function($$PayoutRecordsTableFilterComposer f) f,
+  ) {
+    final $$PayoutRecordsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.payoutRecords,
+      getReferencedColumn: (t) => t.shomitiId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$PayoutRecordsTableFilterComposer(
+            $db: $db,
+            $table: $db.payoutRecords,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -10980,6 +12788,85 @@ class $$ShomitisTableAnnotationComposer
     );
     return f(composer);
   }
+
+  Expression<T> payoutCollectionVerificationsRefs<T extends Object>(
+    Expression<T> Function(
+      $$PayoutCollectionVerificationsTableAnnotationComposer a,
+    )
+    f,
+  ) {
+    final $$PayoutCollectionVerificationsTableAnnotationComposer composer =
+        $composerBuilder(
+          composer: this,
+          getCurrentColumn: (t) => t.id,
+          referencedTable: $db.payoutCollectionVerifications,
+          getReferencedColumn: (t) => t.shomitiId,
+          builder:
+              (
+                joinBuilder, {
+                $addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer,
+              }) => $$PayoutCollectionVerificationsTableAnnotationComposer(
+                $db: $db,
+                $table: $db.payoutCollectionVerifications,
+                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                joinBuilder: joinBuilder,
+                $removeJoinBuilderFromRootComposer:
+                    $removeJoinBuilderFromRootComposer,
+              ),
+        );
+    return f(composer);
+  }
+
+  Expression<T> payoutApprovalsRefs<T extends Object>(
+    Expression<T> Function($$PayoutApprovalsTableAnnotationComposer a) f,
+  ) {
+    final $$PayoutApprovalsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.payoutApprovals,
+      getReferencedColumn: (t) => t.shomitiId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$PayoutApprovalsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.payoutApprovals,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<T> payoutRecordsRefs<T extends Object>(
+    Expression<T> Function($$PayoutRecordsTableAnnotationComposer a) f,
+  ) {
+    final $$PayoutRecordsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.payoutRecords,
+      getReferencedColumn: (t) => t.shomitiId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$PayoutRecordsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.payoutRecords,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
 }
 
 class $$ShomitisTableTableManager
@@ -11007,6 +12894,9 @@ class $$ShomitisTableTableManager
             bool collectionResolutionsRefs,
             bool defaultEnforcementStepsRefs,
             bool drawRecordsRefs,
+            bool payoutCollectionVerificationsRefs,
+            bool payoutApprovalsRefs,
+            bool payoutRecordsRefs,
           })
         > {
   $$ShomitisTableTableManager(_$AppDatabase db, $ShomitisTable table)
@@ -11073,6 +12963,9 @@ class $$ShomitisTableTableManager
                 collectionResolutionsRefs = false,
                 defaultEnforcementStepsRefs = false,
                 drawRecordsRefs = false,
+                payoutCollectionVerificationsRefs = false,
+                payoutApprovalsRefs = false,
+                payoutRecordsRefs = false,
               }) {
                 return PrefetchHooks(
                   db: db,
@@ -11090,6 +12983,10 @@ class $$ShomitisTableTableManager
                     if (collectionResolutionsRefs) db.collectionResolutions,
                     if (defaultEnforcementStepsRefs) db.defaultEnforcementSteps,
                     if (drawRecordsRefs) db.drawRecords,
+                    if (payoutCollectionVerificationsRefs)
+                      db.payoutCollectionVerifications,
+                    if (payoutApprovalsRefs) db.payoutApprovals,
+                    if (payoutRecordsRefs) db.payoutRecords,
                   ],
                   addJoins: null,
                   getPrefetchedDataCallback: (items) async {
@@ -11325,6 +13222,69 @@ class $$ShomitisTableTableManager
                               ),
                           typedResults: items,
                         ),
+                      if (payoutCollectionVerificationsRefs)
+                        await $_getPrefetchedData<
+                          ShomitiRow,
+                          $ShomitisTable,
+                          PayoutCollectionVerificationRow
+                        >(
+                          currentTable: table,
+                          referencedTable: $$ShomitisTableReferences
+                              ._payoutCollectionVerificationsRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$ShomitisTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).payoutCollectionVerificationsRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.shomitiId == item.id,
+                              ),
+                          typedResults: items,
+                        ),
+                      if (payoutApprovalsRefs)
+                        await $_getPrefetchedData<
+                          ShomitiRow,
+                          $ShomitisTable,
+                          PayoutApprovalRow
+                        >(
+                          currentTable: table,
+                          referencedTable: $$ShomitisTableReferences
+                              ._payoutApprovalsRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$ShomitisTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).payoutApprovalsRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.shomitiId == item.id,
+                              ),
+                          typedResults: items,
+                        ),
+                      if (payoutRecordsRefs)
+                        await $_getPrefetchedData<
+                          ShomitiRow,
+                          $ShomitisTable,
+                          PayoutRecordRow
+                        >(
+                          currentTable: table,
+                          referencedTable: $$ShomitisTableReferences
+                              ._payoutRecordsRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$ShomitisTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).payoutRecordsRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.shomitiId == item.id,
+                              ),
+                          typedResults: items,
+                        ),
                     ];
                   },
                 );
@@ -11357,6 +13317,9 @@ typedef $$ShomitisTableProcessedTableManager =
         bool collectionResolutionsRefs,
         bool defaultEnforcementStepsRefs,
         bool drawRecordsRefs,
+        bool payoutCollectionVerificationsRefs,
+        bool payoutApprovalsRefs,
+        bool payoutRecordsRefs,
       })
     >;
 typedef $$MembersTableCreateCompanionBuilder =
@@ -13726,6 +15689,81 @@ final class $$RuleSetVersionsTableReferences
       manager.$state.copyWith(prefetchedData: cache),
     );
   }
+
+  static MultiTypedResultKey<
+    $PayoutCollectionVerificationsTable,
+    List<PayoutCollectionVerificationRow>
+  >
+  _payoutCollectionVerificationsRefsTable(_$AppDatabase db) =>
+      MultiTypedResultKey.fromTable(
+        db.payoutCollectionVerifications,
+        aliasName: $_aliasNameGenerator(
+          db.ruleSetVersions.id,
+          db.payoutCollectionVerifications.ruleSetVersionId,
+        ),
+      );
+
+  $$PayoutCollectionVerificationsTableProcessedTableManager
+  get payoutCollectionVerificationsRefs {
+    final manager =
+        $$PayoutCollectionVerificationsTableTableManager(
+          $_db,
+          $_db.payoutCollectionVerifications,
+        ).filter(
+          (f) => f.ruleSetVersionId.id.sqlEquals($_itemColumn<String>('id')!),
+        );
+
+    final cache = $_typedResult.readTableOrNull(
+      _payoutCollectionVerificationsRefsTable($_db),
+    );
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+
+  static MultiTypedResultKey<$PayoutApprovalsTable, List<PayoutApprovalRow>>
+  _payoutApprovalsRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
+    db.payoutApprovals,
+    aliasName: $_aliasNameGenerator(
+      db.ruleSetVersions.id,
+      db.payoutApprovals.ruleSetVersionId,
+    ),
+  );
+
+  $$PayoutApprovalsTableProcessedTableManager get payoutApprovalsRefs {
+    final manager =
+        $$PayoutApprovalsTableTableManager($_db, $_db.payoutApprovals).filter(
+          (f) => f.ruleSetVersionId.id.sqlEquals($_itemColumn<String>('id')!),
+        );
+
+    final cache = $_typedResult.readTableOrNull(
+      _payoutApprovalsRefsTable($_db),
+    );
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+
+  static MultiTypedResultKey<$PayoutRecordsTable, List<PayoutRecordRow>>
+  _payoutRecordsRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
+    db.payoutRecords,
+    aliasName: $_aliasNameGenerator(
+      db.ruleSetVersions.id,
+      db.payoutRecords.ruleSetVersionId,
+    ),
+  );
+
+  $$PayoutRecordsTableProcessedTableManager get payoutRecordsRefs {
+    final manager = $$PayoutRecordsTableTableManager($_db, $_db.payoutRecords)
+        .filter(
+          (f) => f.ruleSetVersionId.id.sqlEquals($_itemColumn<String>('id')!),
+        );
+
+    final cache = $_typedResult.readTableOrNull(_payoutRecordsRefsTable($_db));
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
 }
 
 class $$RuleSetVersionsTableFilterComposer
@@ -13869,6 +15907,85 @@ class $$RuleSetVersionsTableFilterComposer
           }) => $$DrawWitnessApprovalsTableFilterComposer(
             $db: $db,
             $table: $db.drawWitnessApprovals,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<bool> payoutCollectionVerificationsRefs(
+    Expression<bool> Function(
+      $$PayoutCollectionVerificationsTableFilterComposer f,
+    )
+    f,
+  ) {
+    final $$PayoutCollectionVerificationsTableFilterComposer composer =
+        $composerBuilder(
+          composer: this,
+          getCurrentColumn: (t) => t.id,
+          referencedTable: $db.payoutCollectionVerifications,
+          getReferencedColumn: (t) => t.ruleSetVersionId,
+          builder:
+              (
+                joinBuilder, {
+                $addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer,
+              }) => $$PayoutCollectionVerificationsTableFilterComposer(
+                $db: $db,
+                $table: $db.payoutCollectionVerifications,
+                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                joinBuilder: joinBuilder,
+                $removeJoinBuilderFromRootComposer:
+                    $removeJoinBuilderFromRootComposer,
+              ),
+        );
+    return f(composer);
+  }
+
+  Expression<bool> payoutApprovalsRefs(
+    Expression<bool> Function($$PayoutApprovalsTableFilterComposer f) f,
+  ) {
+    final $$PayoutApprovalsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.payoutApprovals,
+      getReferencedColumn: (t) => t.ruleSetVersionId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$PayoutApprovalsTableFilterComposer(
+            $db: $db,
+            $table: $db.payoutApprovals,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<bool> payoutRecordsRefs(
+    Expression<bool> Function($$PayoutRecordsTableFilterComposer f) f,
+  ) {
+    final $$PayoutRecordsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.payoutRecords,
+      getReferencedColumn: (t) => t.ruleSetVersionId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$PayoutRecordsTableFilterComposer(
+            $db: $db,
+            $table: $db.payoutRecords,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -14049,6 +16166,85 @@ class $$RuleSetVersionsTableAnnotationComposer
         );
     return f(composer);
   }
+
+  Expression<T> payoutCollectionVerificationsRefs<T extends Object>(
+    Expression<T> Function(
+      $$PayoutCollectionVerificationsTableAnnotationComposer a,
+    )
+    f,
+  ) {
+    final $$PayoutCollectionVerificationsTableAnnotationComposer composer =
+        $composerBuilder(
+          composer: this,
+          getCurrentColumn: (t) => t.id,
+          referencedTable: $db.payoutCollectionVerifications,
+          getReferencedColumn: (t) => t.ruleSetVersionId,
+          builder:
+              (
+                joinBuilder, {
+                $addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer,
+              }) => $$PayoutCollectionVerificationsTableAnnotationComposer(
+                $db: $db,
+                $table: $db.payoutCollectionVerifications,
+                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                joinBuilder: joinBuilder,
+                $removeJoinBuilderFromRootComposer:
+                    $removeJoinBuilderFromRootComposer,
+              ),
+        );
+    return f(composer);
+  }
+
+  Expression<T> payoutApprovalsRefs<T extends Object>(
+    Expression<T> Function($$PayoutApprovalsTableAnnotationComposer a) f,
+  ) {
+    final $$PayoutApprovalsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.payoutApprovals,
+      getReferencedColumn: (t) => t.ruleSetVersionId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$PayoutApprovalsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.payoutApprovals,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<T> payoutRecordsRefs<T extends Object>(
+    Expression<T> Function($$PayoutRecordsTableAnnotationComposer a) f,
+  ) {
+    final $$PayoutRecordsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.payoutRecords,
+      getReferencedColumn: (t) => t.ruleSetVersionId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$PayoutRecordsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.payoutRecords,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
 }
 
 class $$RuleSetVersionsTableTableManager
@@ -14070,6 +16266,9 @@ class $$RuleSetVersionsTableTableManager
             bool defaultEnforcementStepsRefs,
             bool drawRecordsRefs,
             bool drawWitnessApprovalsRefs,
+            bool payoutCollectionVerificationsRefs,
+            bool payoutApprovalsRefs,
+            bool payoutRecordsRefs,
           })
         > {
   $$RuleSetVersionsTableTableManager(
@@ -14124,6 +16323,9 @@ class $$RuleSetVersionsTableTableManager
                 defaultEnforcementStepsRefs = false,
                 drawRecordsRefs = false,
                 drawWitnessApprovalsRefs = false,
+                payoutCollectionVerificationsRefs = false,
+                payoutApprovalsRefs = false,
+                payoutRecordsRefs = false,
               }) {
                 return PrefetchHooks(
                   db: db,
@@ -14133,6 +16335,10 @@ class $$RuleSetVersionsTableTableManager
                     if (defaultEnforcementStepsRefs) db.defaultEnforcementSteps,
                     if (drawRecordsRefs) db.drawRecords,
                     if (drawWitnessApprovalsRefs) db.drawWitnessApprovals,
+                    if (payoutCollectionVerificationsRefs)
+                      db.payoutCollectionVerifications,
+                    if (payoutApprovalsRefs) db.payoutApprovals,
+                    if (payoutRecordsRefs) db.payoutRecords,
                   ],
                   addJoins: null,
                   getPrefetchedDataCallback: (items) async {
@@ -14242,6 +16448,69 @@ class $$RuleSetVersionsTableTableManager
                               ),
                           typedResults: items,
                         ),
+                      if (payoutCollectionVerificationsRefs)
+                        await $_getPrefetchedData<
+                          RuleSetVersionRow,
+                          $RuleSetVersionsTable,
+                          PayoutCollectionVerificationRow
+                        >(
+                          currentTable: table,
+                          referencedTable: $$RuleSetVersionsTableReferences
+                              ._payoutCollectionVerificationsRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$RuleSetVersionsTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).payoutCollectionVerificationsRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.ruleSetVersionId == item.id,
+                              ),
+                          typedResults: items,
+                        ),
+                      if (payoutApprovalsRefs)
+                        await $_getPrefetchedData<
+                          RuleSetVersionRow,
+                          $RuleSetVersionsTable,
+                          PayoutApprovalRow
+                        >(
+                          currentTable: table,
+                          referencedTable: $$RuleSetVersionsTableReferences
+                              ._payoutApprovalsRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$RuleSetVersionsTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).payoutApprovalsRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.ruleSetVersionId == item.id,
+                              ),
+                          typedResults: items,
+                        ),
+                      if (payoutRecordsRefs)
+                        await $_getPrefetchedData<
+                          RuleSetVersionRow,
+                          $RuleSetVersionsTable,
+                          PayoutRecordRow
+                        >(
+                          currentTable: table,
+                          referencedTable: $$RuleSetVersionsTableReferences
+                              ._payoutRecordsRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$RuleSetVersionsTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).payoutRecordsRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.ruleSetVersionId == item.id,
+                              ),
+                          typedResults: items,
+                        ),
                     ];
                   },
                 );
@@ -14268,6 +16537,9 @@ typedef $$RuleSetVersionsTableProcessedTableManager =
         bool defaultEnforcementStepsRefs,
         bool drawRecordsRefs,
         bool drawWitnessApprovalsRefs,
+        bool payoutCollectionVerificationsRefs,
+        bool payoutApprovalsRefs,
+        bool payoutRecordsRefs,
       })
     >;
 typedef $$MemberConsentsTableCreateCompanionBuilder =
@@ -18448,6 +20720,24 @@ final class $$DrawRecordsTableReferences
       manager.$state.copyWith(prefetchedData: cache),
     );
   }
+
+  static MultiTypedResultKey<$PayoutRecordsTable, List<PayoutRecordRow>>
+  _payoutRecordsRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
+    db.payoutRecords,
+    aliasName: $_aliasNameGenerator(db.drawRecords.id, db.payoutRecords.drawId),
+  );
+
+  $$PayoutRecordsTableProcessedTableManager get payoutRecordsRefs {
+    final manager = $$PayoutRecordsTableTableManager(
+      $_db,
+      $_db.payoutRecords,
+    ).filter((f) => f.drawId.id.sqlEquals($_itemColumn<String>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(_payoutRecordsRefsTable($_db));
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
 }
 
 class $$DrawRecordsTableFilterComposer
@@ -18586,6 +20876,31 @@ class $$DrawRecordsTableFilterComposer
           }) => $$DrawWitnessApprovalsTableFilterComposer(
             $db: $db,
             $table: $db.drawWitnessApprovals,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<bool> payoutRecordsRefs(
+    Expression<bool> Function($$PayoutRecordsTableFilterComposer f) f,
+  ) {
+    final $$PayoutRecordsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.payoutRecords,
+      getReferencedColumn: (t) => t.drawId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$PayoutRecordsTableFilterComposer(
+            $db: $db,
+            $table: $db.payoutRecords,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -18854,6 +21169,31 @@ class $$DrawRecordsTableAnnotationComposer
         );
     return f(composer);
   }
+
+  Expression<T> payoutRecordsRefs<T extends Object>(
+    Expression<T> Function($$PayoutRecordsTableAnnotationComposer a) f,
+  ) {
+    final $$PayoutRecordsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.payoutRecords,
+      getReferencedColumn: (t) => t.drawId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$PayoutRecordsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.payoutRecords,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
 }
 
 class $$DrawRecordsTableTableManager
@@ -18873,6 +21213,7 @@ class $$DrawRecordsTableTableManager
             bool shomitiId,
             bool ruleSetVersionId,
             bool drawWitnessApprovalsRefs,
+            bool payoutRecordsRefs,
           })
         > {
   $$DrawRecordsTableTableManager(_$AppDatabase db, $DrawRecordsTable table)
@@ -18971,11 +21312,13 @@ class $$DrawRecordsTableTableManager
                 shomitiId = false,
                 ruleSetVersionId = false,
                 drawWitnessApprovalsRefs = false,
+                payoutRecordsRefs = false,
               }) {
                 return PrefetchHooks(
                   db: db,
                   explicitlyWatchedTables: [
                     if (drawWitnessApprovalsRefs) db.drawWitnessApprovals,
+                    if (payoutRecordsRefs) db.payoutRecords,
                   ],
                   addJoins:
                       <
@@ -19049,6 +21392,27 @@ class $$DrawRecordsTableTableManager
                               ),
                           typedResults: items,
                         ),
+                      if (payoutRecordsRefs)
+                        await $_getPrefetchedData<
+                          DrawRecordRow,
+                          $DrawRecordsTable,
+                          PayoutRecordRow
+                        >(
+                          currentTable: table,
+                          referencedTable: $$DrawRecordsTableReferences
+                              ._payoutRecordsRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$DrawRecordsTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).payoutRecordsRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.drawId == item.id,
+                              ),
+                          typedResults: items,
+                        ),
                     ];
                   },
                 );
@@ -19073,6 +21437,7 @@ typedef $$DrawRecordsTableProcessedTableManager =
         bool shomitiId,
         bool ruleSetVersionId,
         bool drawWitnessApprovalsRefs,
+        bool payoutRecordsRefs,
       })
     >;
 typedef $$DrawWitnessApprovalsTableCreateCompanionBuilder =
@@ -19510,6 +21875,1582 @@ typedef $$DrawWitnessApprovalsTableProcessedTableManager =
       DrawWitnessApprovalRow,
       PrefetchHooks Function({bool drawId, bool ruleSetVersionId})
     >;
+typedef $$PayoutCollectionVerificationsTableCreateCompanionBuilder =
+    PayoutCollectionVerificationsCompanion Function({
+      required String shomitiId,
+      required String monthKey,
+      required String ruleSetVersionId,
+      required String verifiedByMemberId,
+      Value<String?> note,
+      required DateTime verifiedAt,
+      Value<int> rowid,
+    });
+typedef $$PayoutCollectionVerificationsTableUpdateCompanionBuilder =
+    PayoutCollectionVerificationsCompanion Function({
+      Value<String> shomitiId,
+      Value<String> monthKey,
+      Value<String> ruleSetVersionId,
+      Value<String> verifiedByMemberId,
+      Value<String?> note,
+      Value<DateTime> verifiedAt,
+      Value<int> rowid,
+    });
+
+final class $$PayoutCollectionVerificationsTableReferences
+    extends
+        BaseReferences<
+          _$AppDatabase,
+          $PayoutCollectionVerificationsTable,
+          PayoutCollectionVerificationRow
+        > {
+  $$PayoutCollectionVerificationsTableReferences(
+    super.$_db,
+    super.$_table,
+    super.$_typedResult,
+  );
+
+  static $ShomitisTable _shomitiIdTable(_$AppDatabase db) =>
+      db.shomitis.createAlias(
+        $_aliasNameGenerator(
+          db.payoutCollectionVerifications.shomitiId,
+          db.shomitis.id,
+        ),
+      );
+
+  $$ShomitisTableProcessedTableManager get shomitiId {
+    final $_column = $_itemColumn<String>('shomiti_id')!;
+
+    final manager = $$ShomitisTableTableManager(
+      $_db,
+      $_db.shomitis,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_shomitiIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+
+  static $RuleSetVersionsTable _ruleSetVersionIdTable(_$AppDatabase db) =>
+      db.ruleSetVersions.createAlias(
+        $_aliasNameGenerator(
+          db.payoutCollectionVerifications.ruleSetVersionId,
+          db.ruleSetVersions.id,
+        ),
+      );
+
+  $$RuleSetVersionsTableProcessedTableManager get ruleSetVersionId {
+    final $_column = $_itemColumn<String>('rule_set_version_id')!;
+
+    final manager = $$RuleSetVersionsTableTableManager(
+      $_db,
+      $_db.ruleSetVersions,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_ruleSetVersionIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+}
+
+class $$PayoutCollectionVerificationsTableFilterComposer
+    extends Composer<_$AppDatabase, $PayoutCollectionVerificationsTable> {
+  $$PayoutCollectionVerificationsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get monthKey => $composableBuilder(
+    column: $table.monthKey,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get verifiedByMemberId => $composableBuilder(
+    column: $table.verifiedByMemberId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get note => $composableBuilder(
+    column: $table.note,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get verifiedAt => $composableBuilder(
+    column: $table.verifiedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  $$ShomitisTableFilterComposer get shomitiId {
+    final $$ShomitisTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.shomitiId,
+      referencedTable: $db.shomitis,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ShomitisTableFilterComposer(
+            $db: $db,
+            $table: $db.shomitis,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$RuleSetVersionsTableFilterComposer get ruleSetVersionId {
+    final $$RuleSetVersionsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.ruleSetVersionId,
+      referencedTable: $db.ruleSetVersions,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$RuleSetVersionsTableFilterComposer(
+            $db: $db,
+            $table: $db.ruleSetVersions,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$PayoutCollectionVerificationsTableOrderingComposer
+    extends Composer<_$AppDatabase, $PayoutCollectionVerificationsTable> {
+  $$PayoutCollectionVerificationsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get monthKey => $composableBuilder(
+    column: $table.monthKey,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get verifiedByMemberId => $composableBuilder(
+    column: $table.verifiedByMemberId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get note => $composableBuilder(
+    column: $table.note,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get verifiedAt => $composableBuilder(
+    column: $table.verifiedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  $$ShomitisTableOrderingComposer get shomitiId {
+    final $$ShomitisTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.shomitiId,
+      referencedTable: $db.shomitis,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ShomitisTableOrderingComposer(
+            $db: $db,
+            $table: $db.shomitis,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$RuleSetVersionsTableOrderingComposer get ruleSetVersionId {
+    final $$RuleSetVersionsTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.ruleSetVersionId,
+      referencedTable: $db.ruleSetVersions,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$RuleSetVersionsTableOrderingComposer(
+            $db: $db,
+            $table: $db.ruleSetVersions,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$PayoutCollectionVerificationsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $PayoutCollectionVerificationsTable> {
+  $$PayoutCollectionVerificationsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get monthKey =>
+      $composableBuilder(column: $table.monthKey, builder: (column) => column);
+
+  GeneratedColumn<String> get verifiedByMemberId => $composableBuilder(
+    column: $table.verifiedByMemberId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get note =>
+      $composableBuilder(column: $table.note, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get verifiedAt => $composableBuilder(
+    column: $table.verifiedAt,
+    builder: (column) => column,
+  );
+
+  $$ShomitisTableAnnotationComposer get shomitiId {
+    final $$ShomitisTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.shomitiId,
+      referencedTable: $db.shomitis,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ShomitisTableAnnotationComposer(
+            $db: $db,
+            $table: $db.shomitis,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$RuleSetVersionsTableAnnotationComposer get ruleSetVersionId {
+    final $$RuleSetVersionsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.ruleSetVersionId,
+      referencedTable: $db.ruleSetVersions,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$RuleSetVersionsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.ruleSetVersions,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$PayoutCollectionVerificationsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $PayoutCollectionVerificationsTable,
+          PayoutCollectionVerificationRow,
+          $$PayoutCollectionVerificationsTableFilterComposer,
+          $$PayoutCollectionVerificationsTableOrderingComposer,
+          $$PayoutCollectionVerificationsTableAnnotationComposer,
+          $$PayoutCollectionVerificationsTableCreateCompanionBuilder,
+          $$PayoutCollectionVerificationsTableUpdateCompanionBuilder,
+          (
+            PayoutCollectionVerificationRow,
+            $$PayoutCollectionVerificationsTableReferences,
+          ),
+          PayoutCollectionVerificationRow,
+          PrefetchHooks Function({bool shomitiId, bool ruleSetVersionId})
+        > {
+  $$PayoutCollectionVerificationsTableTableManager(
+    _$AppDatabase db,
+    $PayoutCollectionVerificationsTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$PayoutCollectionVerificationsTableFilterComposer(
+                $db: db,
+                $table: table,
+              ),
+          createOrderingComposer: () =>
+              $$PayoutCollectionVerificationsTableOrderingComposer(
+                $db: db,
+                $table: table,
+              ),
+          createComputedFieldComposer: () =>
+              $$PayoutCollectionVerificationsTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<String> shomitiId = const Value.absent(),
+                Value<String> monthKey = const Value.absent(),
+                Value<String> ruleSetVersionId = const Value.absent(),
+                Value<String> verifiedByMemberId = const Value.absent(),
+                Value<String?> note = const Value.absent(),
+                Value<DateTime> verifiedAt = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => PayoutCollectionVerificationsCompanion(
+                shomitiId: shomitiId,
+                monthKey: monthKey,
+                ruleSetVersionId: ruleSetVersionId,
+                verifiedByMemberId: verifiedByMemberId,
+                note: note,
+                verifiedAt: verifiedAt,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String shomitiId,
+                required String monthKey,
+                required String ruleSetVersionId,
+                required String verifiedByMemberId,
+                Value<String?> note = const Value.absent(),
+                required DateTime verifiedAt,
+                Value<int> rowid = const Value.absent(),
+              }) => PayoutCollectionVerificationsCompanion.insert(
+                shomitiId: shomitiId,
+                monthKey: monthKey,
+                ruleSetVersionId: ruleSetVersionId,
+                verifiedByMemberId: verifiedByMemberId,
+                note: note,
+                verifiedAt: verifiedAt,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable(table),
+                  $$PayoutCollectionVerificationsTableReferences(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: ({shomitiId = false, ruleSetVersionId = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [],
+              addJoins:
+                  <
+                    T extends TableManagerState<
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic
+                    >
+                  >(state) {
+                    if (shomitiId) {
+                      state =
+                          state.withJoin(
+                                currentTable: table,
+                                currentColumn: table.shomitiId,
+                                referencedTable:
+                                    $$PayoutCollectionVerificationsTableReferences
+                                        ._shomitiIdTable(db),
+                                referencedColumn:
+                                    $$PayoutCollectionVerificationsTableReferences
+                                        ._shomitiIdTable(db)
+                                        .id,
+                              )
+                              as T;
+                    }
+                    if (ruleSetVersionId) {
+                      state =
+                          state.withJoin(
+                                currentTable: table,
+                                currentColumn: table.ruleSetVersionId,
+                                referencedTable:
+                                    $$PayoutCollectionVerificationsTableReferences
+                                        ._ruleSetVersionIdTable(db),
+                                referencedColumn:
+                                    $$PayoutCollectionVerificationsTableReferences
+                                        ._ruleSetVersionIdTable(db)
+                                        .id,
+                              )
+                              as T;
+                    }
+
+                    return state;
+                  },
+              getPrefetchedDataCallback: (items) async {
+                return [];
+              },
+            );
+          },
+        ),
+      );
+}
+
+typedef $$PayoutCollectionVerificationsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $PayoutCollectionVerificationsTable,
+      PayoutCollectionVerificationRow,
+      $$PayoutCollectionVerificationsTableFilterComposer,
+      $$PayoutCollectionVerificationsTableOrderingComposer,
+      $$PayoutCollectionVerificationsTableAnnotationComposer,
+      $$PayoutCollectionVerificationsTableCreateCompanionBuilder,
+      $$PayoutCollectionVerificationsTableUpdateCompanionBuilder,
+      (
+        PayoutCollectionVerificationRow,
+        $$PayoutCollectionVerificationsTableReferences,
+      ),
+      PayoutCollectionVerificationRow,
+      PrefetchHooks Function({bool shomitiId, bool ruleSetVersionId})
+    >;
+typedef $$PayoutApprovalsTableCreateCompanionBuilder =
+    PayoutApprovalsCompanion Function({
+      required String shomitiId,
+      required String monthKey,
+      required String role,
+      required String approverMemberId,
+      required String ruleSetVersionId,
+      Value<String?> note,
+      required DateTime approvedAt,
+      Value<int> rowid,
+    });
+typedef $$PayoutApprovalsTableUpdateCompanionBuilder =
+    PayoutApprovalsCompanion Function({
+      Value<String> shomitiId,
+      Value<String> monthKey,
+      Value<String> role,
+      Value<String> approverMemberId,
+      Value<String> ruleSetVersionId,
+      Value<String?> note,
+      Value<DateTime> approvedAt,
+      Value<int> rowid,
+    });
+
+final class $$PayoutApprovalsTableReferences
+    extends
+        BaseReferences<
+          _$AppDatabase,
+          $PayoutApprovalsTable,
+          PayoutApprovalRow
+        > {
+  $$PayoutApprovalsTableReferences(
+    super.$_db,
+    super.$_table,
+    super.$_typedResult,
+  );
+
+  static $ShomitisTable _shomitiIdTable(_$AppDatabase db) =>
+      db.shomitis.createAlias(
+        $_aliasNameGenerator(db.payoutApprovals.shomitiId, db.shomitis.id),
+      );
+
+  $$ShomitisTableProcessedTableManager get shomitiId {
+    final $_column = $_itemColumn<String>('shomiti_id')!;
+
+    final manager = $$ShomitisTableTableManager(
+      $_db,
+      $_db.shomitis,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_shomitiIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+
+  static $RuleSetVersionsTable _ruleSetVersionIdTable(_$AppDatabase db) =>
+      db.ruleSetVersions.createAlias(
+        $_aliasNameGenerator(
+          db.payoutApprovals.ruleSetVersionId,
+          db.ruleSetVersions.id,
+        ),
+      );
+
+  $$RuleSetVersionsTableProcessedTableManager get ruleSetVersionId {
+    final $_column = $_itemColumn<String>('rule_set_version_id')!;
+
+    final manager = $$RuleSetVersionsTableTableManager(
+      $_db,
+      $_db.ruleSetVersions,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_ruleSetVersionIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+}
+
+class $$PayoutApprovalsTableFilterComposer
+    extends Composer<_$AppDatabase, $PayoutApprovalsTable> {
+  $$PayoutApprovalsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get monthKey => $composableBuilder(
+    column: $table.monthKey,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get role => $composableBuilder(
+    column: $table.role,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get approverMemberId => $composableBuilder(
+    column: $table.approverMemberId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get note => $composableBuilder(
+    column: $table.note,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get approvedAt => $composableBuilder(
+    column: $table.approvedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  $$ShomitisTableFilterComposer get shomitiId {
+    final $$ShomitisTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.shomitiId,
+      referencedTable: $db.shomitis,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ShomitisTableFilterComposer(
+            $db: $db,
+            $table: $db.shomitis,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$RuleSetVersionsTableFilterComposer get ruleSetVersionId {
+    final $$RuleSetVersionsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.ruleSetVersionId,
+      referencedTable: $db.ruleSetVersions,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$RuleSetVersionsTableFilterComposer(
+            $db: $db,
+            $table: $db.ruleSetVersions,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$PayoutApprovalsTableOrderingComposer
+    extends Composer<_$AppDatabase, $PayoutApprovalsTable> {
+  $$PayoutApprovalsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get monthKey => $composableBuilder(
+    column: $table.monthKey,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get role => $composableBuilder(
+    column: $table.role,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get approverMemberId => $composableBuilder(
+    column: $table.approverMemberId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get note => $composableBuilder(
+    column: $table.note,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get approvedAt => $composableBuilder(
+    column: $table.approvedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  $$ShomitisTableOrderingComposer get shomitiId {
+    final $$ShomitisTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.shomitiId,
+      referencedTable: $db.shomitis,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ShomitisTableOrderingComposer(
+            $db: $db,
+            $table: $db.shomitis,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$RuleSetVersionsTableOrderingComposer get ruleSetVersionId {
+    final $$RuleSetVersionsTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.ruleSetVersionId,
+      referencedTable: $db.ruleSetVersions,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$RuleSetVersionsTableOrderingComposer(
+            $db: $db,
+            $table: $db.ruleSetVersions,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$PayoutApprovalsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $PayoutApprovalsTable> {
+  $$PayoutApprovalsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get monthKey =>
+      $composableBuilder(column: $table.monthKey, builder: (column) => column);
+
+  GeneratedColumn<String> get role =>
+      $composableBuilder(column: $table.role, builder: (column) => column);
+
+  GeneratedColumn<String> get approverMemberId => $composableBuilder(
+    column: $table.approverMemberId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get note =>
+      $composableBuilder(column: $table.note, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get approvedAt => $composableBuilder(
+    column: $table.approvedAt,
+    builder: (column) => column,
+  );
+
+  $$ShomitisTableAnnotationComposer get shomitiId {
+    final $$ShomitisTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.shomitiId,
+      referencedTable: $db.shomitis,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ShomitisTableAnnotationComposer(
+            $db: $db,
+            $table: $db.shomitis,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$RuleSetVersionsTableAnnotationComposer get ruleSetVersionId {
+    final $$RuleSetVersionsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.ruleSetVersionId,
+      referencedTable: $db.ruleSetVersions,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$RuleSetVersionsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.ruleSetVersions,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$PayoutApprovalsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $PayoutApprovalsTable,
+          PayoutApprovalRow,
+          $$PayoutApprovalsTableFilterComposer,
+          $$PayoutApprovalsTableOrderingComposer,
+          $$PayoutApprovalsTableAnnotationComposer,
+          $$PayoutApprovalsTableCreateCompanionBuilder,
+          $$PayoutApprovalsTableUpdateCompanionBuilder,
+          (PayoutApprovalRow, $$PayoutApprovalsTableReferences),
+          PayoutApprovalRow,
+          PrefetchHooks Function({bool shomitiId, bool ruleSetVersionId})
+        > {
+  $$PayoutApprovalsTableTableManager(
+    _$AppDatabase db,
+    $PayoutApprovalsTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$PayoutApprovalsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$PayoutApprovalsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$PayoutApprovalsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> shomitiId = const Value.absent(),
+                Value<String> monthKey = const Value.absent(),
+                Value<String> role = const Value.absent(),
+                Value<String> approverMemberId = const Value.absent(),
+                Value<String> ruleSetVersionId = const Value.absent(),
+                Value<String?> note = const Value.absent(),
+                Value<DateTime> approvedAt = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => PayoutApprovalsCompanion(
+                shomitiId: shomitiId,
+                monthKey: monthKey,
+                role: role,
+                approverMemberId: approverMemberId,
+                ruleSetVersionId: ruleSetVersionId,
+                note: note,
+                approvedAt: approvedAt,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String shomitiId,
+                required String monthKey,
+                required String role,
+                required String approverMemberId,
+                required String ruleSetVersionId,
+                Value<String?> note = const Value.absent(),
+                required DateTime approvedAt,
+                Value<int> rowid = const Value.absent(),
+              }) => PayoutApprovalsCompanion.insert(
+                shomitiId: shomitiId,
+                monthKey: monthKey,
+                role: role,
+                approverMemberId: approverMemberId,
+                ruleSetVersionId: ruleSetVersionId,
+                note: note,
+                approvedAt: approvedAt,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable(table),
+                  $$PayoutApprovalsTableReferences(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback:
+              ({shomitiId = false, ruleSetVersionId = false}) {
+                return PrefetchHooks(
+                  db: db,
+                  explicitlyWatchedTables: [],
+                  addJoins:
+                      <
+                        T extends TableManagerState<
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic
+                        >
+                      >(state) {
+                        if (shomitiId) {
+                          state =
+                              state.withJoin(
+                                    currentTable: table,
+                                    currentColumn: table.shomitiId,
+                                    referencedTable:
+                                        $$PayoutApprovalsTableReferences
+                                            ._shomitiIdTable(db),
+                                    referencedColumn:
+                                        $$PayoutApprovalsTableReferences
+                                            ._shomitiIdTable(db)
+                                            .id,
+                                  )
+                                  as T;
+                        }
+                        if (ruleSetVersionId) {
+                          state =
+                              state.withJoin(
+                                    currentTable: table,
+                                    currentColumn: table.ruleSetVersionId,
+                                    referencedTable:
+                                        $$PayoutApprovalsTableReferences
+                                            ._ruleSetVersionIdTable(db),
+                                    referencedColumn:
+                                        $$PayoutApprovalsTableReferences
+                                            ._ruleSetVersionIdTable(db)
+                                            .id,
+                                  )
+                                  as T;
+                        }
+
+                        return state;
+                      },
+                  getPrefetchedDataCallback: (items) async {
+                    return [];
+                  },
+                );
+              },
+        ),
+      );
+}
+
+typedef $$PayoutApprovalsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $PayoutApprovalsTable,
+      PayoutApprovalRow,
+      $$PayoutApprovalsTableFilterComposer,
+      $$PayoutApprovalsTableOrderingComposer,
+      $$PayoutApprovalsTableAnnotationComposer,
+      $$PayoutApprovalsTableCreateCompanionBuilder,
+      $$PayoutApprovalsTableUpdateCompanionBuilder,
+      (PayoutApprovalRow, $$PayoutApprovalsTableReferences),
+      PayoutApprovalRow,
+      PrefetchHooks Function({bool shomitiId, bool ruleSetVersionId})
+    >;
+typedef $$PayoutRecordsTableCreateCompanionBuilder =
+    PayoutRecordsCompanion Function({
+      required String shomitiId,
+      required String monthKey,
+      required String drawId,
+      required String ruleSetVersionId,
+      required String winnerMemberId,
+      required int winnerShareIndex,
+      required int amountBdt,
+      Value<String?> proofReference,
+      Value<String?> markedPaidByMemberId,
+      Value<DateTime?> paidAt,
+      required DateTime recordedAt,
+      Value<int> rowid,
+    });
+typedef $$PayoutRecordsTableUpdateCompanionBuilder =
+    PayoutRecordsCompanion Function({
+      Value<String> shomitiId,
+      Value<String> monthKey,
+      Value<String> drawId,
+      Value<String> ruleSetVersionId,
+      Value<String> winnerMemberId,
+      Value<int> winnerShareIndex,
+      Value<int> amountBdt,
+      Value<String?> proofReference,
+      Value<String?> markedPaidByMemberId,
+      Value<DateTime?> paidAt,
+      Value<DateTime> recordedAt,
+      Value<int> rowid,
+    });
+
+final class $$PayoutRecordsTableReferences
+    extends
+        BaseReferences<_$AppDatabase, $PayoutRecordsTable, PayoutRecordRow> {
+  $$PayoutRecordsTableReferences(
+    super.$_db,
+    super.$_table,
+    super.$_typedResult,
+  );
+
+  static $ShomitisTable _shomitiIdTable(_$AppDatabase db) =>
+      db.shomitis.createAlias(
+        $_aliasNameGenerator(db.payoutRecords.shomitiId, db.shomitis.id),
+      );
+
+  $$ShomitisTableProcessedTableManager get shomitiId {
+    final $_column = $_itemColumn<String>('shomiti_id')!;
+
+    final manager = $$ShomitisTableTableManager(
+      $_db,
+      $_db.shomitis,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_shomitiIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+
+  static $DrawRecordsTable _drawIdTable(_$AppDatabase db) =>
+      db.drawRecords.createAlias(
+        $_aliasNameGenerator(db.payoutRecords.drawId, db.drawRecords.id),
+      );
+
+  $$DrawRecordsTableProcessedTableManager get drawId {
+    final $_column = $_itemColumn<String>('draw_id')!;
+
+    final manager = $$DrawRecordsTableTableManager(
+      $_db,
+      $_db.drawRecords,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_drawIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+
+  static $RuleSetVersionsTable _ruleSetVersionIdTable(_$AppDatabase db) =>
+      db.ruleSetVersions.createAlias(
+        $_aliasNameGenerator(
+          db.payoutRecords.ruleSetVersionId,
+          db.ruleSetVersions.id,
+        ),
+      );
+
+  $$RuleSetVersionsTableProcessedTableManager get ruleSetVersionId {
+    final $_column = $_itemColumn<String>('rule_set_version_id')!;
+
+    final manager = $$RuleSetVersionsTableTableManager(
+      $_db,
+      $_db.ruleSetVersions,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_ruleSetVersionIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+}
+
+class $$PayoutRecordsTableFilterComposer
+    extends Composer<_$AppDatabase, $PayoutRecordsTable> {
+  $$PayoutRecordsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get monthKey => $composableBuilder(
+    column: $table.monthKey,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get winnerMemberId => $composableBuilder(
+    column: $table.winnerMemberId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get winnerShareIndex => $composableBuilder(
+    column: $table.winnerShareIndex,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get amountBdt => $composableBuilder(
+    column: $table.amountBdt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get proofReference => $composableBuilder(
+    column: $table.proofReference,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get markedPaidByMemberId => $composableBuilder(
+    column: $table.markedPaidByMemberId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get paidAt => $composableBuilder(
+    column: $table.paidAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get recordedAt => $composableBuilder(
+    column: $table.recordedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  $$ShomitisTableFilterComposer get shomitiId {
+    final $$ShomitisTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.shomitiId,
+      referencedTable: $db.shomitis,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ShomitisTableFilterComposer(
+            $db: $db,
+            $table: $db.shomitis,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$DrawRecordsTableFilterComposer get drawId {
+    final $$DrawRecordsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.drawId,
+      referencedTable: $db.drawRecords,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$DrawRecordsTableFilterComposer(
+            $db: $db,
+            $table: $db.drawRecords,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$RuleSetVersionsTableFilterComposer get ruleSetVersionId {
+    final $$RuleSetVersionsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.ruleSetVersionId,
+      referencedTable: $db.ruleSetVersions,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$RuleSetVersionsTableFilterComposer(
+            $db: $db,
+            $table: $db.ruleSetVersions,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$PayoutRecordsTableOrderingComposer
+    extends Composer<_$AppDatabase, $PayoutRecordsTable> {
+  $$PayoutRecordsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get monthKey => $composableBuilder(
+    column: $table.monthKey,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get winnerMemberId => $composableBuilder(
+    column: $table.winnerMemberId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get winnerShareIndex => $composableBuilder(
+    column: $table.winnerShareIndex,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get amountBdt => $composableBuilder(
+    column: $table.amountBdt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get proofReference => $composableBuilder(
+    column: $table.proofReference,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get markedPaidByMemberId => $composableBuilder(
+    column: $table.markedPaidByMemberId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get paidAt => $composableBuilder(
+    column: $table.paidAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get recordedAt => $composableBuilder(
+    column: $table.recordedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  $$ShomitisTableOrderingComposer get shomitiId {
+    final $$ShomitisTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.shomitiId,
+      referencedTable: $db.shomitis,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ShomitisTableOrderingComposer(
+            $db: $db,
+            $table: $db.shomitis,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$DrawRecordsTableOrderingComposer get drawId {
+    final $$DrawRecordsTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.drawId,
+      referencedTable: $db.drawRecords,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$DrawRecordsTableOrderingComposer(
+            $db: $db,
+            $table: $db.drawRecords,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$RuleSetVersionsTableOrderingComposer get ruleSetVersionId {
+    final $$RuleSetVersionsTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.ruleSetVersionId,
+      referencedTable: $db.ruleSetVersions,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$RuleSetVersionsTableOrderingComposer(
+            $db: $db,
+            $table: $db.ruleSetVersions,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$PayoutRecordsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $PayoutRecordsTable> {
+  $$PayoutRecordsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get monthKey =>
+      $composableBuilder(column: $table.monthKey, builder: (column) => column);
+
+  GeneratedColumn<String> get winnerMemberId => $composableBuilder(
+    column: $table.winnerMemberId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get winnerShareIndex => $composableBuilder(
+    column: $table.winnerShareIndex,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get amountBdt =>
+      $composableBuilder(column: $table.amountBdt, builder: (column) => column);
+
+  GeneratedColumn<String> get proofReference => $composableBuilder(
+    column: $table.proofReference,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get markedPaidByMemberId => $composableBuilder(
+    column: $table.markedPaidByMemberId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get paidAt =>
+      $composableBuilder(column: $table.paidAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get recordedAt => $composableBuilder(
+    column: $table.recordedAt,
+    builder: (column) => column,
+  );
+
+  $$ShomitisTableAnnotationComposer get shomitiId {
+    final $$ShomitisTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.shomitiId,
+      referencedTable: $db.shomitis,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ShomitisTableAnnotationComposer(
+            $db: $db,
+            $table: $db.shomitis,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$DrawRecordsTableAnnotationComposer get drawId {
+    final $$DrawRecordsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.drawId,
+      referencedTable: $db.drawRecords,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$DrawRecordsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.drawRecords,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$RuleSetVersionsTableAnnotationComposer get ruleSetVersionId {
+    final $$RuleSetVersionsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.ruleSetVersionId,
+      referencedTable: $db.ruleSetVersions,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$RuleSetVersionsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.ruleSetVersions,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$PayoutRecordsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $PayoutRecordsTable,
+          PayoutRecordRow,
+          $$PayoutRecordsTableFilterComposer,
+          $$PayoutRecordsTableOrderingComposer,
+          $$PayoutRecordsTableAnnotationComposer,
+          $$PayoutRecordsTableCreateCompanionBuilder,
+          $$PayoutRecordsTableUpdateCompanionBuilder,
+          (PayoutRecordRow, $$PayoutRecordsTableReferences),
+          PayoutRecordRow,
+          PrefetchHooks Function({
+            bool shomitiId,
+            bool drawId,
+            bool ruleSetVersionId,
+          })
+        > {
+  $$PayoutRecordsTableTableManager(_$AppDatabase db, $PayoutRecordsTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$PayoutRecordsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$PayoutRecordsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$PayoutRecordsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> shomitiId = const Value.absent(),
+                Value<String> monthKey = const Value.absent(),
+                Value<String> drawId = const Value.absent(),
+                Value<String> ruleSetVersionId = const Value.absent(),
+                Value<String> winnerMemberId = const Value.absent(),
+                Value<int> winnerShareIndex = const Value.absent(),
+                Value<int> amountBdt = const Value.absent(),
+                Value<String?> proofReference = const Value.absent(),
+                Value<String?> markedPaidByMemberId = const Value.absent(),
+                Value<DateTime?> paidAt = const Value.absent(),
+                Value<DateTime> recordedAt = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => PayoutRecordsCompanion(
+                shomitiId: shomitiId,
+                monthKey: monthKey,
+                drawId: drawId,
+                ruleSetVersionId: ruleSetVersionId,
+                winnerMemberId: winnerMemberId,
+                winnerShareIndex: winnerShareIndex,
+                amountBdt: amountBdt,
+                proofReference: proofReference,
+                markedPaidByMemberId: markedPaidByMemberId,
+                paidAt: paidAt,
+                recordedAt: recordedAt,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String shomitiId,
+                required String monthKey,
+                required String drawId,
+                required String ruleSetVersionId,
+                required String winnerMemberId,
+                required int winnerShareIndex,
+                required int amountBdt,
+                Value<String?> proofReference = const Value.absent(),
+                Value<String?> markedPaidByMemberId = const Value.absent(),
+                Value<DateTime?> paidAt = const Value.absent(),
+                required DateTime recordedAt,
+                Value<int> rowid = const Value.absent(),
+              }) => PayoutRecordsCompanion.insert(
+                shomitiId: shomitiId,
+                monthKey: monthKey,
+                drawId: drawId,
+                ruleSetVersionId: ruleSetVersionId,
+                winnerMemberId: winnerMemberId,
+                winnerShareIndex: winnerShareIndex,
+                amountBdt: amountBdt,
+                proofReference: proofReference,
+                markedPaidByMemberId: markedPaidByMemberId,
+                paidAt: paidAt,
+                recordedAt: recordedAt,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable(table),
+                  $$PayoutRecordsTableReferences(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback:
+              ({shomitiId = false, drawId = false, ruleSetVersionId = false}) {
+                return PrefetchHooks(
+                  db: db,
+                  explicitlyWatchedTables: [],
+                  addJoins:
+                      <
+                        T extends TableManagerState<
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic
+                        >
+                      >(state) {
+                        if (shomitiId) {
+                          state =
+                              state.withJoin(
+                                    currentTable: table,
+                                    currentColumn: table.shomitiId,
+                                    referencedTable:
+                                        $$PayoutRecordsTableReferences
+                                            ._shomitiIdTable(db),
+                                    referencedColumn:
+                                        $$PayoutRecordsTableReferences
+                                            ._shomitiIdTable(db)
+                                            .id,
+                                  )
+                                  as T;
+                        }
+                        if (drawId) {
+                          state =
+                              state.withJoin(
+                                    currentTable: table,
+                                    currentColumn: table.drawId,
+                                    referencedTable:
+                                        $$PayoutRecordsTableReferences
+                                            ._drawIdTable(db),
+                                    referencedColumn:
+                                        $$PayoutRecordsTableReferences
+                                            ._drawIdTable(db)
+                                            .id,
+                                  )
+                                  as T;
+                        }
+                        if (ruleSetVersionId) {
+                          state =
+                              state.withJoin(
+                                    currentTable: table,
+                                    currentColumn: table.ruleSetVersionId,
+                                    referencedTable:
+                                        $$PayoutRecordsTableReferences
+                                            ._ruleSetVersionIdTable(db),
+                                    referencedColumn:
+                                        $$PayoutRecordsTableReferences
+                                            ._ruleSetVersionIdTable(db)
+                                            .id,
+                                  )
+                                  as T;
+                        }
+
+                        return state;
+                      },
+                  getPrefetchedDataCallback: (items) async {
+                    return [];
+                  },
+                );
+              },
+        ),
+      );
+}
+
+typedef $$PayoutRecordsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $PayoutRecordsTable,
+      PayoutRecordRow,
+      $$PayoutRecordsTableFilterComposer,
+      $$PayoutRecordsTableOrderingComposer,
+      $$PayoutRecordsTableAnnotationComposer,
+      $$PayoutRecordsTableCreateCompanionBuilder,
+      $$PayoutRecordsTableUpdateCompanionBuilder,
+      (PayoutRecordRow, $$PayoutRecordsTableReferences),
+      PayoutRecordRow,
+      PrefetchHooks Function({
+        bool shomitiId,
+        bool drawId,
+        bool ruleSetVersionId,
+      })
+    >;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;
@@ -19561,4 +23502,14 @@ class $AppDatabaseManager {
       $$DrawRecordsTableTableManager(_db, _db.drawRecords);
   $$DrawWitnessApprovalsTableTableManager get drawWitnessApprovals =>
       $$DrawWitnessApprovalsTableTableManager(_db, _db.drawWitnessApprovals);
+  $$PayoutCollectionVerificationsTableTableManager
+  get payoutCollectionVerifications =>
+      $$PayoutCollectionVerificationsTableTableManager(
+        _db,
+        _db.payoutCollectionVerifications,
+      );
+  $$PayoutApprovalsTableTableManager get payoutApprovals =>
+      $$PayoutApprovalsTableTableManager(_db, _db.payoutApprovals);
+  $$PayoutRecordsTableTableManager get payoutRecords =>
+      $$PayoutRecordsTableTableManager(_db, _db.payoutRecords);
 }
