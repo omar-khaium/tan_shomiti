@@ -255,6 +255,7 @@ class _PayoutApprovalsPageState extends ConsumerState<PayoutApprovalsPage> {
                 ),
                 const SizedBox(height: AppSpacing.s16),
                 AppButton.primary(
+                  key: const Key('payout_approvals_continue'),
                   label: 'Continue',
                   onPressed:
                       canContinue ? () => context.push(payoutProofLocation) : null,
