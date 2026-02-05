@@ -7,9 +7,11 @@ import '../../../core/ui/components/app_error_state.dart';
 import '../../../core/ui/components/app_loading_state.dart';
 import '../../../core/ui/tokens/app_spacing.dart';
 import '../domain/value_objects/billing_month.dart';
+import '../../payments/domain/entities/payment.dart';
+import '../../payments/domain/value_objects/payment_method.dart';
+import '../../payments/presentation/providers/payments_domain_providers.dart';
 import 'models/contributions_ui_state.dart';
-import 'models/demo_payment_receipt.dart';
-import 'providers/contributions_demo_payments_providers.dart';
+import 'providers/contributions_payments_providers.dart';
 import 'providers/contributions_providers.dart';
 
 class ContributionsPage extends ConsumerWidget {
@@ -51,6 +53,16 @@ class ContributionsPage extends ConsumerWidget {
           );
         }
 
+        final payments =
+            ref
+                .watch(
+                  paymentsByMemberIdForMonthProvider(
+                    PaymentsMonthArgs(shomitiId: ui.shomitiId, month: ui.month),
+                  ),
+                )
+                .valueOrNull ??
+            const <String, Payment>{};
+
         return ListView(
           padding: const EdgeInsets.all(AppSpacing.s16),
           children: [
@@ -86,7 +98,13 @@ class ContributionsPage extends ConsumerWidget {
               ),
             ),
             const SizedBox(height: AppSpacing.s16),
-            for (final row in ui.rows) _DueRow(row: row, month: ui.month),
+            for (final row in ui.rows)
+              _DueRow(
+                shomitiId: ui.shomitiId,
+                row: row,
+                month: ui.month,
+                payment: payments[row.memberId],
+              ),
           ],
         );
       },
@@ -156,18 +174,21 @@ class _MonthHeader extends StatelessWidget {
 }
 
 class _DueRow extends ConsumerWidget {
-  const _DueRow({required this.row, required this.month});
+  const _DueRow({
+    required this.shomitiId,
+    required this.row,
+    required this.month,
+    required this.payment,
+  });
 
+  final String shomitiId;
   final MonthlyDueRow row;
   final BillingMonth month;
+  final Payment? payment;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final receipt = ref.watch(
-      demoPaymentReceiptProvider(
-        DemoPaymentKey(memberId: row.memberId, monthKey: month.key),
-      ),
-    );
+    final isPaid = payment != null;
 
     return AppCard(
       key: Key('dues_row_${row.position}'),
@@ -190,7 +211,7 @@ class _DueRow extends ConsumerWidget {
                 ),
                 const SizedBox(height: AppSpacing.s4),
                 Text(
-                  receipt == null ? 'Unpaid' : 'Paid',
+                  isPaid ? 'Paid' : 'Unpaid',
                   key: Key('dues_status_${row.position}'),
                   style: Theme.of(context).textTheme.bodySmall,
                 ),
@@ -206,7 +227,7 @@ class _DueRow extends ConsumerWidget {
                 style: Theme.of(context).textTheme.titleSmall,
               ),
               const SizedBox(height: AppSpacing.s8),
-              if (receipt == null)
+              if (payment == null)
                 TextButton(
                   key: Key('dues_record_payment_${row.position}'),
                   onPressed: () async {
@@ -220,25 +241,25 @@ class _DueRow extends ConsumerWidget {
 
                     if (input == null) return;
 
-                    await ref
-                        .read(demoPaymentsControllerProvider.notifier)
-                        .recordPayment(
-                          memberId: row.memberId,
-                          monthKey: month.key,
-                          amountBdt: input.amountBdt,
-                          method: input.method,
-                          reference: input.reference,
-                        );
+                    await ref.watch(recordPaymentAndIssueReceiptProvider)(
+                      shomitiId: shomitiId,
+                      month: month,
+                      memberId: row.memberId,
+                      amountBdt: input.amountBdt,
+                      method: input.method,
+                      reference: input.reference,
+                      proofNote: input.proofNote,
+                    );
                   },
                   child: const Text('Record payment'),
                 )
-              else
+              else if (payment!.hasReceipt)
                 TextButton(
                   key: Key('dues_view_receipt_${row.position}'),
                   onPressed: () async {
                     await showDialog<void>(
                       context: context,
-                      builder: (context) => _ReceiptDialog(receipt: receipt),
+                      builder: (context) => _ReceiptDialog(payment: payment!),
                     );
                   },
                   child: const Text('View receipt'),
@@ -269,11 +290,13 @@ class _PaymentInput {
     required this.amountBdt,
     required this.method,
     required this.reference,
+    required this.proofNote,
   });
 
   final int amountBdt;
-  final DemoPaymentMethod method;
+  final PaymentMethod method;
   final String reference;
+  final String? proofNote;
 }
 
 class _RecordPaymentDialogState extends State<_RecordPaymentDialog> {
@@ -281,7 +304,7 @@ class _RecordPaymentDialogState extends State<_RecordPaymentDialog> {
   final TextEditingController _referenceController = TextEditingController();
   final TextEditingController _proofController = TextEditingController();
 
-  DemoPaymentMethod _method = DemoPaymentMethod.cash;
+  PaymentMethod _method = PaymentMethod.cash;
   String? _error;
 
   @override
@@ -306,6 +329,10 @@ class _RecordPaymentDialogState extends State<_RecordPaymentDialog> {
       setState(() => _error = 'Enter a valid amount.');
       return;
     }
+    if (amount > widget.dueAmountBdt) {
+      setState(() => _error = 'Amount cannot exceed due amount.');
+      return;
+    }
     final reference = _referenceController.text.trim();
     if (reference.isEmpty) {
       setState(() => _error = 'Reference is required.');
@@ -314,7 +341,14 @@ class _RecordPaymentDialogState extends State<_RecordPaymentDialog> {
 
     setState(() => _error = null);
     Navigator.of(context).pop(
-      _PaymentInput(amountBdt: amount, method: _method, reference: reference),
+      _PaymentInput(
+        amountBdt: amount,
+        method: _method,
+        reference: reference,
+        proofNote: _proofController.text.trim().isEmpty
+            ? null
+            : _proofController.text.trim(),
+      ),
     );
   }
 
@@ -333,25 +367,25 @@ class _RecordPaymentDialogState extends State<_RecordPaymentDialog> {
               decoration: const InputDecoration(labelText: 'Amount (BDT)'),
             ),
             const SizedBox(height: AppSpacing.s12),
-            DropdownButtonFormField<DemoPaymentMethod>(
+            DropdownButtonFormField<PaymentMethod>(
               key: const Key('payment_method'),
               initialValue: _method,
               decoration: const InputDecoration(labelText: 'Method'),
               items: const [
                 DropdownMenuItem(
-                  value: DemoPaymentMethod.cash,
+                  value: PaymentMethod.cash,
                   child: Text('Cash'),
                 ),
                 DropdownMenuItem(
-                  value: DemoPaymentMethod.bankTransfer,
+                  value: PaymentMethod.bankTransfer,
                   child: Text('Bank transfer'),
                 ),
                 DropdownMenuItem(
-                  value: DemoPaymentMethod.mobileWallet,
+                  value: PaymentMethod.mobileWallet,
                   child: Text('Mobile wallet'),
                 ),
                 DropdownMenuItem(
-                  value: DemoPaymentMethod.other,
+                  value: PaymentMethod.other,
                   child: Text('Other'),
                 ),
               ],
@@ -408,9 +442,9 @@ class _RecordPaymentDialogState extends State<_RecordPaymentDialog> {
 }
 
 class _ReceiptDialog extends StatelessWidget {
-  const _ReceiptDialog({required this.receipt});
+  const _ReceiptDialog({required this.payment});
 
-  final DemoPaymentReceipt receipt;
+  final Payment payment;
 
   @override
   Widget build(BuildContext context) {
@@ -422,13 +456,13 @@ class _ReceiptDialog extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Receipt #: ${receipt.receiptNumber}',
+            'Receipt #: ${payment.receiptNumber ?? '-'}',
             key: const Key('receipt_number'),
           ),
           const SizedBox(height: AppSpacing.s8),
-          Text('Amount: ${receipt.amountBdt} BDT'),
-          Text('Method: ${receipt.methodLabel}'),
-          Text('Reference: ${receipt.reference}'),
+          Text('Amount: ${payment.amountBdt} BDT'),
+          Text('Method: ${payment.method.label}'),
+          Text('Reference: ${payment.reference}'),
         ],
       ),
       actions: [

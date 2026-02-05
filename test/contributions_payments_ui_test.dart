@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -5,13 +7,21 @@ import 'package:tan_shomiti/src/features/contributions/domain/value_objects/bill
 import 'package:tan_shomiti/src/features/contributions/presentation/contributions_page.dart';
 import 'package:tan_shomiti/src/features/contributions/presentation/models/contributions_ui_state.dart';
 import 'package:tan_shomiti/src/features/contributions/presentation/providers/contributions_providers.dart';
+import 'package:tan_shomiti/src/features/payments/domain/entities/payment.dart';
+import 'package:tan_shomiti/src/features/payments/domain/repositories/payments_repository.dart';
+import 'package:tan_shomiti/src/features/payments/presentation/providers/payments_domain_providers.dart';
+import 'package:tan_shomiti/src/features/audit/domain/entities/audit_event.dart';
+import 'package:tan_shomiti/src/features/audit/domain/repositories/audit_repository.dart';
+import 'package:tan_shomiti/src/features/audit/presentation/providers/audit_providers.dart';
 
 void main() {
-  testWidgets('Contributions page can record a demo payment and show receipt', (
+  testWidgets('Contributions page can record payment and show receipt', (
     tester,
   ) async {
     const month = BillingMonth(year: 2026, month: 2);
+    final paymentsRepo = _FakePaymentsRepository();
     final ui = ContributionsUiState(
+      shomitiId: 's1',
       month: month,
       totalDueBdt: 2000,
       rows: const [
@@ -31,6 +41,8 @@ void main() {
           contributionsUiStateProvider.overrideWithValue(
             AsyncValue.data(ui),
           ),
+          paymentsRepositoryProvider.overrideWithValue(paymentsRepo),
+          auditRepositoryProvider.overrideWithValue(_FakeAuditRepository()),
         ],
         child: const MaterialApp(home: Scaffold(body: ContributionsPage())),
       ),
@@ -52,5 +64,57 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.byKey(const Key('receipt_dialog')), findsOneWidget);
     expect(find.byKey(const Key('receipt_number')), findsOneWidget);
+    expect(find.textContaining('RCT-'), findsOneWidget);
   });
+}
+
+class _FakePaymentsRepository implements PaymentsRepository {
+  final Map<String, Payment> _byId = {};
+  final StreamController<void> _updates = StreamController<void>.broadcast();
+
+  @override
+  Stream<List<Payment>> watchPaymentsForMonth({
+    required String shomitiId,
+    required BillingMonth month,
+  }) async* {
+    yield _currentForMonth(shomitiId, month);
+    await for (final _ in _updates.stream) {
+      yield _currentForMonth(shomitiId, month);
+    }
+  }
+
+  @override
+  Future<Payment?> getPayment({required String id}) async => _byId[id];
+
+  @override
+  Future<Payment?> getPaymentForMember({
+    required String shomitiId,
+    required BillingMonth month,
+    required String memberId,
+  }) async {
+    final id = 'payment_${shomitiId}_${month.key}_$memberId';
+    return _byId[id];
+  }
+
+  @override
+  Future<void> upsertPayment(Payment payment) async {
+    _byId[payment.id] = payment;
+    _updates.add(null);
+  }
+
+  List<Payment> _currentForMonth(String shomitiId, BillingMonth month) {
+    return _byId.values
+        .where((p) => p.shomitiId == shomitiId && p.month == month)
+        .toList(growable: false);
+  }
+}
+
+class _FakeAuditRepository implements AuditRepository {
+  @override
+  Future<void> append(NewAuditEvent event) async {}
+
+  @override
+  Stream<List<AuditEvent>> watchLatest({int limit = 50}) async* {
+    yield const [];
+  }
 }
