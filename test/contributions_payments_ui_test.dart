@@ -13,6 +13,7 @@ import 'package:tan_shomiti/src/features/payments/presentation/providers/payment
 import 'package:tan_shomiti/src/features/audit/domain/entities/audit_event.dart';
 import 'package:tan_shomiti/src/features/audit/domain/repositories/audit_repository.dart';
 import 'package:tan_shomiti/src/features/audit/presentation/providers/audit_providers.dart';
+import 'package:tan_shomiti/src/features/rules/domain/entities/rule_set_snapshot.dart';
 
 void main() {
   testWidgets('Contributions page can record payment and show receipt', (
@@ -26,6 +27,7 @@ void main() {
       paymentDeadline: '28th day of the month',
       gracePeriodDays: 3,
       lateFeeBdtPerDay: 50,
+      missedPaymentPolicy: MissedPaymentPolicy.postponePayout,
       totalDueBdt: 2000,
       rows: const [
         MonthlyDueRow(

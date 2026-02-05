@@ -75,6 +75,7 @@ class ContributionsController
       paymentDeadline: context.rules.paymentDeadline,
       gracePeriodDays: context.rules.gracePeriodDays,
       lateFeeBdtPerDay: context.rules.lateFeeBdtPerDay,
+      missedPaymentPolicy: context.rules.missedPaymentPolicy,
       totalDueBdt: total,
       rows: List.unmodifiable(rows),
     );
