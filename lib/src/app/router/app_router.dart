@@ -21,7 +21,10 @@ import '../../features/membership_changes/presentation/membership_changes_page.d
 import '../../features/contributions/presentation/contributions_page.dart';
 import '../../features/defaults/presentation/defaults_page.dart';
 import '../../features/draw/presentation/draw_page.dart';
+import '../../features/draw/presentation/draw_record_details_page.dart';
+import '../../features/draw/presentation/redo_draw_page.dart';
 import '../../features/draw/presentation/run_draw_page.dart';
+import '../../features/draw/presentation/witness_signoff_page.dart';
 import '../../features/contributions/domain/value_objects/billing_month.dart';
 import '../../features/shomiti_setup/presentation/setup_wizard_page.dart';
 import '../../features/shomiti_setup/presentation/providers/shomiti_setup_providers.dart';
@@ -67,6 +70,15 @@ const drawTitle = 'Draw';
 
 const drawRunLocation = '/draw/run';
 const drawRunRouteName = 'drawRun';
+
+const drawRecordLocation = '/draw/record';
+const drawRecordRouteName = 'drawRecord';
+
+const drawWitnessesLocation = '/draw/witnesses';
+const drawWitnessesRouteName = 'drawWitnesses';
+
+const drawRedoLocation = '/draw/redo';
+const drawRedoRouteName = 'drawRedo';
 
 const payoutLocation = '/payout';
 const payoutRouteName = 'payout';
@@ -214,6 +226,27 @@ final appRouterProvider = Provider<GoRouter>((ref) {
             path: drawLocation,
             name: drawRouteName,
             builder: (context, state) => const DrawPage(),
+          ),
+          GoRoute(
+            path: drawRecordLocation,
+            name: drawRecordRouteName,
+            builder: (context, state) => DrawRecordDetailsPage(
+              month: BillingMonth.fromDate(DateTime.now()),
+              methodLabel: 'Numbered tokens',
+              proofReference: 'vid-001',
+              winnerLabel: 'Member 1 (share 1)',
+              statusLabel: 'Pending witness sign-off',
+            ),
+          ),
+          GoRoute(
+            path: drawWitnessesLocation,
+            name: drawWitnessesRouteName,
+            builder: (context, state) => const WitnessSignoffPage(),
+          ),
+          GoRoute(
+            path: drawRedoLocation,
+            name: drawRedoRouteName,
+            builder: (context, state) => const RedoDrawPage(),
           ),
           GoRoute(
             path: drawRunLocation,

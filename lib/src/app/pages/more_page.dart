@@ -22,6 +22,12 @@ class MorePage extends ConsumerWidget {
           onTap: () => context.push(drawLocation),
         ),
         _MoreTile(
+          tileKey: const Key('more_draw_record'),
+          title: 'Draw record',
+          subtitle: 'Witness sign-off and redo workflow',
+          onTap: () => context.push(drawRecordLocation),
+        ),
+        _MoreTile(
           tileKey: const Key('more_payout'),
           title: payoutTitle,
           subtitle: 'Approve payout and store proof',
