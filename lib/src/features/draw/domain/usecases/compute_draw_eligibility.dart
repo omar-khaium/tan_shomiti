@@ -88,6 +88,7 @@ class ComputeDrawEligibility {
 
     final draws = await _drawRecordsRepository.listAll(shomitiId: shomitiId);
     final winnerShareKeys = draws
+        .where((r) => !r.isInvalidated)
         .map((r) => r.winnerShareKey)
         .toSet();
 

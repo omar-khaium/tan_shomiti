@@ -31,9 +31,21 @@ class DrawRecords extends Table {
   /// JSON array of eligible share entry keys at record time.
   TextColumn get eligibleShareKeysJson => text()();
 
+  /// Optional linkage when this record is a redo of a previous record.
+  TextColumn get redoOfDrawId => text().nullable()();
+
+  /// Set when the draw is invalidated (redo flow). Invalidated draws are not
+  /// effective for eligibility/winner exclusion.
+  DateTimeColumn get invalidatedAt => dateTime().nullable()();
+
+  /// Required when invalidating a draw.
+  TextColumn get invalidatedReason => text().nullable()();
+
+  /// Set when witness approvals are complete and the draw is finalized.
+  DateTimeColumn get finalizedAt => dateTime().nullable()();
+
   DateTimeColumn get recordedAt => dateTime()();
 
   @override
   Set<Column> get primaryKey => {id};
 }
-

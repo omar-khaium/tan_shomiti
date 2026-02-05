@@ -29,10 +29,15 @@ class DrawController extends AutoDisposeAsyncNotifier<DrawUiState> {
         ),
         rows: const [],
         eligibleShares: const [],
+        recordedDrawId: null,
       );
     }
 
     final month = _month!;
+    final recorded = await ref.watch(drawRecordsRepositoryProvider).getEffectiveForMonth(
+      shomitiId: context.shomitiId,
+      month: month,
+    );
     final result = await ref.watch(computeDrawEligibilityProvider)(
       shomitiId: context.shomitiId,
       month: month,
@@ -52,6 +57,7 @@ class DrawController extends AutoDisposeAsyncNotifier<DrawUiState> {
         ),
         rows: const [],
         eligibleShares: const [],
+        recordedDrawId: recorded?.id,
       );
     }
 
@@ -155,6 +161,7 @@ class DrawController extends AutoDisposeAsyncNotifier<DrawUiState> {
       ),
       rows: List.unmodifiable(rows),
       eligibleShares: List.unmodifiable(eligibleShares),
+      recordedDrawId: recorded?.id,
     );
   }
 

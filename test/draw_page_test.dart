@@ -68,6 +68,7 @@ void main() {
               ),
               rows: const [],
               eligibleShares: const [],
+              recordedDrawId: null,
             ),
           ),
         ),
