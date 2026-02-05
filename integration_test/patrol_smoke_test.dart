@@ -19,6 +19,12 @@ void main() {
       if (demoSetupButton.evaluate().isNotEmpty) {
         await $(#setup_continue_demo).tap();
         await $.pumpAndSettle();
+
+        final navMembersFinder = find.byKey(const Key('nav_members'));
+        for (var i = 0; i < 150; i++) {
+          if (navMembersFinder.evaluate().isNotEmpty) break;
+          await $.pump(const Duration(milliseconds: 200));
+        }
       }
 
       await $(#nav_members).tap();

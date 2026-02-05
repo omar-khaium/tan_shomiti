@@ -16,7 +16,7 @@ class RecordDrawResult {
     Random? random,
   }) : _drawRecordsRepository = drawRecordsRepository,
        _appendAuditEvent = appendAuditEvent,
-       _random = random ?? Random.secure();
+       _random = random ?? Random();
 
   final DrawRecordsRepository _drawRecordsRepository;
   final AppendAuditEvent _appendAuditEvent;

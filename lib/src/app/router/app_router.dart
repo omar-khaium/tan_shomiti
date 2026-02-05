@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -156,10 +157,12 @@ String? appRedirect({required bool isConfigured, required String location}) {
 }
 
 final appRouterProvider = Provider<GoRouter>((ref) {
-  final isConfigured = ref.watch(shomitiConfiguredProvider);
+  final refreshListenable = _RouterRefreshNotifier(ref);
+  ref.onDispose(refreshListenable.dispose);
 
   return GoRouter(
     initialLocation: dashboardLocation,
+    refreshListenable: refreshListenable,
     routes: [
       GoRoute(
         path: setupLocation,
@@ -345,8 +348,26 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       ),
     ],
     redirect: (context, state) => appRedirect(
-      isConfigured: isConfigured,
+      isConfigured: ref.read(shomitiConfiguredProvider),
       location: state.matchedLocation,
     ),
   );
 });
+
+final class _RouterRefreshNotifier extends ChangeNotifier {
+  _RouterRefreshNotifier(this._ref) {
+    _subscription = _ref.listen<bool>(
+      shomitiConfiguredProvider,
+      (previous, next) => notifyListeners(),
+    );
+  }
+
+  final Ref _ref;
+  late final ProviderSubscription<bool> _subscription;
+
+  @override
+  void dispose() {
+    _subscription.close();
+    super.dispose();
+  }
+}
