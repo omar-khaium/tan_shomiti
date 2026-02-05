@@ -45,8 +45,14 @@ class ComputePaymentCompliance {
     final grace = gracePeriodDays ?? 0;
     final feePerDay = lateFeeBdtPerDay ?? 0;
 
-    final deadlineDateUtc = DateTime.utc(month.year, month.month, deadlineDay);
-    final cutoffUtc = deadlineDateUtc.add(Duration(days: grace));
+    // Interpret "5th day of the month" style deadlines as inclusive through the
+    // end of the day in UTC, then extend by `grace` whole days.
+    //
+    // Example: deadline=5, grace=0 => cutoff is end-of-day on the 5th.
+    //          deadline=5, grace=2 => cutoff is end-of-day on the 7th.
+    final cutoffUtc = DateTime.utc(month.year, month.month, deadlineDay)
+        .add(Duration(days: grace + 1))
+        .subtract(const Duration(milliseconds: 1));
     final confirmedUtc = confirmedAt.toUtc();
 
     if (!confirmedUtc.isAfter(cutoffUtc)) {
@@ -83,4 +89,3 @@ class ComputePaymentCompliance {
     return parsed;
   }
 }
-
