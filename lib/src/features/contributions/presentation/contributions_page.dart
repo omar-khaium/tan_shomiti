@@ -6,6 +6,7 @@ import '../../../core/ui/components/app_empty_state.dart';
 import '../../../core/ui/components/app_error_state.dart';
 import '../../../core/ui/components/app_loading_state.dart';
 import '../../../core/ui/tokens/app_spacing.dart';
+import '../domain/value_objects/billing_month.dart';
 import 'models/contributions_ui_state.dart';
 import 'providers/contributions_providers.dart';
 
@@ -98,7 +99,7 @@ class _MonthHeader extends StatelessWidget {
     required this.onNext,
   });
 
-  final DateTime month;
+  final BillingMonth month;
   final VoidCallback onPrev;
   final VoidCallback onNext;
 
@@ -191,4 +192,3 @@ class _DueRow extends StatelessWidget {
     );
   }
 }
-

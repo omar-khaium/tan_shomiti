@@ -5668,6 +5668,830 @@ class MembershipChangeApprovalsCompanion
   }
 }
 
+class $DueMonthsTable extends DueMonths
+    with TableInfo<$DueMonthsTable, DueMonthRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $DueMonthsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _shomitiIdMeta = const VerificationMeta(
+    'shomitiId',
+  );
+  @override
+  late final GeneratedColumn<String> shomitiId = GeneratedColumn<String>(
+    'shomiti_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES shomitis (id)',
+    ),
+  );
+  static const VerificationMeta _monthKeyMeta = const VerificationMeta(
+    'monthKey',
+  );
+  @override
+  late final GeneratedColumn<String> monthKey = GeneratedColumn<String>(
+    'month_key',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _ruleSetVersionIdMeta = const VerificationMeta(
+    'ruleSetVersionId',
+  );
+  @override
+  late final GeneratedColumn<String> ruleSetVersionId = GeneratedColumn<String>(
+    'rule_set_version_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES rule_set_versions (id)',
+    ),
+  );
+  static const VerificationMeta _generatedAtMeta = const VerificationMeta(
+    'generatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> generatedAt = GeneratedColumn<DateTime>(
+    'generated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    shomitiId,
+    monthKey,
+    ruleSetVersionId,
+    generatedAt,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'due_months';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<DueMonthRow> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('shomiti_id')) {
+      context.handle(
+        _shomitiIdMeta,
+        shomitiId.isAcceptableOrUnknown(data['shomiti_id']!, _shomitiIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_shomitiIdMeta);
+    }
+    if (data.containsKey('month_key')) {
+      context.handle(
+        _monthKeyMeta,
+        monthKey.isAcceptableOrUnknown(data['month_key']!, _monthKeyMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_monthKeyMeta);
+    }
+    if (data.containsKey('rule_set_version_id')) {
+      context.handle(
+        _ruleSetVersionIdMeta,
+        ruleSetVersionId.isAcceptableOrUnknown(
+          data['rule_set_version_id']!,
+          _ruleSetVersionIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_ruleSetVersionIdMeta);
+    }
+    if (data.containsKey('generated_at')) {
+      context.handle(
+        _generatedAtMeta,
+        generatedAt.isAcceptableOrUnknown(
+          data['generated_at']!,
+          _generatedAtMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_generatedAtMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {shomitiId, monthKey};
+  @override
+  DueMonthRow map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return DueMonthRow(
+      shomitiId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}shomiti_id'],
+      )!,
+      monthKey: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}month_key'],
+      )!,
+      ruleSetVersionId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}rule_set_version_id'],
+      )!,
+      generatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}generated_at'],
+      )!,
+    );
+  }
+
+  @override
+  $DueMonthsTable createAlias(String alias) {
+    return $DueMonthsTable(attachedDatabase, alias);
+  }
+}
+
+class DueMonthRow extends DataClass implements Insertable<DueMonthRow> {
+  final String shomitiId;
+
+  /// YYYY-MM (e.g. 2026-02)
+  final String monthKey;
+  final String ruleSetVersionId;
+  final DateTime generatedAt;
+  const DueMonthRow({
+    required this.shomitiId,
+    required this.monthKey,
+    required this.ruleSetVersionId,
+    required this.generatedAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['shomiti_id'] = Variable<String>(shomitiId);
+    map['month_key'] = Variable<String>(monthKey);
+    map['rule_set_version_id'] = Variable<String>(ruleSetVersionId);
+    map['generated_at'] = Variable<DateTime>(generatedAt);
+    return map;
+  }
+
+  DueMonthsCompanion toCompanion(bool nullToAbsent) {
+    return DueMonthsCompanion(
+      shomitiId: Value(shomitiId),
+      monthKey: Value(monthKey),
+      ruleSetVersionId: Value(ruleSetVersionId),
+      generatedAt: Value(generatedAt),
+    );
+  }
+
+  factory DueMonthRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return DueMonthRow(
+      shomitiId: serializer.fromJson<String>(json['shomitiId']),
+      monthKey: serializer.fromJson<String>(json['monthKey']),
+      ruleSetVersionId: serializer.fromJson<String>(json['ruleSetVersionId']),
+      generatedAt: serializer.fromJson<DateTime>(json['generatedAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'shomitiId': serializer.toJson<String>(shomitiId),
+      'monthKey': serializer.toJson<String>(monthKey),
+      'ruleSetVersionId': serializer.toJson<String>(ruleSetVersionId),
+      'generatedAt': serializer.toJson<DateTime>(generatedAt),
+    };
+  }
+
+  DueMonthRow copyWith({
+    String? shomitiId,
+    String? monthKey,
+    String? ruleSetVersionId,
+    DateTime? generatedAt,
+  }) => DueMonthRow(
+    shomitiId: shomitiId ?? this.shomitiId,
+    monthKey: monthKey ?? this.monthKey,
+    ruleSetVersionId: ruleSetVersionId ?? this.ruleSetVersionId,
+    generatedAt: generatedAt ?? this.generatedAt,
+  );
+  DueMonthRow copyWithCompanion(DueMonthsCompanion data) {
+    return DueMonthRow(
+      shomitiId: data.shomitiId.present ? data.shomitiId.value : this.shomitiId,
+      monthKey: data.monthKey.present ? data.monthKey.value : this.monthKey,
+      ruleSetVersionId: data.ruleSetVersionId.present
+          ? data.ruleSetVersionId.value
+          : this.ruleSetVersionId,
+      generatedAt: data.generatedAt.present
+          ? data.generatedAt.value
+          : this.generatedAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('DueMonthRow(')
+          ..write('shomitiId: $shomitiId, ')
+          ..write('monthKey: $monthKey, ')
+          ..write('ruleSetVersionId: $ruleSetVersionId, ')
+          ..write('generatedAt: $generatedAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(shomitiId, monthKey, ruleSetVersionId, generatedAt);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is DueMonthRow &&
+          other.shomitiId == this.shomitiId &&
+          other.monthKey == this.monthKey &&
+          other.ruleSetVersionId == this.ruleSetVersionId &&
+          other.generatedAt == this.generatedAt);
+}
+
+class DueMonthsCompanion extends UpdateCompanion<DueMonthRow> {
+  final Value<String> shomitiId;
+  final Value<String> monthKey;
+  final Value<String> ruleSetVersionId;
+  final Value<DateTime> generatedAt;
+  final Value<int> rowid;
+  const DueMonthsCompanion({
+    this.shomitiId = const Value.absent(),
+    this.monthKey = const Value.absent(),
+    this.ruleSetVersionId = const Value.absent(),
+    this.generatedAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  DueMonthsCompanion.insert({
+    required String shomitiId,
+    required String monthKey,
+    required String ruleSetVersionId,
+    required DateTime generatedAt,
+    this.rowid = const Value.absent(),
+  }) : shomitiId = Value(shomitiId),
+       monthKey = Value(monthKey),
+       ruleSetVersionId = Value(ruleSetVersionId),
+       generatedAt = Value(generatedAt);
+  static Insertable<DueMonthRow> custom({
+    Expression<String>? shomitiId,
+    Expression<String>? monthKey,
+    Expression<String>? ruleSetVersionId,
+    Expression<DateTime>? generatedAt,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (shomitiId != null) 'shomiti_id': shomitiId,
+      if (monthKey != null) 'month_key': monthKey,
+      if (ruleSetVersionId != null) 'rule_set_version_id': ruleSetVersionId,
+      if (generatedAt != null) 'generated_at': generatedAt,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  DueMonthsCompanion copyWith({
+    Value<String>? shomitiId,
+    Value<String>? monthKey,
+    Value<String>? ruleSetVersionId,
+    Value<DateTime>? generatedAt,
+    Value<int>? rowid,
+  }) {
+    return DueMonthsCompanion(
+      shomitiId: shomitiId ?? this.shomitiId,
+      monthKey: monthKey ?? this.monthKey,
+      ruleSetVersionId: ruleSetVersionId ?? this.ruleSetVersionId,
+      generatedAt: generatedAt ?? this.generatedAt,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (shomitiId.present) {
+      map['shomiti_id'] = Variable<String>(shomitiId.value);
+    }
+    if (monthKey.present) {
+      map['month_key'] = Variable<String>(monthKey.value);
+    }
+    if (ruleSetVersionId.present) {
+      map['rule_set_version_id'] = Variable<String>(ruleSetVersionId.value);
+    }
+    if (generatedAt.present) {
+      map['generated_at'] = Variable<DateTime>(generatedAt.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('DueMonthsCompanion(')
+          ..write('shomitiId: $shomitiId, ')
+          ..write('monthKey: $monthKey, ')
+          ..write('ruleSetVersionId: $ruleSetVersionId, ')
+          ..write('generatedAt: $generatedAt, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $MonthlyDuesTable extends MonthlyDues
+    with TableInfo<$MonthlyDuesTable, MonthlyDueRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $MonthlyDuesTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _shomitiIdMeta = const VerificationMeta(
+    'shomitiId',
+  );
+  @override
+  late final GeneratedColumn<String> shomitiId = GeneratedColumn<String>(
+    'shomiti_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES shomitis (id)',
+    ),
+  );
+  static const VerificationMeta _monthKeyMeta = const VerificationMeta(
+    'monthKey',
+  );
+  @override
+  late final GeneratedColumn<String> monthKey = GeneratedColumn<String>(
+    'month_key',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _memberIdMeta = const VerificationMeta(
+    'memberId',
+  );
+  @override
+  late final GeneratedColumn<String> memberId = GeneratedColumn<String>(
+    'member_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES members (id)',
+    ),
+  );
+  static const VerificationMeta _sharesMeta = const VerificationMeta('shares');
+  @override
+  late final GeneratedColumn<int> shares = GeneratedColumn<int>(
+    'shares',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _shareValueBdtMeta = const VerificationMeta(
+    'shareValueBdt',
+  );
+  @override
+  late final GeneratedColumn<int> shareValueBdt = GeneratedColumn<int>(
+    'share_value_bdt',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _dueAmountBdtMeta = const VerificationMeta(
+    'dueAmountBdt',
+  );
+  @override
+  late final GeneratedColumn<int> dueAmountBdt = GeneratedColumn<int>(
+    'due_amount_bdt',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    shomitiId,
+    monthKey,
+    memberId,
+    shares,
+    shareValueBdt,
+    dueAmountBdt,
+    createdAt,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'monthly_dues';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<MonthlyDueRow> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('shomiti_id')) {
+      context.handle(
+        _shomitiIdMeta,
+        shomitiId.isAcceptableOrUnknown(data['shomiti_id']!, _shomitiIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_shomitiIdMeta);
+    }
+    if (data.containsKey('month_key')) {
+      context.handle(
+        _monthKeyMeta,
+        monthKey.isAcceptableOrUnknown(data['month_key']!, _monthKeyMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_monthKeyMeta);
+    }
+    if (data.containsKey('member_id')) {
+      context.handle(
+        _memberIdMeta,
+        memberId.isAcceptableOrUnknown(data['member_id']!, _memberIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_memberIdMeta);
+    }
+    if (data.containsKey('shares')) {
+      context.handle(
+        _sharesMeta,
+        shares.isAcceptableOrUnknown(data['shares']!, _sharesMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_sharesMeta);
+    }
+    if (data.containsKey('share_value_bdt')) {
+      context.handle(
+        _shareValueBdtMeta,
+        shareValueBdt.isAcceptableOrUnknown(
+          data['share_value_bdt']!,
+          _shareValueBdtMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_shareValueBdtMeta);
+    }
+    if (data.containsKey('due_amount_bdt')) {
+      context.handle(
+        _dueAmountBdtMeta,
+        dueAmountBdt.isAcceptableOrUnknown(
+          data['due_amount_bdt']!,
+          _dueAmountBdtMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_dueAmountBdtMeta);
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {shomitiId, monthKey, memberId};
+  @override
+  MonthlyDueRow map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return MonthlyDueRow(
+      shomitiId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}shomiti_id'],
+      )!,
+      monthKey: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}month_key'],
+      )!,
+      memberId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}member_id'],
+      )!,
+      shares: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}shares'],
+      )!,
+      shareValueBdt: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}share_value_bdt'],
+      )!,
+      dueAmountBdt: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}due_amount_bdt'],
+      )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+    );
+  }
+
+  @override
+  $MonthlyDuesTable createAlias(String alias) {
+    return $MonthlyDuesTable(attachedDatabase, alias);
+  }
+}
+
+class MonthlyDueRow extends DataClass implements Insertable<MonthlyDueRow> {
+  final String shomitiId;
+
+  /// YYYY-MM (e.g. 2026-02)
+  final String monthKey;
+  final String memberId;
+  final int shares;
+  final int shareValueBdt;
+  final int dueAmountBdt;
+  final DateTime createdAt;
+  const MonthlyDueRow({
+    required this.shomitiId,
+    required this.monthKey,
+    required this.memberId,
+    required this.shares,
+    required this.shareValueBdt,
+    required this.dueAmountBdt,
+    required this.createdAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['shomiti_id'] = Variable<String>(shomitiId);
+    map['month_key'] = Variable<String>(monthKey);
+    map['member_id'] = Variable<String>(memberId);
+    map['shares'] = Variable<int>(shares);
+    map['share_value_bdt'] = Variable<int>(shareValueBdt);
+    map['due_amount_bdt'] = Variable<int>(dueAmountBdt);
+    map['created_at'] = Variable<DateTime>(createdAt);
+    return map;
+  }
+
+  MonthlyDuesCompanion toCompanion(bool nullToAbsent) {
+    return MonthlyDuesCompanion(
+      shomitiId: Value(shomitiId),
+      monthKey: Value(monthKey),
+      memberId: Value(memberId),
+      shares: Value(shares),
+      shareValueBdt: Value(shareValueBdt),
+      dueAmountBdt: Value(dueAmountBdt),
+      createdAt: Value(createdAt),
+    );
+  }
+
+  factory MonthlyDueRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return MonthlyDueRow(
+      shomitiId: serializer.fromJson<String>(json['shomitiId']),
+      monthKey: serializer.fromJson<String>(json['monthKey']),
+      memberId: serializer.fromJson<String>(json['memberId']),
+      shares: serializer.fromJson<int>(json['shares']),
+      shareValueBdt: serializer.fromJson<int>(json['shareValueBdt']),
+      dueAmountBdt: serializer.fromJson<int>(json['dueAmountBdt']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'shomitiId': serializer.toJson<String>(shomitiId),
+      'monthKey': serializer.toJson<String>(monthKey),
+      'memberId': serializer.toJson<String>(memberId),
+      'shares': serializer.toJson<int>(shares),
+      'shareValueBdt': serializer.toJson<int>(shareValueBdt),
+      'dueAmountBdt': serializer.toJson<int>(dueAmountBdt),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+    };
+  }
+
+  MonthlyDueRow copyWith({
+    String? shomitiId,
+    String? monthKey,
+    String? memberId,
+    int? shares,
+    int? shareValueBdt,
+    int? dueAmountBdt,
+    DateTime? createdAt,
+  }) => MonthlyDueRow(
+    shomitiId: shomitiId ?? this.shomitiId,
+    monthKey: monthKey ?? this.monthKey,
+    memberId: memberId ?? this.memberId,
+    shares: shares ?? this.shares,
+    shareValueBdt: shareValueBdt ?? this.shareValueBdt,
+    dueAmountBdt: dueAmountBdt ?? this.dueAmountBdt,
+    createdAt: createdAt ?? this.createdAt,
+  );
+  MonthlyDueRow copyWithCompanion(MonthlyDuesCompanion data) {
+    return MonthlyDueRow(
+      shomitiId: data.shomitiId.present ? data.shomitiId.value : this.shomitiId,
+      monthKey: data.monthKey.present ? data.monthKey.value : this.monthKey,
+      memberId: data.memberId.present ? data.memberId.value : this.memberId,
+      shares: data.shares.present ? data.shares.value : this.shares,
+      shareValueBdt: data.shareValueBdt.present
+          ? data.shareValueBdt.value
+          : this.shareValueBdt,
+      dueAmountBdt: data.dueAmountBdt.present
+          ? data.dueAmountBdt.value
+          : this.dueAmountBdt,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('MonthlyDueRow(')
+          ..write('shomitiId: $shomitiId, ')
+          ..write('monthKey: $monthKey, ')
+          ..write('memberId: $memberId, ')
+          ..write('shares: $shares, ')
+          ..write('shareValueBdt: $shareValueBdt, ')
+          ..write('dueAmountBdt: $dueAmountBdt, ')
+          ..write('createdAt: $createdAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    shomitiId,
+    monthKey,
+    memberId,
+    shares,
+    shareValueBdt,
+    dueAmountBdt,
+    createdAt,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is MonthlyDueRow &&
+          other.shomitiId == this.shomitiId &&
+          other.monthKey == this.monthKey &&
+          other.memberId == this.memberId &&
+          other.shares == this.shares &&
+          other.shareValueBdt == this.shareValueBdt &&
+          other.dueAmountBdt == this.dueAmountBdt &&
+          other.createdAt == this.createdAt);
+}
+
+class MonthlyDuesCompanion extends UpdateCompanion<MonthlyDueRow> {
+  final Value<String> shomitiId;
+  final Value<String> monthKey;
+  final Value<String> memberId;
+  final Value<int> shares;
+  final Value<int> shareValueBdt;
+  final Value<int> dueAmountBdt;
+  final Value<DateTime> createdAt;
+  final Value<int> rowid;
+  const MonthlyDuesCompanion({
+    this.shomitiId = const Value.absent(),
+    this.monthKey = const Value.absent(),
+    this.memberId = const Value.absent(),
+    this.shares = const Value.absent(),
+    this.shareValueBdt = const Value.absent(),
+    this.dueAmountBdt = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  MonthlyDuesCompanion.insert({
+    required String shomitiId,
+    required String monthKey,
+    required String memberId,
+    required int shares,
+    required int shareValueBdt,
+    required int dueAmountBdt,
+    required DateTime createdAt,
+    this.rowid = const Value.absent(),
+  }) : shomitiId = Value(shomitiId),
+       monthKey = Value(monthKey),
+       memberId = Value(memberId),
+       shares = Value(shares),
+       shareValueBdt = Value(shareValueBdt),
+       dueAmountBdt = Value(dueAmountBdt),
+       createdAt = Value(createdAt);
+  static Insertable<MonthlyDueRow> custom({
+    Expression<String>? shomitiId,
+    Expression<String>? monthKey,
+    Expression<String>? memberId,
+    Expression<int>? shares,
+    Expression<int>? shareValueBdt,
+    Expression<int>? dueAmountBdt,
+    Expression<DateTime>? createdAt,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (shomitiId != null) 'shomiti_id': shomitiId,
+      if (monthKey != null) 'month_key': monthKey,
+      if (memberId != null) 'member_id': memberId,
+      if (shares != null) 'shares': shares,
+      if (shareValueBdt != null) 'share_value_bdt': shareValueBdt,
+      if (dueAmountBdt != null) 'due_amount_bdt': dueAmountBdt,
+      if (createdAt != null) 'created_at': createdAt,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  MonthlyDuesCompanion copyWith({
+    Value<String>? shomitiId,
+    Value<String>? monthKey,
+    Value<String>? memberId,
+    Value<int>? shares,
+    Value<int>? shareValueBdt,
+    Value<int>? dueAmountBdt,
+    Value<DateTime>? createdAt,
+    Value<int>? rowid,
+  }) {
+    return MonthlyDuesCompanion(
+      shomitiId: shomitiId ?? this.shomitiId,
+      monthKey: monthKey ?? this.monthKey,
+      memberId: memberId ?? this.memberId,
+      shares: shares ?? this.shares,
+      shareValueBdt: shareValueBdt ?? this.shareValueBdt,
+      dueAmountBdt: dueAmountBdt ?? this.dueAmountBdt,
+      createdAt: createdAt ?? this.createdAt,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (shomitiId.present) {
+      map['shomiti_id'] = Variable<String>(shomitiId.value);
+    }
+    if (monthKey.present) {
+      map['month_key'] = Variable<String>(monthKey.value);
+    }
+    if (memberId.present) {
+      map['member_id'] = Variable<String>(memberId.value);
+    }
+    if (shares.present) {
+      map['shares'] = Variable<int>(shares.value);
+    }
+    if (shareValueBdt.present) {
+      map['share_value_bdt'] = Variable<int>(shareValueBdt.value);
+    }
+    if (dueAmountBdt.present) {
+      map['due_amount_bdt'] = Variable<int>(dueAmountBdt.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('MonthlyDuesCompanion(')
+          ..write('shomitiId: $shomitiId, ')
+          ..write('monthKey: $monthKey, ')
+          ..write('memberId: $memberId, ')
+          ..write('shares: $shares, ')
+          ..write('shareValueBdt: $shareValueBdt, ')
+          ..write('dueAmountBdt: $dueAmountBdt, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
@@ -5691,6 +6515,8 @@ abstract class _$AppDatabase extends GeneratedDatabase {
       $MembershipChangeRequestsTable(this);
   late final $MembershipChangeApprovalsTable membershipChangeApprovals =
       $MembershipChangeApprovalsTable(this);
+  late final $DueMonthsTable dueMonths = $DueMonthsTable(this);
+  late final $MonthlyDuesTable monthlyDues = $MonthlyDuesTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -5708,6 +6534,8 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     memberConsents,
     membershipChangeRequests,
     membershipChangeApprovals,
+    dueMonths,
+    monthlyDues,
   ];
 }
 
@@ -6286,6 +7114,42 @@ final class $$ShomitisTableReferences
       manager.$state.copyWith(prefetchedData: cache),
     );
   }
+
+  static MultiTypedResultKey<$DueMonthsTable, List<DueMonthRow>>
+  _dueMonthsRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
+    db.dueMonths,
+    aliasName: $_aliasNameGenerator(db.shomitis.id, db.dueMonths.shomitiId),
+  );
+
+  $$DueMonthsTableProcessedTableManager get dueMonthsRefs {
+    final manager = $$DueMonthsTableTableManager(
+      $_db,
+      $_db.dueMonths,
+    ).filter((f) => f.shomitiId.id.sqlEquals($_itemColumn<String>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(_dueMonthsRefsTable($_db));
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+
+  static MultiTypedResultKey<$MonthlyDuesTable, List<MonthlyDueRow>>
+  _monthlyDuesRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
+    db.monthlyDues,
+    aliasName: $_aliasNameGenerator(db.shomitis.id, db.monthlyDues.shomitiId),
+  );
+
+  $$MonthlyDuesTableProcessedTableManager get monthlyDuesRefs {
+    final manager = $$MonthlyDuesTableTableManager(
+      $_db,
+      $_db.monthlyDues,
+    ).filter((f) => f.shomitiId.id.sqlEquals($_itemColumn<String>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(_monthlyDuesRefsTable($_db));
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
 }
 
 class $$ShomitisTableFilterComposer
@@ -6448,6 +7312,56 @@ class $$ShomitisTableFilterComposer
                     $removeJoinBuilderFromRootComposer,
               ),
         );
+    return f(composer);
+  }
+
+  Expression<bool> dueMonthsRefs(
+    Expression<bool> Function($$DueMonthsTableFilterComposer f) f,
+  ) {
+    final $$DueMonthsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.dueMonths,
+      getReferencedColumn: (t) => t.shomitiId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$DueMonthsTableFilterComposer(
+            $db: $db,
+            $table: $db.dueMonths,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<bool> monthlyDuesRefs(
+    Expression<bool> Function($$MonthlyDuesTableFilterComposer f) f,
+  ) {
+    final $$MonthlyDuesTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.monthlyDues,
+      getReferencedColumn: (t) => t.shomitiId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$MonthlyDuesTableFilterComposer(
+            $db: $db,
+            $table: $db.monthlyDues,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
     return f(composer);
   }
 }
@@ -6641,6 +7555,56 @@ class $$ShomitisTableAnnotationComposer
         );
     return f(composer);
   }
+
+  Expression<T> dueMonthsRefs<T extends Object>(
+    Expression<T> Function($$DueMonthsTableAnnotationComposer a) f,
+  ) {
+    final $$DueMonthsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.dueMonths,
+      getReferencedColumn: (t) => t.shomitiId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$DueMonthsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.dueMonths,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<T> monthlyDuesRefs<T extends Object>(
+    Expression<T> Function($$MonthlyDuesTableAnnotationComposer a) f,
+  ) {
+    final $$MonthlyDuesTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.monthlyDues,
+      getReferencedColumn: (t) => t.shomitiId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$MonthlyDuesTableAnnotationComposer(
+            $db: $db,
+            $table: $db.monthlyDues,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
 }
 
 class $$ShomitisTableTableManager
@@ -6662,6 +7626,8 @@ class $$ShomitisTableTableManager
             bool memberConsentsRefs,
             bool membershipChangeRequestsRefs,
             bool membershipChangeApprovalsRefs,
+            bool dueMonthsRefs,
+            bool monthlyDuesRefs,
           })
         > {
   $$ShomitisTableTableManager(_$AppDatabase db, $ShomitisTable table)
@@ -6722,6 +7688,8 @@ class $$ShomitisTableTableManager
                 memberConsentsRefs = false,
                 membershipChangeRequestsRefs = false,
                 membershipChangeApprovalsRefs = false,
+                dueMonthsRefs = false,
+                monthlyDuesRefs = false,
               }) {
                 return PrefetchHooks(
                   db: db,
@@ -6733,6 +7701,8 @@ class $$ShomitisTableTableManager
                       db.membershipChangeRequests,
                     if (membershipChangeApprovalsRefs)
                       db.membershipChangeApprovals,
+                    if (dueMonthsRefs) db.dueMonths,
+                    if (monthlyDuesRefs) db.monthlyDues,
                   ],
                   addJoins: null,
                   getPrefetchedDataCallback: (items) async {
@@ -6842,6 +7812,48 @@ class $$ShomitisTableTableManager
                               ),
                           typedResults: items,
                         ),
+                      if (dueMonthsRefs)
+                        await $_getPrefetchedData<
+                          ShomitiRow,
+                          $ShomitisTable,
+                          DueMonthRow
+                        >(
+                          currentTable: table,
+                          referencedTable: $$ShomitisTableReferences
+                              ._dueMonthsRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$ShomitisTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).dueMonthsRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.shomitiId == item.id,
+                              ),
+                          typedResults: items,
+                        ),
+                      if (monthlyDuesRefs)
+                        await $_getPrefetchedData<
+                          ShomitiRow,
+                          $ShomitisTable,
+                          MonthlyDueRow
+                        >(
+                          currentTable: table,
+                          referencedTable: $$ShomitisTableReferences
+                              ._monthlyDuesRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$ShomitisTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).monthlyDuesRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.shomitiId == item.id,
+                              ),
+                          typedResults: items,
+                        ),
                     ];
                   },
                 );
@@ -6868,6 +7880,8 @@ typedef $$ShomitisTableProcessedTableManager =
         bool memberConsentsRefs,
         bool membershipChangeRequestsRefs,
         bool membershipChangeApprovalsRefs,
+        bool dueMonthsRefs,
+        bool monthlyDuesRefs,
       })
     >;
 typedef $$MembersTableCreateCompanionBuilder =
@@ -6990,6 +8004,24 @@ final class $$MembersTableReferences
     final cache = $_typedResult.readTableOrNull(
       _membershipChangeRequestsRefsTable($_db),
     );
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+
+  static MultiTypedResultKey<$MonthlyDuesTable, List<MonthlyDueRow>>
+  _monthlyDuesRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
+    db.monthlyDues,
+    aliasName: $_aliasNameGenerator(db.members.id, db.monthlyDues.memberId),
+  );
+
+  $$MonthlyDuesTableProcessedTableManager get monthlyDuesRefs {
+    final manager = $$MonthlyDuesTableTableManager(
+      $_db,
+      $_db.monthlyDues,
+    ).filter((f) => f.memberId.id.sqlEquals($_itemColumn<String>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(_monthlyDuesRefsTable($_db));
     return ProcessedTableManager(
       manager.$state.copyWith(prefetchedData: cache),
     );
@@ -7162,6 +8194,31 @@ class $$MembersTableFilterComposer
                     $removeJoinBuilderFromRootComposer,
               ),
         );
+    return f(composer);
+  }
+
+  Expression<bool> monthlyDuesRefs(
+    Expression<bool> Function($$MonthlyDuesTableFilterComposer f) f,
+  ) {
+    final $$MonthlyDuesTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.monthlyDues,
+      getReferencedColumn: (t) => t.memberId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$MonthlyDuesTableFilterComposer(
+            $db: $db,
+            $table: $db.monthlyDues,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
     return f(composer);
   }
 }
@@ -7413,6 +8470,31 @@ class $$MembersTableAnnotationComposer
         );
     return f(composer);
   }
+
+  Expression<T> monthlyDuesRefs<T extends Object>(
+    Expression<T> Function($$MonthlyDuesTableAnnotationComposer a) f,
+  ) {
+    final $$MonthlyDuesTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.monthlyDues,
+      getReferencedColumn: (t) => t.memberId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$MonthlyDuesTableAnnotationComposer(
+            $db: $db,
+            $table: $db.monthlyDues,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
 }
 
 class $$MembersTableTableManager
@@ -7433,6 +8515,7 @@ class $$MembersTableTableManager
             bool roleAssignmentsRefs,
             bool memberConsentsRefs,
             bool membershipChangeRequestsRefs,
+            bool monthlyDuesRefs,
           })
         > {
   $$MembersTableTableManager(_$AppDatabase db, $MembersTable table)
@@ -7524,6 +8607,7 @@ class $$MembersTableTableManager
                 roleAssignmentsRefs = false,
                 memberConsentsRefs = false,
                 membershipChangeRequestsRefs = false,
+                monthlyDuesRefs = false,
               }) {
                 return PrefetchHooks(
                   db: db,
@@ -7532,6 +8616,7 @@ class $$MembersTableTableManager
                     if (memberConsentsRefs) db.memberConsents,
                     if (membershipChangeRequestsRefs)
                       db.membershipChangeRequests,
+                    if (monthlyDuesRefs) db.monthlyDues,
                   ],
                   addJoins:
                       <
@@ -7630,6 +8715,27 @@ class $$MembersTableTableManager
                               ),
                           typedResults: items,
                         ),
+                      if (monthlyDuesRefs)
+                        await $_getPrefetchedData<
+                          MemberRow,
+                          $MembersTable,
+                          MonthlyDueRow
+                        >(
+                          currentTable: table,
+                          referencedTable: $$MembersTableReferences
+                              ._monthlyDuesRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$MembersTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).monthlyDuesRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.memberId == item.id,
+                              ),
+                          typedResults: items,
+                        ),
                     ];
                   },
                 );
@@ -7655,6 +8761,7 @@ typedef $$MembersTableProcessedTableManager =
         bool roleAssignmentsRefs,
         bool memberConsentsRefs,
         bool membershipChangeRequestsRefs,
+        bool monthlyDuesRefs,
       })
     >;
 typedef $$MemberSharesTableCreateCompanionBuilder =
@@ -8842,6 +9949,26 @@ final class $$RuleSetVersionsTableReferences
       manager.$state.copyWith(prefetchedData: cache),
     );
   }
+
+  static MultiTypedResultKey<$DueMonthsTable, List<DueMonthRow>>
+  _dueMonthsRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
+    db.dueMonths,
+    aliasName: $_aliasNameGenerator(
+      db.ruleSetVersions.id,
+      db.dueMonths.ruleSetVersionId,
+    ),
+  );
+
+  $$DueMonthsTableProcessedTableManager get dueMonthsRefs {
+    final manager = $$DueMonthsTableTableManager($_db, $_db.dueMonths).filter(
+      (f) => f.ruleSetVersionId.id.sqlEquals($_itemColumn<String>('id')!),
+    );
+
+    final cache = $_typedResult.readTableOrNull(_dueMonthsRefsTable($_db));
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
 }
 
 class $$RuleSetVersionsTableFilterComposer
@@ -8884,6 +10011,31 @@ class $$RuleSetVersionsTableFilterComposer
           }) => $$MemberConsentsTableFilterComposer(
             $db: $db,
             $table: $db.memberConsents,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<bool> dueMonthsRefs(
+    Expression<bool> Function($$DueMonthsTableFilterComposer f) f,
+  ) {
+    final $$DueMonthsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.dueMonths,
+      getReferencedColumn: (t) => t.ruleSetVersionId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$DueMonthsTableFilterComposer(
+            $db: $db,
+            $table: $db.dueMonths,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -8961,6 +10113,31 @@ class $$RuleSetVersionsTableAnnotationComposer
     );
     return f(composer);
   }
+
+  Expression<T> dueMonthsRefs<T extends Object>(
+    Expression<T> Function($$DueMonthsTableAnnotationComposer a) f,
+  ) {
+    final $$DueMonthsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.dueMonths,
+      getReferencedColumn: (t) => t.ruleSetVersionId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$DueMonthsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.dueMonths,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
 }
 
 class $$RuleSetVersionsTableTableManager
@@ -8976,7 +10153,7 @@ class $$RuleSetVersionsTableTableManager
           $$RuleSetVersionsTableUpdateCompanionBuilder,
           (RuleSetVersionRow, $$RuleSetVersionsTableReferences),
           RuleSetVersionRow,
-          PrefetchHooks Function({bool memberConsentsRefs})
+          PrefetchHooks Function({bool memberConsentsRefs, bool dueMonthsRefs})
         > {
   $$RuleSetVersionsTableTableManager(
     _$AppDatabase db,
@@ -9023,40 +10200,63 @@ class $$RuleSetVersionsTableTableManager
                 ),
               )
               .toList(),
-          prefetchHooksCallback: ({memberConsentsRefs = false}) {
-            return PrefetchHooks(
-              db: db,
-              explicitlyWatchedTables: [
-                if (memberConsentsRefs) db.memberConsents,
-              ],
-              addJoins: null,
-              getPrefetchedDataCallback: (items) async {
-                return [
-                  if (memberConsentsRefs)
-                    await $_getPrefetchedData<
-                      RuleSetVersionRow,
-                      $RuleSetVersionsTable,
-                      MemberConsentRow
-                    >(
-                      currentTable: table,
-                      referencedTable: $$RuleSetVersionsTableReferences
-                          ._memberConsentsRefsTable(db),
-                      managerFromTypedResult: (p0) =>
-                          $$RuleSetVersionsTableReferences(
-                            db,
-                            table,
-                            p0,
-                          ).memberConsentsRefs,
-                      referencedItemsForCurrentItem: (item, referencedItems) =>
-                          referencedItems.where(
-                            (e) => e.ruleSetVersionId == item.id,
-                          ),
-                      typedResults: items,
-                    ),
-                ];
+          prefetchHooksCallback:
+              ({memberConsentsRefs = false, dueMonthsRefs = false}) {
+                return PrefetchHooks(
+                  db: db,
+                  explicitlyWatchedTables: [
+                    if (memberConsentsRefs) db.memberConsents,
+                    if (dueMonthsRefs) db.dueMonths,
+                  ],
+                  addJoins: null,
+                  getPrefetchedDataCallback: (items) async {
+                    return [
+                      if (memberConsentsRefs)
+                        await $_getPrefetchedData<
+                          RuleSetVersionRow,
+                          $RuleSetVersionsTable,
+                          MemberConsentRow
+                        >(
+                          currentTable: table,
+                          referencedTable: $$RuleSetVersionsTableReferences
+                              ._memberConsentsRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$RuleSetVersionsTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).memberConsentsRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.ruleSetVersionId == item.id,
+                              ),
+                          typedResults: items,
+                        ),
+                      if (dueMonthsRefs)
+                        await $_getPrefetchedData<
+                          RuleSetVersionRow,
+                          $RuleSetVersionsTable,
+                          DueMonthRow
+                        >(
+                          currentTable: table,
+                          referencedTable: $$RuleSetVersionsTableReferences
+                              ._dueMonthsRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$RuleSetVersionsTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).dueMonthsRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.ruleSetVersionId == item.id,
+                              ),
+                          typedResults: items,
+                        ),
+                    ];
+                  },
+                );
               },
-            );
-          },
         ),
       );
 }
@@ -9073,7 +10273,7 @@ typedef $$RuleSetVersionsTableProcessedTableManager =
       $$RuleSetVersionsTableUpdateCompanionBuilder,
       (RuleSetVersionRow, $$RuleSetVersionsTableReferences),
       RuleSetVersionRow,
-      PrefetchHooks Function({bool memberConsentsRefs})
+      PrefetchHooks Function({bool memberConsentsRefs, bool dueMonthsRefs})
     >;
 typedef $$MemberConsentsTableCreateCompanionBuilder =
     MemberConsentsCompanion Function({
@@ -10775,6 +11975,849 @@ typedef $$MembershipChangeApprovalsTableProcessedTableManager =
       MembershipChangeApprovalRow,
       PrefetchHooks Function({bool shomitiId, bool requestId})
     >;
+typedef $$DueMonthsTableCreateCompanionBuilder =
+    DueMonthsCompanion Function({
+      required String shomitiId,
+      required String monthKey,
+      required String ruleSetVersionId,
+      required DateTime generatedAt,
+      Value<int> rowid,
+    });
+typedef $$DueMonthsTableUpdateCompanionBuilder =
+    DueMonthsCompanion Function({
+      Value<String> shomitiId,
+      Value<String> monthKey,
+      Value<String> ruleSetVersionId,
+      Value<DateTime> generatedAt,
+      Value<int> rowid,
+    });
+
+final class $$DueMonthsTableReferences
+    extends BaseReferences<_$AppDatabase, $DueMonthsTable, DueMonthRow> {
+  $$DueMonthsTableReferences(super.$_db, super.$_table, super.$_typedResult);
+
+  static $ShomitisTable _shomitiIdTable(_$AppDatabase db) =>
+      db.shomitis.createAlias(
+        $_aliasNameGenerator(db.dueMonths.shomitiId, db.shomitis.id),
+      );
+
+  $$ShomitisTableProcessedTableManager get shomitiId {
+    final $_column = $_itemColumn<String>('shomiti_id')!;
+
+    final manager = $$ShomitisTableTableManager(
+      $_db,
+      $_db.shomitis,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_shomitiIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+
+  static $RuleSetVersionsTable _ruleSetVersionIdTable(_$AppDatabase db) =>
+      db.ruleSetVersions.createAlias(
+        $_aliasNameGenerator(
+          db.dueMonths.ruleSetVersionId,
+          db.ruleSetVersions.id,
+        ),
+      );
+
+  $$RuleSetVersionsTableProcessedTableManager get ruleSetVersionId {
+    final $_column = $_itemColumn<String>('rule_set_version_id')!;
+
+    final manager = $$RuleSetVersionsTableTableManager(
+      $_db,
+      $_db.ruleSetVersions,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_ruleSetVersionIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+}
+
+class $$DueMonthsTableFilterComposer
+    extends Composer<_$AppDatabase, $DueMonthsTable> {
+  $$DueMonthsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get monthKey => $composableBuilder(
+    column: $table.monthKey,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get generatedAt => $composableBuilder(
+    column: $table.generatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  $$ShomitisTableFilterComposer get shomitiId {
+    final $$ShomitisTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.shomitiId,
+      referencedTable: $db.shomitis,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ShomitisTableFilterComposer(
+            $db: $db,
+            $table: $db.shomitis,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$RuleSetVersionsTableFilterComposer get ruleSetVersionId {
+    final $$RuleSetVersionsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.ruleSetVersionId,
+      referencedTable: $db.ruleSetVersions,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$RuleSetVersionsTableFilterComposer(
+            $db: $db,
+            $table: $db.ruleSetVersions,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$DueMonthsTableOrderingComposer
+    extends Composer<_$AppDatabase, $DueMonthsTable> {
+  $$DueMonthsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get monthKey => $composableBuilder(
+    column: $table.monthKey,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get generatedAt => $composableBuilder(
+    column: $table.generatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  $$ShomitisTableOrderingComposer get shomitiId {
+    final $$ShomitisTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.shomitiId,
+      referencedTable: $db.shomitis,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ShomitisTableOrderingComposer(
+            $db: $db,
+            $table: $db.shomitis,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$RuleSetVersionsTableOrderingComposer get ruleSetVersionId {
+    final $$RuleSetVersionsTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.ruleSetVersionId,
+      referencedTable: $db.ruleSetVersions,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$RuleSetVersionsTableOrderingComposer(
+            $db: $db,
+            $table: $db.ruleSetVersions,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$DueMonthsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $DueMonthsTable> {
+  $$DueMonthsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get monthKey =>
+      $composableBuilder(column: $table.monthKey, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get generatedAt => $composableBuilder(
+    column: $table.generatedAt,
+    builder: (column) => column,
+  );
+
+  $$ShomitisTableAnnotationComposer get shomitiId {
+    final $$ShomitisTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.shomitiId,
+      referencedTable: $db.shomitis,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ShomitisTableAnnotationComposer(
+            $db: $db,
+            $table: $db.shomitis,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$RuleSetVersionsTableAnnotationComposer get ruleSetVersionId {
+    final $$RuleSetVersionsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.ruleSetVersionId,
+      referencedTable: $db.ruleSetVersions,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$RuleSetVersionsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.ruleSetVersions,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$DueMonthsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $DueMonthsTable,
+          DueMonthRow,
+          $$DueMonthsTableFilterComposer,
+          $$DueMonthsTableOrderingComposer,
+          $$DueMonthsTableAnnotationComposer,
+          $$DueMonthsTableCreateCompanionBuilder,
+          $$DueMonthsTableUpdateCompanionBuilder,
+          (DueMonthRow, $$DueMonthsTableReferences),
+          DueMonthRow,
+          PrefetchHooks Function({bool shomitiId, bool ruleSetVersionId})
+        > {
+  $$DueMonthsTableTableManager(_$AppDatabase db, $DueMonthsTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$DueMonthsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$DueMonthsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$DueMonthsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> shomitiId = const Value.absent(),
+                Value<String> monthKey = const Value.absent(),
+                Value<String> ruleSetVersionId = const Value.absent(),
+                Value<DateTime> generatedAt = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => DueMonthsCompanion(
+                shomitiId: shomitiId,
+                monthKey: monthKey,
+                ruleSetVersionId: ruleSetVersionId,
+                generatedAt: generatedAt,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String shomitiId,
+                required String monthKey,
+                required String ruleSetVersionId,
+                required DateTime generatedAt,
+                Value<int> rowid = const Value.absent(),
+              }) => DueMonthsCompanion.insert(
+                shomitiId: shomitiId,
+                monthKey: monthKey,
+                ruleSetVersionId: ruleSetVersionId,
+                generatedAt: generatedAt,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable(table),
+                  $$DueMonthsTableReferences(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback:
+              ({shomitiId = false, ruleSetVersionId = false}) {
+                return PrefetchHooks(
+                  db: db,
+                  explicitlyWatchedTables: [],
+                  addJoins:
+                      <
+                        T extends TableManagerState<
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic
+                        >
+                      >(state) {
+                        if (shomitiId) {
+                          state =
+                              state.withJoin(
+                                    currentTable: table,
+                                    currentColumn: table.shomitiId,
+                                    referencedTable: $$DueMonthsTableReferences
+                                        ._shomitiIdTable(db),
+                                    referencedColumn: $$DueMonthsTableReferences
+                                        ._shomitiIdTable(db)
+                                        .id,
+                                  )
+                                  as T;
+                        }
+                        if (ruleSetVersionId) {
+                          state =
+                              state.withJoin(
+                                    currentTable: table,
+                                    currentColumn: table.ruleSetVersionId,
+                                    referencedTable: $$DueMonthsTableReferences
+                                        ._ruleSetVersionIdTable(db),
+                                    referencedColumn: $$DueMonthsTableReferences
+                                        ._ruleSetVersionIdTable(db)
+                                        .id,
+                                  )
+                                  as T;
+                        }
+
+                        return state;
+                      },
+                  getPrefetchedDataCallback: (items) async {
+                    return [];
+                  },
+                );
+              },
+        ),
+      );
+}
+
+typedef $$DueMonthsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $DueMonthsTable,
+      DueMonthRow,
+      $$DueMonthsTableFilterComposer,
+      $$DueMonthsTableOrderingComposer,
+      $$DueMonthsTableAnnotationComposer,
+      $$DueMonthsTableCreateCompanionBuilder,
+      $$DueMonthsTableUpdateCompanionBuilder,
+      (DueMonthRow, $$DueMonthsTableReferences),
+      DueMonthRow,
+      PrefetchHooks Function({bool shomitiId, bool ruleSetVersionId})
+    >;
+typedef $$MonthlyDuesTableCreateCompanionBuilder =
+    MonthlyDuesCompanion Function({
+      required String shomitiId,
+      required String monthKey,
+      required String memberId,
+      required int shares,
+      required int shareValueBdt,
+      required int dueAmountBdt,
+      required DateTime createdAt,
+      Value<int> rowid,
+    });
+typedef $$MonthlyDuesTableUpdateCompanionBuilder =
+    MonthlyDuesCompanion Function({
+      Value<String> shomitiId,
+      Value<String> monthKey,
+      Value<String> memberId,
+      Value<int> shares,
+      Value<int> shareValueBdt,
+      Value<int> dueAmountBdt,
+      Value<DateTime> createdAt,
+      Value<int> rowid,
+    });
+
+final class $$MonthlyDuesTableReferences
+    extends BaseReferences<_$AppDatabase, $MonthlyDuesTable, MonthlyDueRow> {
+  $$MonthlyDuesTableReferences(super.$_db, super.$_table, super.$_typedResult);
+
+  static $ShomitisTable _shomitiIdTable(_$AppDatabase db) =>
+      db.shomitis.createAlias(
+        $_aliasNameGenerator(db.monthlyDues.shomitiId, db.shomitis.id),
+      );
+
+  $$ShomitisTableProcessedTableManager get shomitiId {
+    final $_column = $_itemColumn<String>('shomiti_id')!;
+
+    final manager = $$ShomitisTableTableManager(
+      $_db,
+      $_db.shomitis,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_shomitiIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+
+  static $MembersTable _memberIdTable(_$AppDatabase db) =>
+      db.members.createAlias(
+        $_aliasNameGenerator(db.monthlyDues.memberId, db.members.id),
+      );
+
+  $$MembersTableProcessedTableManager get memberId {
+    final $_column = $_itemColumn<String>('member_id')!;
+
+    final manager = $$MembersTableTableManager(
+      $_db,
+      $_db.members,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_memberIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+}
+
+class $$MonthlyDuesTableFilterComposer
+    extends Composer<_$AppDatabase, $MonthlyDuesTable> {
+  $$MonthlyDuesTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get monthKey => $composableBuilder(
+    column: $table.monthKey,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get shares => $composableBuilder(
+    column: $table.shares,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get shareValueBdt => $composableBuilder(
+    column: $table.shareValueBdt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get dueAmountBdt => $composableBuilder(
+    column: $table.dueAmountBdt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  $$ShomitisTableFilterComposer get shomitiId {
+    final $$ShomitisTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.shomitiId,
+      referencedTable: $db.shomitis,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ShomitisTableFilterComposer(
+            $db: $db,
+            $table: $db.shomitis,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$MembersTableFilterComposer get memberId {
+    final $$MembersTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.memberId,
+      referencedTable: $db.members,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$MembersTableFilterComposer(
+            $db: $db,
+            $table: $db.members,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$MonthlyDuesTableOrderingComposer
+    extends Composer<_$AppDatabase, $MonthlyDuesTable> {
+  $$MonthlyDuesTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get monthKey => $composableBuilder(
+    column: $table.monthKey,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get shares => $composableBuilder(
+    column: $table.shares,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get shareValueBdt => $composableBuilder(
+    column: $table.shareValueBdt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get dueAmountBdt => $composableBuilder(
+    column: $table.dueAmountBdt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  $$ShomitisTableOrderingComposer get shomitiId {
+    final $$ShomitisTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.shomitiId,
+      referencedTable: $db.shomitis,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ShomitisTableOrderingComposer(
+            $db: $db,
+            $table: $db.shomitis,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$MembersTableOrderingComposer get memberId {
+    final $$MembersTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.memberId,
+      referencedTable: $db.members,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$MembersTableOrderingComposer(
+            $db: $db,
+            $table: $db.members,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$MonthlyDuesTableAnnotationComposer
+    extends Composer<_$AppDatabase, $MonthlyDuesTable> {
+  $$MonthlyDuesTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get monthKey =>
+      $composableBuilder(column: $table.monthKey, builder: (column) => column);
+
+  GeneratedColumn<int> get shares =>
+      $composableBuilder(column: $table.shares, builder: (column) => column);
+
+  GeneratedColumn<int> get shareValueBdt => $composableBuilder(
+    column: $table.shareValueBdt,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get dueAmountBdt => $composableBuilder(
+    column: $table.dueAmountBdt,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  $$ShomitisTableAnnotationComposer get shomitiId {
+    final $$ShomitisTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.shomitiId,
+      referencedTable: $db.shomitis,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ShomitisTableAnnotationComposer(
+            $db: $db,
+            $table: $db.shomitis,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$MembersTableAnnotationComposer get memberId {
+    final $$MembersTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.memberId,
+      referencedTable: $db.members,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$MembersTableAnnotationComposer(
+            $db: $db,
+            $table: $db.members,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$MonthlyDuesTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $MonthlyDuesTable,
+          MonthlyDueRow,
+          $$MonthlyDuesTableFilterComposer,
+          $$MonthlyDuesTableOrderingComposer,
+          $$MonthlyDuesTableAnnotationComposer,
+          $$MonthlyDuesTableCreateCompanionBuilder,
+          $$MonthlyDuesTableUpdateCompanionBuilder,
+          (MonthlyDueRow, $$MonthlyDuesTableReferences),
+          MonthlyDueRow,
+          PrefetchHooks Function({bool shomitiId, bool memberId})
+        > {
+  $$MonthlyDuesTableTableManager(_$AppDatabase db, $MonthlyDuesTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$MonthlyDuesTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$MonthlyDuesTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$MonthlyDuesTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> shomitiId = const Value.absent(),
+                Value<String> monthKey = const Value.absent(),
+                Value<String> memberId = const Value.absent(),
+                Value<int> shares = const Value.absent(),
+                Value<int> shareValueBdt = const Value.absent(),
+                Value<int> dueAmountBdt = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => MonthlyDuesCompanion(
+                shomitiId: shomitiId,
+                monthKey: monthKey,
+                memberId: memberId,
+                shares: shares,
+                shareValueBdt: shareValueBdt,
+                dueAmountBdt: dueAmountBdt,
+                createdAt: createdAt,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String shomitiId,
+                required String monthKey,
+                required String memberId,
+                required int shares,
+                required int shareValueBdt,
+                required int dueAmountBdt,
+                required DateTime createdAt,
+                Value<int> rowid = const Value.absent(),
+              }) => MonthlyDuesCompanion.insert(
+                shomitiId: shomitiId,
+                monthKey: monthKey,
+                memberId: memberId,
+                shares: shares,
+                shareValueBdt: shareValueBdt,
+                dueAmountBdt: dueAmountBdt,
+                createdAt: createdAt,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable(table),
+                  $$MonthlyDuesTableReferences(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: ({shomitiId = false, memberId = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [],
+              addJoins:
+                  <
+                    T extends TableManagerState<
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic
+                    >
+                  >(state) {
+                    if (shomitiId) {
+                      state =
+                          state.withJoin(
+                                currentTable: table,
+                                currentColumn: table.shomitiId,
+                                referencedTable: $$MonthlyDuesTableReferences
+                                    ._shomitiIdTable(db),
+                                referencedColumn: $$MonthlyDuesTableReferences
+                                    ._shomitiIdTable(db)
+                                    .id,
+                              )
+                              as T;
+                    }
+                    if (memberId) {
+                      state =
+                          state.withJoin(
+                                currentTable: table,
+                                currentColumn: table.memberId,
+                                referencedTable: $$MonthlyDuesTableReferences
+                                    ._memberIdTable(db),
+                                referencedColumn: $$MonthlyDuesTableReferences
+                                    ._memberIdTable(db)
+                                    .id,
+                              )
+                              as T;
+                    }
+
+                    return state;
+                  },
+              getPrefetchedDataCallback: (items) async {
+                return [];
+              },
+            );
+          },
+        ),
+      );
+}
+
+typedef $$MonthlyDuesTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $MonthlyDuesTable,
+      MonthlyDueRow,
+      $$MonthlyDuesTableFilterComposer,
+      $$MonthlyDuesTableOrderingComposer,
+      $$MonthlyDuesTableAnnotationComposer,
+      $$MonthlyDuesTableCreateCompanionBuilder,
+      $$MonthlyDuesTableUpdateCompanionBuilder,
+      (MonthlyDueRow, $$MonthlyDuesTableReferences),
+      MonthlyDueRow,
+      PrefetchHooks Function({bool shomitiId, bool memberId})
+    >;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;
@@ -10809,4 +12852,8 @@ class $AppDatabaseManager {
         _db,
         _db.membershipChangeApprovals,
       );
+  $$DueMonthsTableTableManager get dueMonths =>
+      $$DueMonthsTableTableManager(_db, _db.dueMonths);
+  $$MonthlyDuesTableTableManager get monthlyDues =>
+      $$MonthlyDuesTableTableManager(_db, _db.monthlyDues);
 }
