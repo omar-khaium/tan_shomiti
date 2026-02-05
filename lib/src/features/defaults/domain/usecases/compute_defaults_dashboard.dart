@@ -23,7 +23,11 @@ class ComputeDefaultsDashboard {
       (stepsByMemberAndEpisode[key] ??= []).add(step);
     }
     for (final entry in stepsByMemberAndEpisode.entries) {
-      entry.value.sort((a, b) => a.recordedAt.compareTo(b.recordedAt));
+      entry.value.sort((a, b) {
+        final byTime = a.recordedAt.compareTo(b.recordedAt);
+        if (byTime != 0) return byTime;
+        return a.id.compareTo(b.id);
+      });
     }
 
     final byMember = <String, List<MemberDuePaymentRow>>{};
