@@ -78,14 +78,15 @@ class PayoutOverviewPage extends ConsumerWidget {
                       const SizedBox(height: AppSpacing.s12),
                       _PrereqRow(
                         keyLabel: const Key('payout_prereq_draw'),
-                        label: 'Draw recorded',
-                        ok: prereq.hasRecordedDraw,
+                        label: 'Draw recorded (finalized)',
+                        ok: prereq.hasRecordedDraw && prereq.isDrawFinalized,
                       ),
                       const SizedBox(height: AppSpacing.s8),
                       _PrereqRow(
                         keyLabel: const Key('payout_prereq_collection'),
                         label: 'Collection verified (no short pot payout)',
-                        ok: prereq.isCollectionVerified,
+                        ok: prereq.isCollectionVerified &&
+                            prereq.isCollectionComplete,
                       ),
                       const SizedBox(height: AppSpacing.s8),
                       _PrereqRow(
