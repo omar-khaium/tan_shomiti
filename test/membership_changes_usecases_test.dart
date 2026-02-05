@@ -123,6 +123,7 @@ class _FakeMembersRepository implements MembersRepository {
 }
 
 extension<T> on Iterable<T> {
+  // ignore: unnecessary_this
   T? get firstOrNull => this.isEmpty ? null : this.first;
 }
 

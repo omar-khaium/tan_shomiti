@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 
 import '../../../audit/domain/entities/audit_event.dart';
 import '../../../audit/domain/usecases/append_audit_event.dart';
@@ -11,10 +12,12 @@ class ProposeReplacement {
     required MembershipChangesRepository membershipChangesRepository,
     required AppendAuditEvent appendAuditEvent,
   }) : _membershipChangesRepository = membershipChangesRepository,
-       _appendAuditEvent = appendAuditEvent;
+       _appendAuditEvent = appendAuditEvent,
+       _random = Random.secure();
 
   final MembershipChangesRepository _membershipChangesRepository;
   final AppendAuditEvent _appendAuditEvent;
+  final Random _random;
 
   Future<MembershipChangeRequest> call({
     required String shomitiId,
@@ -40,35 +43,40 @@ class ProposeReplacement {
       shomitiId: shomitiId,
       outgoingMemberId: outgoingMemberId,
     );
-    if (existing == null) {
-      throw const MembershipChangeNotFoundException(
-        'Request exit first, then propose a replacement.',
-      );
-    }
-
-    if (!existing.isOpen) {
-      throw const MembershipChangeConflictException(
-        'This membership change is already finalized.',
-      );
-    }
 
     final ts = now ?? DateTime.now();
-    final updated = MembershipChangeRequest(
-      id: existing.id,
-      shomitiId: existing.shomitiId,
-      outgoingMemberId: existing.outgoingMemberId,
+    final request = MembershipChangeRequest(
+      id: existing?.id ?? _newRequestId(ts),
+      shomitiId: shomitiId,
+      outgoingMemberId: outgoingMemberId,
       type: MembershipChangeType.replacement,
-      requiresReplacement: existing.requiresReplacement,
+      requiresReplacement: existing?.requiresReplacement ?? true,
       replacementCandidateName: cleanName,
       replacementCandidatePhone: cleanPhone,
-      removalReasonCode: existing.removalReasonCode,
-      removalReasonDetails: existing.removalReasonDetails,
-      requestedAt: existing.requestedAt,
+      removalReasonCode: existing?.removalReasonCode,
+      removalReasonDetails: existing?.removalReasonDetails,
+      requestedAt: existing?.requestedAt ?? ts,
       updatedAt: ts,
-      finalizedAt: existing.finalizedAt,
+      finalizedAt: existing?.finalizedAt,
     );
 
-    await _membershipChangesRepository.upsertRequest(updated);
+    await _membershipChangesRepository.upsertRequest(request);
+
+    if (existing == null) {
+      await _appendAuditEvent(
+        NewAuditEvent(
+          action: 'exit_requested',
+          occurredAt: ts,
+          message: 'Recorded exit request (via replacement proposal).',
+          metadataJson: jsonEncode({
+            'shomitiId': shomitiId,
+            'memberId': outgoingMemberId,
+            'requestId': request.id,
+            'requiresReplacement': true,
+          }),
+        ),
+      );
+    }
 
     await _appendAuditEvent(
       NewAuditEvent(
@@ -78,11 +86,17 @@ class ProposeReplacement {
         metadataJson: jsonEncode({
           'shomitiId': shomitiId,
           'memberId': outgoingMemberId,
-          'requestId': existing.id,
+          'requestId': request.id,
         }),
       ),
     );
 
-    return updated;
+    return request;
+  }
+
+  String _newRequestId(DateTime now) {
+    final ts = now.microsecondsSinceEpoch.toRadixString(36);
+    final rand = _random.nextInt(1 << 32).toRadixString(36).padLeft(7, '0');
+    return 'mcr_${ts}_$rand';
   }
 }
