@@ -26,6 +26,7 @@ class AppShell extends StatelessWidget {
       ledgerLocation,
       auditLocation,
       rulesLocation,
+      defaultsLocation,
       disputesLocation,
       settingsLocation,
       componentsLocation,
