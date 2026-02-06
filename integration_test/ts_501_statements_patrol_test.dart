@@ -5,7 +5,7 @@ import 'package:patrol/patrol.dart';
 import 'package:tan_shomiti/src/app/tan_shomiti_app.dart';
 
 void main() {
-  patrolTest('TS-403: verify collection → approvals → payout proof', ($) async {
+  patrolTest('TS-501: generate statement after payout', ($) async {
     await $.pumpWidgetAndSettle(
       ProviderScope(key: UniqueKey(), child: const TanShomitiApp()),
     );
@@ -24,7 +24,7 @@ void main() {
     }
 
     // Setup: memberCount=3, cycleLength=3 => 1 share each.
-    await $(#setup_name_field).enterText('TS403 Shomiti');
+    await $(#setup_name_field).enterText('TS501 Shomiti');
     await $(#setup_next).tap();
     await $.pumpAndSettle();
 
@@ -54,22 +54,13 @@ void main() {
 
     // Wait for shell.
     final navDuesFinder = find.byKey(const Key('nav_dues'));
-    final setupNextFinder = find.byKey(const Key('setup_next'));
-
-    for (var i = 0; i < 12; i++) {
-      if (navDuesFinder.evaluate().isNotEmpty) break;
-      if (setupNextFinder.evaluate().isEmpty) break;
-      await $(#setup_next).tap();
-      await $.pump(const Duration(milliseconds: 300));
-    }
-
     for (var i = 0; i < 600; i++) {
       if (navDuesFinder.evaluate().isNotEmpty) break;
       await $.pump(const Duration(milliseconds: 200));
     }
     expect(navDuesFinder, findsWidgets);
 
-    // Generate dues + record payments for all members (complete pot).
+    // Record payments for all members (complete pot).
     await $(#nav_dues).tap();
     await $.pumpAndSettle();
 
@@ -86,7 +77,7 @@ void main() {
       await $.pumpAndSettle();
       await $(recordFinder).tap();
       await $.pumpAndSettle();
-      await $(#payment_reference).enterText('trx-ts403-$position');
+      await $(#payment_reference).enterText('trx-ts501-$position');
       await $(#payment_confirm).tap();
       await $.pumpAndSettle();
     }
@@ -98,27 +89,52 @@ void main() {
     await $(#more_draw).tap();
     await $.pumpAndSettle();
 
-    await $(#eligibility_run_draw).tap();
-    await $.pumpAndSettle();
+    // The Draw page can open on a month that doesn't have dues yet (eligible=0),
+    // which makes "Run draw" disabled and no navigation happens on tap. To make
+    // this deterministic, walk months backwards until RunDrawPage appears.
+    final tokensFinder = find.byKey(const Key('draw_method_tokens'));
+    final prevMonthFinder = find.byKey(const Key('eligibility_prev_month'));
+    final runDrawFinder = find.byKey(const Key('eligibility_run_draw'));
+    for (var attempt = 0; attempt < 12; attempt++) {
+      if (tokensFinder.evaluate().isNotEmpty) break; // already on RunDrawPage
+
+      for (var i = 0; i < 50; i++) {
+        if (runDrawFinder.evaluate().isNotEmpty) break;
+        await $.pump(const Duration(milliseconds: 200));
+      }
+      expect(runDrawFinder, findsWidgets);
+
+      await $(runDrawFinder).tap();
+      await $.pumpAndSettle();
+
+      for (var i = 0; i < 20; i++) {
+        if (tokensFinder.evaluate().isNotEmpty) break;
+        await $.pump(const Duration(milliseconds: 200));
+      }
+      if (tokensFinder.evaluate().isNotEmpty) break;
+
+      // Move to previous month and try again.
+      expect(prevMonthFinder, findsWidgets);
+      await $(prevMonthFinder).tap();
+      await $.pumpAndSettle();
+    }
+    expect(tokensFinder, findsWidgets);
 
     await $(#draw_method_tokens).tap();
     await $.pumpAndSettle();
 
     await $(find.text('Select winning share')).tap();
     await $.pumpAndSettle();
-    final winnerOption = find.textContaining('Member 1 (share');
-    await $(winnerOption).tap();
+    await $(find.textContaining('Member 1 (share')).tap();
     await $.pumpAndSettle();
 
-    await $(#draw_proof_ref).enterText('vid-ts403-1');
+    await $(#draw_proof_ref).enterText('vid-ts501-1');
     await $.pumpAndSettle();
-
     await $(#draw_save).scrollTo();
-    await $.pumpAndSettle();
     await $(#draw_save).tap();
     await $.pumpAndSettle();
 
-    // Witness sign-offs + finalize draw.
+    // Witness sign-offs + finalize.
     await $(#draw_view_record).tap();
     await $.pumpAndSettle();
     await $(#draw_collect_witnesses).tap();
@@ -142,27 +158,20 @@ void main() {
     await $(#witness_finalize).tap();
     await $.pumpAndSettle();
 
-    // Payout: verify collection → approvals → proof.
+    // Payout: complete flow quickly.
     await $(#nav_more).tap();
     await $.pumpAndSettle();
     await $(#more_payout).scrollTo();
     await $(#more_payout).tap();
     await $.pumpAndSettle();
 
-    expect(find.byKey(const Key('payout_month_label')), findsOneWidget);
     await $(#payout_continue).tap();
     await $.pumpAndSettle();
-
-    // Totals must be present.
-    expect(find.byKey(const Key('payout_collection_due_total')), findsOneWidget);
-    expect(find.byKey(const Key('payout_collection_paid_total')), findsOneWidget);
-    expect(find.byKey(const Key('payout_collection_short_total')), findsOneWidget);
 
     await $(#payout_collection_verifier_picker).tap();
     await $.pumpAndSettle();
     await $(find.text('Member 1')).tap();
     await $.pumpAndSettle();
-
     await $(#payout_collection_verify).tap();
     await $.pumpAndSettle();
 
@@ -180,22 +189,34 @@ void main() {
     await $(#payout_auditor_approve).tap();
     await $.pumpAndSettle();
 
-    expect(find.textContaining('Approved for payout'), findsWidgets);
-
     await $(#payout_approvals_continue).scrollTo();
     await $.pumpAndSettle();
     await $(#payout_approvals_continue).tap();
     await $.pumpAndSettle();
 
-    expect(find.byKey(const Key('payout_winner_label')), findsOneWidget);
-    expect(find.byKey(const Key('payout_amount_label')), findsOneWidget);
-
-    await $(#payout_proof_ref).enterText('trx-ts403-proof');
+    await $(#payout_proof_ref).enterText('trx-ts501-proof');
     await $.pumpAndSettle();
     await $(#payout_mark_paid).tap();
     await $.pumpAndSettle();
 
-    // Back navigation should succeed without errors.
-    expect(find.byKey(const Key('payout_approval_status')), findsWidgets);
+    // Statements: generate and verify fields.
+    await $(#nav_more).tap();
+    await $.pumpAndSettle();
+    await $(#more_statements).scrollTo();
+    await $(#more_statements).tap();
+    await $.pumpAndSettle();
+
+    expect(find.byKey(const Key('statement_month_label')), findsOneWidget);
+    expect(find.byKey(const Key('statement_ready_badge')), findsOneWidget);
+
+    await $(#statement_generate).tap();
+    await $.pumpAndSettle();
+
+    expect(find.byKey(const Key('statement_total_due')), findsOneWidget);
+    expect(find.byKey(const Key('statement_total_collected')), findsOneWidget);
+    expect(find.byKey(const Key('statement_shortfall')), findsOneWidget);
+    expect(find.byKey(const Key('statement_winner_label')), findsOneWidget);
+    expect(find.byKey(const Key('statement_draw_proof')), findsOneWidget);
+    expect(find.byKey(const Key('statement_payout_proof')), findsOneWidget);
   });
 }
