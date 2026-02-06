@@ -10,7 +10,10 @@ import '../../../core/ui/components/app_loading_state.dart';
 import '../../../core/ui/components/app_status_chip.dart';
 import '../../../core/ui/formatters/billing_month_label.dart';
 import '../../../core/ui/tokens/app_spacing.dart';
+import '../../contributions/domain/value_objects/billing_month.dart';
+import '../../shomiti_setup/presentation/providers/shomiti_setup_providers.dart';
 import 'providers/statements_providers.dart';
+import 'providers/statements_domain_providers.dart';
 
 class StatementsOverviewPage extends ConsumerWidget {
   const StatementsOverviewPage({super.key});
@@ -34,6 +37,7 @@ class StatementsOverviewPage extends ConsumerWidget {
           data: (state) {
             final monthLabel = formatBillingMonthLabel(state.month);
             final ready = state.isReadyToGenerate;
+            final hasStatement = state.hasGeneratedStatement;
 
             return Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -83,9 +87,14 @@ class StatementsOverviewPage extends ConsumerWidget {
                 const Spacer(),
                 AppButton.primary(
                   key: const Key('statement_generate'),
-                  label: 'Generate statement',
+                  label: hasStatement ? 'View statement' : 'Generate statement',
                   onPressed: ready
-                      ? () => context.push(statementDetailsLocation)
+                      ? () => _handlePrimary(
+                            context: context,
+                            ref: ref,
+                            monthKey: state.month.key,
+                            hasStatement: hasStatement,
+                          )
                       : null,
                 ),
               ],
@@ -95,5 +104,38 @@ class StatementsOverviewPage extends ConsumerWidget {
       ),
     );
   }
-}
 
+  void _handlePrimary({
+    required BuildContext context,
+    required WidgetRef ref,
+    required String monthKey,
+    required bool hasStatement,
+  }) {
+    if (hasStatement) {
+      context.push(statementDetailsLocation);
+      return;
+    }
+
+    () async {
+      try {
+        final shomiti = await ref.read(activeShomitiProvider.future);
+        if (shomiti == null) return;
+
+        final month = BillingMonth.fromKey(monthKey);
+        await ref.read(generateMonthlyStatementProvider)(
+              shomitiId: shomiti.id,
+              ruleSetVersionId: shomiti.activeRuleSetVersionId,
+              month: month,
+            );
+        ref.invalidate(statementsControllerProvider);
+        if (!context.mounted) return;
+        context.push(statementDetailsLocation);
+      } catch (e) {
+        if (!context.mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed to generate statement: $e')),
+        );
+      }
+    }();
+  }
+}
