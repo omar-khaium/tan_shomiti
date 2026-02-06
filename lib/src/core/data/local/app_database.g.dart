@@ -9557,6 +9557,391 @@ class DrawWitnessApprovalsCompanion
   }
 }
 
+class $MonthlyStatementsTable extends MonthlyStatements
+    with TableInfo<$MonthlyStatementsTable, MonthlyStatementRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $MonthlyStatementsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _shomitiIdMeta = const VerificationMeta(
+    'shomitiId',
+  );
+  @override
+  late final GeneratedColumn<String> shomitiId = GeneratedColumn<String>(
+    'shomiti_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES shomitis (id)',
+    ),
+  );
+  static const VerificationMeta _monthKeyMeta = const VerificationMeta(
+    'monthKey',
+  );
+  @override
+  late final GeneratedColumn<String> monthKey = GeneratedColumn<String>(
+    'month_key',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _ruleSetVersionIdMeta = const VerificationMeta(
+    'ruleSetVersionId',
+  );
+  @override
+  late final GeneratedColumn<String> ruleSetVersionId = GeneratedColumn<String>(
+    'rule_set_version_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES rule_set_versions (id)',
+    ),
+  );
+  static const VerificationMeta _jsonMeta = const VerificationMeta('json');
+  @override
+  late final GeneratedColumn<String> json = GeneratedColumn<String>(
+    'json',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _generatedAtMeta = const VerificationMeta(
+    'generatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> generatedAt = GeneratedColumn<DateTime>(
+    'generated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    shomitiId,
+    monthKey,
+    ruleSetVersionId,
+    json,
+    generatedAt,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'monthly_statements';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<MonthlyStatementRow> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('shomiti_id')) {
+      context.handle(
+        _shomitiIdMeta,
+        shomitiId.isAcceptableOrUnknown(data['shomiti_id']!, _shomitiIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_shomitiIdMeta);
+    }
+    if (data.containsKey('month_key')) {
+      context.handle(
+        _monthKeyMeta,
+        monthKey.isAcceptableOrUnknown(data['month_key']!, _monthKeyMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_monthKeyMeta);
+    }
+    if (data.containsKey('rule_set_version_id')) {
+      context.handle(
+        _ruleSetVersionIdMeta,
+        ruleSetVersionId.isAcceptableOrUnknown(
+          data['rule_set_version_id']!,
+          _ruleSetVersionIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_ruleSetVersionIdMeta);
+    }
+    if (data.containsKey('json')) {
+      context.handle(
+        _jsonMeta,
+        json.isAcceptableOrUnknown(data['json']!, _jsonMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_jsonMeta);
+    }
+    if (data.containsKey('generated_at')) {
+      context.handle(
+        _generatedAtMeta,
+        generatedAt.isAcceptableOrUnknown(
+          data['generated_at']!,
+          _generatedAtMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_generatedAtMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {shomitiId, monthKey};
+  @override
+  MonthlyStatementRow map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return MonthlyStatementRow(
+      shomitiId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}shomiti_id'],
+      )!,
+      monthKey: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}month_key'],
+      )!,
+      ruleSetVersionId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}rule_set_version_id'],
+      )!,
+      json: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}json'],
+      )!,
+      generatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}generated_at'],
+      )!,
+    );
+  }
+
+  @override
+  $MonthlyStatementsTable createAlias(String alias) {
+    return $MonthlyStatementsTable(attachedDatabase, alias);
+  }
+}
+
+class MonthlyStatementRow extends DataClass
+    implements Insertable<MonthlyStatementRow> {
+  final String shomitiId;
+  final String monthKey;
+  final String ruleSetVersionId;
+
+  /// Statement snapshot JSON (avoid PII).
+  final String json;
+  final DateTime generatedAt;
+  const MonthlyStatementRow({
+    required this.shomitiId,
+    required this.monthKey,
+    required this.ruleSetVersionId,
+    required this.json,
+    required this.generatedAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['shomiti_id'] = Variable<String>(shomitiId);
+    map['month_key'] = Variable<String>(monthKey);
+    map['rule_set_version_id'] = Variable<String>(ruleSetVersionId);
+    map['json'] = Variable<String>(json);
+    map['generated_at'] = Variable<DateTime>(generatedAt);
+    return map;
+  }
+
+  MonthlyStatementsCompanion toCompanion(bool nullToAbsent) {
+    return MonthlyStatementsCompanion(
+      shomitiId: Value(shomitiId),
+      monthKey: Value(monthKey),
+      ruleSetVersionId: Value(ruleSetVersionId),
+      json: Value(json),
+      generatedAt: Value(generatedAt),
+    );
+  }
+
+  factory MonthlyStatementRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return MonthlyStatementRow(
+      shomitiId: serializer.fromJson<String>(json['shomitiId']),
+      monthKey: serializer.fromJson<String>(json['monthKey']),
+      ruleSetVersionId: serializer.fromJson<String>(json['ruleSetVersionId']),
+      json: serializer.fromJson<String>(json['json']),
+      generatedAt: serializer.fromJson<DateTime>(json['generatedAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'shomitiId': serializer.toJson<String>(shomitiId),
+      'monthKey': serializer.toJson<String>(monthKey),
+      'ruleSetVersionId': serializer.toJson<String>(ruleSetVersionId),
+      'json': serializer.toJson<String>(json),
+      'generatedAt': serializer.toJson<DateTime>(generatedAt),
+    };
+  }
+
+  MonthlyStatementRow copyWith({
+    String? shomitiId,
+    String? monthKey,
+    String? ruleSetVersionId,
+    String? json,
+    DateTime? generatedAt,
+  }) => MonthlyStatementRow(
+    shomitiId: shomitiId ?? this.shomitiId,
+    monthKey: monthKey ?? this.monthKey,
+    ruleSetVersionId: ruleSetVersionId ?? this.ruleSetVersionId,
+    json: json ?? this.json,
+    generatedAt: generatedAt ?? this.generatedAt,
+  );
+  MonthlyStatementRow copyWithCompanion(MonthlyStatementsCompanion data) {
+    return MonthlyStatementRow(
+      shomitiId: data.shomitiId.present ? data.shomitiId.value : this.shomitiId,
+      monthKey: data.monthKey.present ? data.monthKey.value : this.monthKey,
+      ruleSetVersionId: data.ruleSetVersionId.present
+          ? data.ruleSetVersionId.value
+          : this.ruleSetVersionId,
+      json: data.json.present ? data.json.value : this.json,
+      generatedAt: data.generatedAt.present
+          ? data.generatedAt.value
+          : this.generatedAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('MonthlyStatementRow(')
+          ..write('shomitiId: $shomitiId, ')
+          ..write('monthKey: $monthKey, ')
+          ..write('ruleSetVersionId: $ruleSetVersionId, ')
+          ..write('json: $json, ')
+          ..write('generatedAt: $generatedAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(shomitiId, monthKey, ruleSetVersionId, json, generatedAt);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is MonthlyStatementRow &&
+          other.shomitiId == this.shomitiId &&
+          other.monthKey == this.monthKey &&
+          other.ruleSetVersionId == this.ruleSetVersionId &&
+          other.json == this.json &&
+          other.generatedAt == this.generatedAt);
+}
+
+class MonthlyStatementsCompanion extends UpdateCompanion<MonthlyStatementRow> {
+  final Value<String> shomitiId;
+  final Value<String> monthKey;
+  final Value<String> ruleSetVersionId;
+  final Value<String> json;
+  final Value<DateTime> generatedAt;
+  final Value<int> rowid;
+  const MonthlyStatementsCompanion({
+    this.shomitiId = const Value.absent(),
+    this.monthKey = const Value.absent(),
+    this.ruleSetVersionId = const Value.absent(),
+    this.json = const Value.absent(),
+    this.generatedAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  MonthlyStatementsCompanion.insert({
+    required String shomitiId,
+    required String monthKey,
+    required String ruleSetVersionId,
+    required String json,
+    required DateTime generatedAt,
+    this.rowid = const Value.absent(),
+  }) : shomitiId = Value(shomitiId),
+       monthKey = Value(monthKey),
+       ruleSetVersionId = Value(ruleSetVersionId),
+       json = Value(json),
+       generatedAt = Value(generatedAt);
+  static Insertable<MonthlyStatementRow> custom({
+    Expression<String>? shomitiId,
+    Expression<String>? monthKey,
+    Expression<String>? ruleSetVersionId,
+    Expression<String>? json,
+    Expression<DateTime>? generatedAt,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (shomitiId != null) 'shomiti_id': shomitiId,
+      if (monthKey != null) 'month_key': monthKey,
+      if (ruleSetVersionId != null) 'rule_set_version_id': ruleSetVersionId,
+      if (json != null) 'json': json,
+      if (generatedAt != null) 'generated_at': generatedAt,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  MonthlyStatementsCompanion copyWith({
+    Value<String>? shomitiId,
+    Value<String>? monthKey,
+    Value<String>? ruleSetVersionId,
+    Value<String>? json,
+    Value<DateTime>? generatedAt,
+    Value<int>? rowid,
+  }) {
+    return MonthlyStatementsCompanion(
+      shomitiId: shomitiId ?? this.shomitiId,
+      monthKey: monthKey ?? this.monthKey,
+      ruleSetVersionId: ruleSetVersionId ?? this.ruleSetVersionId,
+      json: json ?? this.json,
+      generatedAt: generatedAt ?? this.generatedAt,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (shomitiId.present) {
+      map['shomiti_id'] = Variable<String>(shomitiId.value);
+    }
+    if (monthKey.present) {
+      map['month_key'] = Variable<String>(monthKey.value);
+    }
+    if (ruleSetVersionId.present) {
+      map['rule_set_version_id'] = Variable<String>(ruleSetVersionId.value);
+    }
+    if (json.present) {
+      map['json'] = Variable<String>(json.value);
+    }
+    if (generatedAt.present) {
+      map['generated_at'] = Variable<DateTime>(generatedAt.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('MonthlyStatementsCompanion(')
+          ..write('shomitiId: $shomitiId, ')
+          ..write('monthKey: $monthKey, ')
+          ..write('ruleSetVersionId: $ruleSetVersionId, ')
+          ..write('json: $json, ')
+          ..write('generatedAt: $generatedAt, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 class $PayoutCollectionVerificationsTable extends PayoutCollectionVerifications
     with
         TableInfo<
@@ -11241,6 +11626,8 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $DrawRecordsTable drawRecords = $DrawRecordsTable(this);
   late final $DrawWitnessApprovalsTable drawWitnessApprovals =
       $DrawWitnessApprovalsTable(this);
+  late final $MonthlyStatementsTable monthlyStatements =
+      $MonthlyStatementsTable(this);
   late final $PayoutCollectionVerificationsTable payoutCollectionVerifications =
       $PayoutCollectionVerificationsTable(this);
   late final $PayoutApprovalsTable payoutApprovals = $PayoutApprovalsTable(
@@ -11271,6 +11658,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     defaultEnforcementSteps,
     drawRecords,
     drawWitnessApprovals,
+    monthlyStatements,
     payoutCollectionVerifications,
     payoutApprovals,
     payoutRecords,
@@ -11981,6 +12369,30 @@ final class $$ShomitisTableReferences
     );
   }
 
+  static MultiTypedResultKey<$MonthlyStatementsTable, List<MonthlyStatementRow>>
+  _monthlyStatementsRefsTable(_$AppDatabase db) =>
+      MultiTypedResultKey.fromTable(
+        db.monthlyStatements,
+        aliasName: $_aliasNameGenerator(
+          db.shomitis.id,
+          db.monthlyStatements.shomitiId,
+        ),
+      );
+
+  $$MonthlyStatementsTableProcessedTableManager get monthlyStatementsRefs {
+    final manager = $$MonthlyStatementsTableTableManager(
+      $_db,
+      $_db.monthlyStatements,
+    ).filter((f) => f.shomitiId.id.sqlEquals($_itemColumn<String>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(
+      _monthlyStatementsRefsTable($_db),
+    );
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+
   static MultiTypedResultKey<
     $PayoutCollectionVerificationsTable,
     List<PayoutCollectionVerificationRow>
@@ -12357,6 +12769,31 @@ class $$ShomitisTableFilterComposer
           }) => $$DrawRecordsTableFilterComposer(
             $db: $db,
             $table: $db.drawRecords,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<bool> monthlyStatementsRefs(
+    Expression<bool> Function($$MonthlyStatementsTableFilterComposer f) f,
+  ) {
+    final $$MonthlyStatementsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.monthlyStatements,
+      getReferencedColumn: (t) => t.shomitiId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$MonthlyStatementsTableFilterComposer(
+            $db: $db,
+            $table: $db.monthlyStatements,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -12789,6 +13226,32 @@ class $$ShomitisTableAnnotationComposer
     return f(composer);
   }
 
+  Expression<T> monthlyStatementsRefs<T extends Object>(
+    Expression<T> Function($$MonthlyStatementsTableAnnotationComposer a) f,
+  ) {
+    final $$MonthlyStatementsTableAnnotationComposer composer =
+        $composerBuilder(
+          composer: this,
+          getCurrentColumn: (t) => t.id,
+          referencedTable: $db.monthlyStatements,
+          getReferencedColumn: (t) => t.shomitiId,
+          builder:
+              (
+                joinBuilder, {
+                $addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer,
+              }) => $$MonthlyStatementsTableAnnotationComposer(
+                $db: $db,
+                $table: $db.monthlyStatements,
+                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                joinBuilder: joinBuilder,
+                $removeJoinBuilderFromRootComposer:
+                    $removeJoinBuilderFromRootComposer,
+              ),
+        );
+    return f(composer);
+  }
+
   Expression<T> payoutCollectionVerificationsRefs<T extends Object>(
     Expression<T> Function(
       $$PayoutCollectionVerificationsTableAnnotationComposer a,
@@ -12894,6 +13357,7 @@ class $$ShomitisTableTableManager
             bool collectionResolutionsRefs,
             bool defaultEnforcementStepsRefs,
             bool drawRecordsRefs,
+            bool monthlyStatementsRefs,
             bool payoutCollectionVerificationsRefs,
             bool payoutApprovalsRefs,
             bool payoutRecordsRefs,
@@ -12963,6 +13427,7 @@ class $$ShomitisTableTableManager
                 collectionResolutionsRefs = false,
                 defaultEnforcementStepsRefs = false,
                 drawRecordsRefs = false,
+                monthlyStatementsRefs = false,
                 payoutCollectionVerificationsRefs = false,
                 payoutApprovalsRefs = false,
                 payoutRecordsRefs = false,
@@ -12983,6 +13448,7 @@ class $$ShomitisTableTableManager
                     if (collectionResolutionsRefs) db.collectionResolutions,
                     if (defaultEnforcementStepsRefs) db.defaultEnforcementSteps,
                     if (drawRecordsRefs) db.drawRecords,
+                    if (monthlyStatementsRefs) db.monthlyStatements,
                     if (payoutCollectionVerificationsRefs)
                       db.payoutCollectionVerifications,
                     if (payoutApprovalsRefs) db.payoutApprovals,
@@ -13222,6 +13688,27 @@ class $$ShomitisTableTableManager
                               ),
                           typedResults: items,
                         ),
+                      if (monthlyStatementsRefs)
+                        await $_getPrefetchedData<
+                          ShomitiRow,
+                          $ShomitisTable,
+                          MonthlyStatementRow
+                        >(
+                          currentTable: table,
+                          referencedTable: $$ShomitisTableReferences
+                              ._monthlyStatementsRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$ShomitisTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).monthlyStatementsRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.shomitiId == item.id,
+                              ),
+                          typedResults: items,
+                        ),
                       if (payoutCollectionVerificationsRefs)
                         await $_getPrefetchedData<
                           ShomitiRow,
@@ -13317,6 +13804,7 @@ typedef $$ShomitisTableProcessedTableManager =
         bool collectionResolutionsRefs,
         bool defaultEnforcementStepsRefs,
         bool drawRecordsRefs,
+        bool monthlyStatementsRefs,
         bool payoutCollectionVerificationsRefs,
         bool payoutApprovalsRefs,
         bool payoutRecordsRefs,
@@ -15690,6 +16178,33 @@ final class $$RuleSetVersionsTableReferences
     );
   }
 
+  static MultiTypedResultKey<$MonthlyStatementsTable, List<MonthlyStatementRow>>
+  _monthlyStatementsRefsTable(_$AppDatabase db) =>
+      MultiTypedResultKey.fromTable(
+        db.monthlyStatements,
+        aliasName: $_aliasNameGenerator(
+          db.ruleSetVersions.id,
+          db.monthlyStatements.ruleSetVersionId,
+        ),
+      );
+
+  $$MonthlyStatementsTableProcessedTableManager get monthlyStatementsRefs {
+    final manager =
+        $$MonthlyStatementsTableTableManager(
+          $_db,
+          $_db.monthlyStatements,
+        ).filter(
+          (f) => f.ruleSetVersionId.id.sqlEquals($_itemColumn<String>('id')!),
+        );
+
+    final cache = $_typedResult.readTableOrNull(
+      _monthlyStatementsRefsTable($_db),
+    );
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+
   static MultiTypedResultKey<
     $PayoutCollectionVerificationsTable,
     List<PayoutCollectionVerificationRow>
@@ -15907,6 +16422,31 @@ class $$RuleSetVersionsTableFilterComposer
           }) => $$DrawWitnessApprovalsTableFilterComposer(
             $db: $db,
             $table: $db.drawWitnessApprovals,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<bool> monthlyStatementsRefs(
+    Expression<bool> Function($$MonthlyStatementsTableFilterComposer f) f,
+  ) {
+    final $$MonthlyStatementsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.monthlyStatements,
+      getReferencedColumn: (t) => t.ruleSetVersionId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$MonthlyStatementsTableFilterComposer(
+            $db: $db,
+            $table: $db.monthlyStatements,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -16167,6 +16707,32 @@ class $$RuleSetVersionsTableAnnotationComposer
     return f(composer);
   }
 
+  Expression<T> monthlyStatementsRefs<T extends Object>(
+    Expression<T> Function($$MonthlyStatementsTableAnnotationComposer a) f,
+  ) {
+    final $$MonthlyStatementsTableAnnotationComposer composer =
+        $composerBuilder(
+          composer: this,
+          getCurrentColumn: (t) => t.id,
+          referencedTable: $db.monthlyStatements,
+          getReferencedColumn: (t) => t.ruleSetVersionId,
+          builder:
+              (
+                joinBuilder, {
+                $addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer,
+              }) => $$MonthlyStatementsTableAnnotationComposer(
+                $db: $db,
+                $table: $db.monthlyStatements,
+                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                joinBuilder: joinBuilder,
+                $removeJoinBuilderFromRootComposer:
+                    $removeJoinBuilderFromRootComposer,
+              ),
+        );
+    return f(composer);
+  }
+
   Expression<T> payoutCollectionVerificationsRefs<T extends Object>(
     Expression<T> Function(
       $$PayoutCollectionVerificationsTableAnnotationComposer a,
@@ -16266,6 +16832,7 @@ class $$RuleSetVersionsTableTableManager
             bool defaultEnforcementStepsRefs,
             bool drawRecordsRefs,
             bool drawWitnessApprovalsRefs,
+            bool monthlyStatementsRefs,
             bool payoutCollectionVerificationsRefs,
             bool payoutApprovalsRefs,
             bool payoutRecordsRefs,
@@ -16323,6 +16890,7 @@ class $$RuleSetVersionsTableTableManager
                 defaultEnforcementStepsRefs = false,
                 drawRecordsRefs = false,
                 drawWitnessApprovalsRefs = false,
+                monthlyStatementsRefs = false,
                 payoutCollectionVerificationsRefs = false,
                 payoutApprovalsRefs = false,
                 payoutRecordsRefs = false,
@@ -16335,6 +16903,7 @@ class $$RuleSetVersionsTableTableManager
                     if (defaultEnforcementStepsRefs) db.defaultEnforcementSteps,
                     if (drawRecordsRefs) db.drawRecords,
                     if (drawWitnessApprovalsRefs) db.drawWitnessApprovals,
+                    if (monthlyStatementsRefs) db.monthlyStatements,
                     if (payoutCollectionVerificationsRefs)
                       db.payoutCollectionVerifications,
                     if (payoutApprovalsRefs) db.payoutApprovals,
@@ -16448,6 +17017,27 @@ class $$RuleSetVersionsTableTableManager
                               ),
                           typedResults: items,
                         ),
+                      if (monthlyStatementsRefs)
+                        await $_getPrefetchedData<
+                          RuleSetVersionRow,
+                          $RuleSetVersionsTable,
+                          MonthlyStatementRow
+                        >(
+                          currentTable: table,
+                          referencedTable: $$RuleSetVersionsTableReferences
+                              ._monthlyStatementsRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$RuleSetVersionsTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).monthlyStatementsRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.ruleSetVersionId == item.id,
+                              ),
+                          typedResults: items,
+                        ),
                       if (payoutCollectionVerificationsRefs)
                         await $_getPrefetchedData<
                           RuleSetVersionRow,
@@ -16537,6 +17127,7 @@ typedef $$RuleSetVersionsTableProcessedTableManager =
         bool defaultEnforcementStepsRefs,
         bool drawRecordsRefs,
         bool drawWitnessApprovalsRefs,
+        bool monthlyStatementsRefs,
         bool payoutCollectionVerificationsRefs,
         bool payoutApprovalsRefs,
         bool payoutRecordsRefs,
@@ -21875,6 +22466,437 @@ typedef $$DrawWitnessApprovalsTableProcessedTableManager =
       DrawWitnessApprovalRow,
       PrefetchHooks Function({bool drawId, bool ruleSetVersionId})
     >;
+typedef $$MonthlyStatementsTableCreateCompanionBuilder =
+    MonthlyStatementsCompanion Function({
+      required String shomitiId,
+      required String monthKey,
+      required String ruleSetVersionId,
+      required String json,
+      required DateTime generatedAt,
+      Value<int> rowid,
+    });
+typedef $$MonthlyStatementsTableUpdateCompanionBuilder =
+    MonthlyStatementsCompanion Function({
+      Value<String> shomitiId,
+      Value<String> monthKey,
+      Value<String> ruleSetVersionId,
+      Value<String> json,
+      Value<DateTime> generatedAt,
+      Value<int> rowid,
+    });
+
+final class $$MonthlyStatementsTableReferences
+    extends
+        BaseReferences<
+          _$AppDatabase,
+          $MonthlyStatementsTable,
+          MonthlyStatementRow
+        > {
+  $$MonthlyStatementsTableReferences(
+    super.$_db,
+    super.$_table,
+    super.$_typedResult,
+  );
+
+  static $ShomitisTable _shomitiIdTable(_$AppDatabase db) =>
+      db.shomitis.createAlias(
+        $_aliasNameGenerator(db.monthlyStatements.shomitiId, db.shomitis.id),
+      );
+
+  $$ShomitisTableProcessedTableManager get shomitiId {
+    final $_column = $_itemColumn<String>('shomiti_id')!;
+
+    final manager = $$ShomitisTableTableManager(
+      $_db,
+      $_db.shomitis,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_shomitiIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+
+  static $RuleSetVersionsTable _ruleSetVersionIdTable(_$AppDatabase db) =>
+      db.ruleSetVersions.createAlias(
+        $_aliasNameGenerator(
+          db.monthlyStatements.ruleSetVersionId,
+          db.ruleSetVersions.id,
+        ),
+      );
+
+  $$RuleSetVersionsTableProcessedTableManager get ruleSetVersionId {
+    final $_column = $_itemColumn<String>('rule_set_version_id')!;
+
+    final manager = $$RuleSetVersionsTableTableManager(
+      $_db,
+      $_db.ruleSetVersions,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_ruleSetVersionIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+}
+
+class $$MonthlyStatementsTableFilterComposer
+    extends Composer<_$AppDatabase, $MonthlyStatementsTable> {
+  $$MonthlyStatementsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get monthKey => $composableBuilder(
+    column: $table.monthKey,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get json => $composableBuilder(
+    column: $table.json,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get generatedAt => $composableBuilder(
+    column: $table.generatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  $$ShomitisTableFilterComposer get shomitiId {
+    final $$ShomitisTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.shomitiId,
+      referencedTable: $db.shomitis,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ShomitisTableFilterComposer(
+            $db: $db,
+            $table: $db.shomitis,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$RuleSetVersionsTableFilterComposer get ruleSetVersionId {
+    final $$RuleSetVersionsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.ruleSetVersionId,
+      referencedTable: $db.ruleSetVersions,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$RuleSetVersionsTableFilterComposer(
+            $db: $db,
+            $table: $db.ruleSetVersions,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$MonthlyStatementsTableOrderingComposer
+    extends Composer<_$AppDatabase, $MonthlyStatementsTable> {
+  $$MonthlyStatementsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get monthKey => $composableBuilder(
+    column: $table.monthKey,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get json => $composableBuilder(
+    column: $table.json,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get generatedAt => $composableBuilder(
+    column: $table.generatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  $$ShomitisTableOrderingComposer get shomitiId {
+    final $$ShomitisTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.shomitiId,
+      referencedTable: $db.shomitis,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ShomitisTableOrderingComposer(
+            $db: $db,
+            $table: $db.shomitis,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$RuleSetVersionsTableOrderingComposer get ruleSetVersionId {
+    final $$RuleSetVersionsTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.ruleSetVersionId,
+      referencedTable: $db.ruleSetVersions,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$RuleSetVersionsTableOrderingComposer(
+            $db: $db,
+            $table: $db.ruleSetVersions,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$MonthlyStatementsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $MonthlyStatementsTable> {
+  $$MonthlyStatementsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get monthKey =>
+      $composableBuilder(column: $table.monthKey, builder: (column) => column);
+
+  GeneratedColumn<String> get json =>
+      $composableBuilder(column: $table.json, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get generatedAt => $composableBuilder(
+    column: $table.generatedAt,
+    builder: (column) => column,
+  );
+
+  $$ShomitisTableAnnotationComposer get shomitiId {
+    final $$ShomitisTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.shomitiId,
+      referencedTable: $db.shomitis,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ShomitisTableAnnotationComposer(
+            $db: $db,
+            $table: $db.shomitis,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$RuleSetVersionsTableAnnotationComposer get ruleSetVersionId {
+    final $$RuleSetVersionsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.ruleSetVersionId,
+      referencedTable: $db.ruleSetVersions,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$RuleSetVersionsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.ruleSetVersions,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$MonthlyStatementsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $MonthlyStatementsTable,
+          MonthlyStatementRow,
+          $$MonthlyStatementsTableFilterComposer,
+          $$MonthlyStatementsTableOrderingComposer,
+          $$MonthlyStatementsTableAnnotationComposer,
+          $$MonthlyStatementsTableCreateCompanionBuilder,
+          $$MonthlyStatementsTableUpdateCompanionBuilder,
+          (MonthlyStatementRow, $$MonthlyStatementsTableReferences),
+          MonthlyStatementRow,
+          PrefetchHooks Function({bool shomitiId, bool ruleSetVersionId})
+        > {
+  $$MonthlyStatementsTableTableManager(
+    _$AppDatabase db,
+    $MonthlyStatementsTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$MonthlyStatementsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$MonthlyStatementsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$MonthlyStatementsTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<String> shomitiId = const Value.absent(),
+                Value<String> monthKey = const Value.absent(),
+                Value<String> ruleSetVersionId = const Value.absent(),
+                Value<String> json = const Value.absent(),
+                Value<DateTime> generatedAt = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => MonthlyStatementsCompanion(
+                shomitiId: shomitiId,
+                monthKey: monthKey,
+                ruleSetVersionId: ruleSetVersionId,
+                json: json,
+                generatedAt: generatedAt,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String shomitiId,
+                required String monthKey,
+                required String ruleSetVersionId,
+                required String json,
+                required DateTime generatedAt,
+                Value<int> rowid = const Value.absent(),
+              }) => MonthlyStatementsCompanion.insert(
+                shomitiId: shomitiId,
+                monthKey: monthKey,
+                ruleSetVersionId: ruleSetVersionId,
+                json: json,
+                generatedAt: generatedAt,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable(table),
+                  $$MonthlyStatementsTableReferences(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback:
+              ({shomitiId = false, ruleSetVersionId = false}) {
+                return PrefetchHooks(
+                  db: db,
+                  explicitlyWatchedTables: [],
+                  addJoins:
+                      <
+                        T extends TableManagerState<
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic
+                        >
+                      >(state) {
+                        if (shomitiId) {
+                          state =
+                              state.withJoin(
+                                    currentTable: table,
+                                    currentColumn: table.shomitiId,
+                                    referencedTable:
+                                        $$MonthlyStatementsTableReferences
+                                            ._shomitiIdTable(db),
+                                    referencedColumn:
+                                        $$MonthlyStatementsTableReferences
+                                            ._shomitiIdTable(db)
+                                            .id,
+                                  )
+                                  as T;
+                        }
+                        if (ruleSetVersionId) {
+                          state =
+                              state.withJoin(
+                                    currentTable: table,
+                                    currentColumn: table.ruleSetVersionId,
+                                    referencedTable:
+                                        $$MonthlyStatementsTableReferences
+                                            ._ruleSetVersionIdTable(db),
+                                    referencedColumn:
+                                        $$MonthlyStatementsTableReferences
+                                            ._ruleSetVersionIdTable(db)
+                                            .id,
+                                  )
+                                  as T;
+                        }
+
+                        return state;
+                      },
+                  getPrefetchedDataCallback: (items) async {
+                    return [];
+                  },
+                );
+              },
+        ),
+      );
+}
+
+typedef $$MonthlyStatementsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $MonthlyStatementsTable,
+      MonthlyStatementRow,
+      $$MonthlyStatementsTableFilterComposer,
+      $$MonthlyStatementsTableOrderingComposer,
+      $$MonthlyStatementsTableAnnotationComposer,
+      $$MonthlyStatementsTableCreateCompanionBuilder,
+      $$MonthlyStatementsTableUpdateCompanionBuilder,
+      (MonthlyStatementRow, $$MonthlyStatementsTableReferences),
+      MonthlyStatementRow,
+      PrefetchHooks Function({bool shomitiId, bool ruleSetVersionId})
+    >;
 typedef $$PayoutCollectionVerificationsTableCreateCompanionBuilder =
     PayoutCollectionVerificationsCompanion Function({
       required String shomitiId,
@@ -23502,6 +24524,8 @@ class $AppDatabaseManager {
       $$DrawRecordsTableTableManager(_db, _db.drawRecords);
   $$DrawWitnessApprovalsTableTableManager get drawWitnessApprovals =>
       $$DrawWitnessApprovalsTableTableManager(_db, _db.drawWitnessApprovals);
+  $$MonthlyStatementsTableTableManager get monthlyStatements =>
+      $$MonthlyStatementsTableTableManager(_db, _db.monthlyStatements);
   $$PayoutCollectionVerificationsTableTableManager
   get payoutCollectionVerifications =>
       $$PayoutCollectionVerificationsTableTableManager(
