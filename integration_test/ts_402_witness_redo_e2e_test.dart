@@ -36,10 +36,11 @@ void main() {
 
     await $(#setup_cycle_length_field).enterText('6');
     await $(#setup_meeting_schedule_field).enterText('Every month');
-    await $(#setup_payment_deadline_field).enterText('5th day of the month');
+    await $(#setup_payment_deadline_field).enterText('28th day of the month');
     await $(#setup_next).tap();
     await $.pumpAndSettle();
 
+    await $(#setup_grace_period_days_field).enterText('3');
     await $(#setup_default_consecutive_threshold_field).enterText('2');
     await $(#setup_default_total_threshold_field).enterText('3');
     await $(#setup_next).tap(); // policies -> fees
