@@ -22,6 +22,7 @@ import 'ts_403_payout_e2e_test.dart' as ts_403_payout_e2e_test;
 import 'ts_501_statements_e2e_test.dart' as ts_501_statements_e2e_test;
 import 'ts_502_statement_signoff_e2e_test.dart'
     as ts_502_statement_signoff_e2e_test;
+import 'ts_503_rule_changes_e2e_test.dart' as ts_503_rule_changes_e2e_test;
 
 void main() {
   ts_101_setup_wizard_e2e_test.main();
@@ -45,4 +46,5 @@ void main() {
   ts_403_payout_e2e_test.main();
   ts_501_statements_e2e_test.main();
   ts_502_statement_signoff_e2e_test.main();
+  ts_503_rule_changes_e2e_test.main();
 }
