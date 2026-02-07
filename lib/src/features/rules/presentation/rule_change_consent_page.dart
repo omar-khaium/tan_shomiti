@@ -318,7 +318,6 @@ class RuleChangeConsentPage extends ConsumerWidget {
       ),
     );
 
-    proofReferenceController.dispose();
     return recorded ?? false;
   }
 }

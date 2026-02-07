@@ -211,8 +211,7 @@ class _ProposeRuleChangePageState extends ConsumerState<ProposeRuleChangePage> {
                                   content: Text('Rule change proposed.'),
                                 ),
                               );
-                              context.go(ruleChangesLocation);
-                              context.push(
+                              context.go(
                                 ruleChangesConsentLocation,
                                 extra: amendmentId,
                               );
