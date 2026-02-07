@@ -24,6 +24,9 @@ import '../../features/rules/presentation/rule_change_consent_page.dart';
 import '../../features/disputes/presentation/disputes_page.dart';
 import '../../features/disputes/presentation/create_dispute_page.dart';
 import '../../features/disputes/presentation/dispute_detail_page.dart';
+import '../../features/exports/presentation/exports_page.dart';
+import '../../features/exports/presentation/export_statement_page.dart';
+import '../../features/exports/presentation/export_ledger_page.dart';
 import '../../features/shares/presentation/shares_page.dart';
 import '../../features/risk_controls/presentation/risk_controls_page.dart';
 import '../../features/membership_changes/presentation/membership_changes_page.dart';
@@ -150,6 +153,16 @@ const defaultsTitle = 'Defaults';
 const disputesLocation = '/disputes';
 const disputesRouteName = 'disputes';
 const disputesTitle = 'Disputes';
+
+const exportsLocation = '/exports';
+const exportsRouteName = 'exports';
+const exportsTitle = 'Exports';
+
+const exportStatementLocation = '/exports/statements';
+const exportStatementRouteName = 'exportStatements';
+
+const exportLedgerLocation = '/exports/ledger';
+const exportLedgerRouteName = 'exportLedger';
 
 const disputeCreateLocation = '/disputes/new';
 const disputeCreateRouteName = 'disputeCreate';
@@ -419,6 +432,23 @@ final appRouterProvider = Provider<GoRouter>((ref) {
                   final id = state.pathParameters['disputeId'] ?? '';
                   return DisputeDetailPage(disputeId: id);
                 },
+              ),
+            ],
+          ),
+          GoRoute(
+            path: exportsLocation,
+            name: exportsRouteName,
+            builder: (context, state) => const ExportsPage(),
+            routes: [
+              GoRoute(
+                path: 'statements',
+                name: exportStatementRouteName,
+                builder: (context, state) => const ExportStatementPage(),
+              ),
+              GoRoute(
+                path: 'ledger',
+                name: exportLedgerRouteName,
+                builder: (context, state) => const ExportLedgerPage(),
               ),
             ],
           ),
