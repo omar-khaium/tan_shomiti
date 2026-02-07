@@ -51,9 +51,7 @@ class _ExportStatementPageState extends ConsumerState<ExportStatementPage> {
 
     return Scaffold(
       appBar: AppBar(title: const Text('Export statement')),
-      body: Padding(
-        padding: const EdgeInsets.all(AppSpacing.s16),
-        child: shomitiAsync.when(
+      body: shomitiAsync.when(
           loading: () => const Center(child: AppLoadingState()),
           error: (error, stack) => Center(
             child: AppErrorState(
@@ -79,8 +77,8 @@ class _ExportStatementPageState extends ConsumerState<ExportStatementPage> {
 
             final monthLabel = formatBillingMonthLabel(_month);
 
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
+            return ListView(
+              padding: const EdgeInsets.all(AppSpacing.s16),
               children: [
                 Row(
                   children: [
@@ -271,13 +269,11 @@ class _ExportStatementPageState extends ConsumerState<ExportStatementPage> {
                     },
                   ),
                 ),
-                const Spacer(),
                 const SizedBox(height: AppSpacing.s16),
               ],
             );
           },
         ),
-      ),
     );
   }
 
