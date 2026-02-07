@@ -5075,6 +5075,1148 @@ class RuleAmendmentsCompanion extends UpdateCompanion<RuleAmendmentRow> {
   }
 }
 
+class $DisputesTable extends Disputes
+    with TableInfo<$DisputesTable, DisputeRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $DisputesTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _shomitiIdMeta = const VerificationMeta(
+    'shomitiId',
+  );
+  @override
+  late final GeneratedColumn<String> shomitiId = GeneratedColumn<String>(
+    'shomiti_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES shomitis (id)',
+    ),
+  );
+  static const VerificationMeta _titleMeta = const VerificationMeta('title');
+  @override
+  late final GeneratedColumn<String> title = GeneratedColumn<String>(
+    'title',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _descriptionMeta = const VerificationMeta(
+    'description',
+  );
+  @override
+  late final GeneratedColumn<String> description = GeneratedColumn<String>(
+    'description',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _relatedMonthKeyMeta = const VerificationMeta(
+    'relatedMonthKey',
+  );
+  @override
+  late final GeneratedColumn<String> relatedMonthKey = GeneratedColumn<String>(
+    'related_month_key',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _involvedMembersTextMeta =
+      const VerificationMeta('involvedMembersText');
+  @override
+  late final GeneratedColumn<String> involvedMembersText =
+      GeneratedColumn<String>(
+        'involved_members_text',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _evidenceReferencesJsonMeta =
+      const VerificationMeta('evidenceReferencesJson');
+  @override
+  late final GeneratedColumn<String> evidenceReferencesJson =
+      GeneratedColumn<String>(
+        'evidence_references_json',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+      );
+  static const VerificationMeta _statusMeta = const VerificationMeta('status');
+  @override
+  late final GeneratedColumn<String> status = GeneratedColumn<String>(
+    'status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _resolvedAtMeta = const VerificationMeta(
+    'resolvedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> resolvedAt = GeneratedColumn<DateTime>(
+    'resolved_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    shomitiId,
+    title,
+    description,
+    relatedMonthKey,
+    involvedMembersText,
+    evidenceReferencesJson,
+    status,
+    createdAt,
+    resolvedAt,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'disputes';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<DisputeRow> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('shomiti_id')) {
+      context.handle(
+        _shomitiIdMeta,
+        shomitiId.isAcceptableOrUnknown(data['shomiti_id']!, _shomitiIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_shomitiIdMeta);
+    }
+    if (data.containsKey('title')) {
+      context.handle(
+        _titleMeta,
+        title.isAcceptableOrUnknown(data['title']!, _titleMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_titleMeta);
+    }
+    if (data.containsKey('description')) {
+      context.handle(
+        _descriptionMeta,
+        description.isAcceptableOrUnknown(
+          data['description']!,
+          _descriptionMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_descriptionMeta);
+    }
+    if (data.containsKey('related_month_key')) {
+      context.handle(
+        _relatedMonthKeyMeta,
+        relatedMonthKey.isAcceptableOrUnknown(
+          data['related_month_key']!,
+          _relatedMonthKeyMeta,
+        ),
+      );
+    }
+    if (data.containsKey('involved_members_text')) {
+      context.handle(
+        _involvedMembersTextMeta,
+        involvedMembersText.isAcceptableOrUnknown(
+          data['involved_members_text']!,
+          _involvedMembersTextMeta,
+        ),
+      );
+    }
+    if (data.containsKey('evidence_references_json')) {
+      context.handle(
+        _evidenceReferencesJsonMeta,
+        evidenceReferencesJson.isAcceptableOrUnknown(
+          data['evidence_references_json']!,
+          _evidenceReferencesJsonMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_evidenceReferencesJsonMeta);
+    }
+    if (data.containsKey('status')) {
+      context.handle(
+        _statusMeta,
+        status.isAcceptableOrUnknown(data['status']!, _statusMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_statusMeta);
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    if (data.containsKey('resolved_at')) {
+      context.handle(
+        _resolvedAtMeta,
+        resolvedAt.isAcceptableOrUnknown(data['resolved_at']!, _resolvedAtMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  DisputeRow map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return DisputeRow(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      shomitiId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}shomiti_id'],
+      )!,
+      title: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}title'],
+      )!,
+      description: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}description'],
+      )!,
+      relatedMonthKey: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}related_month_key'],
+      ),
+      involvedMembersText: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}involved_members_text'],
+      ),
+      evidenceReferencesJson: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}evidence_references_json'],
+      )!,
+      status: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}status'],
+      )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+      resolvedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}resolved_at'],
+      ),
+    );
+  }
+
+  @override
+  $DisputesTable createAlias(String alias) {
+    return $DisputesTable(attachedDatabase, alias);
+  }
+}
+
+class DisputeRow extends DataClass implements Insertable<DisputeRow> {
+  final String id;
+  final String shomitiId;
+  final String title;
+  final String description;
+
+  /// Optional free-form month key, e.g. "2026-02" (MVP).
+  final String? relatedMonthKey;
+
+  /// Optional free-form notes about involved members (avoid sensitive data).
+  final String? involvedMembersText;
+
+  /// JSON array of string references (links/ids). MVP stores references only.
+  final String evidenceReferencesJson;
+
+  /// open | resolved
+  final String status;
+  final DateTime createdAt;
+  final DateTime? resolvedAt;
+  const DisputeRow({
+    required this.id,
+    required this.shomitiId,
+    required this.title,
+    required this.description,
+    this.relatedMonthKey,
+    this.involvedMembersText,
+    required this.evidenceReferencesJson,
+    required this.status,
+    required this.createdAt,
+    this.resolvedAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['shomiti_id'] = Variable<String>(shomitiId);
+    map['title'] = Variable<String>(title);
+    map['description'] = Variable<String>(description);
+    if (!nullToAbsent || relatedMonthKey != null) {
+      map['related_month_key'] = Variable<String>(relatedMonthKey);
+    }
+    if (!nullToAbsent || involvedMembersText != null) {
+      map['involved_members_text'] = Variable<String>(involvedMembersText);
+    }
+    map['evidence_references_json'] = Variable<String>(evidenceReferencesJson);
+    map['status'] = Variable<String>(status);
+    map['created_at'] = Variable<DateTime>(createdAt);
+    if (!nullToAbsent || resolvedAt != null) {
+      map['resolved_at'] = Variable<DateTime>(resolvedAt);
+    }
+    return map;
+  }
+
+  DisputesCompanion toCompanion(bool nullToAbsent) {
+    return DisputesCompanion(
+      id: Value(id),
+      shomitiId: Value(shomitiId),
+      title: Value(title),
+      description: Value(description),
+      relatedMonthKey: relatedMonthKey == null && nullToAbsent
+          ? const Value.absent()
+          : Value(relatedMonthKey),
+      involvedMembersText: involvedMembersText == null && nullToAbsent
+          ? const Value.absent()
+          : Value(involvedMembersText),
+      evidenceReferencesJson: Value(evidenceReferencesJson),
+      status: Value(status),
+      createdAt: Value(createdAt),
+      resolvedAt: resolvedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(resolvedAt),
+    );
+  }
+
+  factory DisputeRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return DisputeRow(
+      id: serializer.fromJson<String>(json['id']),
+      shomitiId: serializer.fromJson<String>(json['shomitiId']),
+      title: serializer.fromJson<String>(json['title']),
+      description: serializer.fromJson<String>(json['description']),
+      relatedMonthKey: serializer.fromJson<String?>(json['relatedMonthKey']),
+      involvedMembersText: serializer.fromJson<String?>(
+        json['involvedMembersText'],
+      ),
+      evidenceReferencesJson: serializer.fromJson<String>(
+        json['evidenceReferencesJson'],
+      ),
+      status: serializer.fromJson<String>(json['status']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      resolvedAt: serializer.fromJson<DateTime?>(json['resolvedAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'shomitiId': serializer.toJson<String>(shomitiId),
+      'title': serializer.toJson<String>(title),
+      'description': serializer.toJson<String>(description),
+      'relatedMonthKey': serializer.toJson<String?>(relatedMonthKey),
+      'involvedMembersText': serializer.toJson<String?>(involvedMembersText),
+      'evidenceReferencesJson': serializer.toJson<String>(
+        evidenceReferencesJson,
+      ),
+      'status': serializer.toJson<String>(status),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'resolvedAt': serializer.toJson<DateTime?>(resolvedAt),
+    };
+  }
+
+  DisputeRow copyWith({
+    String? id,
+    String? shomitiId,
+    String? title,
+    String? description,
+    Value<String?> relatedMonthKey = const Value.absent(),
+    Value<String?> involvedMembersText = const Value.absent(),
+    String? evidenceReferencesJson,
+    String? status,
+    DateTime? createdAt,
+    Value<DateTime?> resolvedAt = const Value.absent(),
+  }) => DisputeRow(
+    id: id ?? this.id,
+    shomitiId: shomitiId ?? this.shomitiId,
+    title: title ?? this.title,
+    description: description ?? this.description,
+    relatedMonthKey: relatedMonthKey.present
+        ? relatedMonthKey.value
+        : this.relatedMonthKey,
+    involvedMembersText: involvedMembersText.present
+        ? involvedMembersText.value
+        : this.involvedMembersText,
+    evidenceReferencesJson:
+        evidenceReferencesJson ?? this.evidenceReferencesJson,
+    status: status ?? this.status,
+    createdAt: createdAt ?? this.createdAt,
+    resolvedAt: resolvedAt.present ? resolvedAt.value : this.resolvedAt,
+  );
+  DisputeRow copyWithCompanion(DisputesCompanion data) {
+    return DisputeRow(
+      id: data.id.present ? data.id.value : this.id,
+      shomitiId: data.shomitiId.present ? data.shomitiId.value : this.shomitiId,
+      title: data.title.present ? data.title.value : this.title,
+      description: data.description.present
+          ? data.description.value
+          : this.description,
+      relatedMonthKey: data.relatedMonthKey.present
+          ? data.relatedMonthKey.value
+          : this.relatedMonthKey,
+      involvedMembersText: data.involvedMembersText.present
+          ? data.involvedMembersText.value
+          : this.involvedMembersText,
+      evidenceReferencesJson: data.evidenceReferencesJson.present
+          ? data.evidenceReferencesJson.value
+          : this.evidenceReferencesJson,
+      status: data.status.present ? data.status.value : this.status,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      resolvedAt: data.resolvedAt.present
+          ? data.resolvedAt.value
+          : this.resolvedAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('DisputeRow(')
+          ..write('id: $id, ')
+          ..write('shomitiId: $shomitiId, ')
+          ..write('title: $title, ')
+          ..write('description: $description, ')
+          ..write('relatedMonthKey: $relatedMonthKey, ')
+          ..write('involvedMembersText: $involvedMembersText, ')
+          ..write('evidenceReferencesJson: $evidenceReferencesJson, ')
+          ..write('status: $status, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('resolvedAt: $resolvedAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    shomitiId,
+    title,
+    description,
+    relatedMonthKey,
+    involvedMembersText,
+    evidenceReferencesJson,
+    status,
+    createdAt,
+    resolvedAt,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is DisputeRow &&
+          other.id == this.id &&
+          other.shomitiId == this.shomitiId &&
+          other.title == this.title &&
+          other.description == this.description &&
+          other.relatedMonthKey == this.relatedMonthKey &&
+          other.involvedMembersText == this.involvedMembersText &&
+          other.evidenceReferencesJson == this.evidenceReferencesJson &&
+          other.status == this.status &&
+          other.createdAt == this.createdAt &&
+          other.resolvedAt == this.resolvedAt);
+}
+
+class DisputesCompanion extends UpdateCompanion<DisputeRow> {
+  final Value<String> id;
+  final Value<String> shomitiId;
+  final Value<String> title;
+  final Value<String> description;
+  final Value<String?> relatedMonthKey;
+  final Value<String?> involvedMembersText;
+  final Value<String> evidenceReferencesJson;
+  final Value<String> status;
+  final Value<DateTime> createdAt;
+  final Value<DateTime?> resolvedAt;
+  final Value<int> rowid;
+  const DisputesCompanion({
+    this.id = const Value.absent(),
+    this.shomitiId = const Value.absent(),
+    this.title = const Value.absent(),
+    this.description = const Value.absent(),
+    this.relatedMonthKey = const Value.absent(),
+    this.involvedMembersText = const Value.absent(),
+    this.evidenceReferencesJson = const Value.absent(),
+    this.status = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.resolvedAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  DisputesCompanion.insert({
+    required String id,
+    required String shomitiId,
+    required String title,
+    required String description,
+    this.relatedMonthKey = const Value.absent(),
+    this.involvedMembersText = const Value.absent(),
+    required String evidenceReferencesJson,
+    required String status,
+    required DateTime createdAt,
+    this.resolvedAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       shomitiId = Value(shomitiId),
+       title = Value(title),
+       description = Value(description),
+       evidenceReferencesJson = Value(evidenceReferencesJson),
+       status = Value(status),
+       createdAt = Value(createdAt);
+  static Insertable<DisputeRow> custom({
+    Expression<String>? id,
+    Expression<String>? shomitiId,
+    Expression<String>? title,
+    Expression<String>? description,
+    Expression<String>? relatedMonthKey,
+    Expression<String>? involvedMembersText,
+    Expression<String>? evidenceReferencesJson,
+    Expression<String>? status,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? resolvedAt,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (shomitiId != null) 'shomiti_id': shomitiId,
+      if (title != null) 'title': title,
+      if (description != null) 'description': description,
+      if (relatedMonthKey != null) 'related_month_key': relatedMonthKey,
+      if (involvedMembersText != null)
+        'involved_members_text': involvedMembersText,
+      if (evidenceReferencesJson != null)
+        'evidence_references_json': evidenceReferencesJson,
+      if (status != null) 'status': status,
+      if (createdAt != null) 'created_at': createdAt,
+      if (resolvedAt != null) 'resolved_at': resolvedAt,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  DisputesCompanion copyWith({
+    Value<String>? id,
+    Value<String>? shomitiId,
+    Value<String>? title,
+    Value<String>? description,
+    Value<String?>? relatedMonthKey,
+    Value<String?>? involvedMembersText,
+    Value<String>? evidenceReferencesJson,
+    Value<String>? status,
+    Value<DateTime>? createdAt,
+    Value<DateTime?>? resolvedAt,
+    Value<int>? rowid,
+  }) {
+    return DisputesCompanion(
+      id: id ?? this.id,
+      shomitiId: shomitiId ?? this.shomitiId,
+      title: title ?? this.title,
+      description: description ?? this.description,
+      relatedMonthKey: relatedMonthKey ?? this.relatedMonthKey,
+      involvedMembersText: involvedMembersText ?? this.involvedMembersText,
+      evidenceReferencesJson:
+          evidenceReferencesJson ?? this.evidenceReferencesJson,
+      status: status ?? this.status,
+      createdAt: createdAt ?? this.createdAt,
+      resolvedAt: resolvedAt ?? this.resolvedAt,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (shomitiId.present) {
+      map['shomiti_id'] = Variable<String>(shomitiId.value);
+    }
+    if (title.present) {
+      map['title'] = Variable<String>(title.value);
+    }
+    if (description.present) {
+      map['description'] = Variable<String>(description.value);
+    }
+    if (relatedMonthKey.present) {
+      map['related_month_key'] = Variable<String>(relatedMonthKey.value);
+    }
+    if (involvedMembersText.present) {
+      map['involved_members_text'] = Variable<String>(
+        involvedMembersText.value,
+      );
+    }
+    if (evidenceReferencesJson.present) {
+      map['evidence_references_json'] = Variable<String>(
+        evidenceReferencesJson.value,
+      );
+    }
+    if (status.present) {
+      map['status'] = Variable<String>(status.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (resolvedAt.present) {
+      map['resolved_at'] = Variable<DateTime>(resolvedAt.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('DisputesCompanion(')
+          ..write('id: $id, ')
+          ..write('shomitiId: $shomitiId, ')
+          ..write('title: $title, ')
+          ..write('description: $description, ')
+          ..write('relatedMonthKey: $relatedMonthKey, ')
+          ..write('involvedMembersText: $involvedMembersText, ')
+          ..write('evidenceReferencesJson: $evidenceReferencesJson, ')
+          ..write('status: $status, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('resolvedAt: $resolvedAt, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $DisputeStepCompletionsTable extends DisputeStepCompletions
+    with TableInfo<$DisputeStepCompletionsTable, DisputeStepCompletionRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $DisputeStepCompletionsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
+  static const VerificationMeta _shomitiIdMeta = const VerificationMeta(
+    'shomitiId',
+  );
+  @override
+  late final GeneratedColumn<String> shomitiId = GeneratedColumn<String>(
+    'shomiti_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES shomitis (id)',
+    ),
+  );
+  static const VerificationMeta _disputeIdMeta = const VerificationMeta(
+    'disputeId',
+  );
+  @override
+  late final GeneratedColumn<String> disputeId = GeneratedColumn<String>(
+    'dispute_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES disputes (id)',
+    ),
+  );
+  static const VerificationMeta _stepTypeMeta = const VerificationMeta(
+    'stepType',
+  );
+  @override
+  late final GeneratedColumn<String> stepType = GeneratedColumn<String>(
+    'step_type',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _noteMeta = const VerificationMeta('note');
+  @override
+  late final GeneratedColumn<String> note = GeneratedColumn<String>(
+    'note',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _proofReferenceMeta = const VerificationMeta(
+    'proofReference',
+  );
+  @override
+  late final GeneratedColumn<String> proofReference = GeneratedColumn<String>(
+    'proof_reference',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _completedAtMeta = const VerificationMeta(
+    'completedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> completedAt = GeneratedColumn<DateTime>(
+    'completed_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    shomitiId,
+    disputeId,
+    stepType,
+    note,
+    proofReference,
+    completedAt,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'dispute_step_completions';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<DisputeStepCompletionRow> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('shomiti_id')) {
+      context.handle(
+        _shomitiIdMeta,
+        shomitiId.isAcceptableOrUnknown(data['shomiti_id']!, _shomitiIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_shomitiIdMeta);
+    }
+    if (data.containsKey('dispute_id')) {
+      context.handle(
+        _disputeIdMeta,
+        disputeId.isAcceptableOrUnknown(data['dispute_id']!, _disputeIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_disputeIdMeta);
+    }
+    if (data.containsKey('step_type')) {
+      context.handle(
+        _stepTypeMeta,
+        stepType.isAcceptableOrUnknown(data['step_type']!, _stepTypeMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_stepTypeMeta);
+    }
+    if (data.containsKey('note')) {
+      context.handle(
+        _noteMeta,
+        note.isAcceptableOrUnknown(data['note']!, _noteMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_noteMeta);
+    }
+    if (data.containsKey('proof_reference')) {
+      context.handle(
+        _proofReferenceMeta,
+        proofReference.isAcceptableOrUnknown(
+          data['proof_reference']!,
+          _proofReferenceMeta,
+        ),
+      );
+    }
+    if (data.containsKey('completed_at')) {
+      context.handle(
+        _completedAtMeta,
+        completedAt.isAcceptableOrUnknown(
+          data['completed_at']!,
+          _completedAtMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_completedAtMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  List<Set<GeneratedColumn>> get uniqueKeys => [
+    {shomitiId, disputeId, stepType},
+  ];
+  @override
+  DisputeStepCompletionRow map(
+    Map<String, dynamic> data, {
+    String? tablePrefix,
+  }) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return DisputeStepCompletionRow(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      shomitiId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}shomiti_id'],
+      )!,
+      disputeId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}dispute_id'],
+      )!,
+      stepType: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}step_type'],
+      )!,
+      note: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}note'],
+      )!,
+      proofReference: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}proof_reference'],
+      ),
+      completedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}completed_at'],
+      )!,
+    );
+  }
+
+  @override
+  $DisputeStepCompletionsTable createAlias(String alias) {
+    return $DisputeStepCompletionsTable(attachedDatabase, alias);
+  }
+}
+
+class DisputeStepCompletionRow extends DataClass
+    implements Insertable<DisputeStepCompletionRow> {
+  final int id;
+  final String shomitiId;
+  final String disputeId;
+
+  /// private_discussion | meeting_discussion | mediation | final_outcome
+  final String stepType;
+  final String note;
+  final String? proofReference;
+  final DateTime completedAt;
+  const DisputeStepCompletionRow({
+    required this.id,
+    required this.shomitiId,
+    required this.disputeId,
+    required this.stepType,
+    required this.note,
+    this.proofReference,
+    required this.completedAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['shomiti_id'] = Variable<String>(shomitiId);
+    map['dispute_id'] = Variable<String>(disputeId);
+    map['step_type'] = Variable<String>(stepType);
+    map['note'] = Variable<String>(note);
+    if (!nullToAbsent || proofReference != null) {
+      map['proof_reference'] = Variable<String>(proofReference);
+    }
+    map['completed_at'] = Variable<DateTime>(completedAt);
+    return map;
+  }
+
+  DisputeStepCompletionsCompanion toCompanion(bool nullToAbsent) {
+    return DisputeStepCompletionsCompanion(
+      id: Value(id),
+      shomitiId: Value(shomitiId),
+      disputeId: Value(disputeId),
+      stepType: Value(stepType),
+      note: Value(note),
+      proofReference: proofReference == null && nullToAbsent
+          ? const Value.absent()
+          : Value(proofReference),
+      completedAt: Value(completedAt),
+    );
+  }
+
+  factory DisputeStepCompletionRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return DisputeStepCompletionRow(
+      id: serializer.fromJson<int>(json['id']),
+      shomitiId: serializer.fromJson<String>(json['shomitiId']),
+      disputeId: serializer.fromJson<String>(json['disputeId']),
+      stepType: serializer.fromJson<String>(json['stepType']),
+      note: serializer.fromJson<String>(json['note']),
+      proofReference: serializer.fromJson<String?>(json['proofReference']),
+      completedAt: serializer.fromJson<DateTime>(json['completedAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'shomitiId': serializer.toJson<String>(shomitiId),
+      'disputeId': serializer.toJson<String>(disputeId),
+      'stepType': serializer.toJson<String>(stepType),
+      'note': serializer.toJson<String>(note),
+      'proofReference': serializer.toJson<String?>(proofReference),
+      'completedAt': serializer.toJson<DateTime>(completedAt),
+    };
+  }
+
+  DisputeStepCompletionRow copyWith({
+    int? id,
+    String? shomitiId,
+    String? disputeId,
+    String? stepType,
+    String? note,
+    Value<String?> proofReference = const Value.absent(),
+    DateTime? completedAt,
+  }) => DisputeStepCompletionRow(
+    id: id ?? this.id,
+    shomitiId: shomitiId ?? this.shomitiId,
+    disputeId: disputeId ?? this.disputeId,
+    stepType: stepType ?? this.stepType,
+    note: note ?? this.note,
+    proofReference: proofReference.present
+        ? proofReference.value
+        : this.proofReference,
+    completedAt: completedAt ?? this.completedAt,
+  );
+  DisputeStepCompletionRow copyWithCompanion(
+    DisputeStepCompletionsCompanion data,
+  ) {
+    return DisputeStepCompletionRow(
+      id: data.id.present ? data.id.value : this.id,
+      shomitiId: data.shomitiId.present ? data.shomitiId.value : this.shomitiId,
+      disputeId: data.disputeId.present ? data.disputeId.value : this.disputeId,
+      stepType: data.stepType.present ? data.stepType.value : this.stepType,
+      note: data.note.present ? data.note.value : this.note,
+      proofReference: data.proofReference.present
+          ? data.proofReference.value
+          : this.proofReference,
+      completedAt: data.completedAt.present
+          ? data.completedAt.value
+          : this.completedAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('DisputeStepCompletionRow(')
+          ..write('id: $id, ')
+          ..write('shomitiId: $shomitiId, ')
+          ..write('disputeId: $disputeId, ')
+          ..write('stepType: $stepType, ')
+          ..write('note: $note, ')
+          ..write('proofReference: $proofReference, ')
+          ..write('completedAt: $completedAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    shomitiId,
+    disputeId,
+    stepType,
+    note,
+    proofReference,
+    completedAt,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is DisputeStepCompletionRow &&
+          other.id == this.id &&
+          other.shomitiId == this.shomitiId &&
+          other.disputeId == this.disputeId &&
+          other.stepType == this.stepType &&
+          other.note == this.note &&
+          other.proofReference == this.proofReference &&
+          other.completedAt == this.completedAt);
+}
+
+class DisputeStepCompletionsCompanion
+    extends UpdateCompanion<DisputeStepCompletionRow> {
+  final Value<int> id;
+  final Value<String> shomitiId;
+  final Value<String> disputeId;
+  final Value<String> stepType;
+  final Value<String> note;
+  final Value<String?> proofReference;
+  final Value<DateTime> completedAt;
+  const DisputeStepCompletionsCompanion({
+    this.id = const Value.absent(),
+    this.shomitiId = const Value.absent(),
+    this.disputeId = const Value.absent(),
+    this.stepType = const Value.absent(),
+    this.note = const Value.absent(),
+    this.proofReference = const Value.absent(),
+    this.completedAt = const Value.absent(),
+  });
+  DisputeStepCompletionsCompanion.insert({
+    this.id = const Value.absent(),
+    required String shomitiId,
+    required String disputeId,
+    required String stepType,
+    required String note,
+    this.proofReference = const Value.absent(),
+    required DateTime completedAt,
+  }) : shomitiId = Value(shomitiId),
+       disputeId = Value(disputeId),
+       stepType = Value(stepType),
+       note = Value(note),
+       completedAt = Value(completedAt);
+  static Insertable<DisputeStepCompletionRow> custom({
+    Expression<int>? id,
+    Expression<String>? shomitiId,
+    Expression<String>? disputeId,
+    Expression<String>? stepType,
+    Expression<String>? note,
+    Expression<String>? proofReference,
+    Expression<DateTime>? completedAt,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (shomitiId != null) 'shomiti_id': shomitiId,
+      if (disputeId != null) 'dispute_id': disputeId,
+      if (stepType != null) 'step_type': stepType,
+      if (note != null) 'note': note,
+      if (proofReference != null) 'proof_reference': proofReference,
+      if (completedAt != null) 'completed_at': completedAt,
+    });
+  }
+
+  DisputeStepCompletionsCompanion copyWith({
+    Value<int>? id,
+    Value<String>? shomitiId,
+    Value<String>? disputeId,
+    Value<String>? stepType,
+    Value<String>? note,
+    Value<String?>? proofReference,
+    Value<DateTime>? completedAt,
+  }) {
+    return DisputeStepCompletionsCompanion(
+      id: id ?? this.id,
+      shomitiId: shomitiId ?? this.shomitiId,
+      disputeId: disputeId ?? this.disputeId,
+      stepType: stepType ?? this.stepType,
+      note: note ?? this.note,
+      proofReference: proofReference ?? this.proofReference,
+      completedAt: completedAt ?? this.completedAt,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (shomitiId.present) {
+      map['shomiti_id'] = Variable<String>(shomitiId.value);
+    }
+    if (disputeId.present) {
+      map['dispute_id'] = Variable<String>(disputeId.value);
+    }
+    if (stepType.present) {
+      map['step_type'] = Variable<String>(stepType.value);
+    }
+    if (note.present) {
+      map['note'] = Variable<String>(note.value);
+    }
+    if (proofReference.present) {
+      map['proof_reference'] = Variable<String>(proofReference.value);
+    }
+    if (completedAt.present) {
+      map['completed_at'] = Variable<DateTime>(completedAt.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('DisputeStepCompletionsCompanion(')
+          ..write('id: $id, ')
+          ..write('shomitiId: $shomitiId, ')
+          ..write('disputeId: $disputeId, ')
+          ..write('stepType: $stepType, ')
+          ..write('note: $note, ')
+          ..write('proofReference: $proofReference, ')
+          ..write('completedAt: $completedAt')
+          ..write(')'))
+        .toString();
+  }
+}
+
 class $MembershipChangeRequestsTable extends MembershipChangeRequests
     with TableInfo<$MembershipChangeRequestsTable, MembershipChangeRequestRow> {
   @override
@@ -12757,6 +13899,9 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   );
   late final $MemberConsentsTable memberConsents = $MemberConsentsTable(this);
   late final $RuleAmendmentsTable ruleAmendments = $RuleAmendmentsTable(this);
+  late final $DisputesTable disputes = $DisputesTable(this);
+  late final $DisputeStepCompletionsTable disputeStepCompletions =
+      $DisputeStepCompletionsTable(this);
   late final $MembershipChangeRequestsTable membershipChangeRequests =
       $MembershipChangeRequestsTable(this);
   late final $MembershipChangeApprovalsTable membershipChangeApprovals =
@@ -12797,6 +13942,8 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     ruleSetVersions,
     memberConsents,
     ruleAmendments,
+    disputes,
+    disputeStepCompletions,
     membershipChangeRequests,
     membershipChangeApprovals,
     dueMonths,
@@ -13355,6 +14502,52 @@ final class $$ShomitisTableReferences
     );
   }
 
+  static MultiTypedResultKey<$DisputesTable, List<DisputeRow>>
+  _disputesRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
+    db.disputes,
+    aliasName: $_aliasNameGenerator(db.shomitis.id, db.disputes.shomitiId),
+  );
+
+  $$DisputesTableProcessedTableManager get disputesRefs {
+    final manager = $$DisputesTableTableManager(
+      $_db,
+      $_db.disputes,
+    ).filter((f) => f.shomitiId.id.sqlEquals($_itemColumn<String>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(_disputesRefsTable($_db));
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+
+  static MultiTypedResultKey<
+    $DisputeStepCompletionsTable,
+    List<DisputeStepCompletionRow>
+  >
+  _disputeStepCompletionsRefsTable(_$AppDatabase db) =>
+      MultiTypedResultKey.fromTable(
+        db.disputeStepCompletions,
+        aliasName: $_aliasNameGenerator(
+          db.shomitis.id,
+          db.disputeStepCompletions.shomitiId,
+        ),
+      );
+
+  $$DisputeStepCompletionsTableProcessedTableManager
+  get disputeStepCompletionsRefs {
+    final manager = $$DisputeStepCompletionsTableTableManager(
+      $_db,
+      $_db.disputeStepCompletions,
+    ).filter((f) => f.shomitiId.id.sqlEquals($_itemColumn<String>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(
+      _disputeStepCompletionsRefsTable($_db),
+    );
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+
   static MultiTypedResultKey<
     $MembershipChangeRequestsTable,
     List<MembershipChangeRequestRow>
@@ -13788,6 +14981,57 @@ class $$ShomitisTableFilterComposer
                 $removeJoinBuilderFromRootComposer,
           ),
     );
+    return f(composer);
+  }
+
+  Expression<bool> disputesRefs(
+    Expression<bool> Function($$DisputesTableFilterComposer f) f,
+  ) {
+    final $$DisputesTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.disputes,
+      getReferencedColumn: (t) => t.shomitiId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$DisputesTableFilterComposer(
+            $db: $db,
+            $table: $db.disputes,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<bool> disputeStepCompletionsRefs(
+    Expression<bool> Function($$DisputeStepCompletionsTableFilterComposer f) f,
+  ) {
+    final $$DisputeStepCompletionsTableFilterComposer composer =
+        $composerBuilder(
+          composer: this,
+          getCurrentColumn: (t) => t.id,
+          referencedTable: $db.disputeStepCompletions,
+          getReferencedColumn: (t) => t.shomitiId,
+          builder:
+              (
+                joinBuilder, {
+                $addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer,
+              }) => $$DisputeStepCompletionsTableFilterComposer(
+                $db: $db,
+                $table: $db.disputeStepCompletions,
+                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                joinBuilder: joinBuilder,
+                $removeJoinBuilderFromRootComposer:
+                    $removeJoinBuilderFromRootComposer,
+              ),
+        );
     return f(composer);
   }
 
@@ -14288,6 +15532,57 @@ class $$ShomitisTableAnnotationComposer
     return f(composer);
   }
 
+  Expression<T> disputesRefs<T extends Object>(
+    Expression<T> Function($$DisputesTableAnnotationComposer a) f,
+  ) {
+    final $$DisputesTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.disputes,
+      getReferencedColumn: (t) => t.shomitiId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$DisputesTableAnnotationComposer(
+            $db: $db,
+            $table: $db.disputes,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<T> disputeStepCompletionsRefs<T extends Object>(
+    Expression<T> Function($$DisputeStepCompletionsTableAnnotationComposer a) f,
+  ) {
+    final $$DisputeStepCompletionsTableAnnotationComposer composer =
+        $composerBuilder(
+          composer: this,
+          getCurrentColumn: (t) => t.id,
+          referencedTable: $db.disputeStepCompletions,
+          getReferencedColumn: (t) => t.shomitiId,
+          builder:
+              (
+                joinBuilder, {
+                $addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer,
+              }) => $$DisputeStepCompletionsTableAnnotationComposer(
+                $db: $db,
+                $table: $db.disputeStepCompletions,
+                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                joinBuilder: joinBuilder,
+                $removeJoinBuilderFromRootComposer:
+                    $removeJoinBuilderFromRootComposer,
+              ),
+        );
+    return f(composer);
+  }
+
   Expression<T> membershipChangeRequestsRefs<T extends Object>(
     Expression<T> Function($$MembershipChangeRequestsTableAnnotationComposer a)
     f,
@@ -14645,6 +15940,8 @@ class $$ShomitisTableTableManager
             bool roleAssignmentsRefs,
             bool memberConsentsRefs,
             bool ruleAmendmentsRefs,
+            bool disputesRefs,
+            bool disputeStepCompletionsRefs,
             bool membershipChangeRequestsRefs,
             bool membershipChangeApprovalsRefs,
             bool dueMonthsRefs,
@@ -14717,6 +16014,8 @@ class $$ShomitisTableTableManager
                 roleAssignmentsRefs = false,
                 memberConsentsRefs = false,
                 ruleAmendmentsRefs = false,
+                disputesRefs = false,
+                disputeStepCompletionsRefs = false,
                 membershipChangeRequestsRefs = false,
                 membershipChangeApprovalsRefs = false,
                 dueMonthsRefs = false,
@@ -14738,6 +16037,8 @@ class $$ShomitisTableTableManager
                     if (roleAssignmentsRefs) db.roleAssignments,
                     if (memberConsentsRefs) db.memberConsents,
                     if (ruleAmendmentsRefs) db.ruleAmendments,
+                    if (disputesRefs) db.disputes,
+                    if (disputeStepCompletionsRefs) db.disputeStepCompletions,
                     if (membershipChangeRequestsRefs)
                       db.membershipChangeRequests,
                     if (membershipChangeApprovalsRefs)
@@ -14836,6 +16137,48 @@ class $$ShomitisTableTableManager
                                 table,
                                 p0,
                               ).ruleAmendmentsRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.shomitiId == item.id,
+                              ),
+                          typedResults: items,
+                        ),
+                      if (disputesRefs)
+                        await $_getPrefetchedData<
+                          ShomitiRow,
+                          $ShomitisTable,
+                          DisputeRow
+                        >(
+                          currentTable: table,
+                          referencedTable: $$ShomitisTableReferences
+                              ._disputesRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$ShomitisTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).disputesRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.shomitiId == item.id,
+                              ),
+                          typedResults: items,
+                        ),
+                      if (disputeStepCompletionsRefs)
+                        await $_getPrefetchedData<
+                          ShomitiRow,
+                          $ShomitisTable,
+                          DisputeStepCompletionRow
+                        >(
+                          currentTable: table,
+                          referencedTable: $$ShomitisTableReferences
+                              ._disputeStepCompletionsRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$ShomitisTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).disputeStepCompletionsRefs,
                           referencedItemsForCurrentItem:
                               (item, referencedItems) => referencedItems.where(
                                 (e) => e.shomitiId == item.id,
@@ -15140,6 +16483,8 @@ typedef $$ShomitisTableProcessedTableManager =
         bool roleAssignmentsRefs,
         bool memberConsentsRefs,
         bool ruleAmendmentsRefs,
+        bool disputesRefs,
+        bool disputeStepCompletionsRefs,
         bool membershipChangeRequestsRefs,
         bool membershipChangeApprovalsRefs,
         bool dueMonthsRefs,
@@ -19729,6 +21074,1009 @@ typedef $$RuleAmendmentsTableProcessedTableManager =
       (RuleAmendmentRow, $$RuleAmendmentsTableReferences),
       RuleAmendmentRow,
       PrefetchHooks Function({bool shomitiId, bool proposedRuleSetVersionId})
+    >;
+typedef $$DisputesTableCreateCompanionBuilder =
+    DisputesCompanion Function({
+      required String id,
+      required String shomitiId,
+      required String title,
+      required String description,
+      Value<String?> relatedMonthKey,
+      Value<String?> involvedMembersText,
+      required String evidenceReferencesJson,
+      required String status,
+      required DateTime createdAt,
+      Value<DateTime?> resolvedAt,
+      Value<int> rowid,
+    });
+typedef $$DisputesTableUpdateCompanionBuilder =
+    DisputesCompanion Function({
+      Value<String> id,
+      Value<String> shomitiId,
+      Value<String> title,
+      Value<String> description,
+      Value<String?> relatedMonthKey,
+      Value<String?> involvedMembersText,
+      Value<String> evidenceReferencesJson,
+      Value<String> status,
+      Value<DateTime> createdAt,
+      Value<DateTime?> resolvedAt,
+      Value<int> rowid,
+    });
+
+final class $$DisputesTableReferences
+    extends BaseReferences<_$AppDatabase, $DisputesTable, DisputeRow> {
+  $$DisputesTableReferences(super.$_db, super.$_table, super.$_typedResult);
+
+  static $ShomitisTable _shomitiIdTable(_$AppDatabase db) => db.shomitis
+      .createAlias($_aliasNameGenerator(db.disputes.shomitiId, db.shomitis.id));
+
+  $$ShomitisTableProcessedTableManager get shomitiId {
+    final $_column = $_itemColumn<String>('shomiti_id')!;
+
+    final manager = $$ShomitisTableTableManager(
+      $_db,
+      $_db.shomitis,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_shomitiIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+
+  static MultiTypedResultKey<
+    $DisputeStepCompletionsTable,
+    List<DisputeStepCompletionRow>
+  >
+  _disputeStepCompletionsRefsTable(_$AppDatabase db) =>
+      MultiTypedResultKey.fromTable(
+        db.disputeStepCompletions,
+        aliasName: $_aliasNameGenerator(
+          db.disputes.id,
+          db.disputeStepCompletions.disputeId,
+        ),
+      );
+
+  $$DisputeStepCompletionsTableProcessedTableManager
+  get disputeStepCompletionsRefs {
+    final manager = $$DisputeStepCompletionsTableTableManager(
+      $_db,
+      $_db.disputeStepCompletions,
+    ).filter((f) => f.disputeId.id.sqlEquals($_itemColumn<String>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(
+      _disputeStepCompletionsRefsTable($_db),
+    );
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+}
+
+class $$DisputesTableFilterComposer
+    extends Composer<_$AppDatabase, $DisputesTable> {
+  $$DisputesTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get title => $composableBuilder(
+    column: $table.title,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get description => $composableBuilder(
+    column: $table.description,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get relatedMonthKey => $composableBuilder(
+    column: $table.relatedMonthKey,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get involvedMembersText => $composableBuilder(
+    column: $table.involvedMembersText,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get evidenceReferencesJson => $composableBuilder(
+    column: $table.evidenceReferencesJson,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get resolvedAt => $composableBuilder(
+    column: $table.resolvedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  $$ShomitisTableFilterComposer get shomitiId {
+    final $$ShomitisTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.shomitiId,
+      referencedTable: $db.shomitis,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ShomitisTableFilterComposer(
+            $db: $db,
+            $table: $db.shomitis,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  Expression<bool> disputeStepCompletionsRefs(
+    Expression<bool> Function($$DisputeStepCompletionsTableFilterComposer f) f,
+  ) {
+    final $$DisputeStepCompletionsTableFilterComposer composer =
+        $composerBuilder(
+          composer: this,
+          getCurrentColumn: (t) => t.id,
+          referencedTable: $db.disputeStepCompletions,
+          getReferencedColumn: (t) => t.disputeId,
+          builder:
+              (
+                joinBuilder, {
+                $addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer,
+              }) => $$DisputeStepCompletionsTableFilterComposer(
+                $db: $db,
+                $table: $db.disputeStepCompletions,
+                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                joinBuilder: joinBuilder,
+                $removeJoinBuilderFromRootComposer:
+                    $removeJoinBuilderFromRootComposer,
+              ),
+        );
+    return f(composer);
+  }
+}
+
+class $$DisputesTableOrderingComposer
+    extends Composer<_$AppDatabase, $DisputesTable> {
+  $$DisputesTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get title => $composableBuilder(
+    column: $table.title,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get description => $composableBuilder(
+    column: $table.description,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get relatedMonthKey => $composableBuilder(
+    column: $table.relatedMonthKey,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get involvedMembersText => $composableBuilder(
+    column: $table.involvedMembersText,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get evidenceReferencesJson => $composableBuilder(
+    column: $table.evidenceReferencesJson,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get resolvedAt => $composableBuilder(
+    column: $table.resolvedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  $$ShomitisTableOrderingComposer get shomitiId {
+    final $$ShomitisTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.shomitiId,
+      referencedTable: $db.shomitis,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ShomitisTableOrderingComposer(
+            $db: $db,
+            $table: $db.shomitis,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$DisputesTableAnnotationComposer
+    extends Composer<_$AppDatabase, $DisputesTable> {
+  $$DisputesTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get title =>
+      $composableBuilder(column: $table.title, builder: (column) => column);
+
+  GeneratedColumn<String> get description => $composableBuilder(
+    column: $table.description,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get relatedMonthKey => $composableBuilder(
+    column: $table.relatedMonthKey,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get involvedMembersText => $composableBuilder(
+    column: $table.involvedMembersText,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get evidenceReferencesJson => $composableBuilder(
+    column: $table.evidenceReferencesJson,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get status =>
+      $composableBuilder(column: $table.status, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get resolvedAt => $composableBuilder(
+    column: $table.resolvedAt,
+    builder: (column) => column,
+  );
+
+  $$ShomitisTableAnnotationComposer get shomitiId {
+    final $$ShomitisTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.shomitiId,
+      referencedTable: $db.shomitis,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ShomitisTableAnnotationComposer(
+            $db: $db,
+            $table: $db.shomitis,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  Expression<T> disputeStepCompletionsRefs<T extends Object>(
+    Expression<T> Function($$DisputeStepCompletionsTableAnnotationComposer a) f,
+  ) {
+    final $$DisputeStepCompletionsTableAnnotationComposer composer =
+        $composerBuilder(
+          composer: this,
+          getCurrentColumn: (t) => t.id,
+          referencedTable: $db.disputeStepCompletions,
+          getReferencedColumn: (t) => t.disputeId,
+          builder:
+              (
+                joinBuilder, {
+                $addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer,
+              }) => $$DisputeStepCompletionsTableAnnotationComposer(
+                $db: $db,
+                $table: $db.disputeStepCompletions,
+                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                joinBuilder: joinBuilder,
+                $removeJoinBuilderFromRootComposer:
+                    $removeJoinBuilderFromRootComposer,
+              ),
+        );
+    return f(composer);
+  }
+}
+
+class $$DisputesTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $DisputesTable,
+          DisputeRow,
+          $$DisputesTableFilterComposer,
+          $$DisputesTableOrderingComposer,
+          $$DisputesTableAnnotationComposer,
+          $$DisputesTableCreateCompanionBuilder,
+          $$DisputesTableUpdateCompanionBuilder,
+          (DisputeRow, $$DisputesTableReferences),
+          DisputeRow,
+          PrefetchHooks Function({
+            bool shomitiId,
+            bool disputeStepCompletionsRefs,
+          })
+        > {
+  $$DisputesTableTableManager(_$AppDatabase db, $DisputesTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$DisputesTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$DisputesTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$DisputesTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> shomitiId = const Value.absent(),
+                Value<String> title = const Value.absent(),
+                Value<String> description = const Value.absent(),
+                Value<String?> relatedMonthKey = const Value.absent(),
+                Value<String?> involvedMembersText = const Value.absent(),
+                Value<String> evidenceReferencesJson = const Value.absent(),
+                Value<String> status = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime?> resolvedAt = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => DisputesCompanion(
+                id: id,
+                shomitiId: shomitiId,
+                title: title,
+                description: description,
+                relatedMonthKey: relatedMonthKey,
+                involvedMembersText: involvedMembersText,
+                evidenceReferencesJson: evidenceReferencesJson,
+                status: status,
+                createdAt: createdAt,
+                resolvedAt: resolvedAt,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required String shomitiId,
+                required String title,
+                required String description,
+                Value<String?> relatedMonthKey = const Value.absent(),
+                Value<String?> involvedMembersText = const Value.absent(),
+                required String evidenceReferencesJson,
+                required String status,
+                required DateTime createdAt,
+                Value<DateTime?> resolvedAt = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => DisputesCompanion.insert(
+                id: id,
+                shomitiId: shomitiId,
+                title: title,
+                description: description,
+                relatedMonthKey: relatedMonthKey,
+                involvedMembersText: involvedMembersText,
+                evidenceReferencesJson: evidenceReferencesJson,
+                status: status,
+                createdAt: createdAt,
+                resolvedAt: resolvedAt,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable(table),
+                  $$DisputesTableReferences(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback:
+              ({shomitiId = false, disputeStepCompletionsRefs = false}) {
+                return PrefetchHooks(
+                  db: db,
+                  explicitlyWatchedTables: [
+                    if (disputeStepCompletionsRefs) db.disputeStepCompletions,
+                  ],
+                  addJoins:
+                      <
+                        T extends TableManagerState<
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic
+                        >
+                      >(state) {
+                        if (shomitiId) {
+                          state =
+                              state.withJoin(
+                                    currentTable: table,
+                                    currentColumn: table.shomitiId,
+                                    referencedTable: $$DisputesTableReferences
+                                        ._shomitiIdTable(db),
+                                    referencedColumn: $$DisputesTableReferences
+                                        ._shomitiIdTable(db)
+                                        .id,
+                                  )
+                                  as T;
+                        }
+
+                        return state;
+                      },
+                  getPrefetchedDataCallback: (items) async {
+                    return [
+                      if (disputeStepCompletionsRefs)
+                        await $_getPrefetchedData<
+                          DisputeRow,
+                          $DisputesTable,
+                          DisputeStepCompletionRow
+                        >(
+                          currentTable: table,
+                          referencedTable: $$DisputesTableReferences
+                              ._disputeStepCompletionsRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$DisputesTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).disputeStepCompletionsRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.disputeId == item.id,
+                              ),
+                          typedResults: items,
+                        ),
+                    ];
+                  },
+                );
+              },
+        ),
+      );
+}
+
+typedef $$DisputesTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $DisputesTable,
+      DisputeRow,
+      $$DisputesTableFilterComposer,
+      $$DisputesTableOrderingComposer,
+      $$DisputesTableAnnotationComposer,
+      $$DisputesTableCreateCompanionBuilder,
+      $$DisputesTableUpdateCompanionBuilder,
+      (DisputeRow, $$DisputesTableReferences),
+      DisputeRow,
+      PrefetchHooks Function({bool shomitiId, bool disputeStepCompletionsRefs})
+    >;
+typedef $$DisputeStepCompletionsTableCreateCompanionBuilder =
+    DisputeStepCompletionsCompanion Function({
+      Value<int> id,
+      required String shomitiId,
+      required String disputeId,
+      required String stepType,
+      required String note,
+      Value<String?> proofReference,
+      required DateTime completedAt,
+    });
+typedef $$DisputeStepCompletionsTableUpdateCompanionBuilder =
+    DisputeStepCompletionsCompanion Function({
+      Value<int> id,
+      Value<String> shomitiId,
+      Value<String> disputeId,
+      Value<String> stepType,
+      Value<String> note,
+      Value<String?> proofReference,
+      Value<DateTime> completedAt,
+    });
+
+final class $$DisputeStepCompletionsTableReferences
+    extends
+        BaseReferences<
+          _$AppDatabase,
+          $DisputeStepCompletionsTable,
+          DisputeStepCompletionRow
+        > {
+  $$DisputeStepCompletionsTableReferences(
+    super.$_db,
+    super.$_table,
+    super.$_typedResult,
+  );
+
+  static $ShomitisTable _shomitiIdTable(_$AppDatabase db) =>
+      db.shomitis.createAlias(
+        $_aliasNameGenerator(
+          db.disputeStepCompletions.shomitiId,
+          db.shomitis.id,
+        ),
+      );
+
+  $$ShomitisTableProcessedTableManager get shomitiId {
+    final $_column = $_itemColumn<String>('shomiti_id')!;
+
+    final manager = $$ShomitisTableTableManager(
+      $_db,
+      $_db.shomitis,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_shomitiIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+
+  static $DisputesTable _disputeIdTable(_$AppDatabase db) =>
+      db.disputes.createAlias(
+        $_aliasNameGenerator(
+          db.disputeStepCompletions.disputeId,
+          db.disputes.id,
+        ),
+      );
+
+  $$DisputesTableProcessedTableManager get disputeId {
+    final $_column = $_itemColumn<String>('dispute_id')!;
+
+    final manager = $$DisputesTableTableManager(
+      $_db,
+      $_db.disputes,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_disputeIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+}
+
+class $$DisputeStepCompletionsTableFilterComposer
+    extends Composer<_$AppDatabase, $DisputeStepCompletionsTable> {
+  $$DisputeStepCompletionsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get stepType => $composableBuilder(
+    column: $table.stepType,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get note => $composableBuilder(
+    column: $table.note,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get proofReference => $composableBuilder(
+    column: $table.proofReference,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get completedAt => $composableBuilder(
+    column: $table.completedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  $$ShomitisTableFilterComposer get shomitiId {
+    final $$ShomitisTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.shomitiId,
+      referencedTable: $db.shomitis,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ShomitisTableFilterComposer(
+            $db: $db,
+            $table: $db.shomitis,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$DisputesTableFilterComposer get disputeId {
+    final $$DisputesTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.disputeId,
+      referencedTable: $db.disputes,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$DisputesTableFilterComposer(
+            $db: $db,
+            $table: $db.disputes,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$DisputeStepCompletionsTableOrderingComposer
+    extends Composer<_$AppDatabase, $DisputeStepCompletionsTable> {
+  $$DisputeStepCompletionsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get stepType => $composableBuilder(
+    column: $table.stepType,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get note => $composableBuilder(
+    column: $table.note,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get proofReference => $composableBuilder(
+    column: $table.proofReference,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get completedAt => $composableBuilder(
+    column: $table.completedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  $$ShomitisTableOrderingComposer get shomitiId {
+    final $$ShomitisTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.shomitiId,
+      referencedTable: $db.shomitis,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ShomitisTableOrderingComposer(
+            $db: $db,
+            $table: $db.shomitis,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$DisputesTableOrderingComposer get disputeId {
+    final $$DisputesTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.disputeId,
+      referencedTable: $db.disputes,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$DisputesTableOrderingComposer(
+            $db: $db,
+            $table: $db.disputes,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$DisputeStepCompletionsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $DisputeStepCompletionsTable> {
+  $$DisputeStepCompletionsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get stepType =>
+      $composableBuilder(column: $table.stepType, builder: (column) => column);
+
+  GeneratedColumn<String> get note =>
+      $composableBuilder(column: $table.note, builder: (column) => column);
+
+  GeneratedColumn<String> get proofReference => $composableBuilder(
+    column: $table.proofReference,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get completedAt => $composableBuilder(
+    column: $table.completedAt,
+    builder: (column) => column,
+  );
+
+  $$ShomitisTableAnnotationComposer get shomitiId {
+    final $$ShomitisTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.shomitiId,
+      referencedTable: $db.shomitis,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ShomitisTableAnnotationComposer(
+            $db: $db,
+            $table: $db.shomitis,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$DisputesTableAnnotationComposer get disputeId {
+    final $$DisputesTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.disputeId,
+      referencedTable: $db.disputes,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$DisputesTableAnnotationComposer(
+            $db: $db,
+            $table: $db.disputes,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$DisputeStepCompletionsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $DisputeStepCompletionsTable,
+          DisputeStepCompletionRow,
+          $$DisputeStepCompletionsTableFilterComposer,
+          $$DisputeStepCompletionsTableOrderingComposer,
+          $$DisputeStepCompletionsTableAnnotationComposer,
+          $$DisputeStepCompletionsTableCreateCompanionBuilder,
+          $$DisputeStepCompletionsTableUpdateCompanionBuilder,
+          (DisputeStepCompletionRow, $$DisputeStepCompletionsTableReferences),
+          DisputeStepCompletionRow,
+          PrefetchHooks Function({bool shomitiId, bool disputeId})
+        > {
+  $$DisputeStepCompletionsTableTableManager(
+    _$AppDatabase db,
+    $DisputeStepCompletionsTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$DisputeStepCompletionsTableFilterComposer(
+                $db: db,
+                $table: table,
+              ),
+          createOrderingComposer: () =>
+              $$DisputeStepCompletionsTableOrderingComposer(
+                $db: db,
+                $table: table,
+              ),
+          createComputedFieldComposer: () =>
+              $$DisputeStepCompletionsTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                Value<String> shomitiId = const Value.absent(),
+                Value<String> disputeId = const Value.absent(),
+                Value<String> stepType = const Value.absent(),
+                Value<String> note = const Value.absent(),
+                Value<String?> proofReference = const Value.absent(),
+                Value<DateTime> completedAt = const Value.absent(),
+              }) => DisputeStepCompletionsCompanion(
+                id: id,
+                shomitiId: shomitiId,
+                disputeId: disputeId,
+                stepType: stepType,
+                note: note,
+                proofReference: proofReference,
+                completedAt: completedAt,
+              ),
+          createCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                required String shomitiId,
+                required String disputeId,
+                required String stepType,
+                required String note,
+                Value<String?> proofReference = const Value.absent(),
+                required DateTime completedAt,
+              }) => DisputeStepCompletionsCompanion.insert(
+                id: id,
+                shomitiId: shomitiId,
+                disputeId: disputeId,
+                stepType: stepType,
+                note: note,
+                proofReference: proofReference,
+                completedAt: completedAt,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable(table),
+                  $$DisputeStepCompletionsTableReferences(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: ({shomitiId = false, disputeId = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [],
+              addJoins:
+                  <
+                    T extends TableManagerState<
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic
+                    >
+                  >(state) {
+                    if (shomitiId) {
+                      state =
+                          state.withJoin(
+                                currentTable: table,
+                                currentColumn: table.shomitiId,
+                                referencedTable:
+                                    $$DisputeStepCompletionsTableReferences
+                                        ._shomitiIdTable(db),
+                                referencedColumn:
+                                    $$DisputeStepCompletionsTableReferences
+                                        ._shomitiIdTable(db)
+                                        .id,
+                              )
+                              as T;
+                    }
+                    if (disputeId) {
+                      state =
+                          state.withJoin(
+                                currentTable: table,
+                                currentColumn: table.disputeId,
+                                referencedTable:
+                                    $$DisputeStepCompletionsTableReferences
+                                        ._disputeIdTable(db),
+                                referencedColumn:
+                                    $$DisputeStepCompletionsTableReferences
+                                        ._disputeIdTable(db)
+                                        .id,
+                              )
+                              as T;
+                    }
+
+                    return state;
+                  },
+              getPrefetchedDataCallback: (items) async {
+                return [];
+              },
+            );
+          },
+        ),
+      );
+}
+
+typedef $$DisputeStepCompletionsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $DisputeStepCompletionsTable,
+      DisputeStepCompletionRow,
+      $$DisputeStepCompletionsTableFilterComposer,
+      $$DisputeStepCompletionsTableOrderingComposer,
+      $$DisputeStepCompletionsTableAnnotationComposer,
+      $$DisputeStepCompletionsTableCreateCompanionBuilder,
+      $$DisputeStepCompletionsTableUpdateCompanionBuilder,
+      (DisputeStepCompletionRow, $$DisputeStepCompletionsTableReferences),
+      DisputeStepCompletionRow,
+      PrefetchHooks Function({bool shomitiId, bool disputeId})
     >;
 typedef $$MembershipChangeRequestsTableCreateCompanionBuilder =
     MembershipChangeRequestsCompanion Function({
@@ -27040,6 +29388,13 @@ class $AppDatabaseManager {
       $$MemberConsentsTableTableManager(_db, _db.memberConsents);
   $$RuleAmendmentsTableTableManager get ruleAmendments =>
       $$RuleAmendmentsTableTableManager(_db, _db.ruleAmendments);
+  $$DisputesTableTableManager get disputes =>
+      $$DisputesTableTableManager(_db, _db.disputes);
+  $$DisputeStepCompletionsTableTableManager get disputeStepCompletions =>
+      $$DisputeStepCompletionsTableTableManager(
+        _db,
+        _db.disputeStepCompletions,
+      );
   $$MembershipChangeRequestsTableTableManager get membershipChangeRequests =>
       $$MembershipChangeRequestsTableTableManager(
         _db,

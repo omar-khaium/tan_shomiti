@@ -217,7 +217,7 @@ class DisputeDetailPage extends ConsumerWidget {
       final shomiti = await ref.read(activeShomitiProvider.future);
       if (shomiti == null) throw StateError('Shomiti not configured.');
 
-      await ref.read(disputesRepositoryProvider).resolve(
+      await ref.read(resolveDisputeProvider)(
             shomitiId: shomiti.id,
             disputeId: disputeId,
             outcomeNote: outcomeController.text,
@@ -278,7 +278,7 @@ class DisputeDetailPage extends ConsumerWidget {
       final shomiti = await ref.read(activeShomitiProvider.future);
       if (shomiti == null) throw StateError('Shomiti not configured.');
 
-      await ref.read(disputesRepositoryProvider).reopen(
+      await ref.read(reopenDisputeProvider)(
             shomitiId: shomiti.id,
             disputeId: disputeId,
             note: noteController.text,
@@ -436,7 +436,7 @@ class _StepCard extends ConsumerWidget {
       final shomiti = await ref.read(activeShomitiProvider.future);
       if (shomiti == null) throw StateError('Shomiti not configured.');
 
-      await ref.read(disputesRepositoryProvider).completeStep(
+      await ref.read(completeDisputeStepProvider)(
             shomitiId: shomiti.id,
             disputeId: disputeId,
             step: step,

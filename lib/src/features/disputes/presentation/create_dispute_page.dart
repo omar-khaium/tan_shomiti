@@ -147,7 +147,7 @@ class _CreateDisputePageState extends ConsumerState<CreateDisputePage> {
         throw StateError('Shomiti is not configured.');
       }
 
-      final id = await ref.read(disputesRepositoryProvider).createDispute(
+      final id = await ref.read(createDisputeProvider)(
             shomitiId: shomiti.id,
             title: _titleController.text,
             description: _descriptionController.text,
