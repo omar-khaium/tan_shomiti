@@ -99,6 +99,12 @@ class MorePage extends ConsumerWidget {
           subtitle: 'Track disputes and resolutions',
           onTap: () => context.push(disputesLocation),
         ),
+        _MoreTile(
+          tileKey: const Key('more_exports'),
+          title: exportsTitle,
+          subtitle: 'Export records (CSV/PDF) with privacy defaults',
+          onTap: () => context.push(exportsLocation),
+        ),
         const Divider(),
         if (kDebugMode)
           _MoreTile(
