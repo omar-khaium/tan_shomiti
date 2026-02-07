@@ -27,6 +27,7 @@ import '../../features/disputes/presentation/dispute_detail_page.dart';
 import '../../features/exports/presentation/exports_page.dart';
 import '../../features/exports/presentation/export_statement_page.dart';
 import '../../features/exports/presentation/export_ledger_page.dart';
+import '../../features/operations/presentation/operations_dashboard_page.dart';
 import '../../features/shares/presentation/shares_page.dart';
 import '../../features/risk_controls/presentation/risk_controls_page.dart';
 import '../../features/membership_changes/presentation/membership_changes_page.dart';
@@ -253,8 +254,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
           GoRoute(
             path: dashboardLocation,
             name: dashboardRouteName,
-            builder: (context, state) =>
-                const PlaceholderPage(title: dashboardTitle),
+            builder: (context, state) => const OperationsDashboardPage(),
           ),
           GoRoute(
             path: membersLocation,
