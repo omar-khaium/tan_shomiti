@@ -20,6 +20,8 @@ import 'ts_401_draw_e2e_test.dart' as ts_401_draw_e2e_test;
 import 'ts_402_witness_redo_e2e_test.dart' as ts_402_witness_redo_e2e_test;
 import 'ts_403_payout_e2e_test.dart' as ts_403_payout_e2e_test;
 import 'ts_501_statements_e2e_test.dart' as ts_501_statements_e2e_test;
+import 'ts_502_statement_signoff_e2e_test.dart'
+    as ts_502_statement_signoff_e2e_test;
 
 void main() {
   ts_101_setup_wizard_e2e_test.main();
@@ -42,4 +44,5 @@ void main() {
   ts_402_witness_redo_e2e_test.main();
   ts_403_payout_e2e_test.main();
   ts_501_statements_e2e_test.main();
+  ts_502_statement_signoff_e2e_test.main();
 }
