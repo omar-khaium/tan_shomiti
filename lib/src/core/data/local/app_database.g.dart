@@ -9942,6 +9942,543 @@ class MonthlyStatementsCompanion extends UpdateCompanion<MonthlyStatementRow> {
   }
 }
 
+class $StatementSignoffsTable extends StatementSignoffs
+    with TableInfo<$StatementSignoffsTable, StatementSignoffRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $StatementSignoffsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _shomitiIdMeta = const VerificationMeta(
+    'shomitiId',
+  );
+  @override
+  late final GeneratedColumn<String> shomitiId = GeneratedColumn<String>(
+    'shomiti_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES shomitis (id)',
+    ),
+  );
+  static const VerificationMeta _monthKeyMeta = const VerificationMeta(
+    'monthKey',
+  );
+  @override
+  late final GeneratedColumn<String> monthKey = GeneratedColumn<String>(
+    'month_key',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _signerMemberIdMeta = const VerificationMeta(
+    'signerMemberId',
+  );
+  @override
+  late final GeneratedColumn<String> signerMemberId = GeneratedColumn<String>(
+    'signer_member_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES members (id)',
+    ),
+  );
+  static const VerificationMeta _signerRoleMeta = const VerificationMeta(
+    'signerRole',
+  );
+  @override
+  late final GeneratedColumn<String> signerRole = GeneratedColumn<String>(
+    'signer_role',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _proofReferenceMeta = const VerificationMeta(
+    'proofReference',
+  );
+  @override
+  late final GeneratedColumn<String> proofReference = GeneratedColumn<String>(
+    'proof_reference',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _noteMeta = const VerificationMeta('note');
+  @override
+  late final GeneratedColumn<String> note = GeneratedColumn<String>(
+    'note',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _signedAtMeta = const VerificationMeta(
+    'signedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> signedAt = GeneratedColumn<DateTime>(
+    'signed_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    shomitiId,
+    monthKey,
+    signerMemberId,
+    signerRole,
+    proofReference,
+    note,
+    signedAt,
+    createdAt,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'statement_signoffs';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<StatementSignoffRow> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('shomiti_id')) {
+      context.handle(
+        _shomitiIdMeta,
+        shomitiId.isAcceptableOrUnknown(data['shomiti_id']!, _shomitiIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_shomitiIdMeta);
+    }
+    if (data.containsKey('month_key')) {
+      context.handle(
+        _monthKeyMeta,
+        monthKey.isAcceptableOrUnknown(data['month_key']!, _monthKeyMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_monthKeyMeta);
+    }
+    if (data.containsKey('signer_member_id')) {
+      context.handle(
+        _signerMemberIdMeta,
+        signerMemberId.isAcceptableOrUnknown(
+          data['signer_member_id']!,
+          _signerMemberIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_signerMemberIdMeta);
+    }
+    if (data.containsKey('signer_role')) {
+      context.handle(
+        _signerRoleMeta,
+        signerRole.isAcceptableOrUnknown(data['signer_role']!, _signerRoleMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_signerRoleMeta);
+    }
+    if (data.containsKey('proof_reference')) {
+      context.handle(
+        _proofReferenceMeta,
+        proofReference.isAcceptableOrUnknown(
+          data['proof_reference']!,
+          _proofReferenceMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_proofReferenceMeta);
+    }
+    if (data.containsKey('note')) {
+      context.handle(
+        _noteMeta,
+        note.isAcceptableOrUnknown(data['note']!, _noteMeta),
+      );
+    }
+    if (data.containsKey('signed_at')) {
+      context.handle(
+        _signedAtMeta,
+        signedAt.isAcceptableOrUnknown(data['signed_at']!, _signedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_signedAtMeta);
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {shomitiId, monthKey, signerMemberId};
+  @override
+  StatementSignoffRow map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return StatementSignoffRow(
+      shomitiId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}shomiti_id'],
+      )!,
+      monthKey: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}month_key'],
+      )!,
+      signerMemberId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}signer_member_id'],
+      )!,
+      signerRole: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}signer_role'],
+      )!,
+      proofReference: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}proof_reference'],
+      )!,
+      note: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}note'],
+      ),
+      signedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}signed_at'],
+      )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+    );
+  }
+
+  @override
+  $StatementSignoffsTable createAlias(String alias) {
+    return $StatementSignoffsTable(attachedDatabase, alias);
+  }
+}
+
+class StatementSignoffRow extends DataClass
+    implements Insertable<StatementSignoffRow> {
+  final String shomitiId;
+
+  /// `BillingMonth.key` (e.g. "2026-02").
+  final String monthKey;
+  final String signerMemberId;
+
+  /// "auditor" | "witness"
+  final String signerRole;
+  final String proofReference;
+  final String? note;
+  final DateTime signedAt;
+  final DateTime createdAt;
+  const StatementSignoffRow({
+    required this.shomitiId,
+    required this.monthKey,
+    required this.signerMemberId,
+    required this.signerRole,
+    required this.proofReference,
+    this.note,
+    required this.signedAt,
+    required this.createdAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['shomiti_id'] = Variable<String>(shomitiId);
+    map['month_key'] = Variable<String>(monthKey);
+    map['signer_member_id'] = Variable<String>(signerMemberId);
+    map['signer_role'] = Variable<String>(signerRole);
+    map['proof_reference'] = Variable<String>(proofReference);
+    if (!nullToAbsent || note != null) {
+      map['note'] = Variable<String>(note);
+    }
+    map['signed_at'] = Variable<DateTime>(signedAt);
+    map['created_at'] = Variable<DateTime>(createdAt);
+    return map;
+  }
+
+  StatementSignoffsCompanion toCompanion(bool nullToAbsent) {
+    return StatementSignoffsCompanion(
+      shomitiId: Value(shomitiId),
+      monthKey: Value(monthKey),
+      signerMemberId: Value(signerMemberId),
+      signerRole: Value(signerRole),
+      proofReference: Value(proofReference),
+      note: note == null && nullToAbsent ? const Value.absent() : Value(note),
+      signedAt: Value(signedAt),
+      createdAt: Value(createdAt),
+    );
+  }
+
+  factory StatementSignoffRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return StatementSignoffRow(
+      shomitiId: serializer.fromJson<String>(json['shomitiId']),
+      monthKey: serializer.fromJson<String>(json['monthKey']),
+      signerMemberId: serializer.fromJson<String>(json['signerMemberId']),
+      signerRole: serializer.fromJson<String>(json['signerRole']),
+      proofReference: serializer.fromJson<String>(json['proofReference']),
+      note: serializer.fromJson<String?>(json['note']),
+      signedAt: serializer.fromJson<DateTime>(json['signedAt']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'shomitiId': serializer.toJson<String>(shomitiId),
+      'monthKey': serializer.toJson<String>(monthKey),
+      'signerMemberId': serializer.toJson<String>(signerMemberId),
+      'signerRole': serializer.toJson<String>(signerRole),
+      'proofReference': serializer.toJson<String>(proofReference),
+      'note': serializer.toJson<String?>(note),
+      'signedAt': serializer.toJson<DateTime>(signedAt),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+    };
+  }
+
+  StatementSignoffRow copyWith({
+    String? shomitiId,
+    String? monthKey,
+    String? signerMemberId,
+    String? signerRole,
+    String? proofReference,
+    Value<String?> note = const Value.absent(),
+    DateTime? signedAt,
+    DateTime? createdAt,
+  }) => StatementSignoffRow(
+    shomitiId: shomitiId ?? this.shomitiId,
+    monthKey: monthKey ?? this.monthKey,
+    signerMemberId: signerMemberId ?? this.signerMemberId,
+    signerRole: signerRole ?? this.signerRole,
+    proofReference: proofReference ?? this.proofReference,
+    note: note.present ? note.value : this.note,
+    signedAt: signedAt ?? this.signedAt,
+    createdAt: createdAt ?? this.createdAt,
+  );
+  StatementSignoffRow copyWithCompanion(StatementSignoffsCompanion data) {
+    return StatementSignoffRow(
+      shomitiId: data.shomitiId.present ? data.shomitiId.value : this.shomitiId,
+      monthKey: data.monthKey.present ? data.monthKey.value : this.monthKey,
+      signerMemberId: data.signerMemberId.present
+          ? data.signerMemberId.value
+          : this.signerMemberId,
+      signerRole: data.signerRole.present
+          ? data.signerRole.value
+          : this.signerRole,
+      proofReference: data.proofReference.present
+          ? data.proofReference.value
+          : this.proofReference,
+      note: data.note.present ? data.note.value : this.note,
+      signedAt: data.signedAt.present ? data.signedAt.value : this.signedAt,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('StatementSignoffRow(')
+          ..write('shomitiId: $shomitiId, ')
+          ..write('monthKey: $monthKey, ')
+          ..write('signerMemberId: $signerMemberId, ')
+          ..write('signerRole: $signerRole, ')
+          ..write('proofReference: $proofReference, ')
+          ..write('note: $note, ')
+          ..write('signedAt: $signedAt, ')
+          ..write('createdAt: $createdAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    shomitiId,
+    monthKey,
+    signerMemberId,
+    signerRole,
+    proofReference,
+    note,
+    signedAt,
+    createdAt,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is StatementSignoffRow &&
+          other.shomitiId == this.shomitiId &&
+          other.monthKey == this.monthKey &&
+          other.signerMemberId == this.signerMemberId &&
+          other.signerRole == this.signerRole &&
+          other.proofReference == this.proofReference &&
+          other.note == this.note &&
+          other.signedAt == this.signedAt &&
+          other.createdAt == this.createdAt);
+}
+
+class StatementSignoffsCompanion extends UpdateCompanion<StatementSignoffRow> {
+  final Value<String> shomitiId;
+  final Value<String> monthKey;
+  final Value<String> signerMemberId;
+  final Value<String> signerRole;
+  final Value<String> proofReference;
+  final Value<String?> note;
+  final Value<DateTime> signedAt;
+  final Value<DateTime> createdAt;
+  final Value<int> rowid;
+  const StatementSignoffsCompanion({
+    this.shomitiId = const Value.absent(),
+    this.monthKey = const Value.absent(),
+    this.signerMemberId = const Value.absent(),
+    this.signerRole = const Value.absent(),
+    this.proofReference = const Value.absent(),
+    this.note = const Value.absent(),
+    this.signedAt = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  StatementSignoffsCompanion.insert({
+    required String shomitiId,
+    required String monthKey,
+    required String signerMemberId,
+    required String signerRole,
+    required String proofReference,
+    this.note = const Value.absent(),
+    required DateTime signedAt,
+    required DateTime createdAt,
+    this.rowid = const Value.absent(),
+  }) : shomitiId = Value(shomitiId),
+       monthKey = Value(monthKey),
+       signerMemberId = Value(signerMemberId),
+       signerRole = Value(signerRole),
+       proofReference = Value(proofReference),
+       signedAt = Value(signedAt),
+       createdAt = Value(createdAt);
+  static Insertable<StatementSignoffRow> custom({
+    Expression<String>? shomitiId,
+    Expression<String>? monthKey,
+    Expression<String>? signerMemberId,
+    Expression<String>? signerRole,
+    Expression<String>? proofReference,
+    Expression<String>? note,
+    Expression<DateTime>? signedAt,
+    Expression<DateTime>? createdAt,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (shomitiId != null) 'shomiti_id': shomitiId,
+      if (monthKey != null) 'month_key': monthKey,
+      if (signerMemberId != null) 'signer_member_id': signerMemberId,
+      if (signerRole != null) 'signer_role': signerRole,
+      if (proofReference != null) 'proof_reference': proofReference,
+      if (note != null) 'note': note,
+      if (signedAt != null) 'signed_at': signedAt,
+      if (createdAt != null) 'created_at': createdAt,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  StatementSignoffsCompanion copyWith({
+    Value<String>? shomitiId,
+    Value<String>? monthKey,
+    Value<String>? signerMemberId,
+    Value<String>? signerRole,
+    Value<String>? proofReference,
+    Value<String?>? note,
+    Value<DateTime>? signedAt,
+    Value<DateTime>? createdAt,
+    Value<int>? rowid,
+  }) {
+    return StatementSignoffsCompanion(
+      shomitiId: shomitiId ?? this.shomitiId,
+      monthKey: monthKey ?? this.monthKey,
+      signerMemberId: signerMemberId ?? this.signerMemberId,
+      signerRole: signerRole ?? this.signerRole,
+      proofReference: proofReference ?? this.proofReference,
+      note: note ?? this.note,
+      signedAt: signedAt ?? this.signedAt,
+      createdAt: createdAt ?? this.createdAt,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (shomitiId.present) {
+      map['shomiti_id'] = Variable<String>(shomitiId.value);
+    }
+    if (monthKey.present) {
+      map['month_key'] = Variable<String>(monthKey.value);
+    }
+    if (signerMemberId.present) {
+      map['signer_member_id'] = Variable<String>(signerMemberId.value);
+    }
+    if (signerRole.present) {
+      map['signer_role'] = Variable<String>(signerRole.value);
+    }
+    if (proofReference.present) {
+      map['proof_reference'] = Variable<String>(proofReference.value);
+    }
+    if (note.present) {
+      map['note'] = Variable<String>(note.value);
+    }
+    if (signedAt.present) {
+      map['signed_at'] = Variable<DateTime>(signedAt.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('StatementSignoffsCompanion(')
+          ..write('shomitiId: $shomitiId, ')
+          ..write('monthKey: $monthKey, ')
+          ..write('signerMemberId: $signerMemberId, ')
+          ..write('signerRole: $signerRole, ')
+          ..write('proofReference: $proofReference, ')
+          ..write('note: $note, ')
+          ..write('signedAt: $signedAt, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 class $PayoutCollectionVerificationsTable extends PayoutCollectionVerifications
     with
         TableInfo<
@@ -11628,6 +12165,8 @@ abstract class _$AppDatabase extends GeneratedDatabase {
       $DrawWitnessApprovalsTable(this);
   late final $MonthlyStatementsTable monthlyStatements =
       $MonthlyStatementsTable(this);
+  late final $StatementSignoffsTable statementSignoffs =
+      $StatementSignoffsTable(this);
   late final $PayoutCollectionVerificationsTable payoutCollectionVerifications =
       $PayoutCollectionVerificationsTable(this);
   late final $PayoutApprovalsTable payoutApprovals = $PayoutApprovalsTable(
@@ -11659,6 +12198,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     drawRecords,
     drawWitnessApprovals,
     monthlyStatements,
+    statementSignoffs,
     payoutCollectionVerifications,
     payoutApprovals,
     payoutRecords,
@@ -12393,6 +12933,30 @@ final class $$ShomitisTableReferences
     );
   }
 
+  static MultiTypedResultKey<$StatementSignoffsTable, List<StatementSignoffRow>>
+  _statementSignoffsRefsTable(_$AppDatabase db) =>
+      MultiTypedResultKey.fromTable(
+        db.statementSignoffs,
+        aliasName: $_aliasNameGenerator(
+          db.shomitis.id,
+          db.statementSignoffs.shomitiId,
+        ),
+      );
+
+  $$StatementSignoffsTableProcessedTableManager get statementSignoffsRefs {
+    final manager = $$StatementSignoffsTableTableManager(
+      $_db,
+      $_db.statementSignoffs,
+    ).filter((f) => f.shomitiId.id.sqlEquals($_itemColumn<String>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(
+      _statementSignoffsRefsTable($_db),
+    );
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+
   static MultiTypedResultKey<
     $PayoutCollectionVerificationsTable,
     List<PayoutCollectionVerificationRow>
@@ -12794,6 +13358,31 @@ class $$ShomitisTableFilterComposer
           }) => $$MonthlyStatementsTableFilterComposer(
             $db: $db,
             $table: $db.monthlyStatements,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<bool> statementSignoffsRefs(
+    Expression<bool> Function($$StatementSignoffsTableFilterComposer f) f,
+  ) {
+    final $$StatementSignoffsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.statementSignoffs,
+      getReferencedColumn: (t) => t.shomitiId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$StatementSignoffsTableFilterComposer(
+            $db: $db,
+            $table: $db.statementSignoffs,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -13252,6 +13841,32 @@ class $$ShomitisTableAnnotationComposer
     return f(composer);
   }
 
+  Expression<T> statementSignoffsRefs<T extends Object>(
+    Expression<T> Function($$StatementSignoffsTableAnnotationComposer a) f,
+  ) {
+    final $$StatementSignoffsTableAnnotationComposer composer =
+        $composerBuilder(
+          composer: this,
+          getCurrentColumn: (t) => t.id,
+          referencedTable: $db.statementSignoffs,
+          getReferencedColumn: (t) => t.shomitiId,
+          builder:
+              (
+                joinBuilder, {
+                $addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer,
+              }) => $$StatementSignoffsTableAnnotationComposer(
+                $db: $db,
+                $table: $db.statementSignoffs,
+                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                joinBuilder: joinBuilder,
+                $removeJoinBuilderFromRootComposer:
+                    $removeJoinBuilderFromRootComposer,
+              ),
+        );
+    return f(composer);
+  }
+
   Expression<T> payoutCollectionVerificationsRefs<T extends Object>(
     Expression<T> Function(
       $$PayoutCollectionVerificationsTableAnnotationComposer a,
@@ -13358,6 +13973,7 @@ class $$ShomitisTableTableManager
             bool defaultEnforcementStepsRefs,
             bool drawRecordsRefs,
             bool monthlyStatementsRefs,
+            bool statementSignoffsRefs,
             bool payoutCollectionVerificationsRefs,
             bool payoutApprovalsRefs,
             bool payoutRecordsRefs,
@@ -13428,6 +14044,7 @@ class $$ShomitisTableTableManager
                 defaultEnforcementStepsRefs = false,
                 drawRecordsRefs = false,
                 monthlyStatementsRefs = false,
+                statementSignoffsRefs = false,
                 payoutCollectionVerificationsRefs = false,
                 payoutApprovalsRefs = false,
                 payoutRecordsRefs = false,
@@ -13449,6 +14066,7 @@ class $$ShomitisTableTableManager
                     if (defaultEnforcementStepsRefs) db.defaultEnforcementSteps,
                     if (drawRecordsRefs) db.drawRecords,
                     if (monthlyStatementsRefs) db.monthlyStatements,
+                    if (statementSignoffsRefs) db.statementSignoffs,
                     if (payoutCollectionVerificationsRefs)
                       db.payoutCollectionVerifications,
                     if (payoutApprovalsRefs) db.payoutApprovals,
@@ -13709,6 +14327,27 @@ class $$ShomitisTableTableManager
                               ),
                           typedResults: items,
                         ),
+                      if (statementSignoffsRefs)
+                        await $_getPrefetchedData<
+                          ShomitiRow,
+                          $ShomitisTable,
+                          StatementSignoffRow
+                        >(
+                          currentTable: table,
+                          referencedTable: $$ShomitisTableReferences
+                              ._statementSignoffsRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$ShomitisTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).statementSignoffsRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.shomitiId == item.id,
+                              ),
+                          typedResults: items,
+                        ),
                       if (payoutCollectionVerificationsRefs)
                         await $_getPrefetchedData<
                           ShomitiRow,
@@ -13805,6 +14444,7 @@ typedef $$ShomitisTableProcessedTableManager =
         bool defaultEnforcementStepsRefs,
         bool drawRecordsRefs,
         bool monthlyStatementsRefs,
+        bool statementSignoffsRefs,
         bool payoutCollectionVerificationsRefs,
         bool payoutApprovalsRefs,
         bool payoutRecordsRefs,
@@ -13993,6 +14633,30 @@ final class $$MembersTableReferences
 
     final cache = $_typedResult.readTableOrNull(
       _defaultEnforcementStepsRefsTable($_db),
+    );
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+
+  static MultiTypedResultKey<$StatementSignoffsTable, List<StatementSignoffRow>>
+  _statementSignoffsRefsTable(_$AppDatabase db) =>
+      MultiTypedResultKey.fromTable(
+        db.statementSignoffs,
+        aliasName: $_aliasNameGenerator(
+          db.members.id,
+          db.statementSignoffs.signerMemberId,
+        ),
+      );
+
+  $$StatementSignoffsTableProcessedTableManager get statementSignoffsRefs {
+    final manager = $$StatementSignoffsTableTableManager(
+      $_db,
+      $_db.statementSignoffs,
+    ).filter((f) => f.signerMemberId.id.sqlEquals($_itemColumn<String>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(
+      _statementSignoffsRefsTable($_db),
     );
     return ProcessedTableManager(
       manager.$state.copyWith(prefetchedData: cache),
@@ -14242,6 +14906,31 @@ class $$MembersTableFilterComposer
                     $removeJoinBuilderFromRootComposer,
               ),
         );
+    return f(composer);
+  }
+
+  Expression<bool> statementSignoffsRefs(
+    Expression<bool> Function($$StatementSignoffsTableFilterComposer f) f,
+  ) {
+    final $$StatementSignoffsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.statementSignoffs,
+      getReferencedColumn: (t) => t.signerMemberId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$StatementSignoffsTableFilterComposer(
+            $db: $db,
+            $table: $db.statementSignoffs,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
     return f(composer);
   }
 }
@@ -14570,6 +15259,32 @@ class $$MembersTableAnnotationComposer
         );
     return f(composer);
   }
+
+  Expression<T> statementSignoffsRefs<T extends Object>(
+    Expression<T> Function($$StatementSignoffsTableAnnotationComposer a) f,
+  ) {
+    final $$StatementSignoffsTableAnnotationComposer composer =
+        $composerBuilder(
+          composer: this,
+          getCurrentColumn: (t) => t.id,
+          referencedTable: $db.statementSignoffs,
+          getReferencedColumn: (t) => t.signerMemberId,
+          builder:
+              (
+                joinBuilder, {
+                $addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer,
+              }) => $$StatementSignoffsTableAnnotationComposer(
+                $db: $db,
+                $table: $db.statementSignoffs,
+                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                joinBuilder: joinBuilder,
+                $removeJoinBuilderFromRootComposer:
+                    $removeJoinBuilderFromRootComposer,
+              ),
+        );
+    return f(composer);
+  }
 }
 
 class $$MembersTableTableManager
@@ -14593,6 +15308,7 @@ class $$MembersTableTableManager
             bool monthlyDuesRefs,
             bool paymentsRefs,
             bool defaultEnforcementStepsRefs,
+            bool statementSignoffsRefs,
           })
         > {
   $$MembersTableTableManager(_$AppDatabase db, $MembersTable table)
@@ -14687,6 +15403,7 @@ class $$MembersTableTableManager
                 monthlyDuesRefs = false,
                 paymentsRefs = false,
                 defaultEnforcementStepsRefs = false,
+                statementSignoffsRefs = false,
               }) {
                 return PrefetchHooks(
                   db: db,
@@ -14698,6 +15415,7 @@ class $$MembersTableTableManager
                     if (monthlyDuesRefs) db.monthlyDues,
                     if (paymentsRefs) db.payments,
                     if (defaultEnforcementStepsRefs) db.defaultEnforcementSteps,
+                    if (statementSignoffsRefs) db.statementSignoffs,
                   ],
                   addJoins:
                       <
@@ -14859,6 +15577,27 @@ class $$MembersTableTableManager
                               ),
                           typedResults: items,
                         ),
+                      if (statementSignoffsRefs)
+                        await $_getPrefetchedData<
+                          MemberRow,
+                          $MembersTable,
+                          StatementSignoffRow
+                        >(
+                          currentTable: table,
+                          referencedTable: $$MembersTableReferences
+                              ._statementSignoffsRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$MembersTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).statementSignoffsRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.signerMemberId == item.id,
+                              ),
+                          typedResults: items,
+                        ),
                     ];
                   },
                 );
@@ -14887,6 +15626,7 @@ typedef $$MembersTableProcessedTableManager =
         bool monthlyDuesRefs,
         bool paymentsRefs,
         bool defaultEnforcementStepsRefs,
+        bool statementSignoffsRefs,
       })
     >;
 typedef $$MemberSharesTableCreateCompanionBuilder =
@@ -22897,6 +23637,495 @@ typedef $$MonthlyStatementsTableProcessedTableManager =
       MonthlyStatementRow,
       PrefetchHooks Function({bool shomitiId, bool ruleSetVersionId})
     >;
+typedef $$StatementSignoffsTableCreateCompanionBuilder =
+    StatementSignoffsCompanion Function({
+      required String shomitiId,
+      required String monthKey,
+      required String signerMemberId,
+      required String signerRole,
+      required String proofReference,
+      Value<String?> note,
+      required DateTime signedAt,
+      required DateTime createdAt,
+      Value<int> rowid,
+    });
+typedef $$StatementSignoffsTableUpdateCompanionBuilder =
+    StatementSignoffsCompanion Function({
+      Value<String> shomitiId,
+      Value<String> monthKey,
+      Value<String> signerMemberId,
+      Value<String> signerRole,
+      Value<String> proofReference,
+      Value<String?> note,
+      Value<DateTime> signedAt,
+      Value<DateTime> createdAt,
+      Value<int> rowid,
+    });
+
+final class $$StatementSignoffsTableReferences
+    extends
+        BaseReferences<
+          _$AppDatabase,
+          $StatementSignoffsTable,
+          StatementSignoffRow
+        > {
+  $$StatementSignoffsTableReferences(
+    super.$_db,
+    super.$_table,
+    super.$_typedResult,
+  );
+
+  static $ShomitisTable _shomitiIdTable(_$AppDatabase db) =>
+      db.shomitis.createAlias(
+        $_aliasNameGenerator(db.statementSignoffs.shomitiId, db.shomitis.id),
+      );
+
+  $$ShomitisTableProcessedTableManager get shomitiId {
+    final $_column = $_itemColumn<String>('shomiti_id')!;
+
+    final manager = $$ShomitisTableTableManager(
+      $_db,
+      $_db.shomitis,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_shomitiIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+
+  static $MembersTable _signerMemberIdTable(_$AppDatabase db) =>
+      db.members.createAlias(
+        $_aliasNameGenerator(
+          db.statementSignoffs.signerMemberId,
+          db.members.id,
+        ),
+      );
+
+  $$MembersTableProcessedTableManager get signerMemberId {
+    final $_column = $_itemColumn<String>('signer_member_id')!;
+
+    final manager = $$MembersTableTableManager(
+      $_db,
+      $_db.members,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_signerMemberIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+}
+
+class $$StatementSignoffsTableFilterComposer
+    extends Composer<_$AppDatabase, $StatementSignoffsTable> {
+  $$StatementSignoffsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get monthKey => $composableBuilder(
+    column: $table.monthKey,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get signerRole => $composableBuilder(
+    column: $table.signerRole,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get proofReference => $composableBuilder(
+    column: $table.proofReference,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get note => $composableBuilder(
+    column: $table.note,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get signedAt => $composableBuilder(
+    column: $table.signedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  $$ShomitisTableFilterComposer get shomitiId {
+    final $$ShomitisTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.shomitiId,
+      referencedTable: $db.shomitis,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ShomitisTableFilterComposer(
+            $db: $db,
+            $table: $db.shomitis,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$MembersTableFilterComposer get signerMemberId {
+    final $$MembersTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.signerMemberId,
+      referencedTable: $db.members,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$MembersTableFilterComposer(
+            $db: $db,
+            $table: $db.members,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$StatementSignoffsTableOrderingComposer
+    extends Composer<_$AppDatabase, $StatementSignoffsTable> {
+  $$StatementSignoffsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get monthKey => $composableBuilder(
+    column: $table.monthKey,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get signerRole => $composableBuilder(
+    column: $table.signerRole,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get proofReference => $composableBuilder(
+    column: $table.proofReference,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get note => $composableBuilder(
+    column: $table.note,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get signedAt => $composableBuilder(
+    column: $table.signedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  $$ShomitisTableOrderingComposer get shomitiId {
+    final $$ShomitisTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.shomitiId,
+      referencedTable: $db.shomitis,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ShomitisTableOrderingComposer(
+            $db: $db,
+            $table: $db.shomitis,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$MembersTableOrderingComposer get signerMemberId {
+    final $$MembersTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.signerMemberId,
+      referencedTable: $db.members,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$MembersTableOrderingComposer(
+            $db: $db,
+            $table: $db.members,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$StatementSignoffsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $StatementSignoffsTable> {
+  $$StatementSignoffsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get monthKey =>
+      $composableBuilder(column: $table.monthKey, builder: (column) => column);
+
+  GeneratedColumn<String> get signerRole => $composableBuilder(
+    column: $table.signerRole,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get proofReference => $composableBuilder(
+    column: $table.proofReference,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get note =>
+      $composableBuilder(column: $table.note, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get signedAt =>
+      $composableBuilder(column: $table.signedAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  $$ShomitisTableAnnotationComposer get shomitiId {
+    final $$ShomitisTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.shomitiId,
+      referencedTable: $db.shomitis,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ShomitisTableAnnotationComposer(
+            $db: $db,
+            $table: $db.shomitis,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$MembersTableAnnotationComposer get signerMemberId {
+    final $$MembersTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.signerMemberId,
+      referencedTable: $db.members,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$MembersTableAnnotationComposer(
+            $db: $db,
+            $table: $db.members,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$StatementSignoffsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $StatementSignoffsTable,
+          StatementSignoffRow,
+          $$StatementSignoffsTableFilterComposer,
+          $$StatementSignoffsTableOrderingComposer,
+          $$StatementSignoffsTableAnnotationComposer,
+          $$StatementSignoffsTableCreateCompanionBuilder,
+          $$StatementSignoffsTableUpdateCompanionBuilder,
+          (StatementSignoffRow, $$StatementSignoffsTableReferences),
+          StatementSignoffRow,
+          PrefetchHooks Function({bool shomitiId, bool signerMemberId})
+        > {
+  $$StatementSignoffsTableTableManager(
+    _$AppDatabase db,
+    $StatementSignoffsTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$StatementSignoffsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$StatementSignoffsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$StatementSignoffsTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<String> shomitiId = const Value.absent(),
+                Value<String> monthKey = const Value.absent(),
+                Value<String> signerMemberId = const Value.absent(),
+                Value<String> signerRole = const Value.absent(),
+                Value<String> proofReference = const Value.absent(),
+                Value<String?> note = const Value.absent(),
+                Value<DateTime> signedAt = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => StatementSignoffsCompanion(
+                shomitiId: shomitiId,
+                monthKey: monthKey,
+                signerMemberId: signerMemberId,
+                signerRole: signerRole,
+                proofReference: proofReference,
+                note: note,
+                signedAt: signedAt,
+                createdAt: createdAt,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String shomitiId,
+                required String monthKey,
+                required String signerMemberId,
+                required String signerRole,
+                required String proofReference,
+                Value<String?> note = const Value.absent(),
+                required DateTime signedAt,
+                required DateTime createdAt,
+                Value<int> rowid = const Value.absent(),
+              }) => StatementSignoffsCompanion.insert(
+                shomitiId: shomitiId,
+                monthKey: monthKey,
+                signerMemberId: signerMemberId,
+                signerRole: signerRole,
+                proofReference: proofReference,
+                note: note,
+                signedAt: signedAt,
+                createdAt: createdAt,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable(table),
+                  $$StatementSignoffsTableReferences(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: ({shomitiId = false, signerMemberId = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [],
+              addJoins:
+                  <
+                    T extends TableManagerState<
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic
+                    >
+                  >(state) {
+                    if (shomitiId) {
+                      state =
+                          state.withJoin(
+                                currentTable: table,
+                                currentColumn: table.shomitiId,
+                                referencedTable:
+                                    $$StatementSignoffsTableReferences
+                                        ._shomitiIdTable(db),
+                                referencedColumn:
+                                    $$StatementSignoffsTableReferences
+                                        ._shomitiIdTable(db)
+                                        .id,
+                              )
+                              as T;
+                    }
+                    if (signerMemberId) {
+                      state =
+                          state.withJoin(
+                                currentTable: table,
+                                currentColumn: table.signerMemberId,
+                                referencedTable:
+                                    $$StatementSignoffsTableReferences
+                                        ._signerMemberIdTable(db),
+                                referencedColumn:
+                                    $$StatementSignoffsTableReferences
+                                        ._signerMemberIdTable(db)
+                                        .id,
+                              )
+                              as T;
+                    }
+
+                    return state;
+                  },
+              getPrefetchedDataCallback: (items) async {
+                return [];
+              },
+            );
+          },
+        ),
+      );
+}
+
+typedef $$StatementSignoffsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $StatementSignoffsTable,
+      StatementSignoffRow,
+      $$StatementSignoffsTableFilterComposer,
+      $$StatementSignoffsTableOrderingComposer,
+      $$StatementSignoffsTableAnnotationComposer,
+      $$StatementSignoffsTableCreateCompanionBuilder,
+      $$StatementSignoffsTableUpdateCompanionBuilder,
+      (StatementSignoffRow, $$StatementSignoffsTableReferences),
+      StatementSignoffRow,
+      PrefetchHooks Function({bool shomitiId, bool signerMemberId})
+    >;
 typedef $$PayoutCollectionVerificationsTableCreateCompanionBuilder =
     PayoutCollectionVerificationsCompanion Function({
       required String shomitiId,
@@ -24526,6 +25755,8 @@ class $AppDatabaseManager {
       $$DrawWitnessApprovalsTableTableManager(_db, _db.drawWitnessApprovals);
   $$MonthlyStatementsTableTableManager get monthlyStatements =>
       $$MonthlyStatementsTableTableManager(_db, _db.monthlyStatements);
+  $$StatementSignoffsTableTableManager get statementSignoffs =>
+      $$StatementSignoffsTableTableManager(_db, _db.statementSignoffs);
   $$PayoutCollectionVerificationsTableTableManager
   get payoutCollectionVerifications =>
       $$PayoutCollectionVerificationsTableTableManager(

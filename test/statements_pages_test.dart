@@ -17,6 +17,11 @@ import 'package:tan_shomiti/src/features/audit/domain/repositories/audit_reposit
 import 'package:tan_shomiti/src/features/audit/domain/entities/audit_event.dart';
 import 'package:tan_shomiti/src/features/audit/domain/usecases/append_audit_event.dart';
 import 'package:tan_shomiti/src/features/audit/presentation/providers/audit_providers.dart';
+import 'package:tan_shomiti/src/features/members/domain/entities/member.dart';
+import 'package:tan_shomiti/src/features/members/presentation/models/members_ui_state.dart';
+import 'package:tan_shomiti/src/features/members/presentation/providers/members_providers.dart';
+import 'package:tan_shomiti/src/features/statements/domain/entities/statement_signoff.dart';
+import 'package:tan_shomiti/src/features/statements/domain/repositories/statement_signoffs_repository.dart';
 
 void main() {
   Future<void> pumpOverview(
@@ -67,12 +72,15 @@ void main() {
     expect(find.byKey(const Key('statement_ready_badge')), findsOneWidget);
     expect(find.byKey(const Key('statement_generate')), findsOneWidget);
 
-    final button =
-        tester.widget<AppButton>(find.byKey(const Key('statement_generate')));
+    final button = tester.widget<AppButton>(
+      find.byKey(const Key('statement_generate')),
+    );
     expect(button.onPressed, isNull);
   });
 
-  testWidgets('Statements overview enables generate when ready', (tester) async {
+  testWidgets('Statements overview enables generate when ready', (
+    tester,
+  ) async {
     await pumpOverview(
       tester,
       overrides: [
@@ -89,8 +97,9 @@ void main() {
     );
 
     await tester.pumpAndSettle();
-    final button =
-        tester.widget<AppButton>(find.byKey(const Key('statement_generate')));
+    final button = tester.widget<AppButton>(
+      find.byKey(const Key('statement_generate')),
+    );
     expect(button.onPressed, isNotNull);
   });
 
@@ -135,11 +144,43 @@ void main() {
           statementsRepositoryProvider.overrideWithValue(
             _FakeStatementsRepository(statement),
           ),
+          statementSignoffsRepositoryProvider.overrideWithValue(
+            _FakeStatementSignoffsRepository(),
+          ),
+          membersUiStateProvider.overrideWith(
+            (ref) => Stream.value(
+              MembersUiState(
+                shomitiId: shomiti.id,
+                isJoiningClosed: false,
+                closedJoiningReason: null,
+                members: [
+                  Member(
+                    id: 'm1',
+                    shomitiId: shomiti.id,
+                    position: 1,
+                    fullName: 'Member 1',
+                    phone: null,
+                    addressOrWorkplace: null,
+                    emergencyContactName: null,
+                    emergencyContactPhone: null,
+                    nidOrPassport: null,
+                    notes: null,
+                    isActive: true,
+                    createdAt: DateTime.utc(2026, 1, 1),
+                    updatedAt: null,
+                  ),
+                ],
+              ),
+            ),
+          ),
           appendAuditEventProvider.overrideWith(
             (ref) => AppendAuditEvent(_FakeAuditRepository()),
           ),
         ],
-        child: MaterialApp(theme: AppTheme.light(), home: const StatementDetailPage()),
+        child: MaterialApp(
+          theme: AppTheme.light(),
+          home: const StatementDetailPage(),
+        ),
       ),
     );
     for (var i = 0; i < 30; i++) {
@@ -196,4 +237,28 @@ class _FakeAuditRepository implements AuditRepository {
   @override
   Stream<List<AuditEvent>> watchLatest({int limit = 100}) =>
       const Stream<List<AuditEvent>>.empty();
+}
+
+class _FakeStatementSignoffsRepository implements StatementSignoffsRepository {
+  @override
+  Stream<List<StatementSignoff>> watchForMonth({
+    required String shomitiId,
+    required BillingMonth month,
+  }) => const Stream<List<StatementSignoff>>.empty();
+
+  @override
+  Future<List<StatementSignoff>> listForMonth({
+    required String shomitiId,
+    required BillingMonth month,
+  }) async => const [];
+
+  @override
+  Future<void> upsert(StatementSignoff signoff) async {}
+
+  @override
+  Future<void> delete({
+    required String shomitiId,
+    required BillingMonth month,
+    required String signerMemberId,
+  }) async {}
 }

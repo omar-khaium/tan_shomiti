@@ -24,6 +24,7 @@ import 'tables/default_enforcement_steps.dart';
 import 'tables/draw_records.dart';
 import 'tables/draw_witness_approvals.dart';
 import 'tables/monthly_statements.dart';
+import 'tables/statement_signoffs.dart';
 import 'tables/payout_approvals.dart';
 import 'tables/payout_collection_verifications.dart';
 import 'tables/payout_records.dart';
@@ -52,6 +53,7 @@ part 'app_database.g.dart';
     DrawRecords,
     DrawWitnessApprovals,
     MonthlyStatements,
+    StatementSignoffs,
     PayoutCollectionVerifications,
     PayoutApprovals,
     PayoutRecords,
@@ -66,7 +68,7 @@ class AppDatabase extends _$AppDatabase {
   factory AppDatabase.memory() => AppDatabase(NativeDatabase.memory());
 
   @override
-  int get schemaVersion => 15;
+  int get schemaVersion => 16;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -133,6 +135,9 @@ class AppDatabase extends _$AppDatabase {
       }
       if (from < 15) {
         await m.createTable(monthlyStatements);
+      }
+      if (from < 16) {
+        await m.createTable(statementSignoffs);
       }
     },
   );

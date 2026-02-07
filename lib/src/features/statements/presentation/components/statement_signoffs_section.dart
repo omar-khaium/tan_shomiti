@@ -5,16 +5,25 @@ import '../../../../core/ui/components/app_button.dart';
 import '../../../../core/ui/components/app_card.dart';
 import '../../../../core/ui/components/app_status_chip.dart';
 import '../../../../core/ui/tokens/app_spacing.dart';
+import '../../domain/entities/statement_signer_role.dart';
 import '../models/statement_signoff_ui_model.dart';
 import '../providers/statement_signoffs_providers.dart';
+import '../providers/statements_domain_providers.dart';
 
 class StatementSignoffsSection extends ConsumerWidget {
-  const StatementSignoffsSection({super.key});
+  const StatementSignoffsSection({
+    required this.args,
+    required this.isEnabled,
+    super.key,
+  });
+
+  final StatementMonthArgs args;
+  final bool isEnabled;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final status = ref.watch(statementSignoffStatusProvider);
-    final signoffs = ref.watch(statementSignoffsControllerProvider);
+    final status = ref.watch(statementSignoffStatusProvider(args));
+    final signoffs = ref.watch(statementSignoffsUiModelsProvider(args));
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -27,12 +36,14 @@ class StatementSignoffsSection extends ConsumerWidget {
                 key: const Key('statement_signoff_status'),
                 label: switch (status) {
                   StatementSignoffStatusUi.notSigned => 'Not signed',
-                  StatementSignoffStatusUi.partiallySigned => 'Partially signed',
+                  StatementSignoffStatusUi.partiallySigned =>
+                    'Partially signed',
                   StatementSignoffStatusUi.signed => 'Signed',
                 },
                 kind: switch (status) {
                   StatementSignoffStatusUi.notSigned => AppStatusKind.warning,
-                  StatementSignoffStatusUi.partiallySigned => AppStatusKind.warning,
+                  StatementSignoffStatusUi.partiallySigned =>
+                    AppStatusKind.warning,
                   StatementSignoffStatusUi.signed => AppStatusKind.success,
                 },
               ),
@@ -41,35 +52,50 @@ class StatementSignoffsSection extends ConsumerWidget {
         ),
         const SizedBox(height: AppSpacing.s12),
         if (signoffs.isEmpty)
-          const AppCard(
+          AppCard(
             child: Text(
-              'No sign-offs yet.',
-              key: Key('statement_signoffs_empty'),
+              isEnabled
+                  ? 'No sign-offs yet.'
+                  : 'Generate the statement before adding sign-offs.',
+              key: const Key('statement_signoffs_empty'),
             ),
           )
-        else
-          ...[
-            for (var i = 0; i < signoffs.length; i++) ...[
-              _SignoffRow(index: i, signoff: signoffs[i]),
-              const SizedBox(height: AppSpacing.s12),
-            ],
+        else ...[
+          for (var i = 0; i < signoffs.length; i++) ...[
+            _SignoffRow(args: args, index: i, signoff: signoffs[i]),
+            const SizedBox(height: AppSpacing.s12),
           ],
+        ],
         AppButton.secondary(
           key: const Key('statement_add_signoff'),
           label: 'Add sign-off',
-          onPressed: () async {
-            final result = await showDialog<_NewSignoffInput>(
-              context: context,
-              builder: (context) => const _AddSignoffDialog(),
-            );
-            if (result == null) return;
-            ref.read(statementSignoffsControllerProvider.notifier).addSignoff(
-                  signerName: result.signerName,
-                  role: result.role,
-                  proofReference: result.proofReference,
-                  now: DateTime.now(),
-                );
-          },
+          onPressed: isEnabled
+              ? () async {
+                  final result = await showDialog<_NewSignoffInput>(
+                    context: context,
+                    builder: (context) => _AddSignoffDialog(args: args),
+                  );
+                  if (result == null) return;
+
+                  try {
+                    await ref.read(recordStatementSignoffProvider)(
+                      shomitiId: args.shomitiId,
+                      month: args.month,
+                      signerMemberId: result.signerMemberId,
+                      role: result.role,
+                      proofReference: result.proofReference,
+                      note: result.note,
+                      now: DateTime.now(),
+                    );
+                    ref.invalidate(statementSignoffsByMonthProvider(args));
+                  } catch (e) {
+                    if (!context.mounted) return;
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Failed to add sign-off: $e')),
+                    );
+                  }
+                }
+              : null,
         ),
       ],
     );
@@ -77,8 +103,13 @@ class StatementSignoffsSection extends ConsumerWidget {
 }
 
 class _SignoffRow extends ConsumerWidget {
-  const _SignoffRow({required this.index, required this.signoff});
+  const _SignoffRow({
+    required this.args,
+    required this.index,
+    required this.signoff,
+  });
 
+  final StatementMonthArgs args;
   final int index;
   final StatementSignoffUiModel signoff;
 
@@ -91,7 +122,10 @@ class _SignoffRow extends ConsumerWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(signoff.signerName, key: Key('statement_signoff_name_$index')),
+                Text(
+                  signoff.signerName,
+                  key: Key('statement_signoff_name_$index'),
+                ),
                 const SizedBox(height: AppSpacing.s4),
                 Text(
                   '${signoff.roleLabel} • ${signoff.proofReference}',
@@ -104,7 +138,15 @@ class _SignoffRow extends ConsumerWidget {
           IconButton(
             key: Key('statement_signoff_remove_$index'),
             tooltip: 'Remove sign-off',
-            onPressed: () => ref.read(statementSignoffsControllerProvider.notifier).removeAt(index),
+            onPressed: () async {
+              await ref.read(deleteStatementSignoffProvider)(
+                shomitiId: args.shomitiId,
+                month: args.month,
+                signerMemberId: signoff.signerMemberId,
+                now: DateTime.now(),
+              );
+              ref.invalidate(statementSignoffsByMonthProvider(args));
+            },
             icon: const Icon(Icons.delete_outline),
           ),
         ],
@@ -116,62 +158,76 @@ class _SignoffRow extends ConsumerWidget {
 @immutable
 class _NewSignoffInput {
   const _NewSignoffInput({
-    required this.signerName,
+    required this.signerMemberId,
     required this.role,
     required this.proofReference,
+    required this.note,
   });
 
-  final String signerName;
-  final StatementSignerRoleUi role;
+  final String signerMemberId;
+  final StatementSignerRole role;
   final String proofReference;
+  final String? note;
 }
 
-class _AddSignoffDialog extends StatefulWidget {
-  const _AddSignoffDialog();
+class _AddSignoffDialog extends ConsumerStatefulWidget {
+  const _AddSignoffDialog({required this.args});
+
+  final StatementMonthArgs args;
 
   @override
-  State<_AddSignoffDialog> createState() => _AddSignoffDialogState();
+  ConsumerState<_AddSignoffDialog> createState() => _AddSignoffDialogState();
 }
 
-class _AddSignoffDialogState extends State<_AddSignoffDialog> {
-  final _nameController = TextEditingController();
+class _AddSignoffDialogState extends ConsumerState<_AddSignoffDialog> {
   final _proofController = TextEditingController();
-  StatementSignerRoleUi _role = StatementSignerRoleUi.witness;
+  final _noteController = TextEditingController();
+  StatementSignerRole _role = StatementSignerRole.witness;
+  String? _selectedSignerId;
 
   @override
   void dispose() {
-    _nameController.dispose();
     _proofController.dispose();
+    _noteController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final canSave = _nameController.text.trim().isNotEmpty && _proofController.text.trim().isNotEmpty;
+    final signers = ref.watch(
+      statementSignoffEligibleSignersProvider(widget.args),
+    );
+
+    final canSave =
+        _selectedSignerId != null && _proofController.text.trim().isNotEmpty;
 
     return AlertDialog(
       title: const Text('Add sign-off'),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          TextField(
-            key: const Key('statement_signoff_signer_name'),
-            controller: _nameController,
-            decoration: const InputDecoration(labelText: 'Signer name'),
-            onChanged: (_) => setState(() {}),
+          DropdownButtonFormField<String>(
+            key: const Key('statement_signoff_signer_member'),
+            decoration: const InputDecoration(labelText: 'Signer'),
+            initialValue: _selectedSignerId,
+            items: [
+              for (final s in signers)
+                DropdownMenuItem(value: s.id, child: Text(s.name)),
+            ],
+            onChanged: (value) => setState(() => _selectedSignerId = value),
           ),
           const SizedBox(height: AppSpacing.s12),
-          DropdownButtonFormField<StatementSignerRoleUi>(
+          DropdownButtonFormField<StatementSignerRole>(
             key: const Key('statement_signoff_role'),
             decoration: const InputDecoration(labelText: 'Role'),
             initialValue: _role,
             items: const [
               DropdownMenuItem(
-                value: StatementSignerRoleUi.auditor,
+                value: StatementSignerRole.auditor,
                 child: Text('Auditor'),
               ),
               DropdownMenuItem(
-                value: StatementSignerRoleUi.witness,
+                value: StatementSignerRole.witness,
                 child: Text('Witness'),
               ),
             ],
@@ -183,6 +239,13 @@ class _AddSignoffDialogState extends State<_AddSignoffDialog> {
             controller: _proofController,
             decoration: const InputDecoration(labelText: 'Proof reference'),
             onChanged: (_) => setState(() {}),
+          ),
+          const SizedBox(height: AppSpacing.s12),
+          TextField(
+            key: const Key('statement_signoff_note'),
+            controller: _noteController,
+            decoration: const InputDecoration(labelText: 'Notes (optional)'),
+            maxLines: 2,
           ),
         ],
       ),
@@ -196,12 +259,15 @@ class _AddSignoffDialogState extends State<_AddSignoffDialog> {
           key: const Key('statement_signoff_save'),
           onPressed: canSave
               ? () => Navigator.of(context).pop(
-                    _NewSignoffInput(
-                      signerName: _nameController.text.trim(),
-                      role: _role,
-                      proofReference: _proofController.text.trim(),
-                    ),
-                  )
+                  _NewSignoffInput(
+                    signerMemberId: _selectedSignerId!,
+                    role: _role,
+                    proofReference: _proofController.text.trim(),
+                    note: _noteController.text.trim().isEmpty
+                        ? null
+                        : _noteController.text.trim(),
+                  ),
+                )
               : null,
           child: const Text('Save'),
         ),
