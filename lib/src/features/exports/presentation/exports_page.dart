@@ -33,9 +33,14 @@ class ExportsPage extends StatelessWidget {
             value: 'Export recent ledger entries (CSV)',
             onTap: () => context.push(exportLedgerLocation),
           ),
+          AppListRow(
+            key: const Key('exports_open_audit'),
+            title: auditTitle,
+            value: 'Review export/audit events',
+            onTap: () => context.push(auditLocation),
+          ),
         ],
       ),
     );
   }
 }
-
