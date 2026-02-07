@@ -32,6 +32,7 @@ import 'tables/payout_approvals.dart';
 import 'tables/payout_collection_verifications.dart';
 import 'tables/payout_records.dart';
 import 'tables/shomitis.dart';
+import 'tables/monthly_checklist_items.dart';
 
 part 'app_database.g.dart';
 
@@ -60,6 +61,7 @@ part 'app_database.g.dart';
     DrawWitnessApprovals,
     MonthlyStatements,
     StatementSignoffs,
+    MonthlyChecklistItems,
     PayoutCollectionVerifications,
     PayoutApprovals,
     PayoutRecords,
@@ -74,7 +76,7 @@ class AppDatabase extends _$AppDatabase {
   factory AppDatabase.memory() => AppDatabase(NativeDatabase.memory());
 
   @override
-  int get schemaVersion => 18;
+  int get schemaVersion => 19;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -151,6 +153,9 @@ class AppDatabase extends _$AppDatabase {
       if (from < 18) {
         await m.createTable(disputes);
         await m.createTable(disputeStepCompletions);
+      }
+      if (from < 19) {
+        await m.createTable(monthlyChecklistItems);
       }
     },
   );
