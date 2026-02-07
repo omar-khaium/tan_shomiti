@@ -357,7 +357,11 @@ final appRouterProvider = Provider<GoRouter>((ref) {
           GoRoute(
             path: ruleChangesConsentLocation,
             name: ruleChangesConsentRouteName,
-            builder: (context, state) => const RuleChangeConsentPage(),
+            builder: (context, state) {
+              final extra = state.extra;
+              final amendmentId = extra is String ? extra : '';
+              return RuleChangeConsentPage(amendmentId: amendmentId);
+            },
           ),
           GoRoute(
             path: statementsLocation,

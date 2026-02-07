@@ -14,6 +14,7 @@ import 'tables/guarantors.dart';
 import 'tables/security_deposits.dart';
 import 'tables/role_assignments.dart';
 import 'tables/rule_set_versions.dart';
+import 'tables/rule_amendments.dart';
 import 'tables/membership_change_requests.dart';
 import 'tables/membership_change_approvals.dart';
 import 'tables/due_months.dart';
@@ -43,6 +44,7 @@ part 'app_database.g.dart';
     RoleAssignments,
     MemberConsents,
     RuleSetVersions,
+    RuleAmendments,
     MembershipChangeRequests,
     MembershipChangeApprovals,
     DueMonths,
@@ -68,7 +70,7 @@ class AppDatabase extends _$AppDatabase {
   factory AppDatabase.memory() => AppDatabase(NativeDatabase.memory());
 
   @override
-  int get schemaVersion => 16;
+  int get schemaVersion => 17;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -138,6 +140,9 @@ class AppDatabase extends _$AppDatabase {
       }
       if (from < 16) {
         await m.createTable(statementSignoffs);
+      }
+      if (from < 17) {
+        await m.createTable(ruleAmendments);
       }
     },
   );
