@@ -1,0 +1,5 @@
+enum StatementSignerRole {
+  auditor,
+  witness,
+}
+

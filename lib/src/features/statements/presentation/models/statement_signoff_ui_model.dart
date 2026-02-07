@@ -1,27 +1,25 @@
 import 'package:flutter/foundation.dart';
 
-enum StatementSignerRoleUi {
-  auditor,
-  witness,
-}
+import '../../domain/entities/statement_signer_role.dart';
 
 @immutable
 class StatementSignoffUiModel {
   const StatementSignoffUiModel({
+    required this.signerMemberId,
     required this.signerName,
     required this.role,
     required this.proofReference,
     required this.signedAt,
   });
 
+  final String signerMemberId;
   final String signerName;
-  final StatementSignerRoleUi role;
+  final StatementSignerRole role;
   final String proofReference;
   final DateTime signedAt;
 
   String get roleLabel => switch (role) {
-    StatementSignerRoleUi.auditor => 'Auditor',
-    StatementSignerRoleUi.witness => 'Witness',
+    StatementSignerRole.auditor => 'Auditor',
+    StatementSignerRole.witness => 'Witness',
   };
 }
-

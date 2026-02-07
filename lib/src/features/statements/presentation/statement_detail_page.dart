@@ -17,7 +17,8 @@ class StatementDetailPage extends ConsumerStatefulWidget {
   const StatementDetailPage({super.key});
 
   @override
-  ConsumerState<StatementDetailPage> createState() => _StatementDetailPageState();
+  ConsumerState<StatementDetailPage> createState() =>
+      _StatementDetailPageState();
 }
 
 class _StatementDetailPageState extends ConsumerState<StatementDetailPage> {
@@ -43,16 +44,16 @@ class _StatementDetailPageState extends ConsumerState<StatementDetailPage> {
         _viewLogged = true;
         final now = DateTime.now();
         ref.read(appendAuditEventProvider)(
-              NewAuditEvent(
-                action: 'statement_viewed',
-                occurredAt: now,
-                message: 'Viewed monthly statement.',
-                metadataJson: jsonEncode({
-                  'shomitiId': shomitiId,
-                  'monthKey': statement.month.key,
-                }),
-              ),
-            );
+          NewAuditEvent(
+            action: 'statement_viewed',
+            occurredAt: now,
+            message: 'Viewed monthly statement.',
+            metadataJson: jsonEncode({
+              'shomitiId': shomitiId,
+              'monthKey': statement.month.key,
+            }),
+          ),
+        );
       });
     } else {
       statementAsync = const AsyncValue.data(null);
@@ -67,7 +68,8 @@ class _StatementDetailPageState extends ConsumerState<StatementDetailPage> {
           error: (e, s) => Center(child: Text('Failed to load statement: $e')),
           data: (statement) {
             final totalDue = statement?.totalDueBdt.toString() ?? '—';
-            final totalCollected = statement?.totalCollectedBdt.toString() ?? '—';
+            final totalCollected =
+                statement?.totalCollectedBdt.toString() ?? '—';
             final shortfall = statement?.shortfallBdt.toString() ?? '—';
             final winner = statement?.winnerLabel ?? '—';
             final drawProof = statement?.drawProofReference ?? '—';
@@ -123,7 +125,14 @@ class _StatementDetailPageState extends ConsumerState<StatementDetailPage> {
                   ),
                 ),
                 const SizedBox(height: AppSpacing.s16),
-                const StatementSignoffsSection(),
+                if (month != null && shomitiId != null)
+                  StatementSignoffsSection(
+                    args: StatementMonthArgs(
+                      shomitiId: shomitiId,
+                      month: month,
+                    ),
+                    isEnabled: statement != null,
+                  ),
               ],
             );
           },
