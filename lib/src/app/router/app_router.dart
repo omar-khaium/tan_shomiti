@@ -18,6 +18,9 @@ import '../../features/members/presentation/member_detail_page.dart';
 import '../../features/members/presentation/member_form_page.dart';
 import '../../features/members/presentation/members_page.dart';
 import '../../features/rules/presentation/rules_page.dart';
+import '../../features/rules/presentation/rule_changes_page.dart';
+import '../../features/rules/presentation/propose_rule_change_page.dart';
+import '../../features/rules/presentation/rule_change_consent_page.dart';
 import '../../features/shares/presentation/shares_page.dart';
 import '../../features/risk_controls/presentation/risk_controls_page.dart';
 import '../../features/membership_changes/presentation/membership_changes_page.dart';
@@ -107,6 +110,16 @@ const ledgerTitle = 'Ledger';
 const rulesLocation = '/rules';
 const rulesRouteName = 'rules';
 const rulesTitle = 'Rules';
+
+const ruleChangesLocation = '/rule-changes';
+const ruleChangesRouteName = 'ruleChanges';
+const ruleChangesTitle = 'Rule changes';
+
+const ruleChangesProposeLocation = '/rule-changes/propose';
+const ruleChangesProposeRouteName = 'ruleChangesPropose';
+
+const ruleChangesConsentLocation = '/rule-changes/consent';
+const ruleChangesConsentRouteName = 'ruleChangesConsent';
 
 const statementsLocation = '/statements';
 const statementsRouteName = 'statements';
@@ -229,8 +242,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
           GoRoute(
             path: contributionsLocation,
             name: contributionsRouteName,
-            builder: (context, state) =>
-                const ContributionsPage(),
+            builder: (context, state) => const ContributionsPage(),
           ),
           GoRoute(
             path: moreLocation,
@@ -304,7 +316,8 @@ final appRouterProvider = Provider<GoRouter>((ref) {
           GoRoute(
             path: payoutCollectionLocation,
             name: payoutCollectionRouteName,
-            builder: (context, state) => const PayoutCollectionVerificationPage(),
+            builder: (context, state) =>
+                const PayoutCollectionVerificationPage(),
           ),
           GoRoute(
             path: payoutApprovalsLocation,
@@ -330,6 +343,21 @@ final appRouterProvider = Provider<GoRouter>((ref) {
             path: rulesLocation,
             name: rulesRouteName,
             builder: (context, state) => const RulesPage(),
+          ),
+          GoRoute(
+            path: ruleChangesLocation,
+            name: ruleChangesRouteName,
+            builder: (context, state) => const RuleChangesPage(),
+          ),
+          GoRoute(
+            path: ruleChangesProposeLocation,
+            name: ruleChangesProposeRouteName,
+            builder: (context, state) => const ProposeRuleChangePage(),
+          ),
+          GoRoute(
+            path: ruleChangesConsentLocation,
+            name: ruleChangesConsentRouteName,
+            builder: (context, state) => const RuleChangeConsentPage(),
           ),
           GoRoute(
             path: statementsLocation,
