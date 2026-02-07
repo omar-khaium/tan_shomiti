@@ -21,6 +21,9 @@ import '../../features/rules/presentation/rules_page.dart';
 import '../../features/rules/presentation/rule_changes_page.dart';
 import '../../features/rules/presentation/propose_rule_change_page.dart';
 import '../../features/rules/presentation/rule_change_consent_page.dart';
+import '../../features/disputes/presentation/disputes_page.dart';
+import '../../features/disputes/presentation/create_dispute_page.dart';
+import '../../features/disputes/presentation/dispute_detail_page.dart';
 import '../../features/shares/presentation/shares_page.dart';
 import '../../features/risk_controls/presentation/risk_controls_page.dart';
 import '../../features/membership_changes/presentation/membership_changes_page.dart';
@@ -147,6 +150,12 @@ const defaultsTitle = 'Defaults';
 const disputesLocation = '/disputes';
 const disputesRouteName = 'disputes';
 const disputesTitle = 'Disputes';
+
+const disputeCreateLocation = '/disputes/new';
+const disputeCreateRouteName = 'disputeCreate';
+
+const disputeDetailsRouteName = 'disputeDetails';
+String disputeDetailsLocation(String disputeId) => '/disputes/$disputeId';
 
 const settingsLocation = '/settings';
 const settingsRouteName = 'settings';
@@ -396,8 +405,22 @@ final appRouterProvider = Provider<GoRouter>((ref) {
           GoRoute(
             path: disputesLocation,
             name: disputesRouteName,
-            builder: (context, state) =>
-                const PlaceholderPage(title: disputesTitle),
+            builder: (context, state) => const DisputesPage(),
+            routes: [
+              GoRoute(
+                path: 'new',
+                name: disputeCreateRouteName,
+                builder: (context, state) => const CreateDisputePage(),
+              ),
+              GoRoute(
+                path: ':disputeId',
+                name: disputeDetailsRouteName,
+                builder: (context, state) {
+                  final id = state.pathParameters['disputeId'] ?? '';
+                  return DisputeDetailPage(disputeId: id);
+                },
+              ),
+            ],
           ),
           GoRoute(
             path: settingsLocation,
