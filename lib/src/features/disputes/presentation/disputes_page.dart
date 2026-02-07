@@ -26,8 +26,8 @@ class DisputesPage extends ConsumerWidget {
           title: const Text(disputesTitle),
           bottom: const TabBar(
             tabs: [
-              Tab(text: 'Open'),
-              Tab(text: 'Resolved'),
+              Tab(key: Key('disputes_tab_open'), text: 'Open'),
+              Tab(key: Key('disputes_tab_resolved'), text: 'Resolved'),
             ],
           ),
         ),
