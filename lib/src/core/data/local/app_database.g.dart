@@ -4468,6 +4468,613 @@ class MemberConsentsCompanion extends UpdateCompanion<MemberConsentRow> {
   }
 }
 
+class $RuleAmendmentsTable extends RuleAmendments
+    with TableInfo<$RuleAmendmentsTable, RuleAmendmentRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $RuleAmendmentsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _shomitiIdMeta = const VerificationMeta(
+    'shomitiId',
+  );
+  @override
+  late final GeneratedColumn<String> shomitiId = GeneratedColumn<String>(
+    'shomiti_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES shomitis (id)',
+    ),
+  );
+  static const VerificationMeta _baseRuleSetVersionIdMeta =
+      const VerificationMeta('baseRuleSetVersionId');
+  @override
+  late final GeneratedColumn<String> baseRuleSetVersionId =
+      GeneratedColumn<String>(
+        'base_rule_set_version_id',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+      );
+  static const VerificationMeta _proposedRuleSetVersionIdMeta =
+      const VerificationMeta('proposedRuleSetVersionId');
+  @override
+  late final GeneratedColumn<String> proposedRuleSetVersionId =
+      GeneratedColumn<String>(
+        'proposed_rule_set_version_id',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+        defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'REFERENCES rule_set_versions (id)',
+        ),
+      );
+  static const VerificationMeta _statusMeta = const VerificationMeta('status');
+  @override
+  late final GeneratedColumn<String> status = GeneratedColumn<String>(
+    'status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _noteMeta = const VerificationMeta('note');
+  @override
+  late final GeneratedColumn<String> note = GeneratedColumn<String>(
+    'note',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _sharedReferenceMeta = const VerificationMeta(
+    'sharedReference',
+  );
+  @override
+  late final GeneratedColumn<String> sharedReference = GeneratedColumn<String>(
+    'shared_reference',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _appliedAtMeta = const VerificationMeta(
+    'appliedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> appliedAt = GeneratedColumn<DateTime>(
+    'applied_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    shomitiId,
+    baseRuleSetVersionId,
+    proposedRuleSetVersionId,
+    status,
+    note,
+    sharedReference,
+    createdAt,
+    appliedAt,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'rule_amendments';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<RuleAmendmentRow> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('shomiti_id')) {
+      context.handle(
+        _shomitiIdMeta,
+        shomitiId.isAcceptableOrUnknown(data['shomiti_id']!, _shomitiIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_shomitiIdMeta);
+    }
+    if (data.containsKey('base_rule_set_version_id')) {
+      context.handle(
+        _baseRuleSetVersionIdMeta,
+        baseRuleSetVersionId.isAcceptableOrUnknown(
+          data['base_rule_set_version_id']!,
+          _baseRuleSetVersionIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_baseRuleSetVersionIdMeta);
+    }
+    if (data.containsKey('proposed_rule_set_version_id')) {
+      context.handle(
+        _proposedRuleSetVersionIdMeta,
+        proposedRuleSetVersionId.isAcceptableOrUnknown(
+          data['proposed_rule_set_version_id']!,
+          _proposedRuleSetVersionIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_proposedRuleSetVersionIdMeta);
+    }
+    if (data.containsKey('status')) {
+      context.handle(
+        _statusMeta,
+        status.isAcceptableOrUnknown(data['status']!, _statusMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_statusMeta);
+    }
+    if (data.containsKey('note')) {
+      context.handle(
+        _noteMeta,
+        note.isAcceptableOrUnknown(data['note']!, _noteMeta),
+      );
+    }
+    if (data.containsKey('shared_reference')) {
+      context.handle(
+        _sharedReferenceMeta,
+        sharedReference.isAcceptableOrUnknown(
+          data['shared_reference']!,
+          _sharedReferenceMeta,
+        ),
+      );
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    if (data.containsKey('applied_at')) {
+      context.handle(
+        _appliedAtMeta,
+        appliedAt.isAcceptableOrUnknown(data['applied_at']!, _appliedAtMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  RuleAmendmentRow map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return RuleAmendmentRow(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      shomitiId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}shomiti_id'],
+      )!,
+      baseRuleSetVersionId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}base_rule_set_version_id'],
+      )!,
+      proposedRuleSetVersionId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}proposed_rule_set_version_id'],
+      )!,
+      status: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}status'],
+      )!,
+      note: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}note'],
+      ),
+      sharedReference: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}shared_reference'],
+      ),
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+      appliedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}applied_at'],
+      ),
+    );
+  }
+
+  @override
+  $RuleAmendmentsTable createAlias(String alias) {
+    return $RuleAmendmentsTable(attachedDatabase, alias);
+  }
+}
+
+class RuleAmendmentRow extends DataClass
+    implements Insertable<RuleAmendmentRow> {
+  final String id;
+  final String shomitiId;
+
+  /// The currently active rule set version when the amendment was proposed.
+  final String baseRuleSetVersionId;
+
+  /// The proposed rule set version id (new immutable snapshot).
+  final String proposedRuleSetVersionId;
+
+  /// `draft` | `pendingConsent` | `applied`
+  final String status;
+
+  /// Written summary of the amendment (required at apply-time).
+  final String? note;
+
+  /// Reference where it was shared (required at apply-time).
+  final String? sharedReference;
+  final DateTime createdAt;
+  final DateTime? appliedAt;
+  const RuleAmendmentRow({
+    required this.id,
+    required this.shomitiId,
+    required this.baseRuleSetVersionId,
+    required this.proposedRuleSetVersionId,
+    required this.status,
+    this.note,
+    this.sharedReference,
+    required this.createdAt,
+    this.appliedAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['shomiti_id'] = Variable<String>(shomitiId);
+    map['base_rule_set_version_id'] = Variable<String>(baseRuleSetVersionId);
+    map['proposed_rule_set_version_id'] = Variable<String>(
+      proposedRuleSetVersionId,
+    );
+    map['status'] = Variable<String>(status);
+    if (!nullToAbsent || note != null) {
+      map['note'] = Variable<String>(note);
+    }
+    if (!nullToAbsent || sharedReference != null) {
+      map['shared_reference'] = Variable<String>(sharedReference);
+    }
+    map['created_at'] = Variable<DateTime>(createdAt);
+    if (!nullToAbsent || appliedAt != null) {
+      map['applied_at'] = Variable<DateTime>(appliedAt);
+    }
+    return map;
+  }
+
+  RuleAmendmentsCompanion toCompanion(bool nullToAbsent) {
+    return RuleAmendmentsCompanion(
+      id: Value(id),
+      shomitiId: Value(shomitiId),
+      baseRuleSetVersionId: Value(baseRuleSetVersionId),
+      proposedRuleSetVersionId: Value(proposedRuleSetVersionId),
+      status: Value(status),
+      note: note == null && nullToAbsent ? const Value.absent() : Value(note),
+      sharedReference: sharedReference == null && nullToAbsent
+          ? const Value.absent()
+          : Value(sharedReference),
+      createdAt: Value(createdAt),
+      appliedAt: appliedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(appliedAt),
+    );
+  }
+
+  factory RuleAmendmentRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return RuleAmendmentRow(
+      id: serializer.fromJson<String>(json['id']),
+      shomitiId: serializer.fromJson<String>(json['shomitiId']),
+      baseRuleSetVersionId: serializer.fromJson<String>(
+        json['baseRuleSetVersionId'],
+      ),
+      proposedRuleSetVersionId: serializer.fromJson<String>(
+        json['proposedRuleSetVersionId'],
+      ),
+      status: serializer.fromJson<String>(json['status']),
+      note: serializer.fromJson<String?>(json['note']),
+      sharedReference: serializer.fromJson<String?>(json['sharedReference']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      appliedAt: serializer.fromJson<DateTime?>(json['appliedAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'shomitiId': serializer.toJson<String>(shomitiId),
+      'baseRuleSetVersionId': serializer.toJson<String>(baseRuleSetVersionId),
+      'proposedRuleSetVersionId': serializer.toJson<String>(
+        proposedRuleSetVersionId,
+      ),
+      'status': serializer.toJson<String>(status),
+      'note': serializer.toJson<String?>(note),
+      'sharedReference': serializer.toJson<String?>(sharedReference),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'appliedAt': serializer.toJson<DateTime?>(appliedAt),
+    };
+  }
+
+  RuleAmendmentRow copyWith({
+    String? id,
+    String? shomitiId,
+    String? baseRuleSetVersionId,
+    String? proposedRuleSetVersionId,
+    String? status,
+    Value<String?> note = const Value.absent(),
+    Value<String?> sharedReference = const Value.absent(),
+    DateTime? createdAt,
+    Value<DateTime?> appliedAt = const Value.absent(),
+  }) => RuleAmendmentRow(
+    id: id ?? this.id,
+    shomitiId: shomitiId ?? this.shomitiId,
+    baseRuleSetVersionId: baseRuleSetVersionId ?? this.baseRuleSetVersionId,
+    proposedRuleSetVersionId:
+        proposedRuleSetVersionId ?? this.proposedRuleSetVersionId,
+    status: status ?? this.status,
+    note: note.present ? note.value : this.note,
+    sharedReference: sharedReference.present
+        ? sharedReference.value
+        : this.sharedReference,
+    createdAt: createdAt ?? this.createdAt,
+    appliedAt: appliedAt.present ? appliedAt.value : this.appliedAt,
+  );
+  RuleAmendmentRow copyWithCompanion(RuleAmendmentsCompanion data) {
+    return RuleAmendmentRow(
+      id: data.id.present ? data.id.value : this.id,
+      shomitiId: data.shomitiId.present ? data.shomitiId.value : this.shomitiId,
+      baseRuleSetVersionId: data.baseRuleSetVersionId.present
+          ? data.baseRuleSetVersionId.value
+          : this.baseRuleSetVersionId,
+      proposedRuleSetVersionId: data.proposedRuleSetVersionId.present
+          ? data.proposedRuleSetVersionId.value
+          : this.proposedRuleSetVersionId,
+      status: data.status.present ? data.status.value : this.status,
+      note: data.note.present ? data.note.value : this.note,
+      sharedReference: data.sharedReference.present
+          ? data.sharedReference.value
+          : this.sharedReference,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      appliedAt: data.appliedAt.present ? data.appliedAt.value : this.appliedAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('RuleAmendmentRow(')
+          ..write('id: $id, ')
+          ..write('shomitiId: $shomitiId, ')
+          ..write('baseRuleSetVersionId: $baseRuleSetVersionId, ')
+          ..write('proposedRuleSetVersionId: $proposedRuleSetVersionId, ')
+          ..write('status: $status, ')
+          ..write('note: $note, ')
+          ..write('sharedReference: $sharedReference, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('appliedAt: $appliedAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    shomitiId,
+    baseRuleSetVersionId,
+    proposedRuleSetVersionId,
+    status,
+    note,
+    sharedReference,
+    createdAt,
+    appliedAt,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is RuleAmendmentRow &&
+          other.id == this.id &&
+          other.shomitiId == this.shomitiId &&
+          other.baseRuleSetVersionId == this.baseRuleSetVersionId &&
+          other.proposedRuleSetVersionId == this.proposedRuleSetVersionId &&
+          other.status == this.status &&
+          other.note == this.note &&
+          other.sharedReference == this.sharedReference &&
+          other.createdAt == this.createdAt &&
+          other.appliedAt == this.appliedAt);
+}
+
+class RuleAmendmentsCompanion extends UpdateCompanion<RuleAmendmentRow> {
+  final Value<String> id;
+  final Value<String> shomitiId;
+  final Value<String> baseRuleSetVersionId;
+  final Value<String> proposedRuleSetVersionId;
+  final Value<String> status;
+  final Value<String?> note;
+  final Value<String?> sharedReference;
+  final Value<DateTime> createdAt;
+  final Value<DateTime?> appliedAt;
+  final Value<int> rowid;
+  const RuleAmendmentsCompanion({
+    this.id = const Value.absent(),
+    this.shomitiId = const Value.absent(),
+    this.baseRuleSetVersionId = const Value.absent(),
+    this.proposedRuleSetVersionId = const Value.absent(),
+    this.status = const Value.absent(),
+    this.note = const Value.absent(),
+    this.sharedReference = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.appliedAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  RuleAmendmentsCompanion.insert({
+    required String id,
+    required String shomitiId,
+    required String baseRuleSetVersionId,
+    required String proposedRuleSetVersionId,
+    required String status,
+    this.note = const Value.absent(),
+    this.sharedReference = const Value.absent(),
+    required DateTime createdAt,
+    this.appliedAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       shomitiId = Value(shomitiId),
+       baseRuleSetVersionId = Value(baseRuleSetVersionId),
+       proposedRuleSetVersionId = Value(proposedRuleSetVersionId),
+       status = Value(status),
+       createdAt = Value(createdAt);
+  static Insertable<RuleAmendmentRow> custom({
+    Expression<String>? id,
+    Expression<String>? shomitiId,
+    Expression<String>? baseRuleSetVersionId,
+    Expression<String>? proposedRuleSetVersionId,
+    Expression<String>? status,
+    Expression<String>? note,
+    Expression<String>? sharedReference,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? appliedAt,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (shomitiId != null) 'shomiti_id': shomitiId,
+      if (baseRuleSetVersionId != null)
+        'base_rule_set_version_id': baseRuleSetVersionId,
+      if (proposedRuleSetVersionId != null)
+        'proposed_rule_set_version_id': proposedRuleSetVersionId,
+      if (status != null) 'status': status,
+      if (note != null) 'note': note,
+      if (sharedReference != null) 'shared_reference': sharedReference,
+      if (createdAt != null) 'created_at': createdAt,
+      if (appliedAt != null) 'applied_at': appliedAt,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  RuleAmendmentsCompanion copyWith({
+    Value<String>? id,
+    Value<String>? shomitiId,
+    Value<String>? baseRuleSetVersionId,
+    Value<String>? proposedRuleSetVersionId,
+    Value<String>? status,
+    Value<String?>? note,
+    Value<String?>? sharedReference,
+    Value<DateTime>? createdAt,
+    Value<DateTime?>? appliedAt,
+    Value<int>? rowid,
+  }) {
+    return RuleAmendmentsCompanion(
+      id: id ?? this.id,
+      shomitiId: shomitiId ?? this.shomitiId,
+      baseRuleSetVersionId: baseRuleSetVersionId ?? this.baseRuleSetVersionId,
+      proposedRuleSetVersionId:
+          proposedRuleSetVersionId ?? this.proposedRuleSetVersionId,
+      status: status ?? this.status,
+      note: note ?? this.note,
+      sharedReference: sharedReference ?? this.sharedReference,
+      createdAt: createdAt ?? this.createdAt,
+      appliedAt: appliedAt ?? this.appliedAt,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (shomitiId.present) {
+      map['shomiti_id'] = Variable<String>(shomitiId.value);
+    }
+    if (baseRuleSetVersionId.present) {
+      map['base_rule_set_version_id'] = Variable<String>(
+        baseRuleSetVersionId.value,
+      );
+    }
+    if (proposedRuleSetVersionId.present) {
+      map['proposed_rule_set_version_id'] = Variable<String>(
+        proposedRuleSetVersionId.value,
+      );
+    }
+    if (status.present) {
+      map['status'] = Variable<String>(status.value);
+    }
+    if (note.present) {
+      map['note'] = Variable<String>(note.value);
+    }
+    if (sharedReference.present) {
+      map['shared_reference'] = Variable<String>(sharedReference.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (appliedAt.present) {
+      map['applied_at'] = Variable<DateTime>(appliedAt.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('RuleAmendmentsCompanion(')
+          ..write('id: $id, ')
+          ..write('shomitiId: $shomitiId, ')
+          ..write('baseRuleSetVersionId: $baseRuleSetVersionId, ')
+          ..write('proposedRuleSetVersionId: $proposedRuleSetVersionId, ')
+          ..write('status: $status, ')
+          ..write('note: $note, ')
+          ..write('sharedReference: $sharedReference, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('appliedAt: $appliedAt, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 class $MembershipChangeRequestsTable extends MembershipChangeRequests
     with TableInfo<$MembershipChangeRequestsTable, MembershipChangeRequestRow> {
   @override
@@ -12149,6 +12756,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     this,
   );
   late final $MemberConsentsTable memberConsents = $MemberConsentsTable(this);
+  late final $RuleAmendmentsTable ruleAmendments = $RuleAmendmentsTable(this);
   late final $MembershipChangeRequestsTable membershipChangeRequests =
       $MembershipChangeRequestsTable(this);
   late final $MembershipChangeApprovalsTable membershipChangeApprovals =
@@ -12188,6 +12796,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     roleAssignments,
     ruleSetVersions,
     memberConsents,
+    ruleAmendments,
     membershipChangeRequests,
     membershipChangeApprovals,
     dueMonths,
@@ -12725,6 +13334,27 @@ final class $$ShomitisTableReferences
     );
   }
 
+  static MultiTypedResultKey<$RuleAmendmentsTable, List<RuleAmendmentRow>>
+  _ruleAmendmentsRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
+    db.ruleAmendments,
+    aliasName: $_aliasNameGenerator(
+      db.shomitis.id,
+      db.ruleAmendments.shomitiId,
+    ),
+  );
+
+  $$RuleAmendmentsTableProcessedTableManager get ruleAmendmentsRefs {
+    final manager = $$RuleAmendmentsTableTableManager(
+      $_db,
+      $_db.ruleAmendments,
+    ).filter((f) => f.shomitiId.id.sqlEquals($_itemColumn<String>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(_ruleAmendmentsRefsTable($_db));
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+
   static MultiTypedResultKey<
     $MembershipChangeRequestsTable,
     List<MembershipChangeRequestRow>
@@ -13127,6 +13757,31 @@ class $$ShomitisTableFilterComposer
           }) => $$MemberConsentsTableFilterComposer(
             $db: $db,
             $table: $db.memberConsents,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<bool> ruleAmendmentsRefs(
+    Expression<bool> Function($$RuleAmendmentsTableFilterComposer f) f,
+  ) {
+    final $$RuleAmendmentsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.ruleAmendments,
+      getReferencedColumn: (t) => t.shomitiId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$RuleAmendmentsTableFilterComposer(
+            $db: $db,
+            $table: $db.ruleAmendments,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -13608,6 +14263,31 @@ class $$ShomitisTableAnnotationComposer
     return f(composer);
   }
 
+  Expression<T> ruleAmendmentsRefs<T extends Object>(
+    Expression<T> Function($$RuleAmendmentsTableAnnotationComposer a) f,
+  ) {
+    final $$RuleAmendmentsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.ruleAmendments,
+      getReferencedColumn: (t) => t.shomitiId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$RuleAmendmentsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.ruleAmendments,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
   Expression<T> membershipChangeRequestsRefs<T extends Object>(
     Expression<T> Function($$MembershipChangeRequestsTableAnnotationComposer a)
     f,
@@ -13964,6 +14644,7 @@ class $$ShomitisTableTableManager
             bool membersRefs,
             bool roleAssignmentsRefs,
             bool memberConsentsRefs,
+            bool ruleAmendmentsRefs,
             bool membershipChangeRequestsRefs,
             bool membershipChangeApprovalsRefs,
             bool dueMonthsRefs,
@@ -14035,6 +14716,7 @@ class $$ShomitisTableTableManager
                 membersRefs = false,
                 roleAssignmentsRefs = false,
                 memberConsentsRefs = false,
+                ruleAmendmentsRefs = false,
                 membershipChangeRequestsRefs = false,
                 membershipChangeApprovalsRefs = false,
                 dueMonthsRefs = false,
@@ -14055,6 +14737,7 @@ class $$ShomitisTableTableManager
                     if (membersRefs) db.members,
                     if (roleAssignmentsRefs) db.roleAssignments,
                     if (memberConsentsRefs) db.memberConsents,
+                    if (ruleAmendmentsRefs) db.ruleAmendments,
                     if (membershipChangeRequestsRefs)
                       db.membershipChangeRequests,
                     if (membershipChangeApprovalsRefs)
@@ -14132,6 +14815,27 @@ class $$ShomitisTableTableManager
                                 table,
                                 p0,
                               ).memberConsentsRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.shomitiId == item.id,
+                              ),
+                          typedResults: items,
+                        ),
+                      if (ruleAmendmentsRefs)
+                        await $_getPrefetchedData<
+                          ShomitiRow,
+                          $ShomitisTable,
+                          RuleAmendmentRow
+                        >(
+                          currentTable: table,
+                          referencedTable: $$ShomitisTableReferences
+                              ._ruleAmendmentsRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$ShomitisTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).ruleAmendmentsRefs,
                           referencedItemsForCurrentItem:
                               (item, referencedItems) => referencedItems.where(
                                 (e) => e.shomitiId == item.id,
@@ -14435,6 +15139,7 @@ typedef $$ShomitisTableProcessedTableManager =
         bool membersRefs,
         bool roleAssignmentsRefs,
         bool memberConsentsRefs,
+        bool ruleAmendmentsRefs,
         bool membershipChangeRequestsRefs,
         bool membershipChangeApprovalsRefs,
         bool dueMonthsRefs,
@@ -16815,6 +17520,29 @@ final class $$RuleSetVersionsTableReferences
     );
   }
 
+  static MultiTypedResultKey<$RuleAmendmentsTable, List<RuleAmendmentRow>>
+  _ruleAmendmentsRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
+    db.ruleAmendments,
+    aliasName: $_aliasNameGenerator(
+      db.ruleSetVersions.id,
+      db.ruleAmendments.proposedRuleSetVersionId,
+    ),
+  );
+
+  $$RuleAmendmentsTableProcessedTableManager get ruleAmendmentsRefs {
+    final manager = $$RuleAmendmentsTableTableManager($_db, $_db.ruleAmendments)
+        .filter(
+          (f) => f.proposedRuleSetVersionId.id.sqlEquals(
+            $_itemColumn<String>('id')!,
+          ),
+        );
+
+    final cache = $_typedResult.readTableOrNull(_ruleAmendmentsRefsTable($_db));
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+
   static MultiTypedResultKey<$DueMonthsTable, List<DueMonthRow>>
   _dueMonthsRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
     db.dueMonths,
@@ -17061,6 +17789,31 @@ class $$RuleSetVersionsTableFilterComposer
           }) => $$MemberConsentsTableFilterComposer(
             $db: $db,
             $table: $db.memberConsents,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<bool> ruleAmendmentsRefs(
+    Expression<bool> Function($$RuleAmendmentsTableFilterComposer f) f,
+  ) {
+    final $$RuleAmendmentsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.ruleAmendments,
+      getReferencedColumn: (t) => t.proposedRuleSetVersionId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$RuleAmendmentsTableFilterComposer(
+            $db: $db,
+            $table: $db.ruleAmendments,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -17344,6 +18097,31 @@ class $$RuleSetVersionsTableAnnotationComposer
     return f(composer);
   }
 
+  Expression<T> ruleAmendmentsRefs<T extends Object>(
+    Expression<T> Function($$RuleAmendmentsTableAnnotationComposer a) f,
+  ) {
+    final $$RuleAmendmentsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.ruleAmendments,
+      getReferencedColumn: (t) => t.proposedRuleSetVersionId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$RuleAmendmentsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.ruleAmendments,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
   Expression<T> dueMonthsRefs<T extends Object>(
     Expression<T> Function($$DueMonthsTableAnnotationComposer a) f,
   ) {
@@ -17568,6 +18346,7 @@ class $$RuleSetVersionsTableTableManager
           RuleSetVersionRow,
           PrefetchHooks Function({
             bool memberConsentsRefs,
+            bool ruleAmendmentsRefs,
             bool dueMonthsRefs,
             bool defaultEnforcementStepsRefs,
             bool drawRecordsRefs,
@@ -17626,6 +18405,7 @@ class $$RuleSetVersionsTableTableManager
           prefetchHooksCallback:
               ({
                 memberConsentsRefs = false,
+                ruleAmendmentsRefs = false,
                 dueMonthsRefs = false,
                 defaultEnforcementStepsRefs = false,
                 drawRecordsRefs = false,
@@ -17639,6 +18419,7 @@ class $$RuleSetVersionsTableTableManager
                   db: db,
                   explicitlyWatchedTables: [
                     if (memberConsentsRefs) db.memberConsents,
+                    if (ruleAmendmentsRefs) db.ruleAmendments,
                     if (dueMonthsRefs) db.dueMonths,
                     if (defaultEnforcementStepsRefs) db.defaultEnforcementSteps,
                     if (drawRecordsRefs) db.drawRecords,
@@ -17670,6 +18451,27 @@ class $$RuleSetVersionsTableTableManager
                           referencedItemsForCurrentItem:
                               (item, referencedItems) => referencedItems.where(
                                 (e) => e.ruleSetVersionId == item.id,
+                              ),
+                          typedResults: items,
+                        ),
+                      if (ruleAmendmentsRefs)
+                        await $_getPrefetchedData<
+                          RuleSetVersionRow,
+                          $RuleSetVersionsTable,
+                          RuleAmendmentRow
+                        >(
+                          currentTable: table,
+                          referencedTable: $$RuleSetVersionsTableReferences
+                              ._ruleAmendmentsRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$RuleSetVersionsTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).ruleAmendmentsRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.proposedRuleSetVersionId == item.id,
                               ),
                           typedResults: items,
                         ),
@@ -17863,6 +18665,7 @@ typedef $$RuleSetVersionsTableProcessedTableManager =
       RuleSetVersionRow,
       PrefetchHooks Function({
         bool memberConsentsRefs,
+        bool ruleAmendmentsRefs,
         bool dueMonthsRefs,
         bool defaultEnforcementStepsRefs,
         bool drawRecordsRefs,
@@ -18417,6 +19220,515 @@ typedef $$MemberConsentsTableProcessedTableManager =
         bool ruleSetVersionId,
         bool shomitiId,
       })
+    >;
+typedef $$RuleAmendmentsTableCreateCompanionBuilder =
+    RuleAmendmentsCompanion Function({
+      required String id,
+      required String shomitiId,
+      required String baseRuleSetVersionId,
+      required String proposedRuleSetVersionId,
+      required String status,
+      Value<String?> note,
+      Value<String?> sharedReference,
+      required DateTime createdAt,
+      Value<DateTime?> appliedAt,
+      Value<int> rowid,
+    });
+typedef $$RuleAmendmentsTableUpdateCompanionBuilder =
+    RuleAmendmentsCompanion Function({
+      Value<String> id,
+      Value<String> shomitiId,
+      Value<String> baseRuleSetVersionId,
+      Value<String> proposedRuleSetVersionId,
+      Value<String> status,
+      Value<String?> note,
+      Value<String?> sharedReference,
+      Value<DateTime> createdAt,
+      Value<DateTime?> appliedAt,
+      Value<int> rowid,
+    });
+
+final class $$RuleAmendmentsTableReferences
+    extends
+        BaseReferences<_$AppDatabase, $RuleAmendmentsTable, RuleAmendmentRow> {
+  $$RuleAmendmentsTableReferences(
+    super.$_db,
+    super.$_table,
+    super.$_typedResult,
+  );
+
+  static $ShomitisTable _shomitiIdTable(_$AppDatabase db) =>
+      db.shomitis.createAlias(
+        $_aliasNameGenerator(db.ruleAmendments.shomitiId, db.shomitis.id),
+      );
+
+  $$ShomitisTableProcessedTableManager get shomitiId {
+    final $_column = $_itemColumn<String>('shomiti_id')!;
+
+    final manager = $$ShomitisTableTableManager(
+      $_db,
+      $_db.shomitis,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_shomitiIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+
+  static $RuleSetVersionsTable _proposedRuleSetVersionIdTable(
+    _$AppDatabase db,
+  ) => db.ruleSetVersions.createAlias(
+    $_aliasNameGenerator(
+      db.ruleAmendments.proposedRuleSetVersionId,
+      db.ruleSetVersions.id,
+    ),
+  );
+
+  $$RuleSetVersionsTableProcessedTableManager get proposedRuleSetVersionId {
+    final $_column = $_itemColumn<String>('proposed_rule_set_version_id')!;
+
+    final manager = $$RuleSetVersionsTableTableManager(
+      $_db,
+      $_db.ruleSetVersions,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(
+      _proposedRuleSetVersionIdTable($_db),
+    );
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+}
+
+class $$RuleAmendmentsTableFilterComposer
+    extends Composer<_$AppDatabase, $RuleAmendmentsTable> {
+  $$RuleAmendmentsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get baseRuleSetVersionId => $composableBuilder(
+    column: $table.baseRuleSetVersionId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get note => $composableBuilder(
+    column: $table.note,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get sharedReference => $composableBuilder(
+    column: $table.sharedReference,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get appliedAt => $composableBuilder(
+    column: $table.appliedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  $$ShomitisTableFilterComposer get shomitiId {
+    final $$ShomitisTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.shomitiId,
+      referencedTable: $db.shomitis,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ShomitisTableFilterComposer(
+            $db: $db,
+            $table: $db.shomitis,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$RuleSetVersionsTableFilterComposer get proposedRuleSetVersionId {
+    final $$RuleSetVersionsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.proposedRuleSetVersionId,
+      referencedTable: $db.ruleSetVersions,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$RuleSetVersionsTableFilterComposer(
+            $db: $db,
+            $table: $db.ruleSetVersions,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$RuleAmendmentsTableOrderingComposer
+    extends Composer<_$AppDatabase, $RuleAmendmentsTable> {
+  $$RuleAmendmentsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get baseRuleSetVersionId => $composableBuilder(
+    column: $table.baseRuleSetVersionId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get note => $composableBuilder(
+    column: $table.note,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get sharedReference => $composableBuilder(
+    column: $table.sharedReference,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get appliedAt => $composableBuilder(
+    column: $table.appliedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  $$ShomitisTableOrderingComposer get shomitiId {
+    final $$ShomitisTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.shomitiId,
+      referencedTable: $db.shomitis,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ShomitisTableOrderingComposer(
+            $db: $db,
+            $table: $db.shomitis,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$RuleSetVersionsTableOrderingComposer get proposedRuleSetVersionId {
+    final $$RuleSetVersionsTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.proposedRuleSetVersionId,
+      referencedTable: $db.ruleSetVersions,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$RuleSetVersionsTableOrderingComposer(
+            $db: $db,
+            $table: $db.ruleSetVersions,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$RuleAmendmentsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $RuleAmendmentsTable> {
+  $$RuleAmendmentsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get baseRuleSetVersionId => $composableBuilder(
+    column: $table.baseRuleSetVersionId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get status =>
+      $composableBuilder(column: $table.status, builder: (column) => column);
+
+  GeneratedColumn<String> get note =>
+      $composableBuilder(column: $table.note, builder: (column) => column);
+
+  GeneratedColumn<String> get sharedReference => $composableBuilder(
+    column: $table.sharedReference,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get appliedAt =>
+      $composableBuilder(column: $table.appliedAt, builder: (column) => column);
+
+  $$ShomitisTableAnnotationComposer get shomitiId {
+    final $$ShomitisTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.shomitiId,
+      referencedTable: $db.shomitis,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ShomitisTableAnnotationComposer(
+            $db: $db,
+            $table: $db.shomitis,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$RuleSetVersionsTableAnnotationComposer get proposedRuleSetVersionId {
+    final $$RuleSetVersionsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.proposedRuleSetVersionId,
+      referencedTable: $db.ruleSetVersions,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$RuleSetVersionsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.ruleSetVersions,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$RuleAmendmentsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $RuleAmendmentsTable,
+          RuleAmendmentRow,
+          $$RuleAmendmentsTableFilterComposer,
+          $$RuleAmendmentsTableOrderingComposer,
+          $$RuleAmendmentsTableAnnotationComposer,
+          $$RuleAmendmentsTableCreateCompanionBuilder,
+          $$RuleAmendmentsTableUpdateCompanionBuilder,
+          (RuleAmendmentRow, $$RuleAmendmentsTableReferences),
+          RuleAmendmentRow,
+          PrefetchHooks Function({
+            bool shomitiId,
+            bool proposedRuleSetVersionId,
+          })
+        > {
+  $$RuleAmendmentsTableTableManager(
+    _$AppDatabase db,
+    $RuleAmendmentsTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$RuleAmendmentsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$RuleAmendmentsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$RuleAmendmentsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> shomitiId = const Value.absent(),
+                Value<String> baseRuleSetVersionId = const Value.absent(),
+                Value<String> proposedRuleSetVersionId = const Value.absent(),
+                Value<String> status = const Value.absent(),
+                Value<String?> note = const Value.absent(),
+                Value<String?> sharedReference = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime?> appliedAt = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => RuleAmendmentsCompanion(
+                id: id,
+                shomitiId: shomitiId,
+                baseRuleSetVersionId: baseRuleSetVersionId,
+                proposedRuleSetVersionId: proposedRuleSetVersionId,
+                status: status,
+                note: note,
+                sharedReference: sharedReference,
+                createdAt: createdAt,
+                appliedAt: appliedAt,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required String shomitiId,
+                required String baseRuleSetVersionId,
+                required String proposedRuleSetVersionId,
+                required String status,
+                Value<String?> note = const Value.absent(),
+                Value<String?> sharedReference = const Value.absent(),
+                required DateTime createdAt,
+                Value<DateTime?> appliedAt = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => RuleAmendmentsCompanion.insert(
+                id: id,
+                shomitiId: shomitiId,
+                baseRuleSetVersionId: baseRuleSetVersionId,
+                proposedRuleSetVersionId: proposedRuleSetVersionId,
+                status: status,
+                note: note,
+                sharedReference: sharedReference,
+                createdAt: createdAt,
+                appliedAt: appliedAt,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable(table),
+                  $$RuleAmendmentsTableReferences(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback:
+              ({shomitiId = false, proposedRuleSetVersionId = false}) {
+                return PrefetchHooks(
+                  db: db,
+                  explicitlyWatchedTables: [],
+                  addJoins:
+                      <
+                        T extends TableManagerState<
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic
+                        >
+                      >(state) {
+                        if (shomitiId) {
+                          state =
+                              state.withJoin(
+                                    currentTable: table,
+                                    currentColumn: table.shomitiId,
+                                    referencedTable:
+                                        $$RuleAmendmentsTableReferences
+                                            ._shomitiIdTable(db),
+                                    referencedColumn:
+                                        $$RuleAmendmentsTableReferences
+                                            ._shomitiIdTable(db)
+                                            .id,
+                                  )
+                                  as T;
+                        }
+                        if (proposedRuleSetVersionId) {
+                          state =
+                              state.withJoin(
+                                    currentTable: table,
+                                    currentColumn:
+                                        table.proposedRuleSetVersionId,
+                                    referencedTable:
+                                        $$RuleAmendmentsTableReferences
+                                            ._proposedRuleSetVersionIdTable(db),
+                                    referencedColumn:
+                                        $$RuleAmendmentsTableReferences
+                                            ._proposedRuleSetVersionIdTable(db)
+                                            .id,
+                                  )
+                                  as T;
+                        }
+
+                        return state;
+                      },
+                  getPrefetchedDataCallback: (items) async {
+                    return [];
+                  },
+                );
+              },
+        ),
+      );
+}
+
+typedef $$RuleAmendmentsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $RuleAmendmentsTable,
+      RuleAmendmentRow,
+      $$RuleAmendmentsTableFilterComposer,
+      $$RuleAmendmentsTableOrderingComposer,
+      $$RuleAmendmentsTableAnnotationComposer,
+      $$RuleAmendmentsTableCreateCompanionBuilder,
+      $$RuleAmendmentsTableUpdateCompanionBuilder,
+      (RuleAmendmentRow, $$RuleAmendmentsTableReferences),
+      RuleAmendmentRow,
+      PrefetchHooks Function({bool shomitiId, bool proposedRuleSetVersionId})
     >;
 typedef $$MembershipChangeRequestsTableCreateCompanionBuilder =
     MembershipChangeRequestsCompanion Function({
@@ -25726,6 +27038,8 @@ class $AppDatabaseManager {
       $$RuleSetVersionsTableTableManager(_db, _db.ruleSetVersions);
   $$MemberConsentsTableTableManager get memberConsents =>
       $$MemberConsentsTableTableManager(_db, _db.memberConsents);
+  $$RuleAmendmentsTableTableManager get ruleAmendments =>
+      $$RuleAmendmentsTableTableManager(_db, _db.ruleAmendments);
   $$MembershipChangeRequestsTableTableManager get membershipChangeRequests =>
       $$MembershipChangeRequestsTableTableManager(
         _db,

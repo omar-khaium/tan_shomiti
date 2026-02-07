@@ -6,6 +6,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:tan_shomiti/src/core/ui/theme/app_theme.dart';
 import 'package:tan_shomiti/src/features/rules/domain/entities/rule_set_snapshot.dart';
 import 'package:tan_shomiti/src/features/rules/domain/entities/rule_set_version.dart';
+import 'package:tan_shomiti/src/features/rules/presentation/providers/rule_changes_providers.dart';
 import 'package:tan_shomiti/src/features/rules/presentation/providers/rules_viewer_providers.dart';
 import 'package:tan_shomiti/src/features/rules/presentation/rule_changes_page.dart';
 
@@ -30,7 +31,11 @@ void main() {
     final completer = Completer<RuleSetVersion?>();
     await pumpPage(
       tester,
-      overrides: [rulesViewerProvider.overrideWith((ref) => completer.future)],
+      overrides: [
+        rulesViewerProvider.overrideWith((ref) => completer.future),
+        pendingRuleAmendmentProvider.overrideWith((ref) => Stream.value(null)),
+        ruleAmendmentsProvider.overrideWith((ref) => Stream.value(const [])),
+      ],
     );
 
     expect(find.text('Loading…'), findsOneWidget);
@@ -41,7 +46,11 @@ void main() {
   ) async {
     await pumpPage(
       tester,
-      overrides: [rulesViewerProvider.overrideWith((ref) async => null)],
+      overrides: [
+        rulesViewerProvider.overrideWith((ref) async => null),
+        pendingRuleAmendmentProvider.overrideWith((ref) => Stream.value(null)),
+        ruleAmendmentsProvider.overrideWith((ref) => Stream.value(const [])),
+      ],
     );
 
     await tester.pumpAndSettle();
@@ -55,6 +64,8 @@ void main() {
       tester,
       overrides: [
         rulesViewerProvider.overrideWith((ref) => throw Exception('boom')),
+        pendingRuleAmendmentProvider.overrideWith((ref) => Stream.value(null)),
+        ruleAmendmentsProvider.overrideWith((ref) => Stream.value(const [])),
       ],
     );
 
@@ -98,6 +109,8 @@ void main() {
             ),
           ),
         ),
+        pendingRuleAmendmentProvider.overrideWith((ref) => Stream.value(null)),
+        ruleAmendmentsProvider.overrideWith((ref) => Stream.value(const [])),
       ],
     );
 

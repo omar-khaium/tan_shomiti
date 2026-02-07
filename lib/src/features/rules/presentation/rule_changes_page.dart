@@ -10,6 +10,7 @@ import '../../../core/ui/components/app_loading_state.dart';
 import '../../../core/ui/tokens/app_spacing.dart';
 import '../../../app/router/app_router.dart';
 import '../domain/entities/rule_set_version.dart';
+import 'providers/rule_changes_providers.dart';
 import 'providers/rules_viewer_providers.dart';
 
 class RuleChangesPage extends ConsumerWidget {
@@ -50,16 +51,19 @@ class RuleChangesPage extends ConsumerWidget {
   }
 }
 
-class _RuleChangesBody extends StatelessWidget {
+class _RuleChangesBody extends ConsumerWidget {
   const _RuleChangesBody({required this.version});
 
   final RuleSetVersion version;
 
   @override
-  Widget build(BuildContext context) {
-    final createdAt = MaterialLocalizations.of(context).formatShortDate(
-      version.createdAt,
-    );
+  Widget build(BuildContext context, WidgetRef ref) {
+    final createdAt = MaterialLocalizations.of(
+      context,
+    ).formatShortDate(version.createdAt);
+
+    final pending = ref.watch(pendingRuleAmendmentProvider);
+    final history = ref.watch(ruleAmendmentsProvider);
 
     return ListView(
       padding: const EdgeInsets.all(AppSpacing.s16),
@@ -92,9 +96,75 @@ class _RuleChangesBody extends StatelessWidget {
                 style: Theme.of(context).textTheme.titleMedium,
               ),
               const SizedBox(height: AppSpacing.s8),
-              const Text(
-                'No pending change yet.',
-                key: Key('rule_changes_pending_empty'),
+              pending.when(
+                loading: () => const Text('Loading…'),
+                error: (error, stack) => const Text(
+                  'Failed to load pending change.',
+                  key: Key('rule_changes_pending_error'),
+                ),
+                data: (data) {
+                  if (data == null) {
+                    return const Text(
+                      'No pending change yet.',
+                      key: Key('rule_changes_pending_empty'),
+                    );
+                  }
+
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Pending consent',
+                        key: const Key('rule_changes_pending_label'),
+                      ),
+                      const SizedBox(height: AppSpacing.s8),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: AppButton.secondary(
+                              key: const Key('rule_changes_collect_consent'),
+                              label: 'Collect consent',
+                              onPressed: () => context.push(
+                                ruleChangesConsentLocation,
+                                extra: data.id,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: AppSpacing.s12),
+                          Expanded(
+                            child: AppButton.primary(
+                              key: const Key('rule_changes_apply'),
+                              label: 'Apply',
+                              onPressed: () async {
+                                try {
+                                  await ref.read(applyRuleAmendmentProvider)(
+                                    shomitiId: data.shomitiId,
+                                    amendmentId: data.id,
+                                    now: DateTime.now(),
+                                  );
+
+                                  if (!context.mounted) return;
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text('Rule change applied.'),
+                                    ),
+                                  );
+                                } catch (e) {
+                                  if (!context.mounted) return;
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text('Failed to apply: $e'),
+                                    ),
+                                  );
+                                }
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  );
+                },
               ),
             ],
           ),
@@ -104,14 +174,39 @@ class _RuleChangesBody extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                'History',
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
+              Text('History', style: Theme.of(context).textTheme.titleMedium),
               const SizedBox(height: AppSpacing.s8),
-              const Text(
-                'No rule changes recorded yet.',
-                key: Key('rule_changes_history_empty'),
+              history.when(
+                loading: () => const Text('Loading…'),
+                error: (error, stack) => const Text(
+                  'Failed to load history.',
+                  key: Key('rule_changes_history_error'),
+                ),
+                data: (data) {
+                  final applied = data
+                      .where((a) => a.appliedAt != null)
+                      .toList();
+                  if (applied.isEmpty) {
+                    return const Text(
+                      'No rule changes recorded yet.',
+                      key: Key('rule_changes_history_empty'),
+                    );
+                  }
+
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      for (final a in applied.take(5))
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: AppSpacing.s8),
+                          child: Text(
+                            'Applied: ${a.note ?? a.id}',
+                            key: Key('rule_changes_history_${a.id}'),
+                          ),
+                        ),
+                    ],
+                  );
+                },
               ),
             ],
           ),
@@ -128,11 +223,7 @@ class _RuleChangesBody extends StatelessWidget {
 }
 
 class _FieldRow extends StatelessWidget {
-  const _FieldRow({
-    required this.label,
-    required this.value,
-    this.valueKey,
-  });
+  const _FieldRow({required this.label, required this.value, this.valueKey});
 
   final String label;
   final String value;
@@ -147,10 +238,7 @@ class _FieldRow extends StatelessWidget {
         children: [
           Expanded(
             flex: 4,
-            child: Text(
-              label,
-              style: Theme.of(context).textTheme.bodySmall,
-            ),
+            child: Text(label, style: Theme.of(context).textTheme.bodySmall),
           ),
           Expanded(
             flex: 6,
@@ -166,4 +254,3 @@ class _FieldRow extends StatelessWidget {
     );
   }
 }
-
