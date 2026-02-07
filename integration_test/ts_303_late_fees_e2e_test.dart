@@ -39,8 +39,10 @@ void main() {
     await $.pumpAndSettle();
     expect(find.text('Not eligible'), findsWidgets);
 
-    // Current month: payment should be eligible (within deadline/grace).
-    await $(#dues_next_month).tap();
+    // Next month: payment should be eligible (confirmedAt is before deadline).
+    await $(#dues_next_month).tap(); // back to current
+    await $.pumpAndSettle();
+    await $(#dues_next_month).tap(); // move to next month
     await $.pumpAndSettle();
     await $(#dues_record_payment_2).scrollTo();
     await $(#dues_record_payment_2).tap();
@@ -51,4 +53,3 @@ void main() {
     expect(find.text('Eligible'), findsWidgets);
   });
 }
-
