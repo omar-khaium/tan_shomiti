@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:patrol/patrol.dart';
 import 'package:tan_shomiti/src/app/tan_shomiti_app.dart';
+import 'package:tan_shomiti/src/core/ui/components/app_button.dart';
 
 void main() {
   patrolTest('TS-401 (e2e): winner excluded + cannot record twice', ($) async {
@@ -106,27 +107,14 @@ void main() {
     // Winner share should be excluded from future eligibility.
     expect(find.textContaining('Already won: 1'), findsWidgets);
 
-    // Attempt to record another draw for the same month should fail.
-    await $(#eligibility_run_draw).tap();
-    await $.pumpAndSettle();
-
-    await $(#draw_method_tokens).tap();
-    await $.pumpAndSettle();
-
-    await $(find.text('Select winning share')).tap();
-    await $.pumpAndSettle();
-    final winnerOption = find.textContaining('Member 1 (share');
-    await $(winnerOption).tap();
-    await $.pumpAndSettle();
-
-    await $(#draw_proof_ref).enterText('vid-ts401-e2e-2');
-    await $.pumpAndSettle();
-
-    await $(#draw_save).scrollTo();
-    await $.pumpAndSettle();
-    await $(#draw_save).tap();
-    await $.pumpAndSettle();
-
-    expect(find.textContaining('already recorded for this month'), findsWidgets);
+    // Attempting to record another draw for the same month is disallowed.
+    expect(find.text('Draw already recorded for this month.'), findsWidgets);
+    final runDrawButtonWidget =
+        find
+            .byKey(const Key('eligibility_run_draw'))
+            .evaluate()
+            .single
+            .widget as AppButton;
+    expect(runDrawButtonWidget.onPressed, isNull);
   });
 }
