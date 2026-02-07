@@ -118,15 +118,14 @@ final class DriftDisputesRepository implements DisputesRepository {
     required DateTime now,
   }) async {
     await _db.into(_db.disputeStepCompletions).insert(
-          DisputeStepCompletionRow(
-            id: 0,
+          DisputeStepCompletionsCompanion.insert(
             shomitiId: shomitiId,
             disputeId: disputeId,
             stepType: _stepType(step),
             note: note.trim(),
             proofReference: proofReference?.trim().isEmpty == true
-                ? null
-                : proofReference?.trim(),
+                ? const Value(null)
+                : Value(proofReference?.trim()),
             completedAt: now,
           ),
         );
@@ -258,4 +257,3 @@ final class DriftDisputesRepository implements DisputesRepository {
     return 'dsp_${ts}_$rand';
   }
 }
-
