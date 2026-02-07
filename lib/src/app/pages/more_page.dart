@@ -88,6 +88,12 @@ class MorePage extends ConsumerWidget {
           onTap: () => context.push(rulesLocation),
         ),
         _MoreTile(
+          tileKey: const Key('more_rule_changes'),
+          title: ruleChangesTitle,
+          subtitle: 'Propose and apply rule amendments',
+          onTap: () => context.push(ruleChangesLocation),
+        ),
+        _MoreTile(
           tileKey: const Key('more_disputes'),
           title: disputesTitle,
           subtitle: 'Track disputes and resolutions',
