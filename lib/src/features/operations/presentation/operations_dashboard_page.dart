@@ -4,42 +4,27 @@ import 'package:go_router/go_router.dart';
 
 import '../../../app/router/app_router.dart';
 import '../../../core/ui/components/app_card.dart';
-import '../../../core/ui/components/app_empty_state.dart';
 import '../../../core/ui/tokens/app_spacing.dart';
 import '../../contributions/domain/value_objects/billing_month.dart';
+import '../domain/entities/monthly_checklist_completion.dart';
+import '../domain/value_objects/monthly_checklist_step.dart';
+import '../../shomiti_setup/domain/entities/shomiti.dart';
+import 'providers/operations_providers.dart';
 
 final selectedOpsMonthProvider = StateProvider<BillingMonth>((ref) {
   return BillingMonth.fromDate(DateTime.now());
 });
-
-/// Stage 2 (UI): in-memory completion state, keyed by BillingMonth.key.
-final opsChecklistDraftProvider =
-    StateProvider<Map<String, Set<String>>>((ref) => {});
 
 class OperationsDashboardPage extends ConsumerWidget {
   const OperationsDashboardPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isConfigured = ref.watch(shomitiConfiguredProvider);
-    if (!isConfigured) {
-      return Padding(
-        padding: const EdgeInsets.all(AppSpacing.s16),
-        child: AppEmptyState(
-          icon: Icons.dashboard_outlined,
-          title: 'No Shomiti yet',
-          message: 'Complete setup to start using the monthly checklist.',
-        ),
-      );
-    }
-
     final month = ref.watch(selectedOpsMonthProvider);
-    final monthKey = month.key;
-    final completedByMonth = ref.watch(opsChecklistDraftProvider);
-    final completed = completedByMonth[monthKey] ?? const <String>{};
-
-    const items = _opsChecklistItems;
-    final progress = items.isEmpty ? 0.0 : completed.length / items.length;
+    final checklistAsync = ref.watch(monthlyChecklistForMonthProvider(month));
+    final checklist = checklistAsync.value ?? const [];
+    final completedCount = checklist.where((c) => c.isCompleted).length;
+    final progress = checklist.isEmpty ? 0.0 : completedCount / checklist.length;
 
     return ListView(
       padding: const EdgeInsets.all(AppSpacing.s16),
@@ -82,27 +67,32 @@ class OperationsDashboardPage extends ConsumerWidget {
                 style: Theme.of(context).textTheme.titleMedium,
               ),
               const SizedBox(height: AppSpacing.s8),
-              Text('${completed.length}/${items.length} completed'),
+              Text('$completedCount/${MonthlyChecklistStep.values.length} completed'),
               const SizedBox(height: AppSpacing.s8),
               LinearProgressIndicator(value: progress),
               const SizedBox(height: AppSpacing.s16),
-              for (final item in items) ...[
+              if (checklistAsync.isLoading)
+                const Padding(
+                  padding: EdgeInsets.symmetric(vertical: AppSpacing.s8),
+                  child: LinearProgressIndicator(),
+                ),
+              if (checklistAsync.hasError)
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: AppSpacing.s8),
+                  child: Text(
+                    'Failed to load checklist.',
+                    style: TextStyle(color: Theme.of(context).colorScheme.error),
+                  ),
+                ),
+              for (final completion in (checklist.isEmpty
+                  ? [
+                      for (final item in MonthlyChecklistStep.values)
+                        MonthlyChecklistCompletion(item: item, completedAt: null),
+                    ]
+                  : checklist)) ...[
                 _ChecklistRow(
-                  item: item,
-                  isCompleted: completed.contains(item.key),
-                  onChanged: (value) {
-                    final next = Map<String, Set<String>>.from(
-                      ref.read(opsChecklistDraftProvider),
-                    );
-                    final set = Set<String>.from(next[monthKey] ?? const {});
-                    if (value == true) {
-                      set.add(item.key);
-                    } else {
-                      set.remove(item.key);
-                    }
-                    next[monthKey] = set;
-                    ref.read(opsChecklistDraftProvider.notifier).state = next;
-                  },
+                  month: month,
+                  completion: completion,
                 ),
                 const Divider(height: AppSpacing.s16),
               ],
@@ -116,31 +106,51 @@ class OperationsDashboardPage extends ConsumerWidget {
 
 class _ChecklistRow extends StatelessWidget {
   const _ChecklistRow({
-    required this.item,
-    required this.isCompleted,
-    required this.onChanged,
+    required this.month,
+    required this.completion,
   });
 
-  final _OpsChecklistItem item;
-  final bool isCompleted;
-  final ValueChanged<bool?> onChanged;
+  final BillingMonth month;
+  final MonthlyChecklistCompletion completion;
 
   @override
   Widget build(BuildContext context) {
+    final item = _OpsChecklistItem.fromDomain(completion.item);
+    final completedAt = completion.completedAt;
+    final completedAtLabel =
+        completedAt == null ? null : MaterialLocalizations.of(context).formatTimeOfDay(
+              TimeOfDay.fromDateTime(completedAt),
+            );
+
     return Row(
       children: [
         Expanded(
           child: CheckboxListTile(
-            key: Key('ops_check_${item.key}'),
-            value: isCompleted,
+            key: Key('ops_check_${completion.item.key}'),
+            value: completion.isCompleted,
             controlAffinity: ListTileControlAffinity.leading,
             title: Text(item.title),
-            subtitle: Text(item.subtitle),
-            onChanged: onChanged,
+            subtitle: Text(
+              completedAtLabel == null
+                  ? item.subtitle
+                  : '${item.subtitle}\nCompleted at $completedAtLabel',
+            ),
+            onChanged: (value) async {
+              if (value == null) return;
+              final container = ProviderScope.containerOf(context);
+              await container.read(setMonthlyChecklistItemCompletionProvider)(
+                    shomitiId: activeShomitiId,
+                    month: month,
+                    item: completion.item,
+                    isCompleted: value,
+                    now: DateTime.now(),
+                  );
+              container.invalidate(monthlyChecklistForMonthProvider(month));
+            },
           ),
         ),
         TextButton(
-          key: Key('ops_go_${item.key}'),
+          key: Key('ops_go_${completion.item.key}'),
           onPressed: item.location == null
               ? null
               : () => context.push(item.location!),
@@ -151,57 +161,63 @@ class _ChecklistRow extends StatelessWidget {
   }
 }
 
-@immutable
 class _OpsChecklistItem {
   const _OpsChecklistItem({
-    required this.key,
+    required this.itemKey,
     required this.title,
     required this.subtitle,
     required this.location,
   });
 
-  final String key;
+  final String itemKey;
   final String title;
   final String subtitle;
   final String? location;
+
+  static _OpsChecklistItem fromDomain(MonthlyChecklistStep item) {
+    return switch (item.key) {
+      'attendance' => _OpsChecklistItem(
+        itemKey: item.key,
+        title: 'Confirm attendance/proxies',
+        subtitle: 'Record who attended or who is represented by proxy.',
+        location: membersLocation,
+      ),
+      'payments' => _OpsChecklistItem(
+        itemKey: item.key,
+        title: 'Confirm payments received (or apply §9 policy)',
+        subtitle: 'Ensure the pot is complete or resolve shortfall.',
+        location: contributionsLocation,
+      ),
+      'draw' => _OpsChecklistItem(
+        itemKey: item.key,
+        title: 'Run draw with witnesses',
+        subtitle: 'Record draw integrity and witness sign-off.',
+        location: drawLocation,
+      ),
+      'payout_amount' => _OpsChecklistItem(
+        itemKey: item.key,
+        title: 'Announce winner and payout amount',
+        subtitle: 'Confirm winner and the full pot amount before payout.',
+        location: payoutLocation,
+      ),
+      'payout_proof' => _OpsChecklistItem(
+        itemKey: item.key,
+        title: 'Send payout and share proof',
+        subtitle: 'Store and share payout proof inside the group channel.',
+        location: payoutLocation,
+      ),
+      'publish_statement' => _OpsChecklistItem(
+        itemKey: item.key,
+        title: 'Publish ledger + monthly statement',
+        subtitle: 'Generate statement and ensure it is signed-off.',
+        location: statementsLocation,
+      ),
+      _ => _OpsChecklistItem(
+        itemKey: item.key,
+        title: item.key,
+        subtitle: '',
+        location: null,
+      ),
+    };
+  }
 }
-
-const _opsChecklistItems = <_OpsChecklistItem>[
-  _OpsChecklistItem(
-    key: 'attendance',
-    title: 'Confirm attendance/proxies',
-    subtitle: 'Record who attended or who is represented by proxy.',
-    location: membersLocation,
-  ),
-  _OpsChecklistItem(
-    key: 'payments',
-    title: 'Confirm payments received (or apply §9 policy)',
-    subtitle: 'Ensure the pot is complete or resolve shortfall.',
-    location: contributionsLocation,
-  ),
-  _OpsChecklistItem(
-    key: 'draw',
-    title: 'Run draw with witnesses',
-    subtitle: 'Record draw integrity and witness sign-off.',
-    location: drawLocation,
-  ),
-  _OpsChecklistItem(
-    key: 'payout_amount',
-    title: 'Announce winner and payout amount',
-    subtitle: 'Confirm winner and the full pot amount before payout.',
-    location: payoutLocation,
-  ),
-  _OpsChecklistItem(
-    key: 'payout_proof',
-    title: 'Send payout and share proof',
-    subtitle: 'Store and share payout proof inside the group channel.',
-    location: payoutLocation,
-  ),
-  _OpsChecklistItem(
-    key: 'publish_statement',
-    title: 'Publish ledger + monthly statement',
-    subtitle: 'Generate statement and ensure it is signed-off.',
-    location: statementsLocation,
-  ),
-];
-

@@ -12228,6 +12228,443 @@ class StatementSignoffsCompanion extends UpdateCompanion<StatementSignoffRow> {
   }
 }
 
+class $MonthlyChecklistItemsTable extends MonthlyChecklistItems
+    with TableInfo<$MonthlyChecklistItemsTable, MonthlyChecklistItem> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $MonthlyChecklistItemsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _shomitiIdMeta = const VerificationMeta(
+    'shomitiId',
+  );
+  @override
+  late final GeneratedColumn<String> shomitiId = GeneratedColumn<String>(
+    'shomiti_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _billingMonthKeyMeta = const VerificationMeta(
+    'billingMonthKey',
+  );
+  @override
+  late final GeneratedColumn<String> billingMonthKey = GeneratedColumn<String>(
+    'billing_month_key',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _itemKeyMeta = const VerificationMeta(
+    'itemKey',
+  );
+  @override
+  late final GeneratedColumn<String> itemKey = GeneratedColumn<String>(
+    'item_key',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _completedAtMeta = const VerificationMeta(
+    'completedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> completedAt = GeneratedColumn<DateTime>(
+    'completed_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    shomitiId,
+    billingMonthKey,
+    itemKey,
+    completedAt,
+    updatedAt,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'monthly_checklist_items';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<MonthlyChecklistItem> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('shomiti_id')) {
+      context.handle(
+        _shomitiIdMeta,
+        shomitiId.isAcceptableOrUnknown(data['shomiti_id']!, _shomitiIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_shomitiIdMeta);
+    }
+    if (data.containsKey('billing_month_key')) {
+      context.handle(
+        _billingMonthKeyMeta,
+        billingMonthKey.isAcceptableOrUnknown(
+          data['billing_month_key']!,
+          _billingMonthKeyMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_billingMonthKeyMeta);
+    }
+    if (data.containsKey('item_key')) {
+      context.handle(
+        _itemKeyMeta,
+        itemKey.isAcceptableOrUnknown(data['item_key']!, _itemKeyMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_itemKeyMeta);
+    }
+    if (data.containsKey('completed_at')) {
+      context.handle(
+        _completedAtMeta,
+        completedAt.isAcceptableOrUnknown(
+          data['completed_at']!,
+          _completedAtMeta,
+        ),
+      );
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_updatedAtMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  List<Set<GeneratedColumn>> get uniqueKeys => [
+    {shomitiId, billingMonthKey, itemKey},
+  ];
+  @override
+  MonthlyChecklistItem map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return MonthlyChecklistItem(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      shomitiId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}shomiti_id'],
+      )!,
+      billingMonthKey: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}billing_month_key'],
+      )!,
+      itemKey: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}item_key'],
+      )!,
+      completedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}completed_at'],
+      ),
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+    );
+  }
+
+  @override
+  $MonthlyChecklistItemsTable createAlias(String alias) {
+    return $MonthlyChecklistItemsTable(attachedDatabase, alias);
+  }
+}
+
+class MonthlyChecklistItem extends DataClass
+    implements Insertable<MonthlyChecklistItem> {
+  final String id;
+  final String shomitiId;
+
+  /// Stored as `YYYY-MM` (see `BillingMonth.key`).
+  final String billingMonthKey;
+
+  /// Stored as the domain enum key (e.g. `attendance`).
+  final String itemKey;
+  final DateTime? completedAt;
+  final DateTime updatedAt;
+  const MonthlyChecklistItem({
+    required this.id,
+    required this.shomitiId,
+    required this.billingMonthKey,
+    required this.itemKey,
+    this.completedAt,
+    required this.updatedAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['shomiti_id'] = Variable<String>(shomitiId);
+    map['billing_month_key'] = Variable<String>(billingMonthKey);
+    map['item_key'] = Variable<String>(itemKey);
+    if (!nullToAbsent || completedAt != null) {
+      map['completed_at'] = Variable<DateTime>(completedAt);
+    }
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    return map;
+  }
+
+  MonthlyChecklistItemsCompanion toCompanion(bool nullToAbsent) {
+    return MonthlyChecklistItemsCompanion(
+      id: Value(id),
+      shomitiId: Value(shomitiId),
+      billingMonthKey: Value(billingMonthKey),
+      itemKey: Value(itemKey),
+      completedAt: completedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(completedAt),
+      updatedAt: Value(updatedAt),
+    );
+  }
+
+  factory MonthlyChecklistItem.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return MonthlyChecklistItem(
+      id: serializer.fromJson<String>(json['id']),
+      shomitiId: serializer.fromJson<String>(json['shomitiId']),
+      billingMonthKey: serializer.fromJson<String>(json['billingMonthKey']),
+      itemKey: serializer.fromJson<String>(json['itemKey']),
+      completedAt: serializer.fromJson<DateTime?>(json['completedAt']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'shomitiId': serializer.toJson<String>(shomitiId),
+      'billingMonthKey': serializer.toJson<String>(billingMonthKey),
+      'itemKey': serializer.toJson<String>(itemKey),
+      'completedAt': serializer.toJson<DateTime?>(completedAt),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+    };
+  }
+
+  MonthlyChecklistItem copyWith({
+    String? id,
+    String? shomitiId,
+    String? billingMonthKey,
+    String? itemKey,
+    Value<DateTime?> completedAt = const Value.absent(),
+    DateTime? updatedAt,
+  }) => MonthlyChecklistItem(
+    id: id ?? this.id,
+    shomitiId: shomitiId ?? this.shomitiId,
+    billingMonthKey: billingMonthKey ?? this.billingMonthKey,
+    itemKey: itemKey ?? this.itemKey,
+    completedAt: completedAt.present ? completedAt.value : this.completedAt,
+    updatedAt: updatedAt ?? this.updatedAt,
+  );
+  MonthlyChecklistItem copyWithCompanion(MonthlyChecklistItemsCompanion data) {
+    return MonthlyChecklistItem(
+      id: data.id.present ? data.id.value : this.id,
+      shomitiId: data.shomitiId.present ? data.shomitiId.value : this.shomitiId,
+      billingMonthKey: data.billingMonthKey.present
+          ? data.billingMonthKey.value
+          : this.billingMonthKey,
+      itemKey: data.itemKey.present ? data.itemKey.value : this.itemKey,
+      completedAt: data.completedAt.present
+          ? data.completedAt.value
+          : this.completedAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('MonthlyChecklistItem(')
+          ..write('id: $id, ')
+          ..write('shomitiId: $shomitiId, ')
+          ..write('billingMonthKey: $billingMonthKey, ')
+          ..write('itemKey: $itemKey, ')
+          ..write('completedAt: $completedAt, ')
+          ..write('updatedAt: $updatedAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    shomitiId,
+    billingMonthKey,
+    itemKey,
+    completedAt,
+    updatedAt,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is MonthlyChecklistItem &&
+          other.id == this.id &&
+          other.shomitiId == this.shomitiId &&
+          other.billingMonthKey == this.billingMonthKey &&
+          other.itemKey == this.itemKey &&
+          other.completedAt == this.completedAt &&
+          other.updatedAt == this.updatedAt);
+}
+
+class MonthlyChecklistItemsCompanion
+    extends UpdateCompanion<MonthlyChecklistItem> {
+  final Value<String> id;
+  final Value<String> shomitiId;
+  final Value<String> billingMonthKey;
+  final Value<String> itemKey;
+  final Value<DateTime?> completedAt;
+  final Value<DateTime> updatedAt;
+  final Value<int> rowid;
+  const MonthlyChecklistItemsCompanion({
+    this.id = const Value.absent(),
+    this.shomitiId = const Value.absent(),
+    this.billingMonthKey = const Value.absent(),
+    this.itemKey = const Value.absent(),
+    this.completedAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  MonthlyChecklistItemsCompanion.insert({
+    required String id,
+    required String shomitiId,
+    required String billingMonthKey,
+    required String itemKey,
+    this.completedAt = const Value.absent(),
+    required DateTime updatedAt,
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       shomitiId = Value(shomitiId),
+       billingMonthKey = Value(billingMonthKey),
+       itemKey = Value(itemKey),
+       updatedAt = Value(updatedAt);
+  static Insertable<MonthlyChecklistItem> custom({
+    Expression<String>? id,
+    Expression<String>? shomitiId,
+    Expression<String>? billingMonthKey,
+    Expression<String>? itemKey,
+    Expression<DateTime>? completedAt,
+    Expression<DateTime>? updatedAt,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (shomitiId != null) 'shomiti_id': shomitiId,
+      if (billingMonthKey != null) 'billing_month_key': billingMonthKey,
+      if (itemKey != null) 'item_key': itemKey,
+      if (completedAt != null) 'completed_at': completedAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  MonthlyChecklistItemsCompanion copyWith({
+    Value<String>? id,
+    Value<String>? shomitiId,
+    Value<String>? billingMonthKey,
+    Value<String>? itemKey,
+    Value<DateTime?>? completedAt,
+    Value<DateTime>? updatedAt,
+    Value<int>? rowid,
+  }) {
+    return MonthlyChecklistItemsCompanion(
+      id: id ?? this.id,
+      shomitiId: shomitiId ?? this.shomitiId,
+      billingMonthKey: billingMonthKey ?? this.billingMonthKey,
+      itemKey: itemKey ?? this.itemKey,
+      completedAt: completedAt ?? this.completedAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (shomitiId.present) {
+      map['shomiti_id'] = Variable<String>(shomitiId.value);
+    }
+    if (billingMonthKey.present) {
+      map['billing_month_key'] = Variable<String>(billingMonthKey.value);
+    }
+    if (itemKey.present) {
+      map['item_key'] = Variable<String>(itemKey.value);
+    }
+    if (completedAt.present) {
+      map['completed_at'] = Variable<DateTime>(completedAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('MonthlyChecklistItemsCompanion(')
+          ..write('id: $id, ')
+          ..write('shomitiId: $shomitiId, ')
+          ..write('billingMonthKey: $billingMonthKey, ')
+          ..write('itemKey: $itemKey, ')
+          ..write('completedAt: $completedAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 class $PayoutCollectionVerificationsTable extends PayoutCollectionVerifications
     with
         TableInfo<
@@ -13920,6 +14357,8 @@ abstract class _$AppDatabase extends GeneratedDatabase {
       $MonthlyStatementsTable(this);
   late final $StatementSignoffsTable statementSignoffs =
       $StatementSignoffsTable(this);
+  late final $MonthlyChecklistItemsTable monthlyChecklistItems =
+      $MonthlyChecklistItemsTable(this);
   late final $PayoutCollectionVerificationsTable payoutCollectionVerifications =
       $PayoutCollectionVerificationsTable(this);
   late final $PayoutApprovalsTable payoutApprovals = $PayoutApprovalsTable(
@@ -13955,6 +14394,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     drawWitnessApprovals,
     monthlyStatements,
     statementSignoffs,
+    monthlyChecklistItems,
     payoutCollectionVerifications,
     payoutApprovals,
     payoutRecords,
@@ -27786,6 +28226,248 @@ typedef $$StatementSignoffsTableProcessedTableManager =
       StatementSignoffRow,
       PrefetchHooks Function({bool shomitiId, bool signerMemberId})
     >;
+typedef $$MonthlyChecklistItemsTableCreateCompanionBuilder =
+    MonthlyChecklistItemsCompanion Function({
+      required String id,
+      required String shomitiId,
+      required String billingMonthKey,
+      required String itemKey,
+      Value<DateTime?> completedAt,
+      required DateTime updatedAt,
+      Value<int> rowid,
+    });
+typedef $$MonthlyChecklistItemsTableUpdateCompanionBuilder =
+    MonthlyChecklistItemsCompanion Function({
+      Value<String> id,
+      Value<String> shomitiId,
+      Value<String> billingMonthKey,
+      Value<String> itemKey,
+      Value<DateTime?> completedAt,
+      Value<DateTime> updatedAt,
+      Value<int> rowid,
+    });
+
+class $$MonthlyChecklistItemsTableFilterComposer
+    extends Composer<_$AppDatabase, $MonthlyChecklistItemsTable> {
+  $$MonthlyChecklistItemsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get shomitiId => $composableBuilder(
+    column: $table.shomitiId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get billingMonthKey => $composableBuilder(
+    column: $table.billingMonthKey,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get itemKey => $composableBuilder(
+    column: $table.itemKey,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get completedAt => $composableBuilder(
+    column: $table.completedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$MonthlyChecklistItemsTableOrderingComposer
+    extends Composer<_$AppDatabase, $MonthlyChecklistItemsTable> {
+  $$MonthlyChecklistItemsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get shomitiId => $composableBuilder(
+    column: $table.shomitiId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get billingMonthKey => $composableBuilder(
+    column: $table.billingMonthKey,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get itemKey => $composableBuilder(
+    column: $table.itemKey,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get completedAt => $composableBuilder(
+    column: $table.completedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$MonthlyChecklistItemsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $MonthlyChecklistItemsTable> {
+  $$MonthlyChecklistItemsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get shomitiId =>
+      $composableBuilder(column: $table.shomitiId, builder: (column) => column);
+
+  GeneratedColumn<String> get billingMonthKey => $composableBuilder(
+    column: $table.billingMonthKey,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get itemKey =>
+      $composableBuilder(column: $table.itemKey, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get completedAt => $composableBuilder(
+    column: $table.completedAt,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+}
+
+class $$MonthlyChecklistItemsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $MonthlyChecklistItemsTable,
+          MonthlyChecklistItem,
+          $$MonthlyChecklistItemsTableFilterComposer,
+          $$MonthlyChecklistItemsTableOrderingComposer,
+          $$MonthlyChecklistItemsTableAnnotationComposer,
+          $$MonthlyChecklistItemsTableCreateCompanionBuilder,
+          $$MonthlyChecklistItemsTableUpdateCompanionBuilder,
+          (
+            MonthlyChecklistItem,
+            BaseReferences<
+              _$AppDatabase,
+              $MonthlyChecklistItemsTable,
+              MonthlyChecklistItem
+            >,
+          ),
+          MonthlyChecklistItem,
+          PrefetchHooks Function()
+        > {
+  $$MonthlyChecklistItemsTableTableManager(
+    _$AppDatabase db,
+    $MonthlyChecklistItemsTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$MonthlyChecklistItemsTableFilterComposer(
+                $db: db,
+                $table: table,
+              ),
+          createOrderingComposer: () =>
+              $$MonthlyChecklistItemsTableOrderingComposer(
+                $db: db,
+                $table: table,
+              ),
+          createComputedFieldComposer: () =>
+              $$MonthlyChecklistItemsTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> shomitiId = const Value.absent(),
+                Value<String> billingMonthKey = const Value.absent(),
+                Value<String> itemKey = const Value.absent(),
+                Value<DateTime?> completedAt = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => MonthlyChecklistItemsCompanion(
+                id: id,
+                shomitiId: shomitiId,
+                billingMonthKey: billingMonthKey,
+                itemKey: itemKey,
+                completedAt: completedAt,
+                updatedAt: updatedAt,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required String shomitiId,
+                required String billingMonthKey,
+                required String itemKey,
+                Value<DateTime?> completedAt = const Value.absent(),
+                required DateTime updatedAt,
+                Value<int> rowid = const Value.absent(),
+              }) => MonthlyChecklistItemsCompanion.insert(
+                id: id,
+                shomitiId: shomitiId,
+                billingMonthKey: billingMonthKey,
+                itemKey: itemKey,
+                completedAt: completedAt,
+                updatedAt: updatedAt,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$MonthlyChecklistItemsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $MonthlyChecklistItemsTable,
+      MonthlyChecklistItem,
+      $$MonthlyChecklistItemsTableFilterComposer,
+      $$MonthlyChecklistItemsTableOrderingComposer,
+      $$MonthlyChecklistItemsTableAnnotationComposer,
+      $$MonthlyChecklistItemsTableCreateCompanionBuilder,
+      $$MonthlyChecklistItemsTableUpdateCompanionBuilder,
+      (
+        MonthlyChecklistItem,
+        BaseReferences<
+          _$AppDatabase,
+          $MonthlyChecklistItemsTable,
+          MonthlyChecklistItem
+        >,
+      ),
+      MonthlyChecklistItem,
+      PrefetchHooks Function()
+    >;
 typedef $$PayoutCollectionVerificationsTableCreateCompanionBuilder =
     PayoutCollectionVerificationsCompanion Function({
       required String shomitiId,
@@ -29426,6 +30108,8 @@ class $AppDatabaseManager {
       $$MonthlyStatementsTableTableManager(_db, _db.monthlyStatements);
   $$StatementSignoffsTableTableManager get statementSignoffs =>
       $$StatementSignoffsTableTableManager(_db, _db.statementSignoffs);
+  $$MonthlyChecklistItemsTableTableManager get monthlyChecklistItems =>
+      $$MonthlyChecklistItemsTableTableManager(_db, _db.monthlyChecklistItems);
   $$PayoutCollectionVerificationsTableTableManager
   get payoutCollectionVerifications =>
       $$PayoutCollectionVerificationsTableTableManager(
