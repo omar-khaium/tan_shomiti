@@ -8,6 +8,7 @@ import '../../../core/ui/tokens/app_spacing.dart';
 import '../../audit/domain/entities/audit_event.dart';
 import '../../audit/presentation/providers/audit_providers.dart';
 import '../../shomiti_setup/presentation/providers/shomiti_setup_providers.dart';
+import 'components/statement_signoffs_section.dart';
 import 'providers/statements_domain_providers.dart';
 import 'providers/statements_providers.dart';
 import '../domain/entities/monthly_statement.dart';
@@ -121,6 +122,8 @@ class _StatementDetailPageState extends ConsumerState<StatementDetailPage> {
                     valueKey: const Key('statement_payout_proof'),
                   ),
                 ),
+                const SizedBox(height: AppSpacing.s16),
+                const StatementSignoffsSection(),
               ],
             );
           },
